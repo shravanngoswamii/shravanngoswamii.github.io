@@ -122,9 +122,9 @@ ul {
   width: 25px;
   height: 25px;
   border-radius: 5px;
-  background-color: var(--accent-color);
+  background-color: var(--secondary-color);
   cursor: pointer;
-  position: absolute;
+  position:fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -318,11 +318,6 @@ ul {
   color: #00ddff;
 }
 
-.home-card:hover img {
-  filter: brightness(70%);
-  transition: .1s ease-in;
-}
-
 
 .home-card a {
   text-decoration: none;
@@ -330,10 +325,16 @@ ul {
 }
 
 .home-card img {
+  border-radius: 5px 5px 0 0;
   object-fit: cover;
   margin: 10px;
   height: 150px;
   width:276px;;
+}
+
+.home-card:hover img {
+  filter: brightness(70%);
+  transition: .1s ease-in;
 }
 
 .home-card span {

@@ -1,0 +1,58 @@
+[
+    {
+      "title": "Resume",
+      "url": "assets/Shravan's_Resume.pdf",
+      "category": "Top Sites"
+    },
+    {
+      "title": "Articles",
+      "url": "https://auth.geeksforgeeks.org/user/shravanngoswamii/articles",
+      "category": "Top Sites"
+    },
+    {
+      "title": "Links",
+      "url": "https://linktr.ee/shravangoswami",
+      "category": "Top Sites"
+    },
+    {
+      "title": "Projects",
+      "url": "https://github.com/shravanngoswamii?tab=repositories",
+      "category": "Top Sites"
+    },
+    {
+      "title": "Open-Source",
+      "url": "https://github.com/shravanngoswamii?tab=repositories",
+      "category": "Top Sites"
+    },
+    {
+      "title": "Contact Me",
+      "url": "https://linktr.ee/shravangoswami",
+      "category": "Top Sites"
+    },
+    {
+      "title": "Check If A File is Valid Image with Python",
+      "url": "https://www.geeksforgeeks.org/check-if-a-file-is-valid-image-with-python/",
+      "category": "Published Articles"
+    },
+    {
+      "title": "Export Specific Columns in DataFrame to CSV File",
+      "url": "https://www.geeksforgeeks.org/export-specific-columns-in-dataframe-to-csv-file/",
+      "category": "Published Articles"
+    },
+    {
+      "title": "Install Httpx using Python PIP",
+      "url": "https://www.geeksforgeeks.org/install-httpx-using-python-pip/",
+      "category": "Published Articles"
+    },
+    {
+      "title": "Convert Dictionary to DataFrame in Python with column names",
+      "url": "https://www.geeksforgeeks.org/convert-dictionary-to-dataframe-in-python-with-column-names/",
+      "category": "Published Articles"
+    },
+    {
+      "title": "Implement a Stack Using Vectors in C++",
+      "url": "https://www.geeksforgeeks.org/implement-a-stack-using-vectors-in-cpp/",
+      "category": "Published Articles"
+    }
+  ]
+  

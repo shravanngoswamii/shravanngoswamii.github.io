@@ -25,19 +25,20 @@
 
     <section>
         <div class="container search-container">
-            <input type="text" placeholder="Search" class="search-input" />
+            <input type="text" id="searchInput" placeholder="Search" class="search-input" />
             <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" width="35" class="search-svg">
                 <path
                     d="M760.385-177.846 522.923-415.307q-30 23.538-65.792 36.038-35.792 12.5-71.558 12.5-87.135 0-148.2-61.029-61.066-61.029-61.066-148.077t61.029-148.202q61.029-61.154 148.077-61.154 87.049 0 148.202 61.065 61.154 61.065 61.154 148.201 0 38.073-13.269 73.865-13.269 35.792-35.269 63.485l237.462 237.461-23.308 23.308ZM385.538-398.769q74.616 0 125.923-51.308Q562.769-501.385 562.769-576q0-74.615-51.308-125.923-51.307-51.308-125.923-51.308-74.615 0-125.923 51.308Q208.308-650.615 208.308-576q0 74.615 51.307 125.923 51.308 51.308 125.923 51.308Z" />
             </svg>
         </div>
+        <div id="searchResults"></div>
     </section>
 
     <nav class="container nav-section">
         <ul class="top-sites-list">
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="assets/Shravan's_Resume.pdf" target="_blank">
+                    <a class="top-site-button" href="pages/resume.html" target="_blank">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--resume-icon)"></div>
@@ -75,7 +76,8 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories" target="_blank">
+                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories"
+                        target="_blank">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--projects-icon)">
@@ -88,7 +90,8 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories" target="_blank">
+                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories"
+                        target="_blank">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--opensource-icon)">
@@ -123,7 +126,8 @@
                 <img src="assets/python.png" alt="" />
                 <span>Published on: GFG</span> <span>01 March, 2024</span>
                 <h3>Check If A File is Valid Image with Python</h3>
-                <p>When working with images in Python, it’s crucial to ensure the integrity and validity of the files being processed...</p>
+                <p>When working with images in Python, it’s crucial to ensure the integrity and validity of the files
+                    being processed...</p>
             </a>
         </div>
         <div class="home-card">
@@ -131,7 +135,8 @@
                 <img src="assets/python.png" alt="" />
                 <span>Published on: GFG</span> <span>27 Feb, 2024</span>
                 <h3>Export Specific Columns in DataFrame to CSV File</h3>
-                <p>A data frame is a tabular data structure similar to a spreadsheet. It has rows and columns. CSV (Comma-Separated Values) is a plain text file format used for storing tabular data...</p>
+                <p>A data frame is a tabular data structure similar to a spreadsheet. It has rows and columns. CSV
+                    (Comma-Separated Values) is a plain text file format used for storing tabular data...</p>
             </a>
         </div>
         <div class="home-card">
@@ -139,15 +144,20 @@
                 <img src="assets/python.png" alt="" />
                 <span>Published on: GFG</span> <span>27 Feb, 2024</span>
                 <h3>Install Httpx using Python PIP</h3>
-                <p>When working on the internet or building websites, it’s important to have good tools to ask for information. HTTPX is one of these tools, and a lot of people like it because it’s fast, flexible, and has many features...</p>
+                <p>When working on the internet or building websites, it’s important to have good tools to ask for
+                    information. HTTPX is one of these tools, and a lot of people like it because it’s fast, flexible,
+                    and has many features...</p>
             </a>
         </div>
         <div class="home-card">
-            <a href="https://www.geeksforgeeks.org/convert-dictionary-to-dataframe-in-python-with-column-names/" target="_blank">
+            <a href="https://www.geeksforgeeks.org/convert-dictionary-to-dataframe-in-python-with-column-names/"
+                target="_blank">
                 <img src="assets/python.png" alt="" />
                 <span>Published on: GFG</span> <span>26 Feb, 2024</span>
                 <h3>Convert Dictionary to DataFrame in Python with column names</h3>
-                <p>In Python, the pandas library provides a powerful and flexible tool for working with tabular data through its DataFrame class. When creating a DataFrame from a dictionary, it’s common to set the keys of the dictionary as the column names of the resulting DataFrame...</p>
+                <p>In Python, the pandas library provides a powerful and flexible tool for working with tabular data
+                    through its DataFrame class. When creating a DataFrame from a dictionary, it’s common to set the
+                    keys of the dictionary as the column names of the resulting DataFrame...</p>
             </a>
         </div>
         <div class="home-card">
@@ -155,7 +165,9 @@
                 <img src="assets/CPP-Language.png" alt="" />
                 <span>Published on: GFG</span> <span>15 Feb, 2024</span>
                 <h3>Implement a Stack Using Vectors in C++</h3>
-                <p>A stack is a data structure that follows the LIFO (Last In First Out) property means the element that is inserted at last will come out first whereas vectors are dynamic arrays. In this article, we will learn how to implement a stack using vectors in C++...</p>
+                <p>A stack is a data structure that follows the LIFO (Last In First Out) property means the element that
+                    is inserted at last will come out first whereas vectors are dynamic arrays. In this article, we will
+                    learn how to implement a stack using vectors in C++...</p>
             </a>
         </div>
     </div>
@@ -242,7 +254,34 @@
             });
         })();
 
+        // Search Box Working
+        function search() {
+            // Get the input value
+            var searchText = document.getElementById("searchInput").value.toLowerCase();
+
+            // Get all the home cards
+            var homeCards = document.querySelectorAll(".home-card");
+
+            // Loop through each home card  
+            homeCards.forEach(function (card) {
+                // Get the text content of the card
+                var cardText = card.textContent.toLowerCase();
+
+                // If the card text contains the search text, display the card, otherwise hide it
+                if (cardText.includes(searchText)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Add an event listener to the search input field
+        document.getElementById("searchInput").addEventListener("input", search);
+
     </script>
+
+    <script src="scripts/search.js"></script>
 </body>
 
 </html>
