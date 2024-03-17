@@ -148,6 +148,7 @@
                 .then(() => {
                     console.log("Document successfully written to Firestore!");
                     // Clear the form after successful submission
+                    alert("Message sent successfully!");
                     document.getElementById('contactForm').reset();
                 })
                 .catch((error) => {
