@@ -9,6 +9,8 @@
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+# Ignore GitHub workflow files
+.github/workflows/*
 
 ### VisualStudioCode ###
 .vscode/*
