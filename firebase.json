@@ -1,6 +1,7 @@
 {
   "hosting": [
     {
+      "site": "portfolio-shravangoswami",
       "public": ".",
       "ignore": [
         "firebase.json",

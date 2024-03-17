@@ -10,10 +10,10 @@
 .runtimeconfig.json
 .firebase/
 # Ignore GitHub workflow files
-.github/workflows/*
-.github
+# .github/workflows/*
+# .github
 
-scripts/contact.js
+# scripts/contact.js
 
 ### VisualStudioCode ###
 .vscode/*
