@@ -5,14 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shravan Goswami</title>
-    <link rel="stylesheet" href="styles/styles.css" />
-    <link rel="icon" id="favicon" href="assets/favicon.png" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/common.css">
+    <link rel="icon" type="image/png" href="../assets/DarkModeAssets/favicon-dark.png" id="favicon">
 </head>
 
 <body>
     <div class="theme-btn" data-title="Theme">
-        <img id="themeBtnImg" src="assets/LightModeAssets/mode-light.png" alt="" />
-        <!-- <div class="top-site-icon rich-icon" style="background-image: var(--the)"></div> -->
+        <img id="themeBtnImg" src="#" alt="Theme Icon" />
     </div>
 
     <section>
@@ -104,7 +104,7 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="https://linktr.ee/shravangoswami" target="_blank">
+                    <a class="top-site-button" href="/pages/contact.html" target="_blank">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--contactme-icon)">
@@ -177,111 +177,6 @@
             <p>&copy; 2024 Shravan Goswami. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- <script>
-        (function () {
-            console.log('Script executed');
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            // Load the theme preference from local storage
-            const theme = localStorage.getItem("theme");
-            if (theme === "light") {
-                document.body.classList.add("light-theme");
-            }
-
-            // Handle the theme toggle button
-            const themeBtn = document.querySelector(".theme-btn");
-            console.log(themeBtn);
-            themeBtn.addEventListener("click", () => {
-                console.log('Button clicked');
-                document.body.classList.toggle("light-theme");
-
-                // Store the theme preference in local storage
-                if (document.body.classList.contains("light-theme")) {
-                    localStorage.setItem("theme", "light");
-                } else {
-                    localStorage.setItem("theme", "dark");
-                }
-            });
-        })();
-    </script> -->
-
-    <script>
-        (function () {
-            console.log("Script executed");
-
-            // Function to toggle light/dark theme based on browser's preference
-            function toggleThemeByPreference() {
-                const prefersDarkMode =
-                    window.matchMedia &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches;
-                const favicon = document.getElementById("favicon");
-                const themeBtnImg = document.getElementById("themeBtnImg"); // Select theme button icon element
-                if (prefersDarkMode) {
-                    document.body.classList.remove("light-theme"); // Remove light theme if browser prefers dark mode
-                    localStorage.setItem("theme", "dark");
-                    favicon.href = "assets/DarkModeAssets/favicon-dark.png"; // Change favicon for dark mode
-                    themeBtnImg.src = "assets/DarkModeAssets/mode-dark.png"; // Change theme button icon for dark mode
-                } else {
-                    document.body.classList.add("light-theme"); // Add light theme if browser prefers light mode
-                    localStorage.setItem("theme", "light");
-                    favicon.href = "assets/LightModeAssets/favicon-light.png"; // Change favicon for light mode
-                    themeBtnImg.src = "assets/LightModeAssets/mode-light.png"; // Change theme button icon for light mode
-                }
-            }
-
-            // Check browser's preference and apply theme accordingly
-            toggleThemeByPreference();
-
-            // Handle the theme toggle button
-            const themeBtn = document.querySelector(".theme-btn");
-            console.log(themeBtn);
-            themeBtn.addEventListener("click", () => {
-                console.log("Button clicked");
-                document.body.classList.toggle("light-theme");
-
-                // Store the theme preference in local storage
-                if (document.body.classList.contains("light-theme")) {
-                    localStorage.setItem("theme", "light");
-                    document.getElementById("favicon").href =
-                        "assets/LightModeAssets/favicon-light.png"; // Change favicon for light mode
-                    document.getElementById("themeBtnImg").src = "assets/LightModeAssets/mode-light.png"; // Change theme button icon for light mode
-                } else {
-                    localStorage.setItem("theme", "dark");
-                    document.getElementById("favicon").href =
-                        "assets/DarkModeAssets/favicon-dark.png"; // Change favicon for dark mode
-                    document.getElementById("themeBtnImg").src = "assets/DarkModeAssets/mode-dark.png"; // Change theme button icon for dark mode
-                }
-            });
-        })();
-
-        // Search Box Working
-        function search() {
-            // Get the input value
-            var searchText = document.getElementById("searchInput").value.toLowerCase();
-
-            // Get all the home cards
-            var homeCards = document.querySelectorAll(".home-card");
-
-            // Loop through each home card  
-            homeCards.forEach(function (card) {
-                // Get the text content of the card
-                var cardText = card.textContent.toLowerCase();
-
-                // If the card text contains the search text, display the card, otherwise hide it
-                if (cardText.includes(searchText)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
-
-        // Add an event listener to the search input field
-        document.getElementById("searchInput").addEventListener("input", search);
-
-    </script>
-
-    <script src="scripts/search.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
-
 </html>

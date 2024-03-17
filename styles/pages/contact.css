@@ -1,0 +1,115 @@
+/* Root styles */
+:root {
+    --primary-color: #2b2a33;
+    --secondary-color: #42414d;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fff;
+    --accent-color: #313137;
+    --padding-inline-section: 20px;
+}
+
+/* Light theme styles */
+.light-theme {
+    --primary-color: #f9f9fb;
+    --secondary-color: #f4f4f4;
+    --primary-text-color: #000;
+    --secondary-text-color: #000;
+    --accent-color: #d9d9dd;
+}
+
+body {
+    background-color: var(--primary-color);
+    font-family: "Nanum Gothic Coding", "Kode Mono", monospace;
+    color: var(--primary-text-color);
+}
+
+.container {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding: 0 var(--padding-inline-section);
+}
+
+a {
+    color: var(--primary-text-color);
+    text-decoration: none;
+
+}
+
+/* site heading */
+
+.site-heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px; 
+    font-size: 2rem
+}
+
+.site-logo {
+    text-wrap: nowrap;
+    color: var(--primary-text-color);
+}
+
+/* .site-logo:hover {
+    color: var(--secondary-color);
+} */
+
+.contact-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.contact-section h2 {
+    margin-top: 5px;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: var(--primary-text-color);
+}
+
+button[type="submit"] {
+    width:fit-content;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 auto;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--accent-color);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container {
+        max-width: 90%;
+    }
+}
