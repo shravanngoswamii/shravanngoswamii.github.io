@@ -11,6 +11,9 @@
 .firebase/
 # Ignore GitHub workflow files
 .github/workflows/*
+.github
+
+scripts/contact.js
 
 ### VisualStudioCode ###
 .vscode/*
