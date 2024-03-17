@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Inject Firebase Environment Variables
+
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
@@ -21,15 +22,14 @@ jobs:
           FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-
         run: |
-          sed -i 's/process.env.FIREBASE_API_KEY/"$FIREBASE_API_KEY"/g' pages/contact.html
-          sed -i 's/process.env.FIREBASE_AUTH_DOMAIN/"$FIREBASE_AUTH_DOMAIN"/g' pages/contact.html
-          sed -i 's/process.env.FIREBASE_PROJECT_ID/"$FIREBASE_PROJECT_ID"/g' pages/contact.html
-          sed -i 's/process.env.FIREBASE_STORAGE_BUCKET/"$FIREBASE_STORAGE_BUCKET"/g' pages/contact.html
-          sed -i 's/process.env.FIREBASE_MESSAGING_SENDER_ID/"$FIREBASE_MESSAGING_SENDER_ID"/g' pages/contact.html
-          sed -i 's/process.env.FIREBASE_APP_ID/"$FIREBASE_APP_ID"/g' pages/contact.html
-          sed -i 's/process.env.FIREBASE_MEASUREMENT_ID/"$FIREBASE_MEASUREMENT_ID"/g' pages/contact.html
+          sed -i 's/process.env.FIREBASE_API_KEY/'"'$FIREBASE_API_KEY'"'/g' contact.html
+          sed -i 's/process.env.FIREBASE_AUTH_DOMAIN/'"'$FIREBASE_AUTH_DOMAIN'"'/g' contact.html
+          sed -i 's/process.env.FIREBASE_PROJECT_ID/'"'$FIREBASE_PROJECT_ID'"'/g' contact.html
+          sed -i 's/process.env.FIREBASE_STORAGE_BUCKET/'"'$FIREBASE_STORAGE_BUCKET'"'/g' contact.html
+          sed -i 's/process.env.FIREBASE_MESSAGING_SENDER_ID/'"'$FIREBASE_MESSAGING_SENDER_ID'"'/g' contact.html
+          sed -i 's/process.env.FIREBASE_APP_ID/'"'$FIREBASE_APP_ID'"'/g' contact.html
+          sed -i 's/process.env.FIREBASE_MEASUREMENT_ID/'"'$FIREBASE_MEASUREMENT_ID'"'/g' contact.html
 
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
