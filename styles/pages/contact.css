@@ -113,3 +113,11 @@ button[type="submit"]:hover {
         max-width: 90%;
     }
 }
+/* Add media query for mobile devices */
+@media (max-width: 768px) {
+    .site-heading {
+        font-size: 1.3rem; /* Adjust font size for mobile devices */
+    }
+  }
+  
+
