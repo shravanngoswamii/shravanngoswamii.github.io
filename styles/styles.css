@@ -106,18 +106,27 @@ ul {
 }
 
 /* site heading */
-
 .site-heading {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 40px;
+  font-size: 2rem;
 }
 
 .site-logo {
   text-wrap: nowrap;
   color: var(--primary-text-color);
+  font-size: 3rem; /* Default font size */
 }
+
+/* Add media query for mobile devices */
+@media (max-width: 768px) {
+  .site-logo {
+      font-size: 2rem; /* Adjust font size for mobile devices */
+  }
+}
+
 
 /* search bar */
 
