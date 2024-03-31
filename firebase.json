@@ -3,8 +3,20 @@
     {
       "site": "portfolio-shravangoswami",
       "public": ".",
+      "redirects": [
+        {
+          "source": "/index.html",
+          "destination": "/",
+          "type": 301
+        }
+      ],
       "ignore": [
         "firebase.json",
+        ".firebaserc",
+        "firestore.rules",
+        "firestore.indexes.json",
+        "package.json",
+        "package-lock.json",
         "**/.*",
         "**/node_modules/**"
       ]
@@ -12,8 +24,20 @@
     {
       "site": "shravangoswami",
       "public": ".",
+      "redirects": [
+        {
+          "source": "/index.html",
+          "destination": "/",
+          "type": 301
+        }
+      ],
       "ignore": [
         "firebase.json",
+        ".firebaserc",
+        "firestore.rules",
+        "firestore.indexes.json",
+        "package.json",
+        "package-lock.json",
         "**/.*",
         "**/node_modules/**"
       ]
