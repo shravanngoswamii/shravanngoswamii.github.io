@@ -23,7 +23,7 @@
         </div>
     </section>
 
-    <section>
+    <!-- <section>
         <div class="container search-container">
             <input type="text" id="searchInput" placeholder="Search" class="search-input" />
             <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" width="35" class="search-svg">
@@ -32,13 +32,13 @@
             </svg>
         </div>
         <div id="searchResults"></div>
-    </section>
+    </section> -->
 
     <nav class="container nav-section">
         <ul class="top-sites-list">
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="pages/resume.html" target="_blank">
+                    <a class="top-site-button" href="pages/resume.html">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--resume-icon)"></div>
@@ -50,8 +50,7 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="https://auth.geeksforgeeks.org/user/shravanngoswamii/articles"
-                        target="_blank">
+                    <a class="top-site-button" href="#search-bar">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--articles-icon)">
@@ -64,7 +63,7 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="pages/links.html" target="_blank">
+                    <a class="top-site-button" href="pages/links.html">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--links-icon)"></div>
@@ -76,8 +75,7 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories"
-                        target="_blank">
+                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories" target="_blank">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--projects-icon)">
@@ -90,8 +88,7 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories"
-                        target="_blank">
+                    <a class="top-site-button" href="https://github.com/shravanngoswamii?tab=repositories" target="_blank">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--opensource-icon)">
@@ -104,7 +101,7 @@
             </li>
             <li class="top-site-outer">
                 <div class="top-site-inner">
-                    <a class="top-site-button" href="/pages/contact.html" target="_blank">
+                    <a class="top-site-button" href="/pages/contact.html">
                         <div class="tile">
                             <div class="icon-wrapper">
                                 <div class="top-site-icon rich-icon" style="background-image: var(--contactme-icon)">
@@ -118,56 +115,156 @@
         </ul>
     </nav>
 
+    <section id="search-bar">
+        <div class="container search-container">
+            <input type="text" id="searchInput" placeholder="Search" class="search-input" />
+            <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" width="35" class="search-svg">
+                <path
+                    d="M760.385-177.846 522.923-415.307q-30 23.538-65.792 36.038-35.792 12.5-71.558 12.5-87.135 0-148.2-61.029-61.066-61.029-61.066-148.077t61.029-148.202q61.029-61.154 148.077-61.154 87.049 0 148.202 61.065 61.154 61.065 61.154 148.201 0 38.073-13.269 73.865-13.269 35.792-35.269 63.485l237.462 237.461-23.308 23.308ZM385.538-398.769q74.616 0 125.923-51.308Q562.769-501.385 562.769-576q0-74.615-51.308-125.923-51.307-51.308-125.923-51.308-74.615 0-125.923 51.308Q208.308-650.615 208.308-576q0 74.615 51.307 125.923 51.308 51.308 125.923 51.308Z" />
+            </svg>
+        </div>
+        <div id="searchResults"></div>
+    </section>
+
     <!-- Home Cards -->
-    <span class="container home-heading">Published Articles</span>
+    <span class="container home-heading" id="published-article">Published Articles</span>
     <div class="container flex home-card-container">
         <div class="home-card">
-            <a href="https://www.geeksforgeeks.org/check-if-a-file-is-valid-image-with-python/" target="_blank">
-                <img src="assets/python.png" alt="" />
-                <span>Published on: GFG</span> <span>01 March, 2024</span>
-                <h3>Check If A File is Valid Image with Python</h3>
-                <p>When working with images in Python, it’s crucial to ensure the integrity and validity of the files
-                    being processed...</p>
+            <a href="https://www.geeksforgeeks.org/how-to-install-git-on-mobaxterm/" target="_blank">
+                <img src="assets/Article-Images/1.png" alt="MobaXterm Terminal Image" />
+                <span>Published on: GFG</span> <span>19 January, 2024</span>
+                <h3>How to Install Git on MobaXterm?</h3>
+                <p>MobaXterm is a toolbox for remote computing and it provides all the important remote network tools like SSH, X11, RDP, VNC, FTP, MOSH, etc...</p>
             </a>
         </div>
+
         <div class="home-card">
-            <a href="https://www.geeksforgeeks.org/export-specific-columns-in-dataframe-to-csv-file/" target="_blank">
-                <img src="assets/python.png" alt="" />
-                <span>Published on: GFG</span> <span>27 Feb, 2024</span>
-                <h3>Export Specific Columns in DataFrame to CSV File</h3>
-                <p>A data frame is a tabular data structure similar to a spreadsheet. It has rows and columns. CSV
-                    (Comma-Separated Values) is a plain text file format used for storing tabular data...</p>
+            <a href="https://www.geeksforgeeks.org/python-dictionary-with-multiple-values-to-dataframe/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>22 January, 2024</span>
+                <h3>Python Dictionary with Multiple Values to DataFrame</h3>
+                <p>In this article, we are covering how to convert Python dictionaries with multiple values into DataFrames...</p>
             </a>
         </div>
+
         <div class="home-card">
-            <a href="https://www.geeksforgeeks.org/install-httpx-using-python-pip/" target="_blank">
-                <img src="assets/python.png" alt="" />
-                <span>Published on: GFG</span> <span>27 Feb, 2024</span>
-                <h3>Install Httpx using Python PIP</h3>
-                <p>When working on the internet or building websites, it’s important to have good tools to ask for
-                    information. HTTPX is one of these tools, and a lot of people like it because it’s fast, flexible,
-                    and has many features...</p>
+            <a href="https://www.geeksforgeeks.org/remove-urls-from-string-in-python/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>24 January, 2024</span>
+                <h3>Remove URLs from string in Python</h3>
+                <p>To remove URLs from a string in Python, you can either use regular expressions (regex) or some external libraries like urllib.parse...</p>
             </a>
         </div>
+
         <div class="home-card">
-            <a href="https://www.geeksforgeeks.org/convert-dictionary-to-dataframe-in-python-with-column-names/"
-                target="_blank">
-                <img src="assets/python.png" alt="" />
-                <span>Published on: GFG</span> <span>26 Feb, 2024</span>
-                <h3>Convert Dictionary to DataFrame in Python with column names</h3>
-                <p>In Python, the pandas library provides a powerful and flexible tool for working with tabular data
-                    through its DataFrame class. When creating a DataFrame from a dictionary, it’s common to set the
-                    keys of the dictionary as the column names of the resulting DataFrame...</p>
+            <a href="https://www.geeksforgeeks.org/how-to-calculate-summary-statistics-in-pandas/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>29 January, 2024</span>
+                <h3>How To Calculate Summary Statistics In Pandas</h3>
+                <p>Summary statistics offer a quick and insightful overview of the main characteristics of a dataset. In this article, we will explore five different methods to calculate summary statistics using Pandas...</p>
             </a>
         </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/how-to-solve-a-pair-of-nonlinear-equations-using-python/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>03 February, 2024</span>
+                <h3>How to solve a pair of nonlinear equations using Python?</h3>
+                <p>Solving the nonlinear equation includes finding the values of variables that satisfy the equation. In Python, nonlinear equations can be solved using the SciPy, NumPy, and SymPy libraries...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/delete-element-from-priority-queue-in-cpp/" target="_blank">
+                <img src="assets/Article-Images/CPP.png" alt="C++ Image" />
+                <span>Published on: GFG</span> <span>07 February, 2024</span>
+                <h3>How to Delete an Element from a Priority Queue in C++ ?</h3>
+                <p>In C++, a priority queue is a queue in which elements are arranged based on their priority values as each element has a priority value associated with it. In this article, we will learn how to delete an element from a priority queue in C++..</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/push-all-elements-from-vector-to-queue-in-cpp/" target="_blank">
+                <img src="assets/Article-Images/CPP.png" alt="C++ Image" />
+                <span>Published on: GFG</span> <span>09 February, 2024</span>
+                <h3>How to Push All Elements from a Vector to a Queue in C++?</h3>
+                <p>In C++, vectors are dynamic arrays while the queue is a data structure that follows the FIFO (First In First Out) property. In this article, we will learn how to push all elements from a vector to a queue in C++...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/how-to-add-and-manage-discord-roles/" target="_blank">
+                <img src="assets/Article-Images/discord.webp" alt="Discord Image" />
+                <span>Published on: GFG</span> <span>12 February, 2024</span>
+                <h3>How to Add and Manage Discord Roles</h3>
+                <p>Well, Are you tired of assigning roles to each member individually on your Discord Server? Then here is the solution, you can create a roles channel on Discord where users can take the roles by themselves just by reacting to the emoji!!...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/creating-pivot-table-with-multiple-columns-using-python-pandas/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>12 February, 2024</span>
+                <h3>Creating Pivot Table with Multiple Columns using Python Pandas</h3>
+                <p>Pandas Pivot Tables are used to create spreadsheet-style pivot tables as a DataFrame. The levels in the pivot table will be stored in MultiIndex objects (hierarchical indexes) on the index and columns of the result DataFrame...</p>
+            </a>
+        </div>
+
         <div class="home-card">
             <a href="https://www.geeksforgeeks.org/implement-a-stack-using-vectors-in-cpp/" target="_blank">
-                <img src="assets/CPP-Language.png" alt="" />
+                <img src="assets/Article-Images/CPP.png" alt="C++ Image" />
                 <span>Published on: GFG</span> <span>15 Feb, 2024</span>
                 <h3>Implement a Stack Using Vectors in C++</h3>
                 <p>A stack is a data structure that follows the LIFO (Last In First Out) property means the element that
                     is inserted at last will come out first whereas vectors are dynamic arrays. In this article, we will
                     learn how to implement a stack using vectors in C++...</p>
+            </a>
+        </div>
+        
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/convert-dictionary-to-dataframe-in-python-with-column-names/"
+                target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>26 Feb, 2024</span>
+                <h3>Convert Dictionary to DataFrame in Python with column names</h3>
+                <p>When creating a DataFrame from a dictionary, it's common to set the keys of the dictionary as the column names of the resulting DataFrame. In this article, we will see how we can create a Pandas DataFrame from a dictionary as keys as column names...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/export-specific-columns-in-dataframe-to-csv-file/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="" />
+                <span>Published on: GFG</span> <span>27 Feb, 2024</span>
+                <h3>Export Specific Columns in DataFrame to CSV File</h3>
+                <p>This article explores two methods for exporting selected columns from a DataFrame to a CSV file: using pandas' to_csv() method and numpy's savetxt() function...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/install-httpx-using-python-pip/" target="_blank">
+                <img src="assets/Article-Images/httpx-python.png" alt="Httpx-Python Image" />
+                <span>Published on: GFG</span> <span>27 Feb, 2024</span>
+                <h3>Install Httpx using Python PIP</h3>
+                <p>When working on the internet or building websites, it's important to have good tools to ask for information. HTTPX is a fully featured HTTP client for Python 3, which provides synchronous and asynchronous request handling...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/check-if-a-file-is-valid-image-with-python/" target="_blank">
+                <img src="assets/Article-Images/python.png" alt="Python Image" />
+                <span>Published on: GFG</span> <span>01 March, 2024</span>
+                <h3>Check If A File is Valid Image with Python</h3>
+                <p>When working with images in Python, it's crucial to ensure the integrity and validity of the files
+                    being processed. Invalid or corrupted image files can lead to unexpected errors and disruptions in your applications...</p>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://www.geeksforgeeks.org/how-to-printf-in-julia/" target="_blank">
+                <img src="assets/Article-Images/julia.svg" alt="Julia Image" />
+                <span>Published on: GFG</span> <span>28 March, 2024</span>
+                <h3>How to use Printf in Julia?</h3>
+                <p>In Julia, printf is not a built-in function but a macro provided by the Printf module of Julia's standard library. This macro allows you to format strings similarly to the C programming language's printf function...</p>
             </a>
         </div>
     </div>
@@ -177,6 +274,27 @@
             <p>&copy; 2024 Shravan Goswami. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get all home-card elements
+            const homeCards = document.querySelectorAll(".home-card");
+
+            // Convert NodeList to Array and sort based on date
+            const sortedHomeCards = Array.from(homeCards).sort((a, b) => {
+                // Extract dates from span elements
+                const dateA = new Date(a.querySelector("span:nth-child(3)").textContent.trim());
+                const dateB = new Date(b.querySelector("span:nth-child(3)").textContent.trim());
+
+                // Compare dates
+                return dateB - dateA; // Descending order
+            });
+
+            // Append sorted cards back to the container
+            const container = document.querySelector(".home-card-container");
+            sortedHomeCards.forEach(card => container.appendChild(card));
+        });
+    </script>
     <script src="scripts/script.js"></script>
 </body>
+
 </html>

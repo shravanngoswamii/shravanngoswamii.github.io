@@ -42,7 +42,7 @@ a {
 }
 
 .download-btn {
-    top: 30px;
+    top: 21px;
     left: 20px;
     width: 25px;
     height: 25px;
@@ -70,12 +70,12 @@ a {
     fill: var(--download-svg)
 }
 
-@media only screen and (max-width: 768px) {
+/* @media only screen and (max-width: 768px) {
     .top-btns {
         flex-direction: column;
         align-items: flex-start;
     }
-}
+} */
 
 .resume-container {
     max-width: 800px;
@@ -206,7 +206,7 @@ a {
 
 
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .resume-container {
         padding: 20px;
         margin: 10px;
@@ -223,5 +223,71 @@ a {
     .resume p,
     .education-details p {
         font-size: 14px;
+    }
+} */
+
+/* Add responsive font sizes */
+@media (max-width: 768px) {
+    .resume .header h1 {
+        font-size: 24px;
+    }
+
+    .resume h2 {
+        font-size: 18px;
+    }
+
+    .resume p,
+    .resume ul li,
+    .resume-details p,
+    .resume-details .row p {
+        font-size: 14px;
+    }
+}
+
+/* Adjust padding and margins for smaller screens */
+@media (max-width: 768px) {
+    .resume-container {
+        padding: 20px;
+    }
+
+    .resume .header {
+        margin-bottom: 20px;
+    }
+
+    .resume .education,
+    .resume .skills,
+    .resume .experience,
+    .resume .projects,
+    .resume .links,
+    .resume .achievements,
+    .resume .opensource,
+    .resume .interests {
+        margin-top: 20px;
+    }
+
+    .resume-details {
+        padding: 10px;
+    }
+}
+
+/* Make the layout more responsive */
+@media (max-width: 768px) {
+    .resume-details .row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .resume-details .row p {
+        margin-bottom: 5px;
+    }
+}
+
+/* Improve readability by adjusting line-height */
+@media (max-width: 768px) {
+    .resume p,
+    .resume ul li,
+    .resume-details p,
+    .resume-details .row p {
+        line-height: 1.4;
     }
 }

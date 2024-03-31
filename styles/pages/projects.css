@@ -1,0 +1,152 @@
+:root {
+    --primary-color: #2b2a33;
+    --secondary-color: #42414d;
+    --primary-text-color: #fff;
+    --accent-color: #313137;
+  }
+  
+  .light-theme {
+    --primary-color: #f9f9fb;
+    --secondary-color: #f4f4f4;
+    --primary-text-color: #000;
+    --accent-color: #d9d9dd;
+  }
+/* Existing styles... */
+
+a {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+body {
+    background-color: var(--primary-color);
+}
+
+h2 {
+    color: var(--primary-text-color);
+
+}
+
+.container {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding: 0 var(--padding-inline-section);
+}
+
+/* site heading */
+
+.site-heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px; 
+    font-size: 2rem
+}
+
+.site-logo {
+    text-wrap: nowrap;
+    color: var(--primary-text-color);
+}
+
+/* Existing styles... */
+
+.projects-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 40px;
+    margin-top: 40px;
+}
+
+.project-card {
+    background-color: var(--secondary-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.project-card img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-details {
+    padding: 20px;
+    text-align: left;
+    color: var(--primary-text-color);
+    flex: 1;
+}
+
+.project-details h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.project-description {
+    margin-bottom: 15px;
+}
+
+.project-meta {
+    margin-bottom: 15px;
+}
+
+.project-meta p {
+    margin: 5px 0;
+}
+
+.technologies {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.tech-badge {
+    padding: 5px 10px;
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.project-links {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.project-link {
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.project-link:hover {
+    background-color: #333;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .project-card {
+        flex-direction: column;
+    }
+
+    .project-card img {
+        width: 100%;
+        height: auto;
+    }
+}
