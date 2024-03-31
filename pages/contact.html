@@ -1,5 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me</title>
+    <link rel="stylesheet" href="/styles/pages/contact.css">
+    <link rel="stylesheet" href="/styles/common.css">
+    <link rel="icon" type="image/png" href="../assets/DarkModeAssets/favicon-dark.png" id="favicon">
+</head>
+<body>
+    <div class="theme-btn" data-title="Theme">
+        <img id="themeBtnImg" src="#" alt="Theme Icon">
+    </div>
+    <section>
+        <div class="container site-heading">
+            <a href="/index.html">
+                <h1 class="site-logo">Shravan Goswami</h1>
+            </a>
+        </div>
+    </section>
+    <section class="contact-section">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <div class="contact-options">
+                <button class="contact-option" id="emailOption">Email Me</button>
+                <button class="contact-option" id="formOption">Contact Form</button>
+            </div>
+            <div id="emailPopup" class="email-popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>My Email</h2>
+                    <p id="emailAddress">shravanngoswamii@gmail.com</p>
+                    <div class="popup-actions">
+                        <button id="copyEmailBtn">Copy Email</button>
+                        <button id="openMailBtn">Open Mail App</button>
+                    </div>
+                </div>
+            </div>
+            <form id="contactForm" class="contact-form" style="display: none;">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+    <footer class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Shravan Goswami. All rights reserved.</p>
+        </div>
+    </footer>
+    <script type="module" src="../scripts/contact.js"></script>
+    <script src="../scripts/script.js"></script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -49,121 +116,8 @@
             <p>&copy; 2024 Shravan Goswami. All rights reserved.</p>
         </div>
     </footer>
-    <!-- 
-    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js"></script> -->
     <script type="module" src="../scripts/contact.js"></script>
     <script src="../scripts/script.js"></script>
-    <!-- <script>
-        // const firebaseConfig = {
-        //     apiKey: process.env.FIREBASE_API_KEY,
-        //     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-        //     projectId: process.env.FIREBASE_PROJECT_ID,
-        //     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-        //     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        //     appId: process.env.FIREBASE_APP_ID,
-        //     measurementId: process.env.FIREBASE_MEASUREMENT_ID
-        // };
-
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        var db = firebase.firestore();
-
-        document.getElementById('contactForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission behavior
-
-            // Get form values
-            var name = getInputVal('name');
-            var email = getInputVal('email');
-            var message = getInputVal('message');
-
-            // Create a new FormData object and append the form values
-            var formData = new FormData();
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('message', message);
-
-            // Send the form data using a POST request
-            fetch('/submit-form', {
-                method: 'POST',
-                body: formData
-            })
-                .then(function (response) {
-                    // Handle the server response
-                    console.log('Form submitted successfully');
-                    // Clear the form after successful submission
-                    document.getElementById('contactForm').reset();
-                })
-                .catch(function (error) {
-                    console.error('Error submitting form:', error);
-                });
-        });
-
-        // Function to get form values
-        function getInputVal(id) {
-            return document.getElementById(id).value;
-        }
-    </script> -->
-    <!-- Load Firebase SDK scripts -->
-    <!-- <script type="module">
-        // import dotenv from 'dotenv';
-        // dotenv.config();
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: process.env.FIREBASE_API_KEY,
-            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-            projectId: process.env.FIREBASE_PROJECT_ID,
-            storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-            appId: process.env.FIREBASE_APP_ID,
-            measurementId: process.env.FIREBASE_MEASUREMENT_ID
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Add event listener for form submission
-        document.getElementById('contactForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission behavior
-
-            // Get form values
-            var name = getInputVal('name');
-            var email = getInputVal('email');
-            var message = getInputVal('message');
-
-            // Add the form data to Firestore
-            addDoc(collection(db, "messages"), {
-                name: name,
-                email: email,
-                message: message,
-                timestamp: new Date()
-            })
-                .then(() => {
-                    console.log("Document successfully written to Firestore!");
-                    // Clear the form after successful submission
-                    alert("Message sent successfully!");
-                    document.getElementById('contactForm').reset();
-                })
-                .catch((error) => {
-                    console.error("Error writing document: ", error);
-                });
-        });
-
-        // Function to get form values
-        function getInputVal(id) {
-            return document.getElementById(id).value;
-        }
-    </script> -->
 </body>
 
-</html>
+</html> -->

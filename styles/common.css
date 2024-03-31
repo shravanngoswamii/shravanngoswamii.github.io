@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+
 :root {
     --favicon: url('../assets/DarkModeAssets/favicon-dark.png');
     --theme-icon: url('../assets/DarkModeAssets/mode-dark.png');
@@ -10,6 +13,10 @@
 
 .light-theme #favicon {
     content: url('../assets/LightModeAssets/favicon-light.png');
+}
+
+p {
+    font-family: "Kode Mono", monospace;
 }
 
 /* theme button */
