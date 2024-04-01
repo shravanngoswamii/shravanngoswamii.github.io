@@ -10,6 +10,32 @@
           "type": 301
         }
       ],
+      "rewrites": [
+        {
+          "source": "/pages/contact.html",
+          "destination": "/contact"
+        },
+        {
+          "source": "/pages/links.html",
+          "destination": "/links"
+        },
+        {
+          "source": "/pages/resume.html",
+          "destination": "/resume"
+        },
+        {
+          "source": "/contact.html",
+          "destination": "/contact"
+        },
+        {
+          "source": "/links.html",
+          "destination": "/links"
+        },
+        {
+          "source": "/resume.html",
+          "destination": "/resume"
+        }
+      ],
       "ignore": [
         "firebase.json",
         ".firebaserc",
