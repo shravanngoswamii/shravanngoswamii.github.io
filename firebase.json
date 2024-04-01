@@ -12,28 +12,28 @@
       ],
       "rewrites": [
         {
-          "source": "/pages/contact.html",
-          "destination": "/contact"
+          "source": "/contact",
+          "destination": "/pages/contact.html"
         },
         {
-          "source": "/pages/links.html",
-          "destination": "/links"
+          "source": "/links",
+          "destination": "/pages/links.html"
         },
         {
-          "source": "/pages/resume.html",
-          "destination": "/resume"
+          "source": "/resume",
+          "destination": "/pages/resume.html"
         },
         {
           "source": "/contact.html",
-          "destination": "/contact"
+          "destination": "/pages/contact.html"
         },
         {
           "source": "/links.html",
-          "destination": "/links"
+          "destination": "/pages/links.html"
         },
         {
           "source": "/resume.html",
-          "destination": "/resume"
+          "destination": "/pages/resume.html"
         }
       ],
       "ignore": [
@@ -59,28 +59,28 @@
       ],
       "rewrites": [
         {
-          "source": "/pages/contact.html",
-          "destination": "/contact"
+          "source": "/contact",
+          "destination": "/pages/contact.html"
         },
         {
-          "source": "/pages/links.html",
-          "destination": "/links"
+          "source": "/links",
+          "destination": "/pages/links.html"
         },
         {
-          "source": "/pages/resume.html",
-          "destination": "/resume"
+          "source": "/resume",
+          "destination": "/pages/resume.html"
         },
         {
           "source": "/contact.html",
-          "destination": "/contact"
+          "destination": "/pages/contact.html"
         },
         {
           "source": "/links.html",
-          "destination": "/links"
+          "destination": "/pages/links.html"
         },
         {
           "source": "/resume.html",
-          "destination": "/resume"
+          "destination": "/pages/resume.html"
         }
       ],
       "ignore": [
