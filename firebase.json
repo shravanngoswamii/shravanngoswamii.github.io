@@ -54,7 +54,7 @@
         {
           "source": "/resume.html",
           "destination": "/pages/resume.html"
-        }
+        },
         {
           "source": "/resumes.html",
           "destination": "/pages/resume.html"
@@ -125,7 +125,7 @@
         {
           "source": "/resume.html",
           "destination": "/pages/resume.html"
-        }
+        },
         {
           "source": "/resumes.html",
           "destination": "/pages/resume.html"
