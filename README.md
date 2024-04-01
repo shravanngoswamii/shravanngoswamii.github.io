@@ -1,12 +1,11 @@
-# <p align="center">[Shravan Goswami's Portfolio Website](https://shravangoswami.com)</p>
-
-Welcome to my portfolio website! This repository contains the source code and assets for my personal portfolio website, where I showcase my projects, articles, and expertise in technology.
+# <p align="center"><a href="https://shravangoswami.com" target="_blank">Shravan Goswami's Website</a></p>
+Welcome to my portfolio website! This repository contains the source code and assets for my portfolio website, where I showcase my projects, articles, and expertise in technology.
 
 ## Overview
 
 - **About Me**: Learn about my background, education, and professional interests.
 - **Projects**: Explore the various projects I've worked on, including web development, software projects, and more.
-- **Articles**: Read insightful articles I've written on topics related to technology, programming, and computer science.
+- **Articles**: Read insightful articles I've written on topics related to technology, programming, computer science, films and philosophy.
 - **Resume**: Download my resume to learn more about my skills, experiences, and qualifications.
 
 ## Technologies Used
@@ -16,9 +15,12 @@ Welcome to my portfolio website! This repository contains the source code and as
 - JavaScript
 - Firebase
 
-## Use my site's code for your personal project
+## Use my site's code for your project
 
-1. Clone this repository: `git clone https://github.com/shravanngoswamii/portfolio.git`
+1. Clone this repository:
+```bash
+https://github.com/shravanngoswamii/portfolio.git
+```
 2. Open `index.html` in your web browser.
 3. Explore the different sections of the website to learn more about me and my work.
 
