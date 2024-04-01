@@ -1,4 +1,4 @@
-# <p align="center"><a href="https://shravangoswami.com" target="_blank">Shravan Goswami's Website</a></p>
+# <p align="center">[Shravan Goswami's Website](https://shravangoswami.com)</p>
 Welcome to my portfolio website! This repository contains the source code and assets for my portfolio website, where I showcase my projects, articles, and expertise in technology.
 
 ## Overview
@@ -19,7 +19,7 @@ Welcome to my portfolio website! This repository contains the source code and as
 
 1. Clone this repository:
 ```bash
-https://github.com/shravanngoswamii/portfolio.git
+git clone https://github.com/shravanngoswamii/portfolio.git
 ```
 2. Open `index.html` in your web browser.
 3. Explore the different sections of the website to learn more about me and my work.
