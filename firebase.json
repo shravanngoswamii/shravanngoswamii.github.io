@@ -16,7 +16,15 @@
           "destination": "/pages/contact.html"
         },
         {
+          "source": "/contacts",
+          "destination": "/pages/contact.html"
+        },
+        {
           "source": "/links",
+          "destination": "/pages/links.html"
+        },
+        {
+          "source": "/link",
           "destination": "/pages/links.html"
         },
         {
@@ -24,7 +32,15 @@
           "destination": "/pages/resume.html"
         },
         {
+          "source": "/resumes",
+          "destination": "/pages/resume.html"
+        },
+        {
           "source": "/contact.html",
+          "destination": "/pages/contact.html"
+        },
+        {
+          "source": "/contacts.html",
           "destination": "/pages/contact.html"
         },
         {
@@ -32,7 +48,15 @@
           "destination": "/pages/links.html"
         },
         {
+          "source": "/link.html",
+          "destination": "/pages/links.html"
+        },
+        {
           "source": "/resume.html",
+          "destination": "/pages/resume.html"
+        }
+        {
+          "source": "/resumes.html",
           "destination": "/pages/resume.html"
         }
       ],
@@ -63,7 +87,15 @@
           "destination": "/pages/contact.html"
         },
         {
+          "source": "/contacts",
+          "destination": "/pages/contact.html"
+        },
+        {
           "source": "/links",
+          "destination": "/pages/links.html"
+        },
+        {
+          "source": "/link",
           "destination": "/pages/links.html"
         },
         {
@@ -71,7 +103,15 @@
           "destination": "/pages/resume.html"
         },
         {
+          "source": "/resumes",
+          "destination": "/pages/resume.html"
+        },
+        {
           "source": "/contact.html",
+          "destination": "/pages/contact.html"
+        },
+        {
+          "source": "/contacts.html",
           "destination": "/pages/contact.html"
         },
         {
@@ -79,7 +119,15 @@
           "destination": "/pages/links.html"
         },
         {
+          "source": "/link.html",
+          "destination": "/pages/links.html"
+        },
+        {
           "source": "/resume.html",
+          "destination": "/pages/resume.html"
+        }
+        {
+          "source": "/resumes.html",
           "destination": "/pages/resume.html"
         }
       ],
