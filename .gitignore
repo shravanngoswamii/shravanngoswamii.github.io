@@ -4,9 +4,7 @@
 ### Firebase ###
 .idea
 **/node_modules/*
-**/.firebaserc
-# firestore.rules
-# firestore.indexes.json
+# **/.firebaserc
 
 ### Firebase Patch ###
 .runtimeconfig.json
