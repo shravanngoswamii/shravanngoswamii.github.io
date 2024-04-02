@@ -108,6 +108,11 @@ a,a:visited{
     margin: 0;
   }
 
+  .link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.2);
+  }
+
   .card-content {
     margin: -10px 0 -10px 0;
     flex-direction: row;

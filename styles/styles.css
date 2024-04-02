@@ -21,6 +21,10 @@
     --top-site-list-hover: #55555c;
 
     --site-icon: #fff;
+
+    /* article image style */
+    /* --python-image: #fff; */
+
     /* nav icons */
     /* --resume-icon: url('../assets/DarkModeAssets/resume-dark.png');
     --articles-icon: url('../assets/DarkModeAssets/articles-dark.png');
@@ -43,6 +47,10 @@
     --top-site-list-hover: #e0e0e2;
 
     --site-icon: #313137;
+
+    /* article image style */
+    --python-image: #807d7d;
+
     /* nav icons */
     /* --resume-icon: url('../assets/LightModeAssets/resume-light.png');
     --articles-icon: url('../assets/LightModeAssets/articles-light.png');
@@ -362,3 +370,5 @@ footer {
     max-width: 90%;
   }
 }
+
+/* Article Image Styles */
