@@ -9,28 +9,39 @@
 
 <url>
   <loc>https://shravangoswami.com/</loc>
-  <lastmod>2024-03-31T19:14:26+00:00</lastmod>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://shravangoswami.com/resume</loc>
-  <lastmod>2024-03-31T19:14:26+00:00</lastmod>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://shravangoswami.com/links</loc>
-  <lastmod>2024-03-31T19:14:26+00:00</lastmod>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://shravangoswami.com/projects</loc>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://shravangoswami.com/skills</loc>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://shravangoswami.com/contact</loc>
-  <lastmod>2024-03-31T19:14:26+00:00</lastmod>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://shravangoswami.com/assets/Shravan-Resume.pdf</loc>
-  <lastmod>2024-03-31T19:14:26+00:00</lastmod>
+  <lastmod>2024-04-06T19:56:54+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+
 
 </urlset>
