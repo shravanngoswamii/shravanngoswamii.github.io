@@ -8,55 +8,52 @@
           "source": "/index.html",
           "destination": "/",
           "type": 301
+        },
+        {
+          "source": "/(contact|contacts|contact.html|contacts.html)",
+          "destination": "/contact",
+          "type": 301
+        },
+        {
+          "source": "/(links|link|links.html|link.html)",
+          "destination": "/links",
+          "type": 301
+        },
+        {
+          "source": "/(projects|project|project.html|projects.html)",
+          "destination": "/projects",
+          "type": 301
+        },
+        {
+          "source": "/(skills|skill|skills.html|skill.html)",
+          "destination": "/skills",
+          "type": 301
+        },
+        {
+          "source": "/(resume|resumes|resume.html|resumes.html)",
+          "destination": "/resume",
+          "type": 301
         }
       ],
       "rewrites": [
         {
-          "source": "/contact",
+          "source": "/(contact|contacts|contact.html|contacts.html)",
           "destination": "/pages/contact.html"
         },
         {
-          "source": "/contacts",
-          "destination": "/pages/contact.html"
-        },
-        {
-          "source": "/links",
+          "source": "/(links|link|links.html|link.html)",
           "destination": "/pages/links.html"
         },
         {
-          "source": "/link",
-          "destination": "/pages/links.html"
+          "source": "/(projects|project|project.html|projects.html)",
+          "destination": "/pages/projects.html"
         },
         {
-          "source": "/resume",
-          "destination": "/pages/resume.html"
+          "source": "/(skills|skill|skills.html|skill.html)",
+          "destination": "/pages/skills.html"
         },
         {
-          "source": "/resumes",
-          "destination": "/pages/resume.html"
-        },
-        {
-          "source": "/contact.html",
-          "destination": "/pages/contact.html"
-        },
-        {
-          "source": "/contacts.html",
-          "destination": "/pages/contact.html"
-        },
-        {
-          "source": "/links.html",
-          "destination": "/pages/links.html"
-        },
-        {
-          "source": "/link.html",
-          "destination": "/pages/links.html"
-        },
-        {
-          "source": "/resume.html",
-          "destination": "/pages/resume.html"
-        },
-        {
-          "source": "/resumes.html",
+          "source": "/(resume|resumes|resume.html|resumes.html)",
           "destination": "/pages/resume.html"
         }
       ],
@@ -79,55 +76,52 @@
           "source": "/index.html",
           "destination": "/",
           "type": 301
+        },
+        {
+          "source": "/(contact|contacts|contact.html|contacts.html)",
+          "destination": "/contact",
+          "type": 301
+        },
+        {
+          "source": "/(links|link|links.html|link.html)",
+          "destination": "/links",
+          "type": 301
+        },
+        {
+          "source": "/(projects|project|project.html|projects.html)",
+          "destination": "/projects",
+          "type": 301
+        },
+        {
+          "source": "/(skills|skill|skills.html|skill.html)",
+          "destination": "/skills",
+          "type": 301
+        },
+        {
+          "source": "/(resume|resumes|resume.html|resumes.html)",
+          "destination": "/resume",
+          "type": 301
         }
       ],
       "rewrites": [
         {
-          "source": "/contact",
+          "source": "/(contact|contacts|contact.html|contacts.html)",
           "destination": "/pages/contact.html"
         },
         {
-          "source": "/contacts",
-          "destination": "/pages/contact.html"
-        },
-        {
-          "source": "/links",
+          "source": "/(links|link|links.html|link.html)",
           "destination": "/pages/links.html"
         },
         {
-          "source": "/link",
-          "destination": "/pages/links.html"
+          "source": "/(projects|project|project.html|projects.html)",
+          "destination": "/pages/projects.html"
         },
         {
-          "source": "/resume",
-          "destination": "/pages/resume.html"
+          "source": "/(skills|skill|skills.html|skill.html)",
+          "destination": "/pages/skills.html"
         },
         {
-          "source": "/resumes",
-          "destination": "/pages/resume.html"
-        },
-        {
-          "source": "/contact.html",
-          "destination": "/pages/contact.html"
-        },
-        {
-          "source": "/contacts.html",
-          "destination": "/pages/contact.html"
-        },
-        {
-          "source": "/links.html",
-          "destination": "/pages/links.html"
-        },
-        {
-          "source": "/link.html",
-          "destination": "/pages/links.html"
-        },
-        {
-          "source": "/resume.html",
-          "destination": "/pages/resume.html"
-        },
-        {
-          "source": "/resumes.html",
+          "source": "/(resume|resumes|resume.html|resumes.html)",
           "destination": "/pages/resume.html"
         }
       ],

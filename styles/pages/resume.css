@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+
 /* * {
     margin: 0;
     padding: 0;
@@ -26,7 +29,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Kode Mono", monospace;
     margin: 0;
     padding: 0;
     background-color: var(--primary-color);
@@ -94,6 +97,7 @@ a {
 }
 
 .resume .header {
+    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     margin-bottom: 30px;
 }

@@ -3,12 +3,12 @@
 
 :root {
     --favicon: url('../assets/DarkModeAssets/favicon-dark.png');
-    --theme-icon: url('../assets/DarkModeAssets/mode-dark.png');
+    --theme-icon: url('../assets/DarkModeAssets/sun.svg');
 }
 
 .light-theme {
     --favicon: url('../assets/LightModeAssets/favicon-light.png');
-    --theme-icon: url('../assets/LightModeAssets/mode-light.png');
+    --theme-icon: url('../assets/LightModeAssets/moon.svg');
 }
 
 .light-theme #favicon {
@@ -17,6 +17,7 @@
 
 p {
     font-family: "Kode Mono", monospace;
+    /* color: #9999a9; */
 }
 
 /* theme button */
@@ -51,6 +52,19 @@ p {
 
 .theme-btn:active {
     transform: translateY(-3px);
+}
+
+.under-contruction {
+    display: flex;
+    background-color: red;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    /* text-wrap: nowrap; */
+    height: 8px;
+    font-size: 1.5rem;
+    color: var(--primary-text-color);
+
 }
 
 /* footer */

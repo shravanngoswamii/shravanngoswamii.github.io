@@ -5,27 +5,39 @@ function toggleTheme() {
     body.classList.toggle('light-theme');
 
     // Update favicon based on the theme
-    const favicon = document.getElementById('favicon');
-    if (body.classList.contains('light-theme')) {
-        favicon.href = '../assets/LightModeAssets/favicon-light.png';
-    } else {
-        favicon.href = '../assets/DarkModeAssets/favicon-dark.png';
-    }
+    updateFavicon(body.classList.contains('light-theme') ? 'light' : 'dark');
 
     // Store theme preference in localStorage
-    const isLightTheme = body.classList.contains('light-theme');
-    localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+    localStorage.setItem('theme', body.classList.contains('light-theme') ? 'light' : 'dark');
+
+    // Log current theme
+    logTheme();
 }
 
 // Function to load theme preference from localStorage
 function loadTheme() {
-    const theme = localStorage.getItem('theme');
+    let theme = localStorage.getItem('theme');
+    console.log('Stored Theme:', theme);
+    // Check if theme preference is stored or not
+    if (theme === null) {
+        // If no preference is set, use the browser's theme
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    // Apply the theme based on the stored preference
     if (theme === 'light') {
         document.body.classList.add('light-theme');
+    } else {
+        document.body.classList.remove('light-theme');
     }
+
     // Ensure favicon matches the loaded theme
     updateFavicon(theme);
+
+    // Log current theme
+    logTheme();
 }
+
 
 // Function to update the favicon based on the theme
 function updateFavicon(theme) {
@@ -35,6 +47,13 @@ function updateFavicon(theme) {
     } else {
         favicon.href = '../assets/DarkModeAssets/favicon-dark.png';
     }
+}
+
+// Function to log the current theme and browser's theme
+function logTheme() {
+    const browserTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    console.log('Browser Theme:', browserTheme);
+    console.log('Current Theme:', document.body.classList.contains('light-theme') ? 'light' : 'dark');
 }
 
 // Event listener for theme button click
@@ -47,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Load theme preference when the page is loaded
     loadTheme();
 });
-
 
 
 // Search Box Working

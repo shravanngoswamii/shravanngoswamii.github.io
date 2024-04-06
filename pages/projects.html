@@ -1,57 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Projects</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Explore Projects made by Shravan Goswami using various frameworks like Django, Flash, ReactJs and many more...">
+    <meta name="author" content="Shravan Goswami">
+    <meta name="keywords"
+        content="Shravan Goswami Projects, Shravan Projects, Projects of Shravan, Projects of Shravan Goswami, Shravan Goswami, shravanngoswamii, shravangoswami, shravangoswamii, goswamishrvn, Goswami, Shravan, portfolio, shravanigoswami, shravani goswami, shrawan goswami">
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Shravan Goswami">
+    <meta property="og:description"
+        content="Explore Projects made by Shravan Goswami using various frameworks like Django, Flash, ReactJs and many more...">
+    <meta property="og:image" content="https://shravangoswami.com/assets/profile.png">
+    <meta property="og:site_name" content="Shravan Goswami Projects">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shravangoswami.com/projects">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@shravangoswamii">
+    <meta name="twitter:title" content="Shravan Goswami">
+    <meta name="twitter:description"
+        content="Explore Projects made by Shravan Goswami using various frameworks like Django, Flash, ReactJs and many more...">
+    <meta name="twitter:image" content="https://shravangoswami.com/assets/profile.png">
+
+    <meta name="robots" content="index,follow">
+    <meta name="distribution" content="global">
+
+    <title>Shravan Goswami - Projects</title>
     <link rel="stylesheet" href="/styles/pages/projects.css">
     <link rel="stylesheet" href="/styles/common.css">
+    <link rel="canonical" href="https://shravangoswami.com/projects">
     <link rel="icon" type="image/png" href="../assets/DarkModeAssets/favicon-dark.png" id="favicon">
 </head>
+
 <body>
     <div class="theme-btn" data-title="Theme">
-        <img id="themeBtnImg" src="#" alt="Theme Icon">
+        <img src="#" alt="Theme Icon" />
     </div>
+
     <section>
         <div class="container site-heading">
-            <a href="/index.html">
+            <a href="https://shravangoswami.com">
                 <h1 class="site-logo">Shravan Goswami</h1>
             </a>
         </div>
+        <p style="text-align: center;">A Developer and a Writer</p>
+
     </section>
-    <section class="projects-section">
-        <div class="container">
-            <h2>My Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-details">
-                        <h3>Project Title</h3>
-                        <p class="project-description">This is a brief description of the project. It showcases some of the key features and functionality.</p>
-                        <div class="project-meta">
-                            <div class="technologies">
-                                <span class="tech-badge">HTML</span>
-                                <span class="tech-badge">CSS</span>
-                                <span class="tech-badge">JavaScript</span>
-                            </div>
-                            <p class="last-updated">Last Updated: May 1, 2023</p>
-                            <p class="status">Status: Active</p>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">GitHub</a>
-                            <a href="#" class="project-link">Live Demo</a>
-                        </div>
-                    </div>
-                    <img src="/assets/CPP-Language.png" alt="Project Image">
-                </div>
-                <!-- Add more project cards here -->
-            </div>
+
+    <section id="search-bar">
+        <div class="container search-container">
+            <input type="text" id="searchInput" placeholder="Search" class="search-input" />
+            <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" width="35" class="search-svg">
+                <path
+                    d="M760.385-177.846 522.923-415.307q-30 23.538-65.792 36.038-35.792 12.5-71.558 12.5-87.135 0-148.2-61.029-61.066-61.029-61.066-148.077t61.029-148.202q61.029-61.154 148.077-61.154 87.049 0 148.202 61.065 61.154 61.065 61.154 148.201 0 38.073-13.269 73.865-13.269 35.792-35.269 63.485l237.462 237.461-23.308 23.308ZM385.538-398.769q74.616 0 125.923-51.308Q562.769-501.385 562.769-576q0-74.615-51.308-125.923-51.307-51.308-125.923-51.308-74.615 0-125.923 51.308Q208.308-650.615 208.308-576q0 74.615 51.307 125.923 51.308 51.308 125.923 51.308Z" />
+            </svg>
         </div>
+        <div id="searchResults"></div>
     </section>
+
+    <!-- Home Cards -->
+    <span class="container home-heading" id="published-article">Projects</span>
+
+    <div class="container flex home-card-container">
+        <div class="home-card">
+            <a href="https://github.com/shravanngoswamii/portfolio" target="_blank">
+                <img src="/assets/Icons/me.svg" alt="Website Screenshot" />
+                <div class="home-span-container">
+                    <span>HTML</span> <span>CSS</span> <span>JS</span> <span>Firebase</span> <span>Firestore</span>
+                </div>
+                <h3>Portfolio Website</h3>
+                <p>Read articles written by me, Explore my projects, skills, etc. Its hosted on Firebase and Contact
+                    page is working through Firestore Database. Go Explore my Portfolio</p>
+                <div class="home-card-links">
+                    <a href="https://github.com/shravanngoswamii/portfolio" target="_blank" class="home-card-link">
+                        <svg width="800px" height="800px" viewBox="0 0 20 20" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                            <title>GitHub</title>
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)"
+                                    class="svg-color">
+                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                        <path
+                                            d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399"
+                                            id="github-[#142]">
+
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                    <a href="https://shravangoswami.com" class="home-card-link">
+                        <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <title>Live Link</title>
+                            <path
+                                d="M15.5 2.25a.75.75 0 01.75-.75h5.5a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0V4.06l-6.22 6.22a.75.75 0 11-1.06-1.06L19.94 3h-3.69a.75.75 0 01-.75-.75z" />
+                            <path
+                                d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 010 1.5h-8.5a.25.25 0 00-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 00.25-.25v-8.5a.75.75 0 011.5 0v8.5a1.75 1.75 0 01-1.75 1.75H4.25a1.75 1.75 0 01-1.75-1.75V4.25z" />
+                        </svg>
+                    </a>
+                </div>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a href="https://github.com/shravanngoswamii/Shopping-Website" target="_blank">
+                <img src="/assets/Icons/shopping.svg" alt="E-Commerce SVG" />
+                <div class="home-span-container">
+                    <span>Python</span> <span>Django</span> <span>AJAX</span> <span>HTML</span> <span>CSS</span>
+                    <span>JS</span>
+                </div>
+                <h3>Shopping Website</h3>
+                <p>E-Commerce Website Project made using Django(Python Framework), and AJAX to create a seamless, modern
+                    e-commerce experience, offering dynamic interactions and secure transactions.</p>
+                <div class="home-card-links">
+                    <a href="https://github.com/shravanngoswamii/Shopping-Website" target="_blank"
+                        class="home-card-link">
+                        <svg width="800px" height="800px" viewBox="0 0 20 20" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                            <title>GitHub</title>
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)"
+                                    class="svg-color">
+                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                        <path
+                                            d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399"
+                                            id="github-[#142]">
+
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                    <!-- <a href="#" target="_blank" class="home-card-link">
+                        <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <title>Live Link</title>
+                            <path
+                                d="M15.5 2.25a.75.75 0 01.75-.75h5.5a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0V4.06l-6.22 6.22a.75.75 0 11-1.06-1.06L19.94 3h-3.69a.75.75 0 01-.75-.75z" />
+                            <path
+                                d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 010 1.5h-8.5a.25.25 0 00-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 00.25-.25v-8.5a.75.75 0 011.5 0v8.5a1.75 1.75 0 01-1.75 1.75H4.25a1.75 1.75 0 01-1.75-1.75V4.25z" />
+                        </svg>
+                    </a> -->
+                </div>
+            </a>
+        </div>
+
+        <div class="home-card">
+            <a class="wildlife-image" href="https://github.com/shravanngoswamii/ES-Project" target="_blank">
+                <img src="#" alt="Website Screenshot" />
+                <div class="home-span-container">
+                    <span>HTML</span> <span>CSS</span> <span>JS</span>
+                </div>
+                <h3>Wildlife Acts Wiki</h3>
+                <p>Explore Wildlife Acts Wiki to learn about a comprehensive collection of National and International
+                    Acts dedicated to the protection and conservation of wildlife in India & globally.</p>
+                <div class="home-card-links">
+                    <a href="https://github.com/shravanngoswamii/ES-Project" target="_blank" class="home-card-link">
+                        <svg width="800px" height="800px" viewBox="0 0 20 20" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                            <title>GitHub</title>
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)"
+                                    class="svg-color">
+                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                        <path
+                                            d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399"
+                                            id="github-[#142]">
+
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                    <a href="https://shravanngoswamii.github.io/ES-Project/" target="_blank" class="home-card-link">
+                        <title>Live Link</title>
+                        <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M15.5 2.25a.75.75 0 01.75-.75h5.5a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0V4.06l-6.22 6.22a.75.75 0 11-1.06-1.06L19.94 3h-3.69a.75.75 0 01-.75-.75z" />
+                            <path
+                                d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 010 1.5h-8.5a.25.25 0 00-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 00.25-.25v-8.5a.75.75 0 011.5 0v8.5a1.75 1.75 0 01-1.75 1.75H4.25a1.75 1.75 0 01-1.75-1.75V4.25z" />
+                        </svg>
+                    </a>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
     <footer class="container">
         <div class="footer-content">
             <p>&copy; 2024 Shravan Goswami. All rights reserved.</p>
         </div>
     </footer>
+
     <script src="/scripts/script.js"></script>
 </body>
+
 </html>
