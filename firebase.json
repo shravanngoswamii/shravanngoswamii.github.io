@@ -8,31 +8,6 @@
           "source": "/index.html",
           "destination": "/",
           "type": 301
-        },
-        {
-          "source": "/(contact|contacts|contact.html|contacts.html)",
-          "destination": "/contact",
-          "type": 301
-        },
-        {
-          "source": "/(links|link|links.html|link.html)",
-          "destination": "/links",
-          "type": 301
-        },
-        {
-          "source": "/(projects|project|project.html|projects.html)",
-          "destination": "/projects",
-          "type": 301
-        },
-        {
-          "source": "/(skills|skill|skills.html|skill.html)",
-          "destination": "/skills",
-          "type": 301
-        },
-        {
-          "source": "/(resume|resumes|resume.html|resumes.html)",
-          "destination": "/resume",
-          "type": 301
         }
       ],
       "rewrites": [
@@ -75,31 +50,6 @@
         {
           "source": "/index.html",
           "destination": "/",
-          "type": 301
-        },
-        {
-          "source": "/(contact|contacts|contact.html|contacts.html)",
-          "destination": "/contact",
-          "type": 301
-        },
-        {
-          "source": "/(links|link|links.html|link.html)",
-          "destination": "/links",
-          "type": 301
-        },
-        {
-          "source": "/(projects|project|project.html|projects.html)",
-          "destination": "/projects",
-          "type": 301
-        },
-        {
-          "source": "/(skills|skill|skills.html|skill.html)",
-          "destination": "/skills",
-          "type": 301
-        },
-        {
-          "source": "/(resume|resumes|resume.html|resumes.html)",
-          "destination": "/resume",
           "type": 301
         }
       ],
