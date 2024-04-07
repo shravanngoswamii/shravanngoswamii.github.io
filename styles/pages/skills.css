@@ -215,7 +215,78 @@ a {
 }
 
 @media (max-width: 768px) {
+    .skill-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        max-width: 90%;
+        /* padding: 10px; */
+        /* display: flex;
+        justify-content: center;
+        margin: 0 auto; */
+    }
+
     .skills-container {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .skill-category,
+    .writing-experience {
+        width: 90%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .under-contruction {
+        text-align: center;
+        /* height:fit-content; */
+        margin-top: 20px;
+    }
+
+    .category-heading, .experience-heading {
+        text-align: center;
     }
 }
+
+@media (max-width: 768px) {
+    .section-heading {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .category-heading {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .skill-list li {
+        font-size: 14px;
+    }
+
+    .experience-list li {
+        font-size: 14px;
+    }
+}
+
+/* @media (max-width: 767px) {
+    .top-btns {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .top-btns .theme-btn {
+        order: 2;
+    }
+
+    .top-btns .download-btn {
+        position: static;
+        order: 1;
+    }
+} */
