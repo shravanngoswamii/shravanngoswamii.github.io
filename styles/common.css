@@ -32,6 +32,7 @@ p {
     cursor: pointer;
     position: fixed;
     display: flex;
+    z-index: 1000;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
