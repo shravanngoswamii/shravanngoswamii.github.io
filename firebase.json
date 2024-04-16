@@ -12,6 +12,10 @@
       ],
       "rewrites": [
         {
+          "source": "/QuartoLearn",
+          "destination": "/pages/Turing/Quarto/Test3/index.html"
+        },
+        {
           "source": "/contact",
           "destination": "/pages/contact.html"
         },
@@ -114,6 +118,10 @@
         }
       ],
       "rewrites": [
+        {
+          "source": "/QuartoLearn",
+          "destination": "/pages/Turing/Quarto/Test3/index.html"
+        },
         {
           "source": "/contact",
           "destination": "/pages/contact.html"

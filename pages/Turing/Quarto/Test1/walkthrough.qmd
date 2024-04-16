@@ -1,0 +1,58 @@
+---
+title: "Plots Demo"
+author: "Shravan Goswami"
+date: "5/22/2021"
+execute:
+  echo: true
+format:
+  html:
+    toc: true
+    toc-title: Content
+    sidebar: true
+    # code-fold: false
+    embed-resources: true
+    smooth-scroll: true
+    other-links:
+      - text: Website
+        href: https://shravangoswami.com/
+        target: _blank
+jupyter: julia-1.10
+---
+
+### Parametric Plots
+
+Plot function pair (x(u), y(u)). See @fig-parametric for an example.
+
+```{julia}
+#| label: fig-parametric
+#| fig-cap: "Parametric Plots"
+
+using Plots
+
+plot(sin, 
+     x->sin(2x), 
+     0, 
+     2π, 
+     leg=false, 
+     fill=(0,:lavender))
+```
+
+
+::: {.panel-tabset}
+## Julia
+
+``` {.julia}
+function FizzBuzz(num)
+  if num % 15 == 0
+    println("FizzBuzz")
+  elseif num % 5 == 0
+    println("Buzz")
+  elseif num % 3 == 0
+    println("Fizz")
+  else
+    println(num)
+  end
+end
+```
+
+:::
