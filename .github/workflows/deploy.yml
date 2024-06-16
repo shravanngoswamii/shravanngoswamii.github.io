@@ -31,3 +31,4 @@ jobs:
           folder: build
           clean: true
           token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          force: true
