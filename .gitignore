@@ -36,4 +36,8 @@
 .ionide
 .env
 
+build/
+node_modules/
+.docusaurus/
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,firebase
