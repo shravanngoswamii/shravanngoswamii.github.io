@@ -33,11 +33,11 @@
         },
         {
           "source": "/resume",
-          "destination": "/pages/resume.html"
+          "destination": "/assets/Shravan-Resume-Final.pdf"
         },
         {
-          "source": "/resumes",
-          "destination": "/pages/resume.html"
+          "source": "/resume-1",
+          "destination": "/assets/Shravan-Resume-1.pdf"
         },
         {
           "source": "/contact.html",
