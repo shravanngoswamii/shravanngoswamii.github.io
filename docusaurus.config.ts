@@ -83,7 +83,7 @@ const config: Config = {
         {
           label: 'Resume',
           position: 'left',
-          to: 'https://shravangoswami.com/assets/Shravan-Resume.pdf'
+          to: 'https://shravangoswami.com/resume'
         },
       ],
     },

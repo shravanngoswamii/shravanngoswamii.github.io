@@ -24,7 +24,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Visit my <a href="/blog">blog</a> and ignore everything else on this site!
-        You can also see my resume <a href="#">here</a>.
+        You can also see my resume <a href="https://shravangoswami.com/resume">here</a>.
       </>
     ),
   },
