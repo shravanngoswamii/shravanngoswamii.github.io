@@ -77,7 +77,7 @@ const config: Config = {
 				{
 					'aria-label': 'GitHub Repository',
 					'className': 'header--github-link',
-					'href': 'https://github.com/<repo>',
+					'href': 'https://github.com/shravanngoswamii',
 					'position': 'right',
 				},
         {
