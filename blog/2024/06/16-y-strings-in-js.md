@@ -5,7 +5,7 @@ authors: shravan
 tags: [javascript, technical, personal]
 ---
 
-Well, Javascript have any string methods and in this article, we will practice all of them!
+Well, Javascript have many string methods and in this article, we will practice all of them!
 <!-- truncate -->
 
 ## Get all string from console
