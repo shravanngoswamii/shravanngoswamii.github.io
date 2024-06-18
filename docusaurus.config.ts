@@ -28,7 +28,6 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
   presets: [
     [
       'classic',
@@ -39,10 +38,12 @@ const config: Config = {
           blogDescription: 'Technical and Philosophical Blog',
           postsPerPage: 5,
           showReadingTime: true,
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/shravanngoswamii/portfolio/tree/docusaurus-merge/',
+            'https://github.com/shravanngoswamii/portfolio/tree/blog/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -52,6 +53,11 @@ const config: Config = {
   ],
 
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: false,
+      respectPrefersColorScheme: false,
+    },
     tableOfContents: {
       minHeadingLevel: 2,
       maxHeadingLevel: 5,
@@ -59,18 +65,21 @@ const config: Config = {
     // Replace with your project's social card
     // image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Shravan Goswami',
+      hideOnScroll: true,
+      title: 'Seeker\'s Blog',
       logo: {
         alt: 'My Site Logo',
-        src: 'img/favicon.png',
+        src: 'img/favicon-dark.png',
+        srcDark: 'img/favicon-light.png',
       },
       items: [
         {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/shravanngoswamii/portfolio',
-          label: 'GitHub',
-          position: 'right',
-        },
+				{
+					'aria-label': 'GitHub Repository',
+					'className': 'header--github-link',
+					'href': 'https://github.com/<repo>',
+					'position': 'right',
+				},
         {
           label: 'Resume',
           position: 'left',
@@ -125,7 +134,7 @@ const config: Config = {
     },
     prism: {
       theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      darkTheme: prismThemes.vsDark,
     },
   } satisfies Preset.ThemeConfig,
 };

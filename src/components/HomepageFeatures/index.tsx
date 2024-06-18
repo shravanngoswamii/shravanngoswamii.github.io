@@ -33,7 +33,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        My old and original website was made with core HTML, CSS AND JS which is still live on 
+        My old and original website was made with core HTML, CSS and JS which is still live on 
         main domain <a href='https://shravangoswami.com' target='_blank'>shravangoswami.com</a> but that's not 
         a better way for maintaining something like blog in a long run and then I found Docusaurus and you are here!
       </>
