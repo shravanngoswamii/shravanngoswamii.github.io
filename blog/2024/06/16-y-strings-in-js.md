@@ -195,6 +195,17 @@ This method returns a HTML `<a>` tag but without `href` attribute.
 <a name="Anchor Tag Example">Philosophy</a>
 ```
 
-### big() method
+### 2. big() method
+
+```js title="Code"
+const contentString = "Hello, world";
+document.body.innerHTML = contentString.big();
+```
+
+This method returns a String wrapped in <big> </big> tags.
+
+```Output title="Output"
+<big>Hello, world</big>
+```
 
 practice in progress...
