@@ -8,6 +8,10 @@ tags: [javascript, technical, personal]
 Well, Javascript have many string methods and in this article, we will practice all of them!
 <!-- truncate -->
 
+:::warning
+This blog is for personal practice and it's also not complete!
+:::
+
 ## Get all string methods from console
 
 After this I will be explaining all these methods!
@@ -206,6 +210,19 @@ This method returns a String wrapped in <big> </big> tags.
 
 ```Output title="Output"
 <big>Hello, world</big>
+```
+
+### 2. blink() method
+
+```js title="Code"
+const contentString = "Hello, world";
+document.body.innerHTML = contentString.blink();
+```
+
+This method returns a String wrapped in <blink> </blink> tags.
+
+```Output title="Output"
+<blink>Hello, world</blink>
 ```
 
 practice in progress...
