@@ -1,154 +1,279 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+  --background-body: #fff;
+  --text-main: #36393b;
+  --text-secondary: #6b6f72;
+  --primary-color: #548e9b;
+  --font-family-serif: Merriweather, serif;
+  --font-family-sans: 'Fira Sans', sans-serif;
 }
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+
+:root.theme-dark {
+  --background-body: #202122;
+  --text-main: #fff;
+  --text-secondary: #ccc;
+  --primary-color: #548e9b;
 }
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+
+html {
+  overflow-y: scroll;
 }
+
+@supports (scrollbar-gutter: stable) {
+  html {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
 body {
-	font-family: 'Atkinson', sans-serif;
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: var(--background-body);
+  color: var(--text-main);
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
-a {
-	color: var(--accent);
-}
-a:hover {
-	color: var(--accent);
-}
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-}
-pre > code {
-	all: unset;
-}
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0px;
-	font-size: 1.333em;
-}
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
-}
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+  font-family: var(--font-family-sans);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.5em 0;
 }
 
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
+h1 {
+  font-family: var(--font-family-serif);
+  font-size: 4em;
+  margin: 0 0 1em 0;
+}
+
+h2 {
+  margin: 1.6em 0 0 0;
+  font-size: 1.8em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.4em;
+}
+
+h5 {
+  font-size: 1.3em;
+}
+
+h6 {
+  font-size: 1.2em;
+}
+
+p,
+ul,
+ol {
+  font-size: 1.3rem;
+  line-height: 1.75em;
+  margin: 1.2em 0;
+}
+
+ol,
+ul {
+  padding-left: 2rem;
+  -webkit-padding-start: 5%;
+  -webkit-padding-end: 5%;
+}
+
+li {
+  margin: 1rem 0;
+}
+
+li p {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+a {
+  color: inherit;
+  transition: color linear 0.15s;
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+p a {
+  text-decoration: none;
+  box-shadow: inset 0 -0.12em 0 var(--primary-color);
+  -webkit-transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+p a:hover {
+  box-shadow: inset 0 -1.5em 0 var(--primary-color);
+  color: #fff;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+hr {
+  padding: 0;
+  border: 0;
+  height: 10px;
+  margin: 40px auto;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='10'  viewBox='0 0 20 10' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd' stroke-miterlimit='10'%3e%3cpath fill='none' d='M0 0h20v10H0z'/%3e%3cclipPath id='a'%3e%3cpath d='M0 0h20v10H0z'/%3e%3c/clipPath%3e%3cg clip-path='url(%23a)'%3e%3cpath d='M20 7.384c-4.999-.001-5-4.768-9.999-4.768C5 2.616 5 7.384 0 7.384' fill='none' stroke-width='3' stroke='%23548E9B'/%3e%3c/g%3e%3c/svg%3e");
+}
+
+code {
+  font-family: 'SF Mono', menlo, inconsolata, monospace;
+  font-size: calc(1em - 2px);
+  color: #555;
+  padding: 0.2em 0.4em;
+  border-radius: 2px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+pre {
+  border-radius: 8px !important;
+  margin: 1.2em 0 !important;
+  padding: 1.2em;
+}
+
+pre code {
+  padding: 0;
+}
+
+blockquote {
+  border-left: 4px solid #cccccc;
+  font-size: 1.4em;
+  font-style: italic;
+  margin: 2rem 0;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+blockquote p {
+  padding-bottom: 6px;
+}
+
+blockquote footer {
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+figure {
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  margin: 0 0 3em 0;
+}
+
+table {
+  border-collapse: collapse;
+  font-family: var(--font-family-sans);
+  font-size: 1.125em;
+  margin: 2em 0;
+}
+
+th {
+  border-bottom: 2px solid #cccccc;
+  padding: 0.4em 0.8em;
+}
+
+td {
+  padding: 0.4em 0.8em;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 42em;
+  width: 100%;
+}
+
+.content h1 {
+  font-size: 3em;
+  margin: 1em 0;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0.33em 0.67em;
+  padding-top: 8px;
+  margin-left: 10px;
+  gap: 0.6em;
+  border-radius: 99em;
+  background-color: var(--theme-code-inline-bg);
+}
+
+.theme-toggle > label:focus-within {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 0.08em var(--theme-accent), 0 0 0 0.12em white;
+}
+
+.theme-toggle > label {
+  color: var(--theme-code-inline-text);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.theme-toggle .checked {
+  color: var(--theme-accent);
+  opacity: 1;
+}
+
+input[name='theme-toggle'] {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+@media (max-width: 1020px) {
+  h1 {
+    font-size: 3em;
+  }
+
+  .content h1 {
+    font-size: 2.4em;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  p,
+  ul,
+  ol {
+    font-size: 1.2rem;
+    margin: 1em 0;
+  }
 }

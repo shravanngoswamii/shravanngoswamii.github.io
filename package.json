@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
@@ -10,10 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^3.1.7",
-    "@astrojs/rss": "^4.0.7",
-    "@astrojs/sitemap": "^3.2.0",
-    "astro": "^4.15.11",
+    "@astrojs/mdx": "^2.0.0",
+    "@astrojs/svelte": "^5.0.0",
+    "astro": "^4.0.1",
+    "reading-time": "^1.5.0",
+    "rehype-external-links": "^3.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-smartypants": "^2.0.0",
     "@astrojs/check": "^0.9.4",
     "typescript": "^5.6.2"
   }
