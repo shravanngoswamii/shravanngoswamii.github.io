@@ -18,3 +18,15 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# ignore .astro directory
+.astro
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
