@@ -14,6 +14,6 @@
 
 The humans.txt (https://humanstxt.org/) file explains 
 the team, technology, and graphic assets behind this site,
-shravangoswami.com.
+shravangoswami.com
 _______________________________________________________________________________
 
