@@ -1,6 +1,6 @@
 ---
 author: Shravan Goswami
-pubDatetime: 2024-10-06
+pubDatetime: 06-10-2024
 title: 'Consecutive Sum Riddle (CF 800 Rated)'
 slug: 1594-A-consecutive-sum-riddle
 featured: true
