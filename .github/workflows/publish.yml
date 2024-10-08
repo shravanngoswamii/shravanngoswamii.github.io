@@ -3,8 +3,7 @@ name: Deploy Website
 on:
   push:
     branches:
-      - main
-
+      - astro-merge
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,9 +21,21 @@ jobs:
         - name: Build the website
           run: npm run build
 
-        - name: Deploy to gh-pages branch
-          uses: JamesIves/github-pages-deploy-action@v4
+        # Will use this after this branch becomes main
+        # - name: Deploy to gh-pages branch
+        #   uses: JamesIves/github-pages-deploy-action@v4
+        #   with:
+        #     branch: gh-pages
+        #     folder: ./dist
+        #     clean: false
+
+        - name: Deploy to GitHub Pages
+          uses: peaceiris/actions-gh-pages@v3
           with:
-            branch: gh-pages
-            folder: ./dist
-            clean: false
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: build
+            publish_branch: gh-pages
+            cname: blog.shravangoswami.com
+
+permissions:
+  contents: write
