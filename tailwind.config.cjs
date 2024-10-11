@@ -19,6 +19,14 @@ module.exports = {
     },
 
     extend: {
+      colors: {
+				accent: withOpacity("--color-accent"),
+				"accent-2": withOpacity("--color-accent"),
+				bgColor: withOpacity("--color-fill"),
+				link: withOpacity("--color-accent"),
+				quote: withOpacity("--color-accent"),
+				textColor: withOpacity("--color-text-base"),
+			},
       textColor: {
         skin: {
           base: withOpacity("--color-text-base"),

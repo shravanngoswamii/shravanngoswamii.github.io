@@ -15,7 +15,7 @@
   html[data-theme="dark"] {
     --color-fill: 43, 42, 51; /* Dark Charcoal */
     --color-accent: 37, 150, 190; /* Sky Blue */
-    --color-text-base: 255, 255, 255; /* White */
+    --color-text-base: 237, 237, 237; /* White */
     --color-card: 66, 65, 77; /* Dark Slate Gray */
     --color-card-muted: 12, 14, 79; /* Dark Blue (Muted) */
     --color-border: 0, 221, 255; /* Bright Cyan */
@@ -125,3 +125,7 @@
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
 }
+
+/* .search-close-btn {
+  color: var(--color-text-base);
+} */
