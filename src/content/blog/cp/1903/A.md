@@ -1,6 +1,6 @@
 ---
 author: Shravan Goswami
-pubDatetime: 2024-10-11
+pubDatetime: 2024-10-12
 title: 'A. Halloumi Boxes (CF1903 800 RATED)'
 slug: 1903-A-Halloumi-Boxes
 tags: [CPP, Codeforces, CF800, CP31]
