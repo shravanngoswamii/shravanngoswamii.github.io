@@ -5,7 +5,7 @@ title: 'Consecutive Sum Riddle (CF 800 Rated)'
 slug: 1594-A-consecutive-sum-riddle
 featured: true
 draft: false
-tags: ["C++", "Codeforces"]
+tags: ["CPP", "Codeforces"]
 description: 'A. Consecutive Sum Riddle, 800 RATED - Codeforces Round 747 (Div. 2)'
 ---
 
