@@ -7,12 +7,14 @@ tags: [CPP, Codeforces, CF800, CP31]
 description: 'A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)'
 ---
 
+## Table of contents
+
 <p class="hidden">Problem A 1903</p>
 
 Problem Link: [A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)](https://codeforces.com/problemset/problem/1903/A)
 
 ## Approach
-If `k>1` or else array is already sorted then it's `YES` else `No`.
+If `k>1` or else array is already sorted then it's `YES` else `NO`.
 
 ## Code Implementation
 
