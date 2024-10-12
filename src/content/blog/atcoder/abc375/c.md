@@ -1,6 +1,6 @@
 ---
 author: Shravan Goswami
-pubDatetime: 2024-10-12T03:59:19Z
+pubDatetime: 2024-10-12T15:59:19Z
 title: 'C - Spiral Rotation (AtCoder Beginner Contest 375)'
 slug: abc375-C
 tags: [CPP, AtCoder, AtCoder Beginner Contest]
