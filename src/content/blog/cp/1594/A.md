@@ -1,6 +1,6 @@
 ---
 author: Shravan Goswami
-pubDatetime: 2024-10-06
+pubDatetime: 2024-10-06T04:02:55Z
 title: 'A. Consecutive Sum Riddle (CF1594 800 RATED)'
 slug: 1594-A-Consecutive-Sum-Riddle
 tags: [CPP, Codeforces, CF800]

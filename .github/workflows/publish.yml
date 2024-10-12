@@ -21,6 +21,9 @@ jobs:
         - name: Build the website
           run: npm run build
 
+        - name: Print current time
+          run: date
+
         # Will use this after this branch becomes main
         # - name: Deploy to gh-pages branch
         #   uses: JamesIves/github-pages-deploy-action@v4

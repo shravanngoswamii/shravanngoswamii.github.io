@@ -46,7 +46,7 @@ def generate_template(author, problem_url):
     title, problem_rating, round_number, problem_code, contest_id = extract_codeforces_problem_details(problem_url)
 
     # Generate today's date
-    pub_datetime = datetime.now().strftime('%Y-%m-%d')
+    pub_datetime = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
     # Generate slug (remove periods and extra spaces)
     slug = f"{contest_id}-{title.replace(' ', '-').replace('.', '')}"
