@@ -1,5 +1,4 @@
 import os
-import sys
 import cloudscraper
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -7,7 +6,6 @@ import re
 
 def extract_codeforces_problem_details(problem_url):
     scraper = cloudscraper.create_scraper()
-
     response = scraper.get(problem_url)
     if response.status_code != 200:
         raise Exception(f"Failed to fetch problem page, status code: {response.status_code}")
@@ -40,8 +38,23 @@ def extract_codeforces_problem_details(problem_url):
 
     return title, problem_rating, round_number, problem_code, contest_id
 
+def extract_approach_and_code(text_block):
+    """
+    Extract the approach and C++ code from the formatted block.
+    """
+    # Extract the URL and Approach from the comment block
+    url_match = re.search(r"url:\s*(https://[^\s]+)", text_block)
+    approach_match = re.search(r"Approach:\n((?:.|\n)*?)\*/", text_block)
 
-def generate_template(author, problem_url):
+    problem_url = url_match.group(1) if url_match else "No URL"
+    approach = approach_match.group(1).strip() if approach_match else "No Approach"
+
+    # Remove the comment block (/* ... */) from the C++ code
+    cpp_code_cleaned = re.sub(r"/\*[\s\S]*?\*/", '', text_block).strip()
+
+    return problem_url, approach, cpp_code_cleaned
+
+def generate_template(author, problem_url, approach, cpp_code):
     # Extract problem details
     title, problem_rating, round_number, problem_code, contest_id = extract_codeforces_problem_details(problem_url)
 
@@ -69,11 +82,12 @@ description: '{description}'
 Problem Link: [{description}]({problem_url})
 
 ## Approach
-
+{approach}
 
 ## Code Implementation
-```c++
 
+```cpp
+{cpp_code}
 ```
 """
     return template
@@ -85,25 +99,49 @@ def save_to_file(contest_id, problem_code, markdown_content):
 
     # Create markdown file with problem code (e.g., A.md, B.md)
     filepath = os.path.join(directory, f"{problem_code}.md")
+
+    # Check if file already exists
+    if os.path.exists(filepath):
+        print(f"File already exists: {filepath}. Skipping generation.")
+        return
+
     with open(filepath, 'w') as f:
         f.write(markdown_content)
 
+    print(f"Markdown file created: {filepath}")
+
+def process_cpp_files_in_folder(folder_path):
+    """
+    Process all C++ files in the specified folder.
+    """
+    cpp_files = [f for f in os.listdir(folder_path) if f.endswith('.cpp')]
+
+    for cpp_file in cpp_files:
+        cpp_file_path = os.path.join(folder_path, cpp_file)
+
+        with open(cpp_file_path, 'r') as f:
+            text_block = f.read()
+
+        # Extract approach and code
+        problem_url_extracted, approach, cpp_code = extract_approach_and_code(text_block)
+
+        if problem_url_extracted == "No URL":
+            print(f"Skipping {cpp_file}: No URL found.")
+            continue
+
+        # Generate markdown content
+        author = "Shravan Goswami"
+        markdown_template = generate_template(author, problem_url_extracted, approach, cpp_code)
+
+        # Extract problem details to get contest ID and problem code
+        _, _, _, problem_code, contest_id = extract_codeforces_problem_details(problem_url_extracted)
+
+        # Save the markdown content to a file
+        save_to_file(contest_id, problem_code, markdown_template)
+
 if __name__ == '__main__':
-    # Ensure a link is provided as a command-line argument
-    if len(sys.argv) < 2:
-        print("Usage: python main.py <codeforces_problem_url>")
-        sys.exit(1)
+    # Hardcoded folder path
+    folder_path = "/mnt/d/College-Work/CP/Competitive-Programming/Online Judges/Codeforces/2. PROBLEMSET"
 
-    problem_url = sys.argv[1]
-    author = "Shravan Goswami"
-
-    # Generate markdown content
-    markdown_template = generate_template(author, problem_url)
-
-    # Extract problem details to get contest ID and problem code
-    _, _, _, problem_code, contest_id = extract_codeforces_problem_details(problem_url)
-
-    # Save the markdown content to a file
-    save_to_file(contest_id, problem_code, markdown_template)
-
-    print(f"Markdown file created: {contest_id}/{problem_code}.md")
+    # Process all C++ files in the specified folder
+    process_cpp_files_in_folder(folder_path)
