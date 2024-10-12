@@ -52,22 +52,33 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
     modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
 
-  const date = myDatetime.toLocaleDateString(LOCALE.langTag, {
-    weekday: "short",  // To include the day of the week
-    year: "numeric",
-    month: "short",
+  const weekday = myDatetime.toLocaleDateString(LOCALE.langTag, {
+    weekday: "short",
+  });
+
+  const day = myDatetime.toLocaleDateString(LOCALE.langTag, {
     day: "numeric",
   });
+
+  const month = myDatetime.toLocaleDateString(LOCALE.langTag, {
+    month: "short",
+  });
+
+  const year = myDatetime.toLocaleDateString(LOCALE.langTag, {
+    year: "numeric",
+  });
+
+  const formattedDate = `${weekday}, ${day} ${month}, ${year}`;
 
   const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
     hour: "2-digit",
     minute: "2-digit",
-    timeZoneName: "short", // To include the timezone abbreviation
+    timeZoneName: "short",
   });
 
   return (
     <>
-      <time dateTime={myDatetime.toISOString()}>{date}</time>
+      <time dateTime={myDatetime.toISOString()}>{formattedDate}</time>
       <span aria-hidden="true"> | </span>
       <span className="sr-only">&nbsp;at&nbsp;</span>
       <span className="text-nowrap">{time}</span>
