@@ -53,6 +53,7 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
   );
 
   const date = myDatetime.toLocaleDateString(LOCALE.langTag, {
+    weekday: "short",  // To include the day of the week
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -61,6 +62,7 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
   const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
     hour: "2-digit",
     minute: "2-digit",
+    timeZoneName: "short", // To include the timezone abbreviation
   });
 
   return (
