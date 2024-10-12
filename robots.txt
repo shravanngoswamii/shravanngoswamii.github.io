@@ -4,4 +4,4 @@ Disallow: /nogooglebot/
 User-agent: *
 Allow: /
 
-Sitemap: https://shravangoswami.com/sitemap-index.xml
+Sitemap: https://blog.shravangoswami.com/sitemap-index.xml
