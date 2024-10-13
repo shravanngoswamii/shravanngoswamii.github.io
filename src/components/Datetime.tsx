@@ -70,18 +70,18 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
 
   const formattedDate = `${weekday}, ${day} ${month}, ${year}`;
 
-  const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZoneName: "short",
-  });
+  // const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   timeZoneName: "short",
+  // });
 
   return (
     <>
       <time dateTime={myDatetime.toISOString()}>{formattedDate}</time>
-      <span aria-hidden="true"> | </span>
+      {/* <span aria-hidden="true"> | </span>
       <span className="sr-only">&nbsp;at&nbsp;</span>
-      <span className="text-nowrap">{time}</span>
+      <span className="text-nowrap">{time}</span> */}
     </>
   );
 };
