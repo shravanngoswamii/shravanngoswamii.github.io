@@ -48,37 +48,44 @@ export default function Datetime({
 }
 
 const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
-  const myDatetime = new Date(
+  const effectiveDatetime = new Date(
     modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
 
-  const weekday = myDatetime.toLocaleDateString(LOCALE.langTag, {
+  const options = { timeZone: 'Asia/Kolkata', locale: LOCALE.langTag };
+
+  const weekday = effectiveDatetime.toLocaleDateString(options.locale, {
     weekday: "short",
+    timeZone: options.timeZone,
   });
 
-  const day = myDatetime.toLocaleDateString(LOCALE.langTag, {
+  const day = effectiveDatetime.toLocaleDateString(options.locale, {
     day: "numeric",
+    timeZone: options.timeZone,
   });
 
-  const month = myDatetime.toLocaleDateString(LOCALE.langTag, {
+  const month = effectiveDatetime.toLocaleDateString(options.locale, {
     month: "short",
+    timeZone: options.timeZone,
   });
 
-  const year = myDatetime.toLocaleDateString(LOCALE.langTag, {
+  const year = effectiveDatetime.toLocaleDateString(options.locale, {
     year: "numeric",
+    timeZone: options.timeZone,
   });
 
   const formattedDate = `${weekday}, ${day} ${month}, ${year}`;
 
-  const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
+  const time = effectiveDatetime.toLocaleTimeString(options.locale, {
     hour: "2-digit",
     minute: "2-digit",
     timeZoneName: "short",
+    timeZone: options.timeZone,
   });
 
   return (
     <>
-      <time dateTime={myDatetime.toISOString()}>{formattedDate}</time>
+      <time dateTime={effectiveDatetime.toISOString()}>{formattedDate}</time>
       <span aria-hidden="true"> | </span>
       <span className="sr-only">&nbsp;at&nbsp;</span>
       <span className="text-nowrap">{time}</span>
