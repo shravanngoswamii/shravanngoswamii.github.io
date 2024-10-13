@@ -148,7 +148,7 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "Resume",
-    href: "https://shravangoswami.com/resume",
+    href: "/resume",
     linkTitle: `${SITE.title} on Mastodon`,
     active: true,
   },
