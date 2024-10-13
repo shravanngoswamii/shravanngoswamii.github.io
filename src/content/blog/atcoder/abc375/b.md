@@ -12,7 +12,7 @@ description: 'B - Traveling Takahashi Problem - Panasonic Programming Contest 20
 Problem Link: [B - Traveling Takahashi Problem (AtCoder Beginner Contest 375)](https://atcoder.jp/contests/abc375/tasks/abc375_b)
 
 ## Approach
-The code takes a list of points and calculates the total distance between them. It first reads the points, adds the origin $(0, 0)$ at the start and end, reverses the list, and then computes the distance between each pair of consecutive points. Finally, it prints the total distance with high precision.
+The code takes a list of points and calculates the total distance between them. It first reads the points, adds the origin $(0, 0)$ at the start, reverses the list, adds origin at end again, updates the size of `n` and and then computes the distance between each pair of consecutive points. Finally, it prints the total distance with precision $20$.
 
 ## Code Implementation
 
