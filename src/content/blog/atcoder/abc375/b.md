@@ -1,6 +1,6 @@
 ---
 author: Shravan Goswami
-pubDatetime: 2024-10-13T21:29:19+05:30
+pubDatetime: 2024-10-13
 title: 'B - Traveling Takahashi Problem (AtCoder Beginner Contest 375)'
 slug: abc375-B
 tags: [CPP, AtCoder, AtCoder Beginner Contest]
