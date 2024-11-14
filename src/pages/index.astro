@@ -16,7 +16,7 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
-const socialCount = SOCIALS.filter(social => social.active).length;
+const socialCount = SOCIALS.filter((social) => social.active).length;
 ---
 
 <Layout>
@@ -42,15 +42,24 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </a>
 
       <p>
-        Shravan Goswami is a Research Assistant at Univerity of Cambridge and a pre-final year student of B.Tech. Computer Science & Engineering.
+        Shravan Goswami is a Research Assistant at Univerity of Cambridge and a
+        pre-final year student of B.Tech. Computer Science & Engineering. SIH'24 Finalist!
+        (Finals are in December, let's hope my team wins!)
       </p>
       <p>
-        Read the blog posts or see the
+        Read the blog posts, explore
+        <LinkButton
+          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+          href="/projects"
+        >
+          projects
+        </LinkButton>
+        or see the
         <LinkButton
           className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
           href="/resume"
         >
-		resume
+          resume
         </LinkButton> for more info.
       </p>
       {
@@ -99,7 +108,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
                     frontmatter={data}
                     secHeading={false}
                   />
-                )
+                ),
             )}
           </ul>
         </section>

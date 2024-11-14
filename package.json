@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/rss": "^4.0.7",
+    "@astrojs/rss": "^4.0.9",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^4.15.12",
+    "astro": "^4.16.12",
     "fuse.js": "^7.0.0",
     "katex": "^0.16.11",
     "lodash.kebabcase": "^4.1.1",

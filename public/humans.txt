@@ -15,3 +15,8 @@ the team, technology, and graphic assets behind this site,
 shravangoswami.com
 _______________________________________________________________________________
 
+> Static Site Generator: [Astro](https://astro.build/)
+
+> Static Search Engine: [Pagefind](https://pagefind.app/)
+
+> Template: [Astro Paper](https://github.com/satnaing/astro-paper) + Some manual modification!
