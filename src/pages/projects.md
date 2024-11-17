@@ -37,8 +37,7 @@ projects:
   - title: "Social Media Feed Using Django"
     description: "This is a Django-based web application that implements a social media feed with features such as user authentication, posting, liking, commenting, searching other users, and managing user profiles."
     techStack: ["Python", "Django", "HTML", "Bootstrap"]
-    liveLink: "https://example.com/social-feed"
-    githubLink: "https://github.com/username/social-feed"
+    githubLink: "https://github.com/shravanngoswamii/social-media-feed-django"
     imageSrc: "/assets/projects/social-media-feed.svg"
 
   - title: "Shopping Website"
