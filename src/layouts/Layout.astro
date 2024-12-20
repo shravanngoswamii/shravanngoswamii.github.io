@@ -58,14 +58,13 @@ const structuredData = {
 >
   <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script>
-    <script>
+    <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
-        dataLayer.push(arguments);
+        window.dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-ZXC7NG6S55");
     </script>
     <meta charset="UTF-8" />
