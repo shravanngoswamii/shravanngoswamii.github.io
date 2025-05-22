@@ -1,0 +1,70 @@
+---
+// src/pages/[...alias].astro
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const allBlogPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  const redirectPaths = [];
+
+  // --- ONLY generate redirects from manually defined aliases in frontmatter ---
+  for (const post of allBlogPosts) {
+    // Ensure aliases is an array, default to empty if undefined
+    for (const alias of post.data.aliases || []) {
+      // Remove leading slash for `params.alias` to match Astro's route parameter
+      // Also, remove trailing slash for consistency in param matching,
+      // but ensure destination has it if your canonical URLs do.
+      const normalizedAlias = alias.startsWith('/') ? alias.substring(1) : alias;
+      const cleanNormalizedAlias = normalizedAlias.endsWith('/') ? normalizedAlias.slice(0, -1) : normalizedAlias;
+
+
+      redirectPaths.push({
+        params: { alias: cleanNormalizedAlias }, // The alias captured by the route
+        props: {
+          destination: `/blog/${post.slug}/`, // The actual current URL of the post (with trailing slash)
+          postTitle: post.data.title,
+        },
+      });
+    }
+  }
+
+  return redirectPaths;
+}) satisfies GetStaticPaths;
+
+interface Props {
+  destination: string;
+  postTitle: string;
+}
+
+const { destination, postTitle } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content={`0; url=${destination}`} />
+  <link rel="canonical" href={destination} />
+  <meta name="robots" content="noindex">
+  <title>Redirecting to {postTitle}...</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+  <p>You are being redirected to: <a href={destination}>{destination}</a></p>
+  <p>If you are not redirected automatically, <a href={destination}>click here</a>.</p>
+</body>
+</html>

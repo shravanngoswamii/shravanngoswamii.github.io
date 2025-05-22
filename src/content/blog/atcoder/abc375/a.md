@@ -5,6 +5,8 @@ title: 'A. Seats (AtCoder Beginner Contest 375)'
 slug: abc375-A
 tags: [CPP, AtCoder, AtCoder Beginner Contest]
 description: 'A. Seats - Panasonic Programming Contest 2024 (AtCoder Beginner Contest 375)'
+aliases:
+  - /posts/abc375-A
 ---
 
 <p class="hidden">Problem A - abc375</p>

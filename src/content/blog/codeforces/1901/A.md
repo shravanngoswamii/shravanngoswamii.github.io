@@ -5,6 +5,8 @@ title: 'A. Line Trip (CF1901 800 RATED)'
 slug: 1901-A-Line-Trip
 tags: [CPP, Codeforces, CF800, CP31]
 description: 'A. Line Trip, 800 RATED - Educational Codeforces Round 158 (Rated for Div. 2)'
+aliases:
+  - /posts/1901-A-Line-Trip
 ---
 
 <p class="hidden">Problem A 1901</p>

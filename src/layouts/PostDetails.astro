@@ -29,11 +29,17 @@ const {
 
 const { Content } = await post.render();
 
+// --- START: UPDATED OG IMAGE URL CONSTRUCTION ---
+// If ogImage is explicitly set in frontmatter, use it.
+// Otherwise, construct the path using the post.slug for the directory and 'og.png' for the filename.
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
+
 const ogUrl = new URL(
-  ogImageUrl ?? `/posts/${slugifyStr(title)}.png`,
+  ogImageUrl ?? `/blog/${post.slug}/og.png`, // <-- CHANGED THIS LINE: Now uses og.png
   Astro.url.origin
 ).href;
+// --- END: UPDATED OG IMAGE URL CONSTRUCTION ---
+
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -116,7 +122,7 @@ const nextPost =
       {
         prevPost && (
           <a
-            href={`/posts/${prevPost.slug}`}
+            href={`/blog/${prevPost.slug}`}
             class="flex w-full gap-1 hover:opacity-75"
           >
             <svg
@@ -144,7 +150,7 @@ const nextPost =
       {
         nextPost && (
           <a
-            href={`/posts/${nextPost.slug}`}
+            href={`/blog/${nextPost.slug}`}
             class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
@@ -185,7 +191,7 @@ const nextPost =
 
 <script is:inline data-astro-rerun>
   /** Create a progress indicator
-   *  at the top */
+   * at the top */
   function createProgressBar() {
     // Create the main container div
     const progressContainer = document.createElement("div");
@@ -206,7 +212,7 @@ const nextPost =
   createProgressBar();
 
   /** Update the progress bar
-   *  when user scrolls */
+   * when user scrolls */
   function updateScrollProgress() {
     document.addEventListener("scroll", () => {
       const winScroll =
@@ -226,7 +232,7 @@ const nextPost =
   updateScrollProgress();
 
   /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
+   * allowing sharing of sections easily */
   function addHeadingLinks() {
     const headings = Array.from(
       document.querySelectorAll("h2, h3, h4, h5, h6")

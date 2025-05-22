@@ -5,6 +5,8 @@ title: 'A. Consecutive Sum Riddle (CF1594 800 RATED)'
 slug: 1594-A-Consecutive-Sum-Riddle
 tags: [CPP, Codeforces, CF800]
 description: 'A. Consecutive Sum Riddle, 800 RATED - Codeforces Round 747 (Div. 2)'
+aliases:
+  - /posts/1594-A-Consecutive-Sum-Riddle
 ---
 
 <p class="hidden">Problem A 1594</p>

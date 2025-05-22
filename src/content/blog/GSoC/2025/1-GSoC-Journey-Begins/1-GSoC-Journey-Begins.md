@@ -4,10 +4,13 @@ pubDatetime: 2025-05-09
 title: 'Google Summer of Code 2025: The Journey Begins'
 slug: 'GSoC-2025-The-Journey-Begins'
 tags: [gsoc, Julia]
+featured: true
 description: 'My GSoC 2025 journey begins with The Julia Language and Turing.jl! I’ll be building a browser-based interface for JuliaBUGS.'
+aliases:
+  - /posts/GSoC-2025-The-Journey-Begins
 ---
 
-![GSoC 2025](/posts/GSoC-2025-The-Journey-Begins/GSoC-Horizontal.svg)
+![GSoC 2025](/blog/GSoC-2025-The-Journey-Begins/GSoC-Horizontal.svg)
 
 ## Table of contents
 
@@ -20,11 +23,11 @@ At the time, it stung. I had invested weeks into those applications, reading doc
 
 Two years, a lot of learning, and some incredible mentors later, I’m incredibly happy to share that I’ve been selected for **Google Summer of Code 2025** with **The Julia Organization**, contributing to the **TuringLang** ecosystem!
 
-![GSoC-Mail-Title](/posts/GSoC-2025-The-Journey-Begins/GSoC-Mail-Title.png)
-![GSoC-Mail](/posts/GSoC-2025-The-Journey-Begins/GSoC-Mail.png)
+![GSoC-Mail-Title](/blog/GSoC-2025-The-Journey-Begins/GSoC-Mail-Title.png)
+![GSoC-Mail](/blog/GSoC-2025-The-Journey-Begins/GSoC-Mail.png)
 
 ### Acceptance Letter
-![Shravanpuri-Goswami-GSoC-Acceptance-Letter](/posts/GSoC-2025-The-Journey-Begins/Shravanpuri-Goswami-GSoC-Acceptance-Letter.jpg)
+![Shravanpuri-Goswami-GSoC-Acceptance-Letter](/blog/GSoC-2025-The-Journey-Begins/Shravanpuri-Goswami-GSoC-Acceptance-Letter.jpg)
 
 ---
 
