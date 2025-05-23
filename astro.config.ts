@@ -42,4 +42,7 @@ export default defineConfig({
     },
   },
   scopedStyleStrategy: "where",
+  redirects: {
+    '/posts': '/blog',
+  },
 });
