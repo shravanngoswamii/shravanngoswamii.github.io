@@ -4,213 +4,117 @@ import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Layout from "./Layout.astro";
-import LinkButton from "@components/LinkButton.astro";
 
 export interface Project {
-    title: string;
-    description: string[];
-    techStack: string[];
-    liveLink?: string;
-    githubLink?: string;
-    imageSrc: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  liveLink?: string;
+  githubLink?: string;
+  imageSrc: string;
 }
 
 export interface Props {
-    frontmatter: {
-        title: string;
-        projects: Project[];
-    };
+  frontmatter: {
+    title: string;
+    projects: Project[];
+  };
 }
 
 const { frontmatter } = Astro.props;
 ---
 
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
-    <Header activeNav="projects" />
+  <Header activeNav="projects" />
+  
+  <main id="main-content" class="mx-auto w-full max-w-5xl px-4 sm:px-6">
     <Breadcrumbs />
-    <main id="main-content">
-        <section
-            id="projects"
-            class="prose mb-28 max-w-3xl prose-img:border-0 mx-auto px-4"
-        >
-            <h1 class="text-2xl tracking-wider sm:text-3xl mb-6">
-                {frontmatter.title}
-            </h1>
-            <br>
-            <div class="project-list">
-                {frontmatter.projects.map((project) => (
-                    <div class="project-horizontal-card">
-                        <div class="project-image-wrapper">
-                            <img
-                                src={project.imageSrc}
-                                alt={`Image for ${project.title}`}
-                                class="project-image"
-                            />
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">{project.title}</h3>
-                            <p class="project-description">
-                                {project.description}
-                            </p>
-                            <div class="project-tags">
-                                {project.techStack.map((tech) => (
-                                    <span class="tag">{tech}</span>
-                                ))}
-                            </div>
-                            <div class="project-links">
-                                {project.githubLink && (
-                                    <LinkButton
-                                        href={project.githubLink}
-                                        className="link-button"
-                                        title="View on GitHub"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="icon-tabler"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path
-                                                stroke="none"
-                                                d="M0 0h24v24H0z"
-                                                fill="none"
-                                            />
-                                            <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-                                        </svg>
-                                    </LinkButton>
-                                )}
-                                {project.liveLink && (
-                                    <LinkButton
-                                        href={project.liveLink}
-                                        className="link-button"
-                                        title="View Live Demo"
-                                    >
-                                        <svg
-                                            width="800px"
-                                            height="800px"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <title>Live Link</title>
-                                            <path d="M15.5 2.25a.75.75 0 01.75-.75h5.5a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0V4.06l-6.22 6.22a.75.75 0 11-1.06-1.06L19.94 3h-3.69a.75.75 0 01-.75-.75z" />
-                                            <path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 010 1.5h-8.5a.25.25 0 00-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 00.25-.25v-8.5a.75.75 0 011.5 0v8.5a1.75 1.75 0 01-1.75 1.75H4.25a1.75 1.75 0 01-1.75-1.75V4.25z" />
-                                        </svg>
-                                    </LinkButton>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                ))}
+    
+    <section id="projects" class="py-12">
+      <div class="mb-12 border-b border-skin-line/30 pb-8">
+        <h1 class="text-4xl font-bold tracking-tight text-skin-base sm:text-5xl mb-4">
+          {frontmatter.title}
+        </h1>
+        <p class="max-w-3xl text-xl text-skin-base opacity-75 leading-relaxed font-normal">
+            A curated list of technical projects, research contributions, and open-source experiments.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {frontmatter.projects.map((project) => (
+          <article class="group relative flex flex-col overflow-hidden rounded-xl border border-skin-line/30 bg-skin-card/20 transition-all duration-300 hover:border-skin-accent/50 hover:bg-skin-card/40 hover:shadow-lg hover:-translate-y-1">
+            
+            {/* Image Container */}
+            <div class="relative aspect-[16/10] w-full overflow-hidden bg-white/5 border-b border-skin-line/10 p-4 flex items-center justify-center">
+                <img
+                    src={project.imageSrc}
+                    alt={`Preview of ${project.title}`}
+                    class="h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                    loading="lazy"
+                />
             </div>
-        </section>
-    </main>
-    <Footer />
+
+            {/* Content Body */}
+            <div class="flex flex-1 flex-col p-5">
+                <div class="flex justify-between items-start gap-3 mb-3">
+                    <h3 class="text-lg font-bold leading-tight text-skin-base group-hover:text-skin-accent transition-colors">
+                        {project.title}
+                    </h3>
+                    
+                    {/* Utility Links */}
+                    <div class="flex gap-3 shrink-0 pt-0.5">
+                        {project.githubLink && (
+                            <a 
+                                href={project.githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
+                                title="View Source on GitHub"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-tabler icon-tabler-brand-github" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path>
+                                </svg>
+                            </a>
+                        )}
+                        {project.liveLink && (
+                            <a 
+                                href={project.liveLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
+                                title="View Live Demo"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-tabler icon-tabler-external-link" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"></path>
+                                    <path d="M11 13l9 -9"></path>
+                                    <path d="M15 3h6v6"></path>
+                                </svg>
+                            </a>
+                        )}
+                    </div>
+                </div>
+                
+                <p class="mb-5 text-base leading-relaxed text-skin-base/80 font-normal line-clamp-3">
+                    {project.description}
+                </p>
+
+                {/* Tech Stack */}
+                <div class="mt-auto pt-4 border-t border-skin-line/10">
+                    <div class="flex flex-wrap gap-2">
+                        {project.techStack.map((tech) => (
+                            <span class="inline-flex items-center rounded-md border border-skin-line/20 bg-skin-card/30 px-2.5 py-1 text-xs font-medium text-skin-base/90 tracking-wide">
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer />
 </Layout>
-
-<style>
-    .project-list {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-    }
-
-    .project-horizontal-card {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-        padding: 1.5rem;
-        padding-top: 0;
-        background: theme("colors.bgColor");
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s, box-shadow 0.2s;
-        color: theme("colors.textColor");
-        align-items: center;
-    }
-
-    .project-horizontal-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    @media (max-width: 768px) {
-        .project-horizontal-card {
-            flex-direction: column; /* Force all projects to display the image on top for mobile */
-        }
-        .project-image-wrapper {
-            order: 0; /* Make sure all images are on top */
-        }
-    }
-
-    .project-image-wrapper {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .project-image {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-        object-fit: cover;
-    }
-
-    .project-content {
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .project-title {
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-        margin-top: 1rem;
-    }
-
-    .project-description {
-        font-size: 1rem;
-        margin-bottom: 1rem;
-        opacity: 0.85;
-    }
-
-    .project-tags {
-        margin-bottom: 1rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-    }
-
-    .tag {
-        background: theme("colors.quote");
-        padding: 0.25rem 0.6rem;
-        border-radius: 5px;
-        font-size: 0.85rem;
-        color: #fff;
-    }
-
-    .project-links {
-        display: flex;
-        gap: 0.8rem;
-        align-items: center;
-        flex-wrap: nowrap;
-    }
-
-    .link-button {
-        display: inline-flex;
-        align-items: center;
-        color: theme("colors.textColor");
-        border-radius: 5px;
-        font-size: 0.9rem;
-        text-decoration: none;
-        transition: background 0.2s, color 0.2s;
-        white-space: nowrap;
-    }
-
-    .link-button:hover {
-        color: theme("colors.link");
-    }
-
-    svg:hover {
-        transform: scale(1.1) translateY(-5px);
-    }
-</style>

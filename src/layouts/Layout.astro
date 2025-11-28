@@ -63,8 +63,8 @@ const structuredData = {
       src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        window.dataLayer.push(arguments);
+      function gtag(...args) {
+        window.dataLayer.push(args);
       }
       gtag("js", new Date());
       gtag("config", "G-ZXC7NG6S55");
@@ -74,7 +74,7 @@ const structuredData = {
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
+        const f = d.getElementsByTagName(s)[0],
           j = d.createElement(s),
           dl = l != "dataLayer" ? "&l=" + l : "";
         j.async = true;
