@@ -11,7 +11,9 @@ export interface Project {
   techStack: string[];
   liveLink?: string;
   githubLink?: string;
-  imageSrc: string;
+  imageSrc?: string;
+  imageSrcLight?: string;
+  imageSrcDark?: string;
 }
 
 export interface Props {
@@ -27,7 +29,7 @@ const { frontmatter } = Astro.props;
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
   <Header activeNav="projects" />
   
-  <main id="main-content" class="mx-auto w-full max-w-5xl px-4 sm:px-6">
+  <main id="main-content" class="mx-auto w-full max-w-6xl px-4 sm:px-6">
     <Breadcrumbs />
     
     <section id="projects" class="py-12">
@@ -40,18 +42,36 @@ const { frontmatter } = Astro.props;
         </p>
       </div>
 
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {frontmatter.projects.map((project) => (
-          <article class="group relative flex flex-col overflow-hidden rounded-xl border border-skin-line/30 bg-skin-card/20 transition-all duration-300 hover:border-skin-accent/50 hover:bg-skin-card/40 hover:shadow-lg hover:-translate-y-1">
+          <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-skin-line/30 bg-skin-card/20 transition-all duration-300 hover:border-skin-accent/50 hover:bg-skin-card/40 hover:shadow-xl hover:-translate-y-2">
             
             {/* Image Container */}
-            <div class="relative aspect-[16/10] w-full overflow-hidden bg-white/5 border-b border-skin-line/10 p-4 flex items-center justify-center">
-                <img
-                    src={project.imageSrc}
-                    alt={`Preview of ${project.title}`}
-                    class="h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
-                    loading="lazy"
-                />
+            <div class="relative aspect-video w-full overflow-hidden bg-skin-fill/50 border-b border-skin-line/10 p-4 flex items-center justify-center">
+                {project.imageSrcLight && project.imageSrcDark ? (
+                  <>
+                    <img
+                        src={project.imageSrcLight}
+                        alt={`Preview of ${project.title}`}
+                        class="theme-image-light h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                        loading="lazy"
+                    />
+                    <img
+                        src={project.imageSrcDark}
+                        alt={`Preview of ${project.title}`}
+                        class="theme-image-dark h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                        loading="lazy"
+                        style="display: none;" 
+                    />
+                  </>
+                ) : (
+                  <img
+                      src={project.imageSrc || project.imageSrcLight || project.imageSrcDark}
+                      alt={`Preview of ${project.title}`}
+                      class="h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                      loading="lazy"
+                  />
+                )}
             </div>
 
             {/* Content Body */}
@@ -96,7 +116,7 @@ const { frontmatter } = Astro.props;
                     </div>
                 </div>
                 
-                <p class="mb-5 text-base leading-relaxed text-skin-base/80 font-normal line-clamp-3">
+                <p class="mb-5 text-sm leading-relaxed text-skin-base/80 font-normal line-clamp-3">
                     {project.description}
                 </p>
 
@@ -104,7 +124,7 @@ const { frontmatter } = Astro.props;
                 <div class="mt-auto pt-4 border-t border-skin-line/10">
                     <div class="flex flex-wrap gap-2">
                         {project.techStack.map((tech) => (
-                            <span class="inline-flex items-center rounded-md border border-skin-line/20 bg-skin-card/30 px-2.5 py-1 text-xs font-medium text-skin-base/90 tracking-wide">
+                            <span class="inline-flex items-center rounded-md border border-skin-line/20 bg-skin-card/30 px-2 py-0.5 text-xs font-medium text-skin-base/90 tracking-wide">
                                 {tech}
                             </span>
                         ))}
@@ -118,3 +138,28 @@ const { frontmatter } = Astro.props;
   </main>
   <Footer />
 </Layout>
+
+<style>
+  /* Theme-based image visibility */
+  :global(html[data-theme="light"]) .theme-image-dark,
+  :global(html[data-theme="latte"]) .theme-image-dark {
+    display: none !important;
+  }
+  :global(html[data-theme="light"]) .theme-image-light,
+  :global(html[data-theme="latte"]) .theme-image-light {
+    display: block !important;
+  }
+
+  :global(html[data-theme="dark"]) .theme-image-light,
+  :global(html[data-theme="frappe"]) .theme-image-light,
+  :global(html[data-theme="macchiato"]) .theme-image-light,
+  :global(html[data-theme="mocha"]) .theme-image-light {
+    display: none !important;
+  }
+  :global(html[data-theme="dark"]) .theme-image-dark,
+  :global(html[data-theme="frappe"]) .theme-image-dark,
+  :global(html[data-theme="macchiato"]) .theme-image-dark,
+  :global(html[data-theme="mocha"]) .theme-image-dark {
+    display: block !important;
+  }
+</style>
