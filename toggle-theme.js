@@ -3,6 +3,9 @@ const primaryColorScheme = ""; // "light" | "dark"
 // Get theme data from local storage
 const currentTheme = localStorage.getItem("theme");
 
+// Define available themes
+const themes = ["light", "dark", "latte", "frappe", "macchiato", "mocha"];
+
 function getPreferTheme() {
   // return theme value in local storage if it is set
   if (currentTheme) return currentTheme;
@@ -10,23 +13,39 @@ function getPreferTheme() {
   // return primary color scheme if it is set
   if (primaryColorScheme) return primaryColorScheme;
 
-  // return user device's prefer color scheme
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  // Default to auto
+  return "auto";
 }
 
 let themeValue = getPreferTheme();
 
-function setPreference() {
-  localStorage.setItem("theme", themeValue);
-  reflectPreference();
+function setPreference(theme) {
+  localStorage.setItem("theme", theme);
+  reflectPreference(theme);
 }
 
-function reflectPreference() {
-  document.firstElementChild.setAttribute("data-theme", themeValue);
+function reflectPreference(theme) {
+  let themeToApply = theme;
+  if (theme === "auto") {
+    // Get the last applied auto theme to avoid repetition
+    const lastAutoTheme = sessionStorage.getItem("last-auto-theme");
+    
+    // Filter out the last theme to ensure a change
+    const availableThemes = lastAutoTheme 
+      ? themes.filter(t => t !== lastAutoTheme) 
+      : themes;
+      
+    const randomIndex = Math.floor(Math.random() * availableThemes.length);
+    themeToApply = availableThemes[randomIndex];
+    
+    // Save the new theme as the last applied one
+    sessionStorage.setItem("last-auto-theme", themeToApply);
+  }
 
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+  document.firstElementChild.setAttribute("data-theme", themeToApply);
+
+  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeToApply);
+  document.querySelector("#theme-btn")?.setAttribute("title", `Current theme: ${themeToApply} (${theme === "auto" ? "Auto" : "Manual"})`);
 
   // Get a reference to the body element
   const body = document.body;
@@ -47,17 +66,37 @@ function reflectPreference() {
 }
 
 // set early so no page flashes / CSS is made aware
-reflectPreference();
+reflectPreference(themeValue);
 
 window.onload = () => {
   function setThemeFeature() {
     // set on load so screen readers can get the latest value on the button
-    reflectPreference();
+    reflectPreference(themeValue);
 
-    // now this script can find and listen for clicks on the control
-    document.querySelector("#theme-btn")?.addEventListener("click", () => {
-      themeValue = themeValue === "light" ? "dark" : "light";
-      setPreference();
+    // Toggle dropdown
+    const themeBtn = document.querySelector("#theme-btn");
+    const themeDropdown = document.querySelector("#theme-dropdown");
+
+    themeBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      themeDropdown?.classList.toggle("hidden");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!themeBtn?.contains(e.target) && !themeDropdown?.contains(e.target)) {
+        themeDropdown?.classList.add("hidden");
+      }
+    });
+
+    // Handle theme selection
+    document.querySelectorAll(".theme-option").forEach((option) => {
+      option.addEventListener("click", () => {
+        const selectedTheme = option.getAttribute("data-theme");
+        themeValue = selectedTheme;
+        setPreference(selectedTheme);
+        themeDropdown?.classList.add("hidden");
+      });
     });
   }
 
@@ -71,6 +110,20 @@ window.onload = () => {
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? "dark" : "light";
-    setPreference();
+    // Only update if user hasn't set a preference or is in auto mode
+    if (!localStorage.getItem("theme") || localStorage.getItem("theme") === "auto") {
+       // In auto mode, we might want to respect system preference or keep random.
+       // The requirement says "in Auto, theme should change on every reload".
+       // It doesn't explicitly say it should respond to system changes, but usually "Auto" implies system sync.
+       // However, the user specifically asked for "random on reload".
+       // I will keep the random behavior for "auto" and only sync if no preference is set at all (which defaults to system).
+       // But wait, getPreferTheme() returns system preference if no storage.
+       // If storage is "auto", we use random.
+       // If storage is null, we use system.
+       // So if storage is null, we should update.
+       if (!localStorage.getItem("theme")) {
+          themeValue = isDark ? "dark" : "light";
+          reflectPreference(themeValue);
+       }
+    }
   });
