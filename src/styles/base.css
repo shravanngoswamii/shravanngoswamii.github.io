@@ -20,12 +20,59 @@
     --color-card-muted: 12, 14, 79; /* Dark Blue (Muted) */
     --color-border: 0, 221, 255; /* Bright Cyan */
   }
+
+  /* Catppuccin Latte (Light) */
+  html[data-theme="latte"] {
+    --color-fill: 239, 241, 245;
+    --color-text-base: 76, 79, 105;
+    --color-accent: 136, 57, 239;
+    --color-card: 204, 208, 218;
+    --color-card-muted: 230, 233, 239;
+    --color-border: 156, 160, 176;
+  }
+
+  /* Catppuccin Frappé (Dark) */
+  html[data-theme="frappe"] {
+    --color-fill: 48, 52, 70;
+    --color-text-base: 198, 208, 245;
+    --color-accent: 202, 158, 230;
+    --color-card: 65, 69, 89;
+    --color-card-muted: 41, 44, 60;
+    --color-border: 115, 121, 148;
+  }
+
+  /* Catppuccin Macchiato (Dark) */
+  html[data-theme="macchiato"] {
+    --color-fill: 36, 39, 58;
+    --color-text-base: 202, 211, 245;
+    --color-accent: 198, 160, 246;
+    --color-card: 54, 58, 79;
+    --color-card-muted: 30, 32, 48;
+    --color-border: 110, 115, 141;
+  }
+
+  /* Catppuccin Mocha (Dark) */
+  html[data-theme="mocha"] {
+    --color-fill: 30, 30, 46;
+    --color-text-base: 205, 214, 244;
+    --color-accent: 203, 166, 247;
+    --color-card: 49, 50, 68;
+    --color-card-muted: 24, 24, 37;
+    --color-border: 108, 112, 134;
+  }
+
   #sun-svg,
-  html[data-theme="dark"] #moon-svg {
+  html[data-theme="dark"] #moon-svg,
+  html[data-theme="frappe"] #moon-svg,
+  html[data-theme="macchiato"] #moon-svg,
+  html[data-theme="mocha"] #moon-svg {
     display: none;
   }
   #moon-svg,
-  html[data-theme="dark"] #sun-svg {
+  html[data-theme="dark"] #sun-svg,
+  html[data-theme="frappe"] #sun-svg,
+  html[data-theme="macchiato"] #sun-svg,
+  html[data-theme="mocha"] #sun-svg {
     display: block;
   }
   body {
@@ -108,7 +155,13 @@
 
   /* Apply Dark Theme (if multi-theme specified) */
   html[data-theme="dark"] pre:has(code),
-  html[data-theme="dark"] pre:has(code) span {
+  html[data-theme="dark"] pre:has(code) span,
+  html[data-theme="frappe"] pre:has(code),
+  html[data-theme="frappe"] pre:has(code) span,
+  html[data-theme="macchiato"] pre:has(code),
+  html[data-theme="macchiato"] pre:has(code) span,
+  html[data-theme="mocha"] pre:has(code),
+  html[data-theme="mocha"] pre:has(code) span {
     color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
     font-style: var(--shiki-dark-font-style) !important;
