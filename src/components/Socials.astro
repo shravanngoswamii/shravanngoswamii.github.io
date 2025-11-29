@@ -12,16 +12,18 @@ const { centered = false } = Astro.props;
 
 <div class={`social-icons ${centered ? "flex" : ""}`}>
   {
-    SOCIALS.filter((social) => social.active).map((social) => (
+    SOCIALS.filter((social) => social.active).map((social) => {
+      const SocialIcon = socialIcons[social.name];
+      return (
       <LinkButton
         href={social.href}
         className="link-button"
         title={social.linkTitle}
       >
-        <Fragment set:html={socialIcons[social.name]} />
+        <SocialIcon className="icon-tabler" />
         <span class="sr-only">{social.linkTitle}</span>
       </LinkButton>
-    ))
+    )})
   }
 </div>
 

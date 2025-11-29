@@ -4,6 +4,7 @@ import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Layout from "./Layout.astro";
+import { TbBrandGithub, TbExternalLink } from "react-icons/tb";
 
 export interface Project {
   title: string;
@@ -32,15 +33,15 @@ const { frontmatter } = Astro.props;
   <main id="main-content" class="mx-auto w-full max-w-6xl px-4 sm:px-6">
     <Breadcrumbs />
 
-    <section id="projects" class="py-12">
+    <section id="projects" class="pb-12">
       <div class="mb-12 border-b border-skin-line/30 pb-8">
         <h1
-          class="text-4xl font-bold tracking-tight text-skin-base sm:text-5xl mb-4"
+          class="text-2xl font-semibold sm:text-3xl text-skin-base mb-2"
         >
           {frontmatter.title}
         </h1>
         <p
-          class="max-w-3xl text-xl text-skin-base opacity-75 leading-relaxed font-normal"
+          class="max-w-3xl italic text-skin-base opacity-75 leading-relaxed"
         >
           A curated list of technical projects, research contributions, and
           open-source experiments.
@@ -100,21 +101,7 @@ const { frontmatter } = Astro.props;
                         class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
                         title="View Source on GitHub"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon-tabler icon-tabler-brand-github"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-                        </svg>
+                        <TbBrandGithub className="icon-tabler icon-tabler-brand-github w-5 h-5" />
                       </a>
                     )}
                     {project.liveLink && (
@@ -125,23 +112,7 @@ const { frontmatter } = Astro.props;
                         class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
                         title="View Live Demo"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon-tabler icon-tabler-external-link"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
-                          <path d="M11 13l9 -9" />
-                          <path d="M15 3h6v6" />
-                        </svg>
+                        <TbExternalLink className="icon-tabler icon-tabler-external-link w-5 h-5" />
                       </a>
                     )}
                   </div>

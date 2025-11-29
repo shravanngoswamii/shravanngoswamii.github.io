@@ -8,6 +8,8 @@ import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
+import { getPublications, processLatex } from "@utils/bibtexUtils";
+import { TbChevronLeft, TbChevronRight, TbChevronUp, TbBook } from "react-icons/tb";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -26,6 +28,11 @@ const {
   modDatetime,
   tags,
 } = post.data;
+
+const publications = await getPublications();
+const relatedPublications = publications.filter(pub => 
+  pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
+);
 
 const { Content } = await post.render();
 
@@ -70,14 +77,11 @@ const nextPost =
 
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
-      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
+      class="focus-outline mb-2 mt-8 flex hover:opacity-75 items-center"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
-      <svg xmlns="http://www.w3.org/2000/svg"
-        ><path
-          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-        ></path>
-      </svg><span>Go back</span>
+      <TbChevronLeft className="inline-block h-6 w-6 scale-90 fill-skin-base group-hover:fill-skin-accent" />
+      <span>Go back</span>
     </button>
   </div>
   <main id="main-content">
@@ -92,8 +96,38 @@ const nextPost =
       <Content />
     </article>
 
+    {relatedPublications.length > 0 && (
+      <div class="my-8 border-t border-skin-line/30 pt-8">
+        <h3 class="text-xl font-bold text-skin-base mb-4">Associated Publications</h3>
+        <ul class="space-y-4">
+          {relatedPublications.map(pub => (
+            <li class="flex flex-col gap-1">
+              <div class="flex items-baseline gap-2">
+                <span class="text-skin-accent">
+                  <TbBook className="h-4 w-4 inline-block" />
+                </span>
+                <div class="flex-1">
+                  {pub.entryTags.url ? (
+                    <a href={pub.entryTags.url} target="_blank" rel="noopener noreferrer" class="font-medium hover:underline decoration-dashed underline-offset-4">
+                      <span set:html={processLatex(pub.entryTags.title)} />
+                    </a>
+                  ) : (
+                    <span class="font-medium" set:html={processLatex(pub.entryTags.title)} />
+                  )}
+                  <span class="text-sm text-skin-base/60 ml-2">({pub.entryTags.year})</span>
+                </div>
+              </div>
+              <div class="text-sm text-skin-base/80 ml-6 italic">
+                {pub.entryTags.journal || pub.entryTags.booktitle || pub.entryTags.publisher || pub.entryTags.note}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
     <ul class="my-8">
-      {tags.map((tag) => <Tag tag={slugifyStr(tag)} />)}
+      {tags.map((tag) => <Tag tag={tag} />)}
     </ul>
 
     <div
@@ -101,13 +135,9 @@ const nextPost =
     >
       <button
         id="back-to-top"
-        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
+        class="focus-outline whitespace-nowrap py-1 hover:opacity-75 flex items-center"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
-          <path
-            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-          ></path>
-        </svg>
+        <TbChevronUp className="h-6 w-6 scale-90 fill-skin-base group-hover:fill-skin-accent" />
         <span>Back to Top</span>
       </button>
 
@@ -122,23 +152,9 @@ const nextPost =
         prevPost && (
           <a
             href={`/blog/${prevPost.slug}`}
-            class="flex w-full gap-1 hover:opacity-75"
+            class="flex w-full gap-1 hover:opacity-75 items-center"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M15 6l-6 6l6 6" />
-            </svg>
+            <TbChevronLeft className="h-6 w-6 flex-none" />
             <div>
               <span>Previous Post</span>
               <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
@@ -150,27 +166,13 @@ const nextPost =
         nextPost && (
           <a
             href={`/blog/${nextPost.slug}`}
-            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
           >
             <div>
               <span>Next Post</span>
               <div class="text-sm text-skin-accent/85">{nextPost.title}</div>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 6l6 6l-6 6" />
-            </svg>
+            <TbChevronRight className="h-6 w-6 flex-none" />
           </a>
         )
       }

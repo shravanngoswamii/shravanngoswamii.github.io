@@ -4,7 +4,7 @@ const primaryColorScheme = ""; // "light" | "dark"
 const currentTheme = localStorage.getItem("theme");
 
 // Define available themes
-const themes = ["light", "dark", "latte", "frappe", "macchiato", "mocha"];
+const themes = ["latte", "frappe", "macchiato", "mocha", "light", "dark"];
 
 function getPreferTheme() {
   // return theme value in local storage if it is set
@@ -27,16 +27,19 @@ function setPreference(theme) {
 function reflectPreference(theme) {
   let themeToApply = theme;
   if (theme === "auto") {
-    // Get the last applied auto theme to avoid repetition
+    // Get the last applied auto theme
     const lastAutoTheme = sessionStorage.getItem("last-auto-theme");
 
-    // Filter out the last theme to ensure a change
-    const availableThemes = lastAutoTheme
-      ? themes.filter((t) => t !== lastAutoTheme)
-      : themes;
+    // Cycle through themes sequentially
+    let nextIndex = 0;
+    if (lastAutoTheme) {
+      const currentIndex = themes.indexOf(lastAutoTheme);
+      if (currentIndex !== -1) {
+        nextIndex = (currentIndex + 1) % themes.length;
+      }
+    }
 
-    const randomIndex = Math.floor(Math.random() * availableThemes.length);
-    themeToApply = availableThemes[randomIndex];
+    themeToApply = themes[nextIndex];
 
     // Save the new theme as the last applied one
     sessionStorage.setItem("last-auto-theme", themeToApply);

@@ -2,6 +2,7 @@
 import { LOGO_IMAGE, SITE } from "@config";
 import Search from "./Search.astro";
 import Hr from "./Hr.astro";
+import { TbMenu2, TbX, TbMoon, TbSun, TbDeviceDesktop, TbCoffee } from "react-icons/tb";
 // import LinkButton from "./LinkButton.astro";
 
 export interface Props {
@@ -36,26 +37,18 @@ const { activeNav } = Astro.props;
           aria-expanded="false"
           aria-controls="menu-items"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="menu-icon"
-          >
-            <line x1="7" y1="12" x2="21" y2="12" class="line"></line>
-            <line x1="3" y1="6" x2="21" y2="6" class="line"></line>
-            <line x1="12" y1="18" x2="21" y2="18" class="line"></line>
-            <line x1="18" y1="6" x2="6" y2="18" class="close"></line>
-            <line x1="6" y1="6" x2="18" y2="18" class="close"></line>
-          </svg>
+          <div class="menu-icon">
+            <TbMenu2 className="menu-open icon-tabler" />
+            <TbX className="menu-close icon-tabler hidden" />
+          </div>
         </button>
         <ul id="menu-items" class="display-none sm:flex">
+          <li>
+            <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
+              {/* CHANGED from /posts/ to /blog/ */}
+              Blog
+            </a>
+          </li>
           <li>
             <a
               href="/projects/"
@@ -78,12 +71,6 @@ const { activeNav } = Astro.props;
             </a>
           </li>
           <li>
-            <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
-              {/* CHANGED from /posts/ to /blog/ */}
-              Blog
-            </a>
-          </li>
-          <li>
             <a href="/tags/" class={activeNav === "tags" ? "active" : ""}>
               Tags
             </a>
@@ -101,59 +88,71 @@ const { activeNav } = Astro.props;
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" id="moon-svg">
-                    <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg">
-                    <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" />
-                  </svg>
+                  <TbMoon id="moon-svg" className="icon-tabler" />
+                  <TbSun id="sun-svg" className="icon-tabler" />
                 </button>
                 <div
                   id="theme-dropdown"
-                  class="absolute right-0 top-full mt-2 w-32 rounded-md bg-skin-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50"
+                  class="absolute right-0 top-full mt-2 w-48 rounded-xl bg-skin-card border border-skin-line shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50 overflow-hidden transition-all duration-200"
                 >
-                  <div class="py-1">
+                  <div class="py-2">
+                    <div class="px-4 py-2 text-xs font-bold text-skin-base/50 uppercase tracking-wider">Theme</div>
+                    
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="light"
                     >
-                      Light
+                      <TbSun className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Light</span>
                     </button>
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="dark"
                     >
-                      Dark
+                      <TbMoon className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Dark</span>
                     </button>
+
+                    <div class="my-1 border-t border-skin-line/10"></div>
+                    <div class="px-4 py-2 text-xs font-bold text-skin-base/50 uppercase tracking-wider">Catppuccin</div>
+
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="latte"
                     >
-                      Latte
+                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Latte</span>
                     </button>
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="frappe"
                     >
-                      Frappé
+                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Frappé</span>
                     </button>
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="macchiato"
                     >
-                      Macchiato
+                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Macchiato</span>
                     </button>
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="mocha"
                     >
-                      Mocha
+                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Mocha</span>
                     </button>
+
+                    <div class="my-1 border-t border-skin-line/10"></div>
+
                     <button
-                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
                       data-theme="auto"
                     >
-                      Auto
+                      <TbDeviceDesktop className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                      <span>Auto</span>
                     </button>
                   </div>
                 </div>
@@ -226,17 +225,14 @@ const { activeNav } = Astro.props;
     @apply scale-125 hover:rotate-12 sm:scale-100;
   }
 
-  .menu-icon line {
-    @apply transition-opacity duration-75 ease-in-out;
+  .menu-icon .menu-close {
+    @apply hidden;
   }
-  .menu-icon .close {
-    opacity: 0;
+  .menu-icon.is-active .menu-open {
+    @apply hidden;
   }
-  .menu-icon.is-active .line {
-    @apply opacity-0;
-  }
-  .menu-icon.is-active .close {
-    @apply opacity-100;
+  .menu-icon.is-active .menu-close {
+    @apply block;
   }
 </style>
 

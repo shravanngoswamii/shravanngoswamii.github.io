@@ -2,6 +2,7 @@
 // Heavy inspiration taken from Astro Starlight -> https://github.com/withastro/starlight/blob/main/packages/starlight/components/Search.astro
 
 import "@pagefind/default-ui/css/ui.css";
+import { TbSearch } from "react-icons/tb";
 ---
 
 <site-search class="ms-auto" id="search">
@@ -10,22 +11,7 @@ import "@pagefind/default-ui/css/ui.css";
     data-open-modal
     disabled
   >
-    <svg
-      aria-label="search"
-      class="h-7 w-7 search-svg"
-      fill="none"
-      height="16"
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
-      viewBox="0 0 24 24"
-      width="16"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M0 0h24v24H0z" stroke="none"></path>
-      <path d="M3 10a7 7 0 1 0 14 0 7 7 0 1 0-14 0M21 21l-6-6"></path>
-    </svg>
+    <TbSearch className="h-7 w-7 search-svg icon-tabler" />
   </button>
   <dialog
     style="color: inherit !important;"

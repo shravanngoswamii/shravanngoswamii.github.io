@@ -1,41 +1,19 @@
 ---
 import { SITE } from "@config";
-import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Layout from "@layouts/Layout.astro";
-import { toJSON } from "bibtex-parse-js";
-import fs from "node:fs/promises";
-import path from "node:path";
+import Main from "@layouts/Main.astro";
+import { getPublications, processLatex, type Publication } from "@utils/bibtexUtils";
+import { getCollection } from "astro:content";
+import getSortedPosts from "@utils/getSortedPosts";
+import { TbArrowRight } from "react-icons/tb";
 
-interface Publication {
-  entryTags: {
-    year?: string;
-    title?: string;
-    author?: string;
-    journal?: string;
-    booktitle?: string;
-    publisher?: string;
-    url?: string;
-    [key: string]: string | undefined;
-  };
-  entryType?: string;
-}
+const publications = await getPublications();
 
-const bibFilePath = path.join(
-  process.cwd(),
-  "public",
-  "assets",
-  "publications.bib",
-);
-let publications: Publication[] = [];
-
-try {
-  const bibContent = await fs.readFile(bibFilePath, "utf-8");
-  publications = toJSON(bibContent);
-} catch (error) {
-  console.error("Error reading or parsing bib file:", error);
-}
+// Fetch and sort blog posts
+const posts = await getCollection("blog");
+const sortedPosts = getSortedPosts(posts);
 
 // Sort publications by year (descending)
 publications.sort((a: Publication, b: Publication) => {
@@ -67,140 +45,125 @@ publications.forEach((pub) => {
 });
 
 // Helper function to process LaTeX formatting
-const processLatex = (text: string | undefined) => {
-  if (!text) return "";
-  // Replace \textbf{...} with <b>...</b>
-  let processed = text.replace(
-    /\\textbf{([^}]+)}/g,
-    '<b class="font-semibold text-skin-base">$1</b>',
+// Moved to @utils/bibtexUtils
+
+const getRelatedPosts = (pub: Publication) => {
+  if (!pub.entryTags.keywords) return [];
+  const keywords = pub.entryTags.keywords.toLowerCase().split(",").map(k => k.trim());
+  return sortedPosts.filter(post => 
+    post.data.tags.some(tag => keywords.includes(tag.toLowerCase()))
   );
-  // Replace \href{url}{text} with <a href="url" ...>text</a>
-  processed = processed.replace(
-    /\\href{([^}]+)}{([^}]+)}/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-0.5 text-skin-accent hover:text-skin-accent/80 hover:underline underline-offset-4 transition-colors">$2<svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-3 w-3 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a>',
-  );
-  return processed;
 };
 ---
 
 <Layout title={`Publications | ${SITE.title}`}>
   <Header activeNav="publications" />
 
-  <main id="main-content" class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-    <Breadcrumbs />
-
-    <section id="publications" class="py-12">
-      <div class="mb-12 border-b border-skin-line/30 pb-8">
-        <h1
-          class="text-4xl font-bold tracking-tight text-skin-base sm:text-5xl mb-4"
-        >
-          Publications
-        </h1>
-        <p
-          class="max-w-3xl text-xl text-skin-base opacity-75 leading-relaxed font-normal"
-        >
-          A collection of my research papers, articles, and conference
-          proceedings.
-        </p>
-      </div>
-
-      <div class="space-y-16">
-        {
-          Object.entries(groupedPublications).map(
-            ([category, pubs]) =>
-              pubs.length > 0 && (
-                <div class="space-y-6">
-                  <h2 class="text-2xl font-bold text-skin-base border-b border-skin-line/20 pb-2">
-                    {category}
-                  </h2>
-                  <ul class="space-y-10">
-                    {pubs.map((pub: Publication) => (
-                      <li class="group relative pl-4 border-l-2 border-transparent hover:border-skin-accent transition-all duration-300">
-                        <div class="flex flex-col gap-2">
-                          <div class="flex justify-between items-start gap-4">
-                            <h3 class="text-xl font-bold text-skin-base font-serif leading-snug">
-                              {pub.entryTags.url ? (
-                                <a
-                                  href={pub.entryTags.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  class="group-hover:text-skin-accent transition-colors duration-200 flex items-start gap-2"
-                                >
-                                  <span
-                                    set:html={processLatex(pub.entryTags.title)}
-                                  />
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-skin-accent shrink-0 mt-1"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  >
-                                    <path d="M7 17L17 7" />
-                                    <path d="M7 7h10v10" />
-                                  </svg>
-                                </a>
-                              ) : (
+  <Main
+    pageTitle="Publications"
+    pageDesc="A collection of my research papers, articles, and conference proceedings."
+  >
+    <div class="space-y-12">
+      {
+        Object.entries(groupedPublications).map(
+          ([category, pubs]) =>
+            pubs.length > 0 && (
+              <div class="space-y-4">
+                <h2 class="text-xl font-bold text-skin-base border-b border-skin-line/20 pb-2">
+                  {category}
+                </h2>
+                <ul class="space-y-0">
+                  {pubs.map((pub: Publication) => (
+                    <li class="py-3 border-b border-skin-line/10 last:border-none">
+                      <div class="flex flex-col gap-1">
+                        <div class="flex justify-between items-baseline gap-4">
+                          <h3 class="text-lg font-bold text-skin-base leading-snug">
+                            {pub.entryTags.url ? (
+                              <a
+                                href={pub.entryTags.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors duration-200"
+                              >
                                 <span
                                   set:html={processLatex(pub.entryTags.title)}
                                 />
-                              )}
-                            </h3>
-                            {pub.entryTags.year && (
-                              <span class="text-sm font-mono text-skin-base/50 shrink-0 pt-1">
-                                {pub.entryTags.year}
-                              </span>
+                              </a>
+                            ) : (
+                              <span
+                                set:html={processLatex(pub.entryTags.title)}
+                              />
                             )}
-                          </div>
-
-                          <div class="text-base text-skin-base/90">
-                            <span
-                              set:html={processLatex(pub.entryTags.author)}
-                            />
-                          </div>
-
-                          <div class="flex flex-wrap gap-x-3 gap-y-1 text-sm text-skin-base/60 italic">
-                            {pub.entryTags.journal && (
-                              <span>{pub.entryTags.journal}</span>
-                            )}
-                            {pub.entryTags.booktitle && (
-                              <span>{pub.entryTags.booktitle}</span>
-                            )}
-                            {pub.entryTags.publisher && (
-                              <span>{pub.entryTags.publisher}</span>
-                            )}
-                            {pub.entryTags.note && (
-                              <span class="flex items-center gap-2">
-                                {(pub.entryTags.journal ||
-                                  pub.entryTags.booktitle ||
-                                  pub.entryTags.publisher) && (
-                                  <span class="not-italic opacity-50">•</span>
-                                )}
-                                <span
-                                  set:html={processLatex(pub.entryTags.note)}
-                                />
-                              </span>
-                            )}
-                          </div>
+                          </h3>
+                          {pub.entryTags.year && (
+                            <span class="text-sm text-skin-base/60 shrink-0">
+                              {pub.entryTags.year}
+                            </span>
+                          )}
                         </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ),
-          )
-        }
 
-        {
-          publications.length === 0 && (
-            <p class="text-skin-base opacity-75">No publications found.</p>
-          )
-        }
-      </div>
-    </section>
-  </main>
+                        <div class="text-sm text-skin-base/90">
+                          <span
+                            set:html={processLatex(pub.entryTags.author)}
+                          />
+                        </div>
+
+                        <div class="text-xs text-skin-base/60 italic">
+                          {pub.entryTags.journal && (
+                            <span>{pub.entryTags.journal}</span>
+                          )}
+                          {pub.entryTags.booktitle && (
+                            <span>{pub.entryTags.booktitle}</span>
+                          )}
+                          {pub.entryTags.publisher && (
+                            <span>{pub.entryTags.publisher}</span>
+                          )}
+                          {pub.entryTags.note && (
+                            <span class="inline-flex items-center gap-1">
+                              {(pub.entryTags.journal ||
+                                pub.entryTags.booktitle ||
+                                pub.entryTags.publisher) && (
+                                <span class="not-italic opacity-50 mx-1">•</span>
+                              )}
+                              <span
+                                set:html={processLatex(pub.entryTags.note)}
+                              />
+                            </span>
+                          )}
+                        </div>
+
+                        {getRelatedPosts(pub).length > 0 && (
+                          <div class="mt-2 pt-1">
+                            <span class="text-xs font-bold uppercase tracking-wider text-skin-base/50 mb-1 block">
+                              My Companion Blog Post{getRelatedPosts(pub).length > 1 ? "s" : ""}
+                            </span>
+                            <ul class="space-y-1">
+                              {getRelatedPosts(pub).map(post => (
+                                <li class="flex items-start gap-2 text-xs group">
+                                  <TbArrowRight className="h-3.5 w-3.5 text-skin-base/50 shrink-0 mt-0.5 group-hover:text-skin-accent transition-colors" />
+                                  <a href={`/blog/${post.slug}/`} class="text-skin-base/70 hover:text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors">
+                                    {post.data.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ),
+        )
+      }
+
+      {
+        publications.length === 0 && (
+          <p class="text-skin-base opacity-75">No publications found.</p>
+        )
+      }
+    </div>
+  </Main>
   <Footer />
 </Layout>

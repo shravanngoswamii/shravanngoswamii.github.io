@@ -2,6 +2,7 @@
 import type { Page } from "astro";
 import LinkButton from "./LinkButton.astro";
 import type { CollectionEntry } from "astro:content";
+import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
@@ -19,12 +20,7 @@ const { page } = Astro.props;
         className={`mr-4 select-none ${page.url.prev ? "" : "disabled"}`}
         ariaLabel="Previous"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class:list={[{ "disabled-svg": !page.url.prev }]}
-        >
-          <path d="M12.707 17.293 8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z" />
-        </svg>
+        <TbChevronLeft className="w-6 h-6" />
         Prev
       </LinkButton>
       {page.currentPage} / {page.lastPage}
@@ -35,12 +31,7 @@ const { page } = Astro.props;
         ariaLabel="Next"
       >
         Next
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class:list={[{ "disabled-svg": !page.url.next }]}
-        >
-          <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-        </svg>
+        <TbChevronRight className="w-6 h-6" />
       </LinkButton>
     </nav>
   )
@@ -52,8 +43,5 @@ const { page } = Astro.props;
   }
   .disabled {
     @apply pointer-events-none select-none opacity-50 hover:text-skin-base group-hover:fill-skin-base;
-  }
-  .disabled-svg {
-    @apply group-hover:!fill-skin-base;
   }
 </style>
