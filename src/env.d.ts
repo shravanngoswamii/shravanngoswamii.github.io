@@ -3,3 +3,4 @@
 
 // Add your module declaration here
 declare module '@pagefind/default-ui';
+declare module 'bibtex-parse-js';
