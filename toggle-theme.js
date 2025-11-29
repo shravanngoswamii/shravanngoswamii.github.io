@@ -29,23 +29,30 @@ function reflectPreference(theme) {
   if (theme === "auto") {
     // Get the last applied auto theme to avoid repetition
     const lastAutoTheme = sessionStorage.getItem("last-auto-theme");
-    
+
     // Filter out the last theme to ensure a change
-    const availableThemes = lastAutoTheme 
-      ? themes.filter(t => t !== lastAutoTheme) 
+    const availableThemes = lastAutoTheme
+      ? themes.filter((t) => t !== lastAutoTheme)
       : themes;
-      
+
     const randomIndex = Math.floor(Math.random() * availableThemes.length);
     themeToApply = availableThemes[randomIndex];
-    
+
     // Save the new theme as the last applied one
     sessionStorage.setItem("last-auto-theme", themeToApply);
   }
 
   document.firstElementChild.setAttribute("data-theme", themeToApply);
 
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeToApply);
-  document.querySelector("#theme-btn")?.setAttribute("title", `Current theme: ${themeToApply} (${theme === "auto" ? "Auto" : "Manual"})`);
+  document
+    .querySelector("#theme-btn")
+    ?.setAttribute("aria-label", themeToApply);
+  document
+    .querySelector("#theme-btn")
+    ?.setAttribute(
+      "title",
+      `Current theme: ${themeToApply} (${theme === "auto" ? "Auto" : "Manual"})`,
+    );
 
   // Get a reference to the body element
   const body = document.body;
@@ -111,19 +118,22 @@ window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches: isDark }) => {
     // Only update if user hasn't set a preference or is in auto mode
-    if (!localStorage.getItem("theme") || localStorage.getItem("theme") === "auto") {
-       // In auto mode, we might want to respect system preference or keep random.
-       // The requirement says "in Auto, theme should change on every reload".
-       // It doesn't explicitly say it should respond to system changes, but usually "Auto" implies system sync.
-       // However, the user specifically asked for "random on reload".
-       // I will keep the random behavior for "auto" and only sync if no preference is set at all (which defaults to system).
-       // But wait, getPreferTheme() returns system preference if no storage.
-       // If storage is "auto", we use random.
-       // If storage is null, we use system.
-       // So if storage is null, we should update.
-       if (!localStorage.getItem("theme")) {
-          themeValue = isDark ? "dark" : "light";
-          reflectPreference(themeValue);
-       }
+    if (
+      !localStorage.getItem("theme") ||
+      localStorage.getItem("theme") === "auto"
+    ) {
+      // In auto mode, we might want to respect system preference or keep random.
+      // The requirement says "in Auto, theme should change on every reload".
+      // It doesn't explicitly say it should respond to system changes, but usually "Auto" implies system sync.
+      // However, the user specifically asked for "random on reload".
+      // I will keep the random behavior for "auto" and only sync if no preference is set at all (which defaults to system).
+      // But wait, getPreferTheme() returns system preference if no storage.
+      // If storage is "auto", we use random.
+      // If storage is null, we use system.
+      // So if storage is null, we should update.
+      if (!localStorage.getItem("theme")) {
+        themeValue = isDark ? "dark" : "light";
+        reflectPreference(themeValue);
+      }
     }
   });
