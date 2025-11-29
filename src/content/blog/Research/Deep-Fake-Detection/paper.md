@@ -1,11 +1,11 @@
 ---
 author: Shravan Goswami
 pubDatetime: 2025-06-04
-title: 'DeepFake Detection Research'
-slug: 'deepfake-detection-research'
+title: "DeepFake Detection Research"
+slug: "deepfake-detection-research"
 tags: [Research]
 draft: true
-description: 'DeepFake Detection Research'
+description: "DeepFake Detection Research"
 ---
 
 > This is a draft post -- feel free to ignore it!

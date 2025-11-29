@@ -1,10 +1,10 @@
 ---
 author: Shravan Goswami
 pubDatetime: 2024-10-06T04:02:55Z
-title: 'A. Consecutive Sum Riddle (CF1594 800 RATED)'
+title: "A. Consecutive Sum Riddle (CF1594 800 RATED)"
 slug: 1594-A-Consecutive-Sum-Riddle
 tags: [CPP, Codeforces, CF800]
-description: 'A. Consecutive Sum Riddle, 800 RATED - Codeforces Round 747 (Div. 2)'
+description: "A. Consecutive Sum Riddle, 800 RATED - Codeforces Round 747 (Div. 2)"
 aliases:
   - /posts/1594-A-Consecutive-Sum-Riddle
 ---
@@ -18,6 +18,7 @@ Problem Link: [A. Consecutive Sum Riddle, 800 RATED - Codeforces Round 747 (Div.
 Sum of negative of `n-1` to `+n` is equals to `n`.
 
 ## Code Implementation
+
 ```c++
 #include <bits/stdc++.h>
 #define int long long
@@ -28,16 +29,16 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    
+
     int t;
     cin >> t;
 
     while (t--) {
-        int n; 
+        int n;
         cin >> n;
         cout << -(n - 1) << " " << n << endl;
     }
 
-    return 0;   
+    return 0;
 }
 ```

@@ -11,7 +11,7 @@
     --color-card: 217, 209, 195;
     --color-card-muted: 239, 216, 176;
     --color-border: 220, 152, 145;
-  }  
+  }
   html[data-theme="dark"] {
     --color-fill: 43, 42, 51; /* Dark Charcoal */
     --color-accent: 37, 150, 190; /* Sky Blue */
@@ -78,7 +78,12 @@
   body {
     @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base selection:bg-skin-accent/70 selection:text-skin-inverted;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
   }
   section,

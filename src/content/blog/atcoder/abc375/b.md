@@ -1,10 +1,10 @@
 ---
 author: Shravan Goswami
 pubDatetime: 2024-10-13
-title: 'B - Traveling Takahashi Problem (AtCoder Beginner Contest 375)'
+title: "B - Traveling Takahashi Problem (AtCoder Beginner Contest 375)"
 slug: abc375-B
 tags: [CPP, AtCoder, AtCoder Beginner Contest]
-description: 'B - Traveling Takahashi Problem - Panasonic Programming Contest 2024 (AtCoder Beginner Contest 375)'
+description: "B - Traveling Takahashi Problem - Panasonic Programming Contest 2024 (AtCoder Beginner Contest 375)"
 aliases:
   - /posts/abc375-B
 ---
@@ -14,6 +14,7 @@ aliases:
 Problem Link: [B - Traveling Takahashi Problem (AtCoder Beginner Contest 375)](https://atcoder.jp/contests/abc375/tasks/abc375_b)
 
 ## Approach
+
 The code takes a list of points and calculates the total distance between them. It first reads the points, adds the origin $(0, 0)$ at the start, reverses the list, adds origin at end again, updates the size of `n` and and then computes the distance between each pair of consecutive points. Finally, it prints the total distance with precision $20$.
 
 ## Code Implementation
@@ -28,7 +29,7 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    
+
     int t=1;
     // cin >> t;
 
@@ -50,6 +51,6 @@ signed main() {
         }
         cout << fixed << setprecision(20) << ans << endl;
     }
-    return 0;   
+    return 0;
 }
 ```

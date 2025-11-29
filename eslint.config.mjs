@@ -1,20 +1,20 @@
-import eslintPluginAstro from 'eslint-plugin-astro';
-import tseslint from 'typescript-eslint';
+import eslintPluginAstro from "eslint-plugin-astro";
+import tseslint from "typescript-eslint";
 
 export default [
   {
     ignores: [
-        "dist/",
-        "node_modules/",
-        ".github/",
-        ".astro/",
-        "public/",
-        "src/env.d.ts",
-        "**/*.d.ts",
-        "src/pages/\\[...alias\\].astro"
+      "dist/",
+      "node_modules/",
+      ".github/",
+      ".astro/",
+      "public/",
+      "src/env.d.ts",
+      "**/*.d.ts",
+      "src/pages/\\[...alias\\].astro",
     ],
   },
-  
+
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
 
@@ -22,15 +22,15 @@ export default [
     files: ["**/*.cjs"],
     rules: {
       "@typescript-eslint/no-require-imports": "off",
-      "@typescript-eslint/no-var-requires": "off"
-    }
+      "@typescript-eslint/no-var-requires": "off",
+    },
   },
 
   {
     files: ["**/*.{js,mjs,cjs,ts,tsx}"],
     rules: {
       "prefer-rest-params": "error",
-      "no-var": "error"
-    }
-  }
+      "no-var": "error",
+    },
+  },
 ];

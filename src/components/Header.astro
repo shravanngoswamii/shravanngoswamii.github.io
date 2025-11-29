@@ -57,12 +57,18 @@ const { activeNav } = Astro.props;
         </button>
         <ul id="menu-items" class="display-none sm:flex">
           <li>
-            <a href="/projects/" class={activeNav === "projects" ? "active" : ""}>
+            <a
+              href="/projects/"
+              class={activeNav === "projects" ? "active" : ""}
+            >
               Projects
             </a>
           </li>
           <li>
-            <a href="/publications/" class={activeNav === "publications" ? "active" : ""}>
+            <a
+              href="/publications/"
+              class={activeNav === "publications" ? "active" : ""}
+            >
               Publications
             </a>
           </li>
@@ -72,7 +78,8 @@ const { activeNav } = Astro.props;
             </a>
           </li>
           <li>
-            <a href="/blog/" class={activeNav === "blog" ? "active" : ""}> {/* CHANGED from /posts/ to /blog/ */}
+            <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
+              {/* CHANGED from /posts/ to /blog/ */}
               Blog
             </a>
           </li>
@@ -101,15 +108,53 @@ const { activeNav } = Astro.props;
                     <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" />
                   </svg>
                 </button>
-                <div id="theme-dropdown" class="absolute right-0 top-full mt-2 w-32 rounded-md bg-skin-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50">
+                <div
+                  id="theme-dropdown"
+                  class="absolute right-0 top-full mt-2 w-32 rounded-md bg-skin-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50"
+                >
                   <div class="py-1">
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="light">Light</button>
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="dark">Dark</button>
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="latte">Latte</button>
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="frappe">Frappé</button>
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="macchiato">Macchiato</button>
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="mocha">Mocha</button>
-                    <button class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted" data-theme="auto">Auto</button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="light"
+                    >
+                      Light
+                    </button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="dark"
+                    >
+                      Dark
+                    </button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="latte"
+                    >
+                      Latte
+                    </button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="frappe"
+                    >
+                      Frappé
+                    </button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="macchiato"
+                    >
+                      Macchiato
+                    </button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="mocha"
+                    >
+                      Mocha
+                    </button>
+                    <button
+                      class="theme-option block w-full px-4 py-2 text-left text-sm hover:bg-skin-card-muted"
+                      data-theme="auto"
+                    >
+                      Auto
+                    </button>
                   </div>
                 </div>
               </li>
@@ -208,7 +253,7 @@ const { activeNav } = Astro.props;
       menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
       menuBtn.setAttribute(
         "aria-label",
-        menuExpanded ? "Open Menu" : "Close Menu"
+        menuExpanded ? "Open Menu" : "Close Menu",
       );
       menuItems?.classList.toggle("display-none");
     });

@@ -1,10 +1,10 @@
 ---
 author: Shravan Goswami
 pubDatetime: 2024-10-12T06:40:53Z
-title: 'A. Halloumi Boxes (CF1903 800 RATED)'
+title: "A. Halloumi Boxes (CF1903 800 RATED)"
 slug: 1903-A-Halloumi-Boxes
 tags: [CPP, Codeforces, CF800, CP31]
-description: 'A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)'
+description: "A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)"
 aliases:
   - /posts/1903-A-Halloumi-Boxes
 ---
@@ -16,6 +16,7 @@ aliases:
 Problem Link: [A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)](https://codeforces.com/problemset/problem/1903/A)
 
 ## Approach
+
 If `k>1` or else array is already sorted then it's `YES` else `NO`.
 
 ## Code Implementation
@@ -30,7 +31,7 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    
+
     int t;
     cin >> t;
 
@@ -47,6 +48,6 @@ signed main() {
     		cout << "NO" << endl;
         }
 
-    return 0;   
+    return 0;
 }
 ```

@@ -1,10 +1,10 @@
 ---
 author: Shravan Goswami
 pubDatetime: 2024-10-12T10:32:19Z
-title: 'A. Line Trip (CF1901 800 RATED)'
+title: "A. Line Trip (CF1901 800 RATED)"
 slug: 1901-A-Line-Trip
 tags: [CPP, Codeforces, CF800, CP31]
-description: 'A. Line Trip, 800 RATED - Educational Codeforces Round 158 (Rated for Div. 2)'
+description: "A. Line Trip, 800 RATED - Educational Codeforces Round 158 (Rated for Div. 2)"
 aliases:
   - /posts/1901-A-Line-Trip
 ---
@@ -14,6 +14,7 @@ aliases:
 Problem Link: [A. Line Trip, 800 RATED - Educational Codeforces Round 158 (Rated for Div. 2)](https://codeforces.com/problemset/problem/1901/A)
 
 ## Approach
+
 1. Calculate the maximum distances from $0$ to the first gas station, between consecutive gas stations, and from the last gas station to $x$ (doubled for the return trip).
 2. The minimum gas tank volume is the maximum of these distances.
 
@@ -29,7 +30,7 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    
+
     int t;
     cin >> t;
 
@@ -52,6 +53,6 @@ signed main() {
         cout << d << endl;
     }
 
-    return 0;   
+    return 0;
 }
 ```

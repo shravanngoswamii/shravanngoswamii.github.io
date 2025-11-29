@@ -8,34 +8,34 @@ const resumePDF = "/resume.pdf";
 ---
 
 <Layout title={`Resume | ${SITE.title}`}>
-    <Header activeNav="resume" />
+  <Header activeNav="resume" />
 
-    <main
-        id="main-content"
-        style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 2rem;"
+  <main
+    id="main-content"
+    style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 2rem;"
+  >
+    <h1>Shravan's Resume</h1>
+    <LinkButton
+      href={resumePDF}
+      className="my-6 text-lg underline decoration-dashed underline-offset-8"
     >
-        <h1>Shravan's Resume</h1>
-        <LinkButton
-            href={resumePDF}
-            className="my-6 text-lg underline decoration-dashed underline-offset-8"
-        >
-            Download the PDF
-        </LinkButton>
-        <iframe
-            src={resumePDF}
-            style="display: block; justify-content: center; width: 50%; height: 100vh; border: none; margin: 0 auto;"
-            title="My Resume"
-        >
-            This browser does not support PDFs.
-        </iframe>
-    </main>
-    <Footer />
+      Download the PDF
+    </LinkButton>
+    <iframe
+      src={resumePDF}
+      style="display: block; justify-content: center; width: 50%; height: 100vh; border: none; margin: 0 auto;"
+      title="My Resume"
+    >
+      This browser does not support PDFs.
+    </iframe>
+  </main>
+  <Footer />
 </Layout>
 
 <style>
-    @media (max-width: 1000px) {
-        iframe {
-            width: 100% !important;
-        }
+  @media (max-width: 1000px) {
+    iframe {
+      width: 100% !important;
     }
+  }
 </style>

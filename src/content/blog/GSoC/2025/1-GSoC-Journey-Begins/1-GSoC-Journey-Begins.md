@@ -1,11 +1,11 @@
 ---
 author: Shravan Goswami
 pubDatetime: 2025-05-09
-title: 'Google Summer of Code 2025: The Journey Begins'
-slug: 'GSoC-2025-The-Journey-Begins'
+title: "Google Summer of Code 2025: The Journey Begins"
+slug: "GSoC-2025-The-Journey-Begins"
 tags: [gsoc, Julia]
 featured: true
-description: 'My GSoC 2025 journey begins with The Julia Language and Turing.jl! I’ll be building a browser-based interface for JuliaBUGS.'
+description: "My GSoC 2025 journey begins with The Julia Language and Turing.jl! I’ll be building a browser-based interface for JuliaBUGS."
 aliases:
   - /posts/GSoC-2025-The-Journey-Begins
 ---
@@ -27,6 +27,7 @@ Two years, a lot of learning, and some incredible mentors later, I’m incredibl
 ![GSoC-Mail](/blog/GSoC-2025-The-Journey-Begins/GSoC-Mail.png)
 
 ### Acceptance Letter
+
 ![Shravanpuri-Goswami-GSoC-Acceptance-Letter](/blog/GSoC-2025-The-Journey-Begins/Shravanpuri-Goswami-GSoC-Acceptance-Letter.jpg)
 
 ---
@@ -73,6 +74,7 @@ Here’s the official GSoC project link if you’d like to follow along or check
 👉 [https://summerofcode.withgoogle.com/programs/2025/projects/4ecMbDwU](https://summerofcode.withgoogle.com/programs/2025/projects/4ecMbDwU)
 
 ## Selected GSoC Proposal
+
 Here is my proposal that is selected for Google Summer of Code 2025 - [Shravan's GSoC 2025 Selected Proposal](/Shravan-Goswami-GSoC-2025-JuliaLang-Proposal.pdf)
 
 ---
@@ -81,6 +83,6 @@ Here is my proposal that is selected for Google Summer of Code 2025 - [Shravan's
 
 If you’re a student or early contributor eyeing GSoC — and especially if you’ve faced rejections before — I just want to say: **keep going**. Every `no` brings you closer to a `yes`, if you're learning from it.
 
-I’m looking forward to a hot summer  and cool contributions in open source, learning, collaboration, and building something that hopefully makes a small but meaningful impact.
+I’m looking forward to a hot summer and cool contributions in open source, learning, collaboration, and building something that hopefully makes a small but meaningful impact.
 
 Thanks for reading — and see you around the Julia and TuringLang communities!

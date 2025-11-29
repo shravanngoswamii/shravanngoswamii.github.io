@@ -9,36 +9,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-node@v4
-          with:
-            node-version: 20
-            cache: 'npm'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
 
-        - name: Install dependencies
-          run: npm install
+      - name: Install dependencies
+        run: npm install
 
-        - name: Build the website
-          run: npm run build
+      - name: Build the website
+        run: npm run build
 
-        - name: Print current time
-          run: date
+      - name: Print current time
+        run: date
 
-        # Will use this after this branch becomes main
-        # - name: Deploy to gh-pages branch
-        #   uses: JamesIves/github-pages-deploy-action@v4
-        #   with:
-        #     branch: gh-pages
-        #     folder: ./dist
-        #     clean: false
+      # Will use this after this branch becomes main
+      # - name: Deploy to gh-pages branch
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     branch: gh-pages
+      #     folder: ./dist
+      #     clean: false
 
-        - name: Deploy to GitHub Pages
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: dist
-            publish_branch: gh-pages
-            cname: shravangoswami.com
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          publish_branch: gh-pages
+          cname: shravangoswami.com
 
 permissions:
   contents: write

@@ -28,111 +28,143 @@ const { frontmatter } = Astro.props;
 
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
   <Header activeNav="projects" />
-  
+
   <main id="main-content" class="mx-auto w-full max-w-6xl px-4 sm:px-6">
     <Breadcrumbs />
-    
+
     <section id="projects" class="py-12">
       <div class="mb-12 border-b border-skin-line/30 pb-8">
-        <h1 class="text-4xl font-bold tracking-tight text-skin-base sm:text-5xl mb-4">
+        <h1
+          class="text-4xl font-bold tracking-tight text-skin-base sm:text-5xl mb-4"
+        >
           {frontmatter.title}
         </h1>
-        <p class="max-w-3xl text-xl text-skin-base opacity-75 leading-relaxed font-normal">
-            A curated list of technical projects, research contributions, and open-source experiments.
+        <p
+          class="max-w-3xl text-xl text-skin-base opacity-75 leading-relaxed font-normal"
+        >
+          A curated list of technical projects, research contributions, and
+          open-source experiments.
         </p>
       </div>
 
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {frontmatter.projects.map((project) => (
-          <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-skin-line/30 bg-skin-card/20 transition-all duration-300 hover:border-skin-accent/50 hover:bg-skin-card/40 hover:shadow-xl hover:-translate-y-2">
-            
-            {/* Image Container */}
-            <div class="relative aspect-video w-full overflow-hidden bg-skin-fill/50 border-b border-skin-line/10 p-4 flex items-center justify-center">
+        {
+          frontmatter.projects.map((project) => (
+            <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-skin-line/30 bg-skin-card/20 transition-all duration-300 hover:border-skin-accent/50 hover:bg-skin-card/40 hover:shadow-xl hover:-translate-y-2">
+              {/* Image Container */}
+              <div class="relative aspect-video w-full overflow-hidden bg-skin-fill/50 border-b border-skin-line/10 p-4 flex items-center justify-center">
                 {project.imageSrcLight && project.imageSrcDark ? (
                   <>
                     <img
-                        src={project.imageSrcLight}
-                        alt={`Preview of ${project.title}`}
-                        class="theme-image-light h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
-                        loading="lazy"
+                      src={project.imageSrcLight}
+                      alt={`Preview of ${project.title}`}
+                      class="theme-image-light h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                      loading="lazy"
                     />
                     <img
-                        src={project.imageSrcDark}
-                        alt={`Preview of ${project.title}`}
-                        class="theme-image-dark h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
-                        loading="lazy"
-                        style="display: none;" 
+                      src={project.imageSrcDark}
+                      alt={`Preview of ${project.title}`}
+                      class="theme-image-dark h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                      loading="lazy"
+                      style="display: none;"
                     />
                   </>
                 ) : (
                   <img
-                      src={project.imageSrc || project.imageSrcLight || project.imageSrcDark}
-                      alt={`Preview of ${project.title}`}
-                      class="h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
-                      loading="lazy"
+                    src={
+                      project.imageSrc ||
+                      project.imageSrcLight ||
+                      project.imageSrcDark
+                    }
+                    alt={`Preview of ${project.title}`}
+                    class="h-full w-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
+                    loading="lazy"
                   />
                 )}
-            </div>
+              </div>
 
-            {/* Content Body */}
-            <div class="flex flex-1 flex-col p-5">
+              {/* Content Body */}
+              <div class="flex flex-1 flex-col p-5">
                 <div class="flex justify-between items-start gap-3 mb-3">
-                    <h3 class="text-lg font-bold leading-tight text-skin-base group-hover:text-skin-accent transition-colors">
-                        {project.title}
-                    </h3>
-                    
-                    {/* Utility Links */}
-                    <div class="flex gap-3 shrink-0 pt-0.5">
-                        {project.githubLink && (
-                            <a 
-                                href={project.githubLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
-                                title="View Source on GitHub"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-tabler icon-tabler-brand-github" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path>
-                                </svg>
-                            </a>
-                        )}
-                        {project.liveLink && (
-                            <a 
-                                href={project.liveLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
-                                title="View Live Demo"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-tabler icon-tabler-external-link" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"></path>
-                                    <path d="M11 13l9 -9"></path>
-                                    <path d="M15 3h6v6"></path>
-                                </svg>
-                            </a>
-                        )}
-                    </div>
+                  <h3 class="text-lg font-bold leading-tight text-skin-base group-hover:text-skin-accent transition-colors">
+                    {project.title}
+                  </h3>
+
+                  {/* Utility Links */}
+                  <div class="flex gap-3 shrink-0 pt-0.5">
+                    {project.githubLink && (
+                      <a
+                        href={project.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
+                        title="View Source on GitHub"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon-tabler icon-tabler-brand-github"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+                        </svg>
+                      </a>
+                    )}
+                    {project.liveLink && (
+                      <a
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-skin-base/60 hover:text-skin-accent transition-colors hover:scale-110"
+                        title="View Live Demo"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="icon-tabler icon-tabler-external-link"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
+                          <path d="M11 13l9 -9" />
+                          <path d="M15 3h6v6" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
                 </div>
-                
+
                 <p class="mb-5 text-sm leading-relaxed text-skin-base/80 font-normal line-clamp-3">
-                    {project.description}
+                  {project.description}
                 </p>
 
                 {/* Tech Stack */}
                 <div class="mt-auto pt-4 border-t border-skin-line/10">
-                    <div class="flex flex-wrap gap-2">
-                        {project.techStack.map((tech) => (
-                            <span class="inline-flex items-center rounded-md border border-skin-line/20 bg-skin-card/30 px-2 py-0.5 text-xs font-medium text-skin-base/90 tracking-wide">
-                                {tech}
-                            </span>
-                        ))}
-                    </div>
+                  <div class="flex flex-wrap gap-2">
+                    {project.techStack.map((tech) => (
+                      <span class="inline-flex items-center rounded-md border border-skin-line/20 bg-skin-card/30 px-2 py-0.5 text-xs font-medium text-skin-base/90 tracking-wide">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-            </div>
-          </article>
-        ))}
+              </div>
+            </article>
+          ))
+        }
       </div>
     </section>
   </main>

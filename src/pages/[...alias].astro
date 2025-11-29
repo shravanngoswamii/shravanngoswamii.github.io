@@ -1,10 +1,10 @@
 ---
 // src/pages/[...alias].astro
-import { getCollection } from 'astro:content';
-import type { GetStaticPaths } from 'astro';
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (async () => {
-  const allBlogPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const allBlogPosts = await getCollection("blog", ({ data }) => !data.draft);
 
   const redirectPaths = [];
 
@@ -15,9 +15,12 @@ export const getStaticPaths = (async () => {
       // Remove leading slash for `params.alias` to match Astro's route parameter
       // Also, remove trailing slash for consistency in param matching,
       // but ensure destination has it if your canonical URLs do.
-      const normalizedAlias = alias.startsWith('/') ? alias.substring(1) : alias;
-      const cleanNormalizedAlias = normalizedAlias.endsWith('/') ? normalizedAlias.slice(0, -1) : normalizedAlias;
-
+      const normalizedAlias = alias.startsWith("/")
+        ? alias.substring(1)
+        : alias;
+      const cleanNormalizedAlias = normalizedAlias.endsWith("/")
+        ? normalizedAlias.slice(0, -1)
+        : normalizedAlias;
 
       redirectPaths.push({
         params: { alias: cleanNormalizedAlias }, // The alias captured by the route
@@ -39,14 +42,16 @@ interface Props {
 
 const { destination, postTitle } = Astro.props;
 ---
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="refresh" content={`0; url=${destination}`} />
-  <link rel="canonical" href={destination} />
-  <meta name="robots" content="noindex">
-  <title>Redirecting to {postTitle}...</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${destination}`} />
+    <link rel="canonical" href={destination} />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting to {postTitle}</title></head
+  >...
   <style>
     body {
       font-family: sans-serif;
@@ -61,10 +66,16 @@ const { destination, postTitle } = Astro.props;
       text-decoration: underline;
     }
   </style>
-</head>
-<body>
-  <h1>Redirecting...</h1>
-  <p>You are being redirected to: <a href={destination}>{destination}</a></p>
-  <p>If you are not redirected automatically, <a href={destination}>click here</a>.</p>
-</body>
+
+  <body>
+    <h1>Redirecting...</h1>
+    <p>You are being redirected to: <a href={destination}>{destination}</a></p>
+    <p>
+      If you are not redirected automatically, <a href={destination}
+        >click here</a
+      >.
+    </p>
+  </body>
+
+
 </html>

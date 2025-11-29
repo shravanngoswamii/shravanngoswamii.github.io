@@ -4,11 +4,11 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { generateOgImageForPost } from "@utils/generateOgImages";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog").then(p =>
-    p.filter(({ data }) => !data.draft && !data.ogImage)
+  const posts = await getCollection("blog").then((p) =>
+    p.filter(({ data }) => !data.draft && !data.ogImage),
   );
 
-  return posts.map(post => ({
+  return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));

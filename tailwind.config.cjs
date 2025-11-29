@@ -9,7 +9,10 @@ function withOpacity(variableName) {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["selector", "[data-theme='dark'], [data-theme='frappe'], [data-theme='macchiato'], [data-theme='mocha']"],
+  darkMode: [
+    "selector",
+    "[data-theme='dark'], [data-theme='frappe'], [data-theme='macchiato'], [data-theme='mocha']",
+  ],
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     // Remove the following screen breakpoint or add other breakpoints
@@ -20,13 +23,13 @@ module.exports = {
 
     extend: {
       colors: {
-				accent: withOpacity("--color-accent"),
-				"accent-2": withOpacity("--color-accent"),
-				bgColor: withOpacity("--color-fill"),
-				link: withOpacity("--color-accent"),
-				quote: withOpacity("--color-accent"),
-				textColor: withOpacity("--color-text-base"),
-			},
+        accent: withOpacity("--color-accent"),
+        "accent-2": withOpacity("--color-accent"),
+        bgColor: withOpacity("--color-fill"),
+        link: withOpacity("--color-accent"),
+        quote: withOpacity("--color-accent"),
+        textColor: withOpacity("--color-text-base"),
+      },
       textColor: {
         skin: {
           base: withOpacity("--color-text-base"),

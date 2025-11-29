@@ -36,10 +36,9 @@ const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 
 const ogUrl = new URL(
   ogImageUrl ?? `/blog/${post.slug}/og.png`, // <-- CHANGED THIS LINE: Now uses og.png
-  Astro.url.origin
+  Astro.url.origin,
 ).href;
 // --- END: UPDATED OG IMAGE URL CONSTRUCTION ---
-
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -59,7 +58,7 @@ const allPosts = posts.map(({ data: { title }, slug }) => ({
   title,
 }));
 
-const currentPostIndex = allPosts.findIndex(a => a.slug === post.slug);
+const currentPostIndex = allPosts.findIndex((a) => a.slug === post.slug);
 
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
@@ -94,7 +93,7 @@ const nextPost =
     </article>
 
     <ul class="my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+      {tags.map((tag) => <Tag tag={slugifyStr(tag)} />)}
     </ul>
 
     <div
@@ -137,8 +136,8 @@ const nextPost =
               stroke-linejoin="round"
               class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
             >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M15 6l-6 6l6 6" />
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 6l-6 6l6 6" />
             </svg>
             <div>
               <span>Previous Post</span>
@@ -169,8 +168,8 @@ const nextPost =
               stroke-linejoin="round"
               class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
             >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M9 6l6 6l-6 6" />
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 6l6 6l-6 6" />
             </svg>
           </a>
         )
@@ -235,7 +234,7 @@ const nextPost =
    * allowing sharing of sections easily */
   function addHeadingLinks() {
     const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
+      document.querySelectorAll("h2, h3, h4, h5, h6"),
     );
     for (const heading of headings) {
       heading.classList.add("group");
@@ -307,6 +306,6 @@ const nextPost =
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
   );
 </script>
