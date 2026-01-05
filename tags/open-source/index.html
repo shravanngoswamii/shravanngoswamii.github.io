@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en" class="false"> <head><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args) {
+        window.dataLayer.push(args);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-ZXC7NG6S55");
+    </script><!-- Google Tag Manager --><script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        const f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-MMG7M2PS");
+    </script><!-- End Google Tag Manager --><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://shravangoswami.com/tags/open-source/"><meta name="generator" content="Astro v5.16.2"><!-- General Meta Tags --><title>Tag: open-source | Shravan Goswami</title><meta name="title" content="Tag: open-source | Shravan Goswami"><meta name="description" content="Shravan Goswami's Portfolio."><meta name="author" content="Shravan Goswami"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="Tag: open-source | Shravan Goswami"><meta property="og:description" content="Shravan Goswami's Portfolio."><meta property="og:url" content="https://shravangoswami.com/tags/open-source/"><meta property="og:image" content="https://shravangoswami.com/og.png"><!-- Article Published/Modified time --><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://shravangoswami.com/tags/open-source/"><meta property="twitter:title" content="Tag: open-source | Shravan Goswami"><meta property="twitter:description" content="Shravan Goswami's Portfolio."><meta property="twitter:image" content="https://shravangoswami.com/og.png"><!-- Google JSON-LD Structured data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Tag: open-source | Shravan Goswami","image":"https://shravangoswami.com/og.png","datePublished":"undefined","author":[{"@type":"Person","name":"Shravan Goswami","url":"https://shravangoswami.com/"}]}</script><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" crossorigin><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><script>
+      const primaryColorScheme = ""; // "light" | "dark"
+
+      // Get theme data from local storage
+      const currentTheme = localStorage.getItem("theme");
+
+      // Define available themes
+      const themes = ["latte", "frappe", "macchiato", "mocha", "light", "dark"];
+
+      function getPreferTheme() {
+        // return theme value in local storage if it is set
+        if (currentTheme) return currentTheme;
+
+        // return primary color scheme if it is set
+        if (primaryColorScheme) return primaryColorScheme;
+
+        // Default to auto
+        return "auto";
+      }
+
+      let themeValue = getPreferTheme();
+
+      function setPreference(theme) {
+        localStorage.setItem("theme", theme);
+        reflectPreference(theme);
+      }
+
+      function reflectPreference(theme) {
+        let themeToApply = theme;
+        if (theme === "auto") {
+          // Get the last applied auto theme
+          const lastAutoTheme = sessionStorage.getItem("last-auto-theme");
+
+          // Cycle through themes sequentially
+          let nextIndex = 0;
+          if (lastAutoTheme) {
+            const currentIndex = themes.indexOf(lastAutoTheme);
+            if (currentIndex !== -1) {
+              nextIndex = (currentIndex + 1) % themes.length;
+            }
+          }
+
+          themeToApply = themes[nextIndex];
+
+          // Save the new theme as the last applied one
+          sessionStorage.setItem("last-auto-theme", themeToApply);
+        }
+
+        document.firstElementChild.setAttribute("data-theme", themeToApply);
+
+        document
+          .querySelector("#theme-btn")
+          ?.setAttribute("aria-label", themeToApply);
+        document
+          .querySelector("#theme-btn")
+          ?.setAttribute(
+            "title",
+            `Current theme: ${themeToApply} (${theme === "auto" ? "Auto" : "Manual"})`,
+          );
+
+        // Get a reference to the body element
+        const body = document.body;
+
+        // Check if the body element exists before using getComputedStyle
+        if (body) {
+          // Get the computed styles for the body element
+          const computedStyles = window.getComputedStyle(body);
+
+          // Get the background color property
+          const bgColor = computedStyles.backgroundColor;
+
+          // Set the background color in <meta theme-color ... />
+          document
+            .querySelector("meta[name='theme-color']")
+            ?.setAttribute("content", bgColor);
+        }
+      }
+
+      // set early so no page flashes / CSS is made aware
+      reflectPreference(themeValue);
+
+      window.onload = () => {
+        function setThemeFeature() {
+          // set on load so screen readers can get the latest value on the button
+          reflectPreference(themeValue);
+
+          // Toggle dropdown
+          const themeBtn = document.querySelector("#theme-btn");
+          const themeDropdown = document.querySelector("#theme-dropdown");
+
+          themeBtn?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            themeDropdown?.classList.toggle("hidden");
+          });
+
+          // Close dropdown when clicking outside
+          document.addEventListener("click", (e) => {
+            if (!themeBtn?.contains(e.target) && !themeDropdown?.contains(e.target)) {
+              themeDropdown?.classList.add("hidden");
+            }
+          });
+
+          // Handle theme selection
+          document.querySelectorAll(".theme-option").forEach((option) => {
+            option.addEventListener("click", () => {
+              const selectedTheme = option.getAttribute("data-theme");
+              themeValue = selectedTheme;
+              setPreference(selectedTheme);
+              themeDropdown?.classList.add("hidden");
+            });
+          });
+        }
+
+        setThemeFeature();
+
+        // Runs on view transitions navigation
+        document.addEventListener("astro:after-swap", setThemeFeature);
+      };
+
+      // sync with system changes
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", ({ matches: isDark }) => {
+          // Only update if user hasn't set a preference or is in auto mode
+          if (
+            !localStorage.getItem("theme") ||
+            localStorage.getItem("theme") === "auto"
+          ) {
+            if (!localStorage.getItem("theme")) {
+              themeValue = isDark ? "dark" : "light";
+              reflectPreference(themeValue);
+            }
+          }
+        });
+    </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><link rel="stylesheet" href="/_astro/about.8IiuZ8bZ.css">
+<style>.breadcrumb:where(.astro-ilhxcym7){margin-left:auto;margin-right:auto;margin-bottom:.25rem;margin-top:2rem;width:100%;max-width:48rem;padding-left:1rem;padding-right:1rem}.breadcrumb:where(.astro-ilhxcym7) ul:where(.astro-ilhxcym7) li:where(.astro-ilhxcym7){display:inline}.breadcrumb:where(.astro-ilhxcym7) ul:where(.astro-ilhxcym7) li:where(.astro-ilhxcym7) a:where(.astro-ilhxcym7){text-transform:capitalize;opacity:.7}.breadcrumb:where(.astro-ilhxcym7) ul:where(.astro-ilhxcym7) li:where(.astro-ilhxcym7) span:where(.astro-ilhxcym7){opacity:.7}.breadcrumb:where(.astro-ilhxcym7) ul:where(.astro-ilhxcym7) li:where(.astro-ilhxcym7):not(:last-child) a:where(.astro-ilhxcym7):hover{opacity:1}
+#main-content:where(.astro-hsp6otuf){margin-left:auto;margin-right:auto;width:100%;max-width:48rem;padding-left:1rem;padding-right:1rem;padding-bottom:1rem}#main-content:where(.astro-hsp6otuf) h1:where(.astro-hsp6otuf){font-size:1.5rem;line-height:2rem;font-weight:600}@media (min-width: 640px){#main-content:where(.astro-hsp6otuf) h1:where(.astro-hsp6otuf){font-size:1.875rem;line-height:2.25rem}}#main-content:where(.astro-hsp6otuf) p:where(.astro-hsp6otuf){margin-bottom:1.5rem;margin-top:.5rem;font-style:italic}
+@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+.pagination-wrapper:where(.astro-d776pwuy){margin-bottom:2rem;margin-top:auto;display:flex;justify-content:center}.disabled:where(.astro-d776pwuy){pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;opacity:.5}.disabled:where(.astro-d776pwuy):hover{--tw-text-opacity: 1;color:rgba(var(--color-text-base),var(--tw-text-opacity, 1))}.group:where(.astro-d776pwuy):hover .disabled:where(.astro-d776pwuy){fill:rgb(var(--color-text-base))}
+</style><style>[data-astro-transition-scope="astro-vfrq7tp3-1"] { view-transition-name: open-source; }@layer astro { ::view-transition-old(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-vfrq7tp3-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-vfrq7tp3-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-vfrq7tp3-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-vfrq7tp3-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-vfrq7tp3-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-vfrq7tp3-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-vfrq7tp3-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-vfrq7tp3-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-hn2qarie-2"] { view-transition-name: open-source; }@layer astro { ::view-transition-old(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(open-source) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-hn2qarie-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-hn2qarie-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-hn2qarie-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-hn2qarie-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-hn2qarie-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-hn2qarie-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-hn2qarie-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-hn2qarie-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body> <!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMG7M2PS" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) -->  <header class="astro-3ef6ksr2"> <a id="skip-to-content" href="#main-content" class="astro-3ef6ksr2">Skip to content</a> <div class="nav-container astro-3ef6ksr2"> <div class="top-nav-wrap astro-3ef6ksr2"> <a href="/" class="logo whitespace-nowrap astro-3ef6ksr2"> Shravan Goswami </a> <nav id="nav-menu" class="astro-3ef6ksr2"> <button class="hamburger-menu focus-outline astro-3ef6ksr2" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <div class="menu-icon astro-3ef6ksr2"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="menu-open icon-tabler astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M4 6l16 0"></path><path d="M4 12l16 0"></path><path d="M4 18l16 0"></path></svg> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="menu-close icon-tabler hidden astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg> </div> </button> <ul id="menu-items" class="display-none sm:flex astro-3ef6ksr2"> <li class="astro-3ef6ksr2"> <a href="/blog/" class=" astro-3ef6ksr2"> 
+Blog
+</a> </li> <li class="astro-3ef6ksr2"> <a href="/projects/" class=" astro-3ef6ksr2">
+Projects
+</a> </li> <li class="astro-3ef6ksr2"> <a href="/publications/" class=" astro-3ef6ksr2">
+Publications
+</a> </li> <li class="astro-3ef6ksr2"> <a href="/resume/" class=" astro-3ef6ksr2">
+Resume
+</a> </li> <li class="astro-3ef6ksr2"> <a href="/tags/" class="active astro-3ef6ksr2">
+Tags
+</a> </li> <li class="astro-3ef6ksr2"> <site-search class="ms-auto astro-otpdt6jm" id="search"> <button class="flex h-9 w-9 items-center justify-center rounded-md ring-zinc-400 transition-all hover:ring-2 astro-otpdt6jm" data-open-modal disabled> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7 search-svg icon-tabler astro-otpdt6jm" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg> </button> <dialog style="color: inherit !important;" aria-label="search" class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-bgColor shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md astro-otpdt6jm"> <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6 astro-otpdt6jm"> <button class="ms-auto cursor-pointer rounded-md bg-zinc-200 p-2 font-semibold dark:bg-zinc-700 search-close-btn astro-otpdt6jm" style="color: inherit;" data-close-modal>Close</button> <div class="search-container astro-otpdt6jm"> <div id="cactus__search" class="astro-otpdt6jm"></div> </div> </div> </dialog> </site-search> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.DXZlfYrl.js"></script>   </li> <li class="relative astro-3ef6ksr2"> <button id="theme-btn" class="focus-outline astro-3ef6ksr2" title="Toggle theme" aria-label="auto" aria-live="polite"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="moon-svg" class="icon-tabler astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path></svg> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="sun-svg" class="icon-tabler astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path></svg> </button> <div id="theme-dropdown" class="absolute right-0 top-full mt-2 w-48 rounded-xl bg-skin-card border border-skin-line shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50 overflow-hidden transition-all duration-200 astro-3ef6ksr2"> <div class="py-2 astro-3ef6ksr2"> <div class="px-4 py-2 text-xs font-bold text-skin-base/50 uppercase tracking-wider astro-3ef6ksr2">Theme</div> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="light"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path></svg> <span class="astro-3ef6ksr2">Light</span> </button> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="dark"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path></svg> <span class="astro-3ef6ksr2">Dark</span> </button> <div class="my-1 border-t border-skin-line/10 astro-3ef6ksr2"></div> <div class="px-4 py-2 text-xs font-bold text-skin-base/50 uppercase tracking-wider astro-3ef6ksr2">Catppuccin</div> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="latte"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"></path><path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z"></path><path d="M16.746 16.726a3 3 0 1 0 .252 -5.555"></path></svg> <span class="astro-3ef6ksr2">Latte</span> </button> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="frappe"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"></path><path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z"></path><path d="M16.746 16.726a3 3 0 1 0 .252 -5.555"></path></svg> <span class="astro-3ef6ksr2">Frappé</span> </button> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="macchiato"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"></path><path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z"></path><path d="M16.746 16.726a3 3 0 1 0 .252 -5.555"></path></svg> <span class="astro-3ef6ksr2">Macchiato</span> </button> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="mocha"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"></path><path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z"></path><path d="M16.746 16.726a3 3 0 1 0 .252 -5.555"></path></svg> <span class="astro-3ef6ksr2">Mocha</span> </button> <div class="my-1 border-t border-skin-line/10 astro-3ef6ksr2"></div> <button class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors astro-3ef6ksr2" data-theme="auto"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors astro-3ef6ksr2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z"></path><path d="M7 20h10"></path><path d="M9 16v4"></path><path d="M15 16v4"></path></svg> <span class="astro-3ef6ksr2">Auto</span> </button> </div> </div> </li> </ul> </nav> </div> </div> <div class="max-w-3xl mx-auto px-4"> <hr class="border-skin-line" aria-hidden="true"> </div> </header>  <script type="module">function n(){const e=document.querySelector(".hamburger-menu"),u=document.querySelector(".menu-icon"),a=document.querySelector("#menu-items");e?.addEventListener("click",()=>{const t=e.getAttribute("aria-expanded")==="true";u?.classList.toggle("is-active"),e.setAttribute("aria-expanded",t?"false":"true"),e.setAttribute("aria-label",t?"Open Menu":"Close Menu"),a?.classList.toggle("display-none")})}n();document.addEventListener("astro:after-swap",n);</script> <nav class="breadcrumb astro-ilhxcym7" aria-label="breadcrumb"> <ul class="astro-ilhxcym7"> <li class="astro-ilhxcym7"> <a href="/" class="astro-ilhxcym7">Home</a> <span aria-hidden="true" class="astro-ilhxcym7">&raquo;</span> </li> <li class="astro-ilhxcym7"> <a href="/tags/" class="astro-ilhxcym7">tags</a> <span aria-hidden="true" class="astro-ilhxcym7">&raquo;</span> </li><li class="astro-ilhxcym7"> <span class="lowercase astro-ilhxcym7" aria-current="page">  open-source </span> </li> </ul> </nav>  <main id="main-content" class="astro-hsp6otuf"> <h1 class="astro-hsp6otuf"> Tag: <span class="astro-hsp6otuf" data-astro-transition-scope="astro-hn2qarie-2"> open-source </span> </h1> <p class="astro-hsp6otuf">All the articles with the tag &quot;open-source&quot;.</p>   <ul> <li class="my-2 py-2 border-b border-skin-line/10 last:border-none"><div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2 mb-1"><a href="/blog/back-to-the-arena-2026/" class="inline-block text-lg font-bold text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0 flex-1"><h2 style="view-transition-name:back-to-the-arena-a-new-chapter-in-2026-from-open-source-to-algorithms" class="text-lg font-bold decoration-dashed hover:underline">Back to the Arena: A New Chapter in 2026, From Open Source to Algorithms</h2></a><div class="flex items-center space-x-1 opacity-80 shrink-0"><span class="sr-only">Published:</span><span class="italic text-xs"><time dateTime="2026-01-05T00:00:00.000Z">Mon, 5 Jan, 2026</time></span></div></div><div class="flex flex-wrap gap-2 mb-2"><a href="/tags/competitive-programming/" class="text-xs font-medium text-skin-base/60 hover:text-skin-accent decoration-dashed underline-offset-4 hover:underline transition-colors">#<!-- -->competitive-programming</a><a href="/tags/open-source/" class="text-xs font-medium text-skin-base/60 hover:text-skin-accent decoration-dashed underline-offset-4 hover:underline transition-colors">#<!-- -->open-source</a><a href="/tags/career/" class="text-xs font-medium text-skin-base/60 hover:text-skin-accent decoration-dashed underline-offset-4 hover:underline transition-colors">#<!-- -->career</a><a href="/tags/life-update/" class="text-xs font-medium text-skin-base/60 hover:text-skin-accent decoration-dashed underline-offset-4 hover:underline transition-colors">#<!-- -->life-update</a></div><p class="text-sm text-skin-base/80 leading-relaxed mb-2">My journey from inconsistent CP attempts to Open Source success, and why I&#x27;m returning to the algorithmic arena in my final semester.</p></li> </ul>  </main>   <footer class="mt-auto astro-sz7xmlte"> <div class="max-w-3xl mx-auto px-0"> <hr class="border-skin-line" aria-hidden="true"> </div> <div class="footer-wrapper astro-sz7xmlte"> <div class="social-icons flex astro-upu6fzxr"> <a href="https://github.com/shravanngoswamii" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title=" Shravan Goswami on Github"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg> <span class="sr-only astro-upu6fzxr"> Shravan Goswami on Github</span> </a><a href="https://www.linkedin.com/in/shravangoswami/" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami on LinkedIn"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 11v5"></path><path d="M8 8v.01"></path><path d="M12 16v-5"></path><path d="M16 16v-3a2 2 0 1 0 -4 0"></path><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami on LinkedIn</span> </a><a href="mailto:shravanngoswamii@gmail.com" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Send an email to Shravan Goswami"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path><path d="M3 7l9 6l9 -6"></path></svg> <span class="sr-only astro-upu6fzxr">Send an email to Shravan Goswami</span> </a><a href="https://x.com/shravangoswamii" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami on Twitter"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c0 -.249 1.51 -2.772 1.818 -4.013z"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami on Twitter</span> </a><a href="/resume" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami's Resume"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path><path d="M9 17h6"></path><path d="M9 13h6"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami&#39;s Resume</span> </a><a href="/projects" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami's Projects"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 17l9 5l9 -5v-3l-9 5l-9 -5v-3l9 5l9 -5v-3l-9 5l-9 -5l9 -5l5.418 3.01"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami&#39;s Projects</span> </a> </div>  <div class="copyright-wrapper astro-sz7xmlte"> <span class="astro-sz7xmlte">Copyright &#169; 2026</span> <span class="separator astro-sz7xmlte">&nbsp;|&nbsp;</span> <span class="astro-sz7xmlte">All rights reserved.</span> <span class="separator astro-sz7xmlte">&nbsp;|&nbsp;</span> <span class="astro-sz7xmlte">By <a href="/humans.txt" class="underline decoration-dashed underline-offset-4 hover:text-skin-accent astro-sz7xmlte">Yours Truly</a></span> </div> </div> </footer>   </body></html>
