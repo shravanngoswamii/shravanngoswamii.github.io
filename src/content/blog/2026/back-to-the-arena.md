@@ -34,7 +34,7 @@ My persistence in Open Source eventually paid off in ways I hadn't imagined:
 - **GSoC 2025**: After the initial rejection, I finally made it! I was selected for GSoC 2025 with the Julia Language.
 - **Smart India Hackathon & NTRO**: I reached the finals of the Smart India Hackathon, which led to a Cyber Security Intern role at the **National Technical Research Organisation (NTRO)**.
 
-In the midst of all these achievements, I left competitive programming almost entirely. I still participated occasionally and even reached Pupil (1247 rating) on Codeforces, but it was never my primary focus.
+In the midst of all these achievements, I left competitive programming almost entirely. I still participated occasionally and even reached <span style="color: #377e21;">Pupil (1247 max rating)</span> on Codeforces, but it was never my primary focus.
 
 Here are my current Codeforces stats:
 ![Image Credits: https://codeforces-readme-stats.vercel.app/](/blog/back-to-the-arena-2026/codeforces.svg)
