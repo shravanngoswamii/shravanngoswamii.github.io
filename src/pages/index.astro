@@ -7,7 +7,7 @@ import LinkButton from "@components/LinkButton.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { TbArrowDown } from "react-icons/tb";
+import { TbArrowDown, TbArrowRight } from "react-icons/tb";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -18,44 +18,84 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 <Layout>
   <Header /> 
   
-  <main id="main-content" class="pt-32 pb-24">
+  <main id="main-content" class="px-4 sm:px-6">
     
-    <!-- SECTION 1: THE MANIFESTO (Hero) -->
-    <section class="mb-32 relative">
-      <!-- Decorative Top Line -->
-      <div class="w-24 h-[1px] bg-skin-base mb-8"></div>
+    <!-- 
+      HERO SECTION: THE SPLIT-AXIS SCHEMATIC
+      A symmetrical, precision-aligned layout divided by a central timeline.
+    -->
+    <section class="min-h-[85svh] flex flex-col lg:flex-row items-center justify-center relative py-20 border-b border-skin-line/10">
       
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div class="lg:col-span-8">
-          <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl leading-[0.9] text-skin-base tracking-tight mb-8">
-            Precision <br/>
-            <span class="italic text-skin-base/40 font-light">Systems</span> <br/>
-            Engineering.
-          </h1>
-        </div>
-        
-        <div class="lg:col-span-4 flex flex-col justify-end pb-4">
-          <p class="font-mono text-xs uppercase tracking-widest text-skin-base/40 mb-4 border-l border-skin-line/30 pl-4">
-             // Status: Active <br/>
-             // Loc: Cambridge, UK <br/>
-             // Role: Research Asst.
-          </p>
-          <p class="text-sm sm:text-base font-light leading-relaxed text-skin-base/80 max-w-xs border-l border-skin-line/30 pl-4">
-            Shravan Goswami. Building high-performance tools at the intersection of probabilistic programming and open source.
-          </p>
-          
-          <div class="mt-8 pl-4 opacity-60 hover:opacity-100 transition-opacity">
-            <Socials />
-          </div>
+      <!-- THE CENTRAL AXIS (Visible on Desktop) -->
+      <div class="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-skin-line/20 -translate-x-1/2">
+        <!-- The Center "Crosshair" -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-skin-base/30 flex items-center justify-center">
+           <div class="w-full h-[1px] bg-current absolute"></div>
+           <div class="h-full w-[1px] bg-current absolute"></div>
         </div>
       </div>
+
+      <!-- LEFT QUADRANT: IDENTITY -->
+      <div class="w-full lg:w-1/2 flex flex-col items-start lg:items-end text-left lg:text-right pr-0 lg:pr-12 mb-12 lg:mb-0 relative z-10">
+         <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-4 block">
+            Subject ID: 001
+         </span>
+         
+         <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[0.9] text-skin-base mb-6">
+           Shravan <br/>
+           <span class="italic text-skin-base/60">Goswami.</span>
+         </h1>
+
+         <div class="flex items-center gap-2 lg:flex-row-reverse text-xs font-mono text-skin-base/60">
+            <span class="w-2 h-2 rounded-full bg-green-500/80 animate-pulse"></span>
+            <span>System Status: Online</span>
+         </div>
+      </div>
+
+      <!-- RIGHT QUADRANT: CONTEXT -->
+      <div class="w-full lg:w-1/2 flex flex-col items-start pl-0 lg:pl-12 relative z-10">
+         <div class="max-w-md">
+            <!-- Decorative Spec Lines -->
+            <div class="flex items-center gap-2 mb-6 opacity-30">
+               <div class="w-4 h-[1px] bg-skin-base"></div>
+               <span class="font-mono text-[10px] uppercase tracking-widest">Specifications</span>
+            </div>
+
+            <h2 class="font-serif text-2xl sm:text-3xl text-skin-base mb-6 leading-tight">
+              Engineering precision systems at the intersection of <span class="italic text-skin-base/60">probabilistic programming</span>.
+            </h2>
+
+            <div class="flex flex-col gap-2 font-mono text-xs text-skin-base/50 uppercase tracking-widest mb-8 border-l border-skin-line/20 pl-4">
+               <span>Role: Research Assistant</span>
+               <span>Base: Univ. of Cambridge</span>
+               <span>Focus: Open Source Tooling</span>
+            </div>
+
+            <div class="flex items-center gap-6">
+               <div class="opacity-70 hover:opacity-100 transition-opacity">
+                 <Socials />
+               </div>
+               <div class="h-4 w-[1px] bg-skin-line/30"></div>
+               <LinkButton href="/resume" className="text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40">
+                  Download CV
+               </LinkButton>
+            </div>
+         </div>
+      </div>
+
+      <!-- ABSOLUTE BOTTOM LABEL -->
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+        <span class="font-mono text-[9px] uppercase tracking-widest">Scroll to Initialize</span>
+        <div class="h-8 w-[1px] bg-skin-base"></div>
+      </div>
+
     </section>
 
 
-    <!-- SECTION 2: SELECTED TRANSMISSIONS (Featured Work) -->
+    <!-- SECTION 2: FEATURED WORK (KINETIC INDEX) -->
     {featuredPosts.length > 0 && (
-      <section class="mb-32">
-        <div class="flex items-end justify-between mb-8 border-b border-skin-line/20 pb-2">
+      <section class="py-24 sm:py-32">
+        <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
            <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Selected Transmissions</h2>
            <span class="font-mono text-[10px] text-skin-base/40">Index 01-0{featuredPosts.length}</span>
         </div>
@@ -71,31 +111,33 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           ))}
         </div>
 
-        <div class="mt-8 flex justify-end">
-           <LinkButton href="/projects" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors">
-              [ View All Projects ]
+        <div class="mt-12 flex justify-end">
+           <LinkButton href="/projects" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
+              View All Projects <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
            </LinkButton>
         </div>
       </section>
     )}
 
 
-    <!-- SECTION 3: THE ARCHIVE (Bento-free, Grid-aligned) -->
-    <!-- This section uses the "Corner Bracket" utility for a schematic look -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-skin-line/20 pt-16">
+    <!-- SECTION 3: THE ARCHIVE & FOOTER AREA -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-skin-line/20 pt-16 pb-24">
       
       <!-- Left: Recent Logs -->
-      <div class="corner-brackets border border-transparent hover:border-transparent">
-        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-6 block">Raw Log Data</span>
+      <div class="lg:col-span-6 corner-brackets relative">
+        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block">Raw Log Data</span>
         
-        <ul class="space-y-6">
+        <ul class="space-y-8">
            {recentPosts.slice(0, 3).map(({ data, slug }) => (
              <li>
                <a href={`/blog/${slug}/`} class="group block">
-                 <span class="font-mono text-[10px] text-skin-base/30 block mb-1 group-hover:text-skin-accent transition-colors">
-                   {data.pubDatetime.toLocaleDateString('en-US', {year: 'numeric', month:'2-digit', day:'2-digit'})}
-                 </span>
-                 <h4 class="font-serif text-xl text-skin-base group-hover:underline decoration-1 underline-offset-4 decoration-skin-base/30">
+                 <div class="flex items-center gap-3 mb-2">
+                   <span class="w-1.5 h-1.5 rounded-full bg-skin-line group-hover:bg-skin-accent transition-colors"></span>
+                   <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
+                     {data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
+                   </span>
+                 </div>
+                 <h4 class="font-serif text-2xl text-skin-base group-hover:italic transition-all">
                    {data.title}
                  </h4>
                </a>
@@ -103,32 +145,34 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
            ))}
         </ul>
 
-        <div class="mt-8">
+        <div class="mt-12">
            <LinkButton href="/blog" className="text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
              View Full Log &rarr;
            </LinkButton>
         </div>
       </div>
 
-      <!-- Right: Call to Action / CV -->
-      <div class="flex flex-col justify-between corner-brackets bg-skin-card-muted/30">
+      <!-- Right: Call to Action -->
+      <div class="lg:col-span-5 lg:col-start-8 flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10">
          <div>
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">System Access</span>
-            <h3 class="font-serif text-3xl mb-4">Collaboration</h3>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">System Status</span>
+            <h3 class="font-serif text-3xl mb-4 text-skin-base">Collaboration Open</h3>
             <p class="text-sm font-light text-skin-base/70 leading-relaxed max-w-sm">
               Open to research collaborations and consulting in high-performance computing and open-science tooling.
             </p>
          </div>
 
-         <div class="flex flex-col gap-4 mt-12">
-            <LinkButton href="/resume" className="flex items-center justify-between w-full px-4 py-3 border border-skin-line/40 hover:bg-skin-text-base hover:text-skin-inverted hover:border-skin-text-base transition-all duration-300">
+         <div class="flex flex-col gap-4 mt-16">
+            <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-text-base hover:text-skin-inverted hover:border-skin-text-base transition-all duration-300 group">
                <span class="text-xs font-mono uppercase tracking-widest">Download CV</span>
-               <TbArrowDown className="w-4 h-4" />
+               <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
             </LinkButton>
             
-            <a href="mailto:shravan@example.com" class="text-xs font-mono text-center text-skin-base/40 hover:text-skin-base transition-colors">
-              Initiate Contact Protocol
-            </a>
+            <div class="flex justify-center mt-2">
+              <a href="mailto:shravan@example.com" class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40">
+                INITIATE_CONTACT_PROTOCOL_V1
+              </a>
+            </div>
          </div>
       </div>
 
