@@ -1,7 +1,7 @@
 ---
-import { LOGO_IMAGE, SITE } from "@config";
+import { SITE } from "@config";
 import Search from "./Search.astro";
-import { TbMenu2, TbX, TbMoon, TbSun, TbDeviceDesktop, TbCoffee } from "react-icons/tb";
+import { TbMenu2, TbX, TbMoon, TbSun } from "react-icons/tb";
 
 export interface Props {
   activeNav?: "projects" | "resume" | "blog" | "tags" | "publications";
@@ -10,219 +10,119 @@ export interface Props {
 const { activeNav } = Astro.props;
 ---
 
-<header class="sticky top-0 z-30 w-full transition-all duration-300 glass" id="main-header">
-  <a id="skip-to-content" href="#main-content">Skip to content</a>
-  <div class="nav-container">
-    <div class="top-nav-wrap">
-      <a href="/" class="logo whitespace-nowrap group">
+<header class="fixed top-0 z-40 w-full transition-all duration-300 glass" id="main-header">
+  <div class="mx-auto flex max-w-6xl items-center justify-between p-4 sm:px-8 h-16">
+    
+    <!-- Logo -->
+    <a href="/" class="group flex items-center gap-2">
+       <span class="font-serif text-xl font-bold tracking-tight text-skin-base group-hover:text-skin-accent transition-colors duration-500">
+         SG.
+       </span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="hidden sm:flex items-center gap-8">
+      <ul class="flex items-center gap-6 text-sm font-medium tracking-wide">
+        <li>
+          <a href="/blog/" class={`hover:text-skin-accent transition-colors ${activeNav === "blog" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
+            Journal
+          </a>
+        </li>
+        <li>
+          <a href="/projects/" class={`hover:text-skin-accent transition-colors ${activeNav === "projects" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
+            Work
+          </a>
+        </li>
+        <li>
+          <a href="/publications/" class={`hover:text-skin-accent transition-colors ${activeNav === "publications" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
+            Research
+          </a>
+        </li>
+        <li>
+          <a href="/resume/" class={`hover:text-skin-accent transition-colors ${activeNav === "resume" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
+            CV
+          </a>
+        </li>
+      </ul>
+
+      <div class="w-[1px] h-4 bg-skin-line/50"></div>
+
+      <div class="flex items-center gap-2">
+        <Search />
+        
         {
-          LOGO_IMAGE.enable ? (
-            <img
-              src={`/assets/${LOGO_IMAGE.svg ? "logo.svg" : "logo.png"}`}
-              alt={SITE.title}
-              width={LOGO_IMAGE.width}
-              height={LOGO_IMAGE.height}
-            />
-          ) : (
-            <span class="text-xl font-bold font-serif tracking-tight text-skin-base group-hover:text-skin-accent transition-colors duration-300">
-              {SITE.title}
-            </span>
+          SITE.lightAndDarkMode && (
+            <div class="relative group/theme">
+              <button
+                id="theme-btn"
+                class="p-2 opacity-60 hover:opacity-100 hover:text-skin-accent transition-all"
+                title="Toggle theme"
+                aria-label="auto"
+              >
+                <TbMoon id="moon-svg" className="w-4 h-4" />
+                <TbSun id="sun-svg" className="w-4 h-4" />
+              </button>
+              
+              {/* Minimalist Theme Dropdown */}
+              <div
+                id="theme-dropdown"
+                class="absolute right-0 top-full mt-4 w-32 py-2 rounded-sm bg-skin-card border border-skin-line shadow-xl hidden group-hover/theme:block hover:block"
+              >
+                <button class="theme-option w-full text-left px-4 py-2 text-xs uppercase tracking-wider hover:bg-skin-fill hover:text-skin-accent" data-theme="light">Light</button>
+                <button class="theme-option w-full text-left px-4 py-2 text-xs uppercase tracking-wider hover:bg-skin-fill hover:text-skin-accent" data-theme="dark">Dark</button>
+                <div class="border-t border-skin-line/10 my-1"></div>
+                <button class="theme-option w-full text-left px-4 py-2 text-xs uppercase tracking-wider hover:bg-skin-fill hover:text-skin-accent" data-theme="auto">Auto</button>
+              </div>
+            </div>
           )
         }
-      </a>
-      <nav id="nav-menu">
-        <button
-          class="hamburger-menu focus-outline"
-          aria-label="Open Menu"
-          aria-expanded="false"
-          aria-controls="menu-items"
-        >
-          <div class="menu-icon">
-            <TbMenu2 className="menu-open icon-tabler" />
-            <TbX className="menu-close icon-tabler hidden" />
-          </div>
-        </button>
-        <ul id="menu-items" class="display-none sm:flex gap-1">
-          <li>
-            <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
-              Blog
-            </a>
-          </li>
-          <li>
-            <a
-              href="/projects/"
-              class={activeNav === "projects" ? "active" : ""}
-            >
-              Projects
-            </a>
-          </li>
-          <li>
-            <a
-              href="/publications/"
-              class={activeNav === "publications" ? "active" : ""}
-            >
-              Publications
-            </a>
-          </li>
-          <li>
-            <a href="/resume/" class={activeNav === "resume" ? "active" : ""}>
-              Resume
-            </a>
-          </li>
-          <li>
-            <Search />
-          </li>
-          {
-            SITE.lightAndDarkMode && (
-              <li class="relative ml-2">
-                <button
-                  id="theme-btn"
-                  class="focus-outline p-2 rounded-lg hover:bg-skin-card-muted transition-colors"
-                  title="Toggle theme"
-                  aria-label="auto"
-                  aria-live="polite"
-                >
-                  <TbMoon id="moon-svg" className="icon-tabler !w-5 !h-5" />
-                  <TbSun id="sun-svg" className="icon-tabler !w-5 !h-5" />
-                </button>
-                
-                {/* Theme Dropdown */}
-                <div
-                  id="theme-dropdown"
-                  class="absolute right-0 top-full mt-3 w-48 rounded-xl bg-skin-card border border-skin-line shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50 overflow-hidden transition-all duration-200 transform origin-top-right"
-                >
-                  <div class="py-1">
-                    <div class="px-4 py-2 text-[10px] font-bold text-skin-base/40 uppercase tracking-widest">Theme</div>
-                    
-                    <button class="theme-option group" data-theme="light">
-                      <TbSun className="theme-icon" />
-                      <span>Light</span>
-                    </button>
-                    <button class="theme-option group" data-theme="dark">
-                      <TbMoon className="theme-icon" />
-                      <span>Dark</span>
-                    </button>
+      </div>
+    </nav>
 
-                    <div class="my-1 border-t border-skin-line/10"></div>
-                    <div class="px-4 py-2 text-[10px] font-bold text-skin-base/40 uppercase tracking-widest">Catppuccin</div>
-
-                    <button class="theme-option group" data-theme="latte">
-                      <TbCoffee className="theme-icon" />
-                      <span>Latte</span>
-                    </button>
-                    <button class="theme-option group" data-theme="frappe">
-                      <TbCoffee className="theme-icon" />
-                      <span>Frappé</span>
-                    </button>
-                    <button class="theme-option group" data-theme="macchiato">
-                      <TbCoffee className="theme-icon" />
-                      <span>Macchiato</span>
-                    </button>
-                    <button class="theme-option group" data-theme="mocha">
-                      <TbCoffee className="theme-icon" />
-                      <span>Mocha</span>
-                    </button>
-
-                    <div class="my-1 border-t border-skin-line/10"></div>
-
-                    <button class="theme-option group" data-theme="auto">
-                      <TbDeviceDesktop className="theme-icon" />
-                      <span>Auto</span>
-                    </button>
-                  </div>
-                </div>
-              </li>
-            )
-          }
-        </ul>
-      </nav>
-    </div>
+    <!-- Mobile Menu Button -->
+    <button
+      class="hamburger-menu sm:hidden p-2 text-skin-base hover:text-skin-accent"
+      aria-label="Open Menu"
+      aria-expanded="false"
+      aria-controls="menu-items"
+    >
+      <TbMenu2 className="menu-open w-6 h-6" />
+      <TbX className="menu-close w-6 h-6 hidden" />
+    </button>
+  </div>
+  
+  <!-- Mobile Menu Overlay -->
+  <div id="menu-items" class="display-none fixed inset-0 top-16 bg-skin-fill z-30 p-8 sm:hidden">
+    <ul class="flex flex-col gap-6 text-xl font-serif">
+      <li><a href="/blog/">Journal</a></li>
+      <li><a href="/projects/">Work</a></li>
+      <li><a href="/publications/">Research</a></li>
+      <li><a href="/resume/">CV</a></li>
+    </ul>
   </div>
 </header>
 
-<style>
-  #skip-to-content {
-    @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 rounded-md shadow-lg;
-  }
-  .nav-container {
-    @apply mx-auto flex max-w-4xl flex-col items-center sm:flex-row;
-  }
-  .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-4;
-  }
-  .logo {
-    @apply absolute py-1 sm:static;
-  }
-  .hamburger-menu {
-    @apply self-end p-2 sm:hidden hover:bg-skin-card-muted rounded-md transition-colors;
-  }
-
-  nav {
-    @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
-  }
-  nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-2 sm:gap-y-0 sm:grid-cols-none sm:grid-rows-none sm:flex;
-  }
-  nav ul li {
-    @apply col-span-2 flex items-center justify-center;
-  }
-  nav ul li a {
-    @apply w-full px-4 py-2 text-center text-sm font-medium text-skin-base/80 hover:text-skin-accent hover:bg-skin-card-muted rounded-md transition-all sm:w-auto sm:px-3 sm:py-2;
-  }
-  nav ul li:nth-last-child(2) a {
-    @apply w-auto;
-  }
-  nav ul li:nth-last-child(1),
-  nav ul li:nth-last-child(2) {
-    @apply col-span-1;
-  }
-  nav a.active {
-    @apply text-skin-accent bg-skin-accent/10 font-semibold;
-  }
-  nav a.active svg {
-    @apply fill-skin-accent;
-  }
-
-  /* Theme Options */
-  .theme-option {
-    @apply flex w-full items-center gap-3 px-4 py-2 text-sm text-skin-base/80 hover:bg-skin-accent/10 hover:text-skin-accent transition-colors cursor-pointer;
-  }
-  .theme-icon {
-    @apply text-lg text-skin-base/50 group-hover:text-skin-accent transition-colors;
-  }
-
-  .menu-icon .menu-close {
-    @apply hidden;
-  }
-  .menu-icon.is-active .menu-open {
-    @apply hidden;
-  }
-  .menu-icon.is-active .menu-close {
-    @apply block;
-  }
-</style>
-
 <script>
   function toggleNav() {
-    // Toggle menu
     const menuBtn = document.querySelector(".hamburger-menu");
-    const menuIcon = document.querySelector(".menu-icon");
+    const menuOpen = document.querySelector(".menu-open");
+    const menuClose = document.querySelector(".menu-close");
     const menuItems = document.querySelector("#menu-items");
 
     menuBtn?.addEventListener("click", () => {
-      const menuExpanded = menuBtn.getAttribute("aria-expanded") === "true";
-      menuIcon?.classList.toggle("is-active");
-      menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
-      menuBtn.setAttribute(
-        "aria-label",
-        menuExpanded ? "Open Menu" : "Close Menu",
-      );
+      const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
+      menuBtn.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+      menuBtn.setAttribute("aria-label", isExpanded ? "Open Menu" : "Close Menu");
+      
+      menuOpen?.classList.toggle("hidden");
+      menuClose?.classList.toggle("hidden");
       menuItems?.classList.toggle("display-none");
+      
+      // Prevent scrolling when menu is open
+      document.body.style.overflow = isExpanded ? "auto" : "hidden";
     });
   }
 
   toggleNav();
-
-  // Runs on view transitions navigation
   document.addEventListener("astro:after-swap", toggleNav);
 </script>

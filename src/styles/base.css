@@ -5,24 +5,26 @@
 @layer base {
   :root,
   html[data-theme="light"] {
-    --color-fill: 250, 250, 250; /* Clean Off-White */
-    --color-text-base: 23, 23, 23; /* Near Black */
-    --color-accent: 235, 94, 40; /* Vibrant Orange */
-    --color-card: 255, 255, 255; /* Pure White */
+    /* "The Gallery" - Stark, clean, and crisp */
+    --color-fill: 255, 255, 255; /* Pure White */
+    --color-text-base: 0, 0, 0; /* True Black for maximum editorial contrast */
+    --color-accent: 80, 80, 80; /* Dark Grey - No colors, just tone */
+    --color-card: 250, 250, 250; /* Very subtle off-white */
     --color-card-muted: 245, 245, 245;
-    --color-border: 229, 229, 229; /* Light Gray */
+    --color-border: 230, 230, 230; 
   }
 
   html[data-theme="dark"] {
-    --color-fill: 10, 10, 10; /* Deep Obsidian */
-    --color-text-base: 237, 237, 237; /* Off-White */
-    --color-accent: 56, 189, 248; /* Sky Blue */
-    --color-card: 23, 23, 23; /* Dark Gray */
-    --color-card-muted: 38, 38, 38;
-    --color-border: 40, 40, 40;
+    /* "The Void" - Deep, matte, and infinite */
+    --color-fill: 5, 5, 5; /* Nearly True Black */
+    --color-text-base: 240, 240, 240; /* Soft White */
+    --color-accent: 150, 150, 150; /* Neutral Silver */
+    --color-card: 15, 15, 15;
+    --color-card-muted: 25, 25, 25;
+    --color-border: 40, 40, 40; 
   }
 
-  /* Catppuccin Themes - Preserved but refined */
+  /* Keep legacy themes if needed */
   html[data-theme="latte"] {
     --color-fill: 239, 241, 245;
     --color-text-base: 76, 79, 105;
@@ -31,7 +33,7 @@
     --color-card-muted: 230, 233, 239;
     --color-border: 204, 208, 218;
   }
-
+  
   html[data-theme="frappe"] {
     --color-fill: 48, 52, 70;
     --color-text-base: 198, 208, 245;
@@ -60,71 +62,82 @@
   }
 
   #sun-svg,
-  html[data-theme="dark"] #moon-svg,
-  html[data-theme="frappe"] #moon-svg,
-  html[data-theme="macchiato"] #moon-svg,
-  html[data-theme="mocha"] #moon-svg {
+  html[data-theme="dark"] #moon-svg {
     display: none;
   }
   #moon-svg,
-  html[data-theme="dark"] #sun-svg,
-  html[data-theme="frappe"] #sun-svg,
-  html[data-theme="macchiato"] #sun-svg,
-  html[data-theme="mocha"] #sun-svg {
+  html[data-theme="dark"] #sun-svg {
     display: block;
   }
   
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base transition-colors duration-300;
+    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base transition-colors duration-500 ease-in-out selection:bg-skin-inverted selection:text-skin-inverted relative;
+  }
+
+  /* Refined Luxury Grain Texture - reduced opacity for cleaner look */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.02; /* Extremely subtle */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif tracking-tight font-bold;
+    @apply font-serif tracking-tight font-medium;
   }
 
+  /* Luxury Typography Scaling */
+  h1 { @apply text-4xl sm:text-5xl lg:text-6xl; }
+  h2 { @apply text-3xl sm:text-4xl; }
+  
   section, footer {
-    @apply mx-auto max-w-4xl px-4;
+    @apply mx-auto max-w-5xl px-6;
   }
 
-  /* Refined Link Styles */
+  /* Refined Link Styles - Understated */
   a {
-    /* Updated to use ring-accent and ring-offset-bgColor */
-    @apply outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bgColor rounded-sm;
+    /* Fixed: Changed ring-skin-base to ring-textColor because skin is not in global ring colors */
+    @apply outline-none transition-all duration-300 focus-visible:ring-1 focus-visible:ring-textColor rounded-sm;
   }
 
+  /* Icons */
   svg {
-    @apply inline-block h-6 w-6 fill-skin-base transition-colors duration-200 group-hover:fill-skin-accent;
+    @apply inline-block h-6 w-6 fill-skin-base transition-all duration-300 group-hover:opacity-70;
   }
   
   svg.icon-tabler {
-    /* Updated: Switched from stroke-accent to text-skin-accent. 
-       Since we use stroke-current, changing the text color handles the stroke color. */
-    @apply inline-block h-6 w-6 scale-110 fill-transparent stroke-current stroke-2 opacity-90 transition-all duration-200 group-hover:text-skin-accent sm:scale-100;
+    @apply inline-block h-6 w-6 scale-100 fill-transparent stroke-current stroke-[1.5] opacity-80 transition-all duration-300 group-hover:text-skin-base group-hover:opacity-100;
   }
 
-  /* Typography Pro (Cleaner reading experience) */
+  /* Prose Overrides for Luxury Reading */
   .prose {
-    @apply prose-headings:!mb-4 prose-headings:!text-skin-base prose-headings:font-serif prose-h3:italic prose-p:!text-skin-base/90 prose-p:leading-relaxed prose-a:!text-skin-accent prose-a:!no-underline prose-a:border-b prose-a:border-skin-accent/30 hover:prose-a:border-skin-accent hover:prose-a:bg-skin-accent/10 prose-a:transition-all prose-blockquote:!border-l-4 prose-blockquote:!border-skin-accent prose-blockquote:bg-skin-card prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-figcaption:!text-skin-base/70 prose-strong:!text-skin-base prose-strong:font-semibold prose-code:rounded-md prose-code:bg-skin-card prose-code:border prose-code:border-skin-line prose-code:px-1.5 prose-code:py-0.5 prose-code:before:!content-none prose-code:after:!content-none prose-code:font-mono prose-code:text-sm prose-li:marker:!text-skin-accent prose-img:!my-6 prose-img:rounded-xl prose-img:shadow-md prose-hr:!border-skin-line;
+    @apply prose-headings:!font-serif prose-headings:!font-medium prose-headings:tracking-tight prose-headings:!text-skin-base 
+    prose-p:!text-skin-base/80 prose-p:!font-sans prose-p:leading-relaxed prose-p:font-light
+    /* Fixed: Changed border-skin-base to border-textColor in multiple places */
+    prose-a:!text-skin-base prose-a:!no-underline prose-a:border-b prose-a:border-textColor/30 hover:prose-a:border-textColor hover:prose-a:text-skin-base prose-a:transition-all 
+    prose-blockquote:!border-l-2 prose-blockquote:!border-textColor prose-blockquote:!font-serif prose-blockquote:!italic prose-blockquote:text-skin-base/70
+    prose-strong:!text-skin-base prose-strong:font-medium
+    prose-code:font-mono prose-code:text-xs prose-code:uppercase prose-code:tracking-wider prose-code:bg-skin-card-muted prose-code:px-2 prose-code:py-1 prose-code:rounded-sm
+    prose-img:!rounded-sm prose-img:border prose-img:border-skin-line/50;
   }
 
-  /* Custom Scrollbar */
+  /* Elegant Scrollbar - Thinner and cleaner */
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-1;
   }
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
-    /* Fix: Use CSS variable directly instead of missing utility class */
-    background-color: rgb(var(--color-border));
-    @apply rounded-full hover:bg-skin-accent/50 transition-colors;
-  }
-
-  /* Syntax Highlighting adjustments for themes */
-  html[data-theme="dark"] pre:has(code),
-  html[data-theme="dark"] pre:has(code) span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
+    background-color: rgba(var(--color-text-base), 0.2);
+    /* Fixed: Changed hover:bg-skin-base/50 to hover:bg-textColor/50 */
+    @apply rounded-full hover:bg-textColor/50 transition-colors;
   }
 }
 
@@ -133,12 +146,12 @@
     @apply hidden;
   }
   .focus-outline {
-    /* Updated to use ring-accent and ring-offset-bgColor */
-    @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bgColor;
+    /* Fixed: Changed ring-skin-base to ring-textColor */
+    @apply outline-none focus-visible:ring-1 focus-visible:ring-textColor;
   }
   
-  /* Glass Effect Utility */
+  /* Frosted Glass - More Crystalline */
   .glass {
-    @apply bg-skin-fill/80 backdrop-blur-md border-b border-skin-line/10 supports-[backdrop-filter]:bg-skin-fill/60;
+    @apply bg-skin-fill/70 backdrop-blur-md border-b border-skin-line/10 supports-[backdrop-filter]:bg-skin-fill/60;
   }
 }

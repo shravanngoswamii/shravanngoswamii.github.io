@@ -4,13 +4,12 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
 import { getPublications } from "@utils/bibtexUtils";
-import { TbRss, TbArrowRight } from "react-icons/tb";
+import { TbArrowRight, TbHeartHandshake } from "react-icons/tb";
 
 const posts = await getCollection("blog");
 const publications = await getPublications();
@@ -30,84 +29,62 @@ const getRelatedPubs = (tags: string[]) => {
 
 <Layout>
   <Header />
-  <main id="main-content">
-    <section id="hero">
-      <h1>Developer & Writer</h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="rss-link"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <TbRss className="rss-icon icon-tabler" />
-        <span class="sr-only">RSS Feed</span>
-      </a>
+  <main id="main-content" class="pt-20 pb-12">
+    
+    <!-- Hero Section: Editorial Style -->
+    <section id="hero" class="flex flex-col items-start sm:items-center sm:text-center max-w-4xl mx-auto mb-24">
+      
+      <div class="mb-6 opacity-60">
+        <span class="font-mono text-xs uppercase tracking-[0.2em] text-skin-accent">Portfolio & Research</span>
+      </div>
 
-      <p>
-        Shravan Goswami is a Research Assistant at Univerity of Cambridge,
-        Google Summer of Code - GSoC 2025 Contributor with <a
-          href="https://julialang.org/">The Julia Language</a
-        > and a pre-final year student of B.Tech. Computer Science & Engineering
-        + SIH'24 Finalist!
+      <h1 class="font-serif text-5xl sm:text-7xl font-medium leading-[1.1] mb-8 text-skin-base">
+        Shravan Goswami
+      </h1>
+
+      <div class="w-16 h-[1px] bg-skin-accent/50 mb-8"></div>
+
+      <p class="text-lg sm:text-xl font-light leading-relaxed text-skin-base/80 max-w-2xl">
+        Research Assistant at the <span class="font-serif italic text-skin-base">University of Cambridge</span> and Contributor at <span class="font-serif italic text-skin-base">The Julia Language</span>. 
+        Exploring the intersection of probabilistic programming and open source.
       </p>
-      <p>
-        Read the
+
+      <div class="mt-10 flex flex-col sm:flex-row gap-6 items-center">
         <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
           href="/blog/"
+          className="px-6 py-3 border border-skin-line hover:border-skin-accent text-sm uppercase tracking-widest transition-all duration-300 hover:bg-skin-accent/5"
         >
-          blog posts
-        </LinkButton>, explore
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="/projects"
-        >
-          projects
+          Read Journal
         </LinkButton>
-        or see the
+        
         <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="/resume"
+          href="/projects"
+          className="group flex items-center gap-2 text-sm uppercase tracking-widest text-skin-base/60 hover:text-skin-accent transition-colors"
         >
-          resume
-        </LinkButton> for more info.
-      </p>
+          <span>View Works</span>
+          <TbArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </LinkButton>
+      </div>
+
       {
-        // only display if at least one social link is enabled
         socialCount > 0 && (
-          <div class="social-wrapper">
-            <div class="social-links">Let's Connect</div>
-            <Socials />
+          <div class="mt-12 scale-90 opacity-70 hover:opacity-100 transition-opacity">
+            <Socials centered />
           </div>
         )
       }
-
-      <div class="mt-8 p-6 bg-skin-card rounded-xl border border-skin-line/20 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex flex-col gap-1 text-center sm:text-left">
-          <h3 class="text-lg font-bold text-skin-base">Support my work</h3>
-          <p class="text-sm text-skin-base/80">
-            If you find my projects helpful, consider sponsoring me on GitHub!
-          </p>
-        </div>
-        <iframe
-          src="https://github.com/sponsors/shravanngoswamii/button"
-          title="Sponsor shravanngoswamii"
-          height="32"
-          width="114"
-          style="border: 0; border-radius: 6px;"
-        ></iframe>
-      </div>
     </section>
-
-    <Hr />
 
     {
       featuredPosts.length > 0 && (
         <>
-          <section id="featured">
-            <h2>Featured</h2>
-            <ul>
+          <section id="featured" class="max-w-4xl mx-auto">
+            <div class="flex items-center gap-4 mb-8">
+               <h2 class="font-serif text-2xl italic text-skin-base">Selected Writings</h2>
+               <div class="h-[1px] flex-1 bg-skin-line/30"></div>
+            </div>
+            
+            <ul class="grid gap-4">
               {featuredPosts.map(({ data, slug }) => (
                 <Card
                   href={`/blog/${slug}/`}
@@ -118,16 +95,19 @@ const getRelatedPubs = (tags: string[]) => {
               ))}
             </ul>
           </section>
-          {recentPosts.length > 0 && <Hr />}
         </>
       )
     }
 
     {
       recentPosts.length > 0 && (
-        <section id="recent-posts">
-          <h2>Recent Posts</h2>
-          <ul>
+        <section id="recent-posts" class="max-w-4xl mx-auto mt-24">
+          <div class="flex items-center gap-4 mb-8">
+             <h2 class="font-serif text-2xl italic text-skin-base">Recent Notes</h2>
+             <div class="h-[1px] flex-1 bg-skin-line/30"></div>
+          </div>
+          
+          <ul class="grid gap-4">
             {recentPosts.map(
               ({ data, slug }, index) =>
                 index < SITE.postPerIndex && (
@@ -140,55 +120,33 @@ const getRelatedPubs = (tags: string[]) => {
                 ),
             )}
           </ul>
+          
+          <div class="mt-12 text-center">
+            <LinkButton href="/blog/" className="font-mono text-xs uppercase tracking-widest text-skin-base/50 hover:text-skin-accent transition-colors">
+              View Archive &rarr;
+            </LinkButton>
+          </div>
         </section>
       )
     }
 
-    <div class="all-posts-btn-wrapper">
-      <LinkButton href="/blog/">
-        All Posts
-        <TbArrowRight className="w-6 h-6" />
-      </LinkButton>
+    <div class="mt-24 max-w-2xl mx-auto p-8 border border-skin-line/20 rounded-sm text-center">
+      <TbHeartHandshake className="w-8 h-8 mx-auto mb-4 text-skin-accent/60" />
+      <h3 class="font-serif text-xl mb-2">Patronage</h3>
+      <p class="text-sm text-skin-base/60 mb-6 font-light">
+        If my open-source contributions have added value to your work, consider supporting the continued development.
+      </p>
+      <iframe
+        src="https://github.com/sponsors/shravanngoswamii/button"
+        title="Sponsor shravanngoswamii"
+        height="32"
+        width="114"
+        style="border: 0; margin: 0 auto; filter: grayscale(100%); opacity: 0.8;"
+        class="hover:filter-none hover:opacity-100 transition-all duration-500"
+      ></iframe>
     </div>
+
   </main>
 
   <Footer />
 </Layout>
-
-<style>
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply pb-6 pt-8;
-  }
-  #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
-  }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 text-skin-accent sm:mb-3 sm:scale-125;
-  }
-  #hero p {
-    @apply my-2;
-  }
-  .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-  }
-
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts {
-    @apply pb-6 pt-12;
-  }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
-  }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
-  }
-</style>

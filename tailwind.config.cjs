@@ -66,9 +66,10 @@ module.exports = {
         transparent: "transparent",
       },
       fontFamily: {
-        mono: ["IBM Plex Mono", "monospace"],
-        sans: ["Inter", "sans-serif"],
-        serif: ["Outfit", "sans-serif"],
+        // "Luxury" font stack
+        mono: ["'JetBrains Mono'", "'IBM Plex Mono'", "monospace"],
+        sans: ["'Geist'", "'Inter'", "sans-serif"], 
+        serif: ["'Playfair Display'", "serif"], // The "Trillionaire" font
       },
 
       typography: {
