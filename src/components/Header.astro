@@ -10,52 +10,86 @@ export interface Props {
 const { activeNav } = Astro.props;
 ---
 
-<header class="fixed top-0 z-40 w-full transition-all duration-300 glass" id="main-header">
-  <div class="mx-auto flex max-w-6xl items-center justify-between p-4 sm:px-8 h-16">
-    
-    <!-- Logo -->
-    <a href="/" class="group flex items-center gap-2">
-       <span class="font-serif text-xl font-bold tracking-tight text-skin-base group-hover:text-skin-accent transition-colors duration-500">
-         SG.
-       </span>
-    </a>
+<!-- 
+  PREMIUM LAYOUT STRATEGY: 
+  1. Mobile: A sturdy, full-width glass header for usability.
+  2. Desktop: A "Floating Command Console" (Pill shape) centered at the top.
+-->
 
-    <!-- Navigation -->
-    <nav class="hidden sm:flex items-center gap-8">
-      <ul class="flex items-center gap-6 text-sm font-medium tracking-wide">
-        <li>
-          <a href="/blog/" class={`hover:text-skin-accent transition-colors ${activeNav === "blog" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
-            Journal
-          </a>
-        </li>
-        <li>
-          <a href="/projects/" class={`hover:text-skin-accent transition-colors ${activeNav === "projects" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
-            Work
-          </a>
-        </li>
-        <li>
-          <a href="/publications/" class={`hover:text-skin-accent transition-colors ${activeNav === "publications" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
-            Research
-          </a>
-        </li>
-        <li>
-          <a href="/resume/" class={`hover:text-skin-accent transition-colors ${activeNav === "resume" ? "text-skin-accent border-b border-skin-accent/50" : "text-skin-base/70"}`}>
-            CV
-          </a>
-        </li>
-      </ul>
+<!-- WRAPPER: Fixed, high z-index, allows clicks to pass through empty areas -->
+<header class="fixed top-0 left-0 right-0 z-40 flex flex-col items-center pointer-events-none transition-all duration-300">
+  
+  <!-- DESKTOP: FLOATING CONSOLE (Hidden on mobile) -->
+  <div class="hidden sm:flex mt-6 pointer-events-auto">
+    <div class="
+      group relative flex items-center gap-1 p-1.5 pr-3
+      rounded-full 
+      bg-skin-fill/70 backdrop-blur-xl supports-[backdrop-filter]:bg-skin-fill/60
+      border border-skin-line/10 
+      shadow-2xl shadow-skin-text-base/5
+      transition-all duration-500 ease-out
+      hover:scale-[1.01] hover:bg-skin-fill/90 hover:border-skin-line/20 hover:shadow-skin-text-base/10
+    ">
+      
+      <!-- LOGO: Circular Anchor -->
+      <a href="/" class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10" aria-label="Home">
+        SG
+      </a>
 
-      <div class="w-[1px] h-4 bg-skin-line/50"></div>
+      <!-- SEPARATOR -->
+      <div class="w-px h-4 bg-skin-line/20 mx-2"></div>
 
-      <div class="flex items-center gap-2">
-        <Search />
+      <!-- NAV LINKS -->
+      <nav class="flex items-center">
+        <ul class="flex items-center gap-1 text-xs font-mono uppercase tracking-widest font-medium">
+          <li>
+            <a href="/blog/" class={`
+              px-4 py-2 rounded-full transition-all duration-300
+              ${activeNav === "blog" 
+                ? "bg-skin-text-base text-skin-inverted shadow-md" 
+                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}
+            `}>
+              Journal
+            </a>
+          </li>
+          <li>
+            <a href="/projects/" class={`
+              px-4 py-2 rounded-full transition-all duration-300
+              ${activeNav === "projects" 
+                ? "bg-skin-text-base text-skin-inverted shadow-md" 
+                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}
+            `}>
+              Work
+            </a>
+          </li>
+          <li>
+            <a href="/publications/" class={`
+              px-4 py-2 rounded-full transition-all duration-300
+              ${activeNav === "publications" 
+                ? "bg-skin-text-base text-skin-inverted shadow-md" 
+                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}
+            `}>
+              Research
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- SEPARATOR -->
+      <div class="w-px h-4 bg-skin-line/20 mx-2"></div>
+
+      <!-- UTILITIES -->
+      <div class="flex items-center gap-1">
+        <div class="scale-90 hover:scale-100 transition-transform">
+           <Search />
+        </div>
         
         {
           SITE.lightAndDarkMode && (
-            <div class="relative group/theme">
+            <div class="relative group/theme ml-1">
               <button
                 id="theme-btn"
-                class="p-2 opacity-60 hover:opacity-100 hover:text-skin-accent transition-all"
+                class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all"
                 title="Toggle theme"
                 aria-label="auto"
               >
@@ -63,25 +97,30 @@ const { activeNav } = Astro.props;
                 <TbSun id="sun-svg" className="w-4 h-4" />
               </button>
               
-              {/* Minimalist Theme Dropdown */}
+              <!-- Floating Theme Menu -->
               <div
                 id="theme-dropdown"
-                class="absolute right-0 top-full mt-4 w-32 py-2 rounded-sm bg-skin-card border border-skin-line shadow-xl hidden group-hover/theme:block hover:block"
+                class="absolute right-0 top-full mt-4 w-32 p-1 rounded-xl bg-skin-fill/95 backdrop-blur-md border border-skin-line/10 shadow-xl hidden group-hover/theme:block hover:block origin-top-right transition-all"
               >
-                <button class="theme-option w-full text-left px-4 py-2 text-xs uppercase tracking-wider hover:bg-skin-fill hover:text-skin-accent" data-theme="light">Light</button>
-                <button class="theme-option w-full text-left px-4 py-2 text-xs uppercase tracking-wider hover:bg-skin-fill hover:text-skin-accent" data-theme="dark">Dark</button>
-                <div class="border-t border-skin-line/10 my-1"></div>
-                <button class="theme-option w-full text-left px-4 py-2 text-xs uppercase tracking-wider hover:bg-skin-fill hover:text-skin-accent" data-theme="auto">Auto</button>
+                <button class="theme-option w-full text-left px-3 py-2 text-[10px] font-mono uppercase tracking-widest rounded-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors" data-theme="light">Light</button>
+                <button class="theme-option w-full text-left px-3 py-2 text-[10px] font-mono uppercase tracking-widest rounded-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors" data-theme="dark">Dark</button>
+                <button class="theme-option w-full text-left px-3 py-2 text-[10px] font-mono uppercase tracking-widest rounded-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors" data-theme="auto">Auto</button>
               </div>
             </div>
           )
         }
       </div>
-    </nav>
+    </div>
+  </div>
 
-    <!-- Mobile Menu Button -->
+  <!-- MOBILE: FULL WIDTH BLUR HEADER (Pointer events auto to catch clicks) -->
+  <div class="sm:hidden w-full h-16 pointer-events-auto bg-skin-fill/85 backdrop-blur-md border-b border-skin-line/10 flex items-center justify-between px-4">
+    <a href="/" class="font-serif text-lg font-bold text-skin-base">
+      SG.
+    </a>
+
     <button
-      class="hamburger-menu sm:hidden p-2 text-skin-base hover:text-skin-accent"
+      class="hamburger-menu p-2 text-skin-base hover:bg-skin-card-muted rounded-md transition-colors"
       aria-label="Open Menu"
       aria-expanded="false"
       aria-controls="menu-items"
@@ -91,14 +130,21 @@ const { activeNav } = Astro.props;
     </button>
   </div>
   
-  <!-- Mobile Menu Overlay -->
-  <div id="menu-items" class="display-none fixed inset-0 top-16 bg-skin-fill z-30 p-8 sm:hidden">
-    <ul class="flex flex-col gap-6 text-xl font-serif">
-      <li><a href="/blog/">Journal</a></li>
-      <li><a href="/projects/">Work</a></li>
-      <li><a href="/publications/">Research</a></li>
-      <li><a href="/resume/">CV</a></li>
-    </ul>
+  <!-- MOBILE MENU OVERLAY -->
+  <div id="menu-items" class="display-none fixed inset-0 top-16 bg-skin-fill z-30 p-8 sm:hidden pointer-events-auto flex flex-col gap-8 overflow-y-auto">
+    <nav>
+      <ul class="flex flex-col gap-6 text-2xl font-serif text-skin-base">
+        <li><a href="/blog/" class="block border-b border-skin-line/10 pb-2">Journal</a></li>
+        <li><a href="/projects/" class="block border-b border-skin-line/10 pb-2">Work</a></li>
+        <li><a href="/publications/" class="block border-b border-skin-line/10 pb-2">Research</a></li>
+        <li><a href="/resume/" class="block border-b border-skin-line/10 pb-2">CV</a></li>
+      </ul>
+    </nav>
+    
+    <div class="mt-auto pt-8 border-t border-skin-line/20 flex items-center justify-between">
+       <span class="text-xs font-mono uppercase tracking-widest opacity-50">Preferences</span>
+       <!-- Theme Toggle Mobile Logic handled by script below -->
+    </div>
   </div>
 </header>
 
@@ -118,7 +164,6 @@ const { activeNav } = Astro.props;
       menuClose?.classList.toggle("hidden");
       menuItems?.classList.toggle("display-none");
       
-      // Prevent scrolling when menu is open
       document.body.style.overflow = isExpanded ? "auto" : "hidden";
     });
   }

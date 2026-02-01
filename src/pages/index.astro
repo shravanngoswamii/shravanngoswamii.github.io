@@ -7,144 +7,132 @@ import LinkButton from "@components/LinkButton.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { SITE, SOCIALS } from "@config";
-import { getPublications } from "@utils/bibtexUtils";
-import { TbArrowRight, TbHeartHandshake } from "react-icons/tb";
+import { TbArrowDown } from "react-icons/tb";
 
 const posts = await getCollection("blog");
-const publications = await getPublications();
-
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-
-const socialCount = SOCIALS.filter((social) => social.active).length;
-
-const getRelatedPubs = (tags: string[]) => {
-  return publications.filter(pub => 
-    pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
-  ).map(pub => ({ title: pub.entryTags.title || "", url: pub.entryTags.url }));
-};
 ---
 
 <Layout>
-  <Header />
-  <main id="main-content" class="pt-20 pb-12">
+  <Header /> 
+  
+  <main id="main-content" class="pt-32 pb-24">
     
-    <!-- Hero Section: Editorial Style -->
-    <section id="hero" class="flex flex-col items-start sm:items-center sm:text-center max-w-4xl mx-auto mb-24">
+    <!-- SECTION 1: THE MANIFESTO (Hero) -->
+    <section class="mb-32 relative">
+      <!-- Decorative Top Line -->
+      <div class="w-24 h-[1px] bg-skin-base mb-8"></div>
       
-      <div class="mb-6 opacity-60">
-        <span class="font-mono text-xs uppercase tracking-[0.2em] text-skin-accent">Portfolio & Research</span>
-      </div>
-
-      <h1 class="font-serif text-5xl sm:text-7xl font-medium leading-[1.1] mb-8 text-skin-base">
-        Shravan Goswami
-      </h1>
-
-      <div class="w-16 h-[1px] bg-skin-accent/50 mb-8"></div>
-
-      <p class="text-lg sm:text-xl font-light leading-relaxed text-skin-base/80 max-w-2xl">
-        Research Assistant at the <span class="font-serif italic text-skin-base">University of Cambridge</span> and Contributor at <span class="font-serif italic text-skin-base">The Julia Language</span>. 
-        Exploring the intersection of probabilistic programming and open source.
-      </p>
-
-      <div class="mt-10 flex flex-col sm:flex-row gap-6 items-center">
-        <LinkButton
-          href="/blog/"
-          className="px-6 py-3 border border-skin-line hover:border-skin-accent text-sm uppercase tracking-widest transition-all duration-300 hover:bg-skin-accent/5"
-        >
-          Read Journal
-        </LinkButton>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8">
+          <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl leading-[0.9] text-skin-base tracking-tight mb-8">
+            Precision <br/>
+            <span class="italic text-skin-base/40 font-light">Systems</span> <br/>
+            Engineering.
+          </h1>
+        </div>
         
-        <LinkButton
-          href="/projects"
-          className="group flex items-center gap-2 text-sm uppercase tracking-widest text-skin-base/60 hover:text-skin-accent transition-colors"
-        >
-          <span>View Works</span>
-          <TbArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </LinkButton>
-      </div>
-
-      {
-        socialCount > 0 && (
-          <div class="mt-12 scale-90 opacity-70 hover:opacity-100 transition-opacity">
-            <Socials centered />
+        <div class="lg:col-span-4 flex flex-col justify-end pb-4">
+          <p class="font-mono text-xs uppercase tracking-widest text-skin-base/40 mb-4 border-l border-skin-line/30 pl-4">
+             // Status: Active <br/>
+             // Loc: Cambridge, UK <br/>
+             // Role: Research Asst.
+          </p>
+          <p class="text-sm sm:text-base font-light leading-relaxed text-skin-base/80 max-w-xs border-l border-skin-line/30 pl-4">
+            Shravan Goswami. Building high-performance tools at the intersection of probabilistic programming and open source.
+          </p>
+          
+          <div class="mt-8 pl-4 opacity-60 hover:opacity-100 transition-opacity">
+            <Socials />
           </div>
-        )
-      }
+        </div>
+      </div>
     </section>
 
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="max-w-4xl mx-auto">
-            <div class="flex items-center gap-4 mb-8">
-               <h2 class="font-serif text-2xl italic text-skin-base">Selected Writings</h2>
-               <div class="h-[1px] flex-1 bg-skin-line/30"></div>
-            </div>
-            
-            <ul class="grid gap-4">
-              {featuredPosts.map(({ data, slug }) => (
-                <Card
-                  href={`/blog/${slug}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  relatedPublications={getRelatedPubs(data.tags)}
-                />
-              ))}
-            </ul>
-          </section>
-        </>
-      )
-    }
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="max-w-4xl mx-auto mt-24">
-          <div class="flex items-center gap-4 mb-8">
-             <h2 class="font-serif text-2xl italic text-skin-base">Recent Notes</h2>
-             <div class="h-[1px] flex-1 bg-skin-line/30"></div>
-          </div>
-          
-          <ul class="grid gap-4">
-            {recentPosts.map(
-              ({ data, slug }, index) =>
-                index < SITE.postPerIndex && (
-                  <Card
-                    href={`/blog/${slug}/`}
-                    frontmatter={data}
-                    secHeading={false}
-                    relatedPublications={getRelatedPubs(data.tags)}
-                  />
-                ),
-            )}
-          </ul>
-          
-          <div class="mt-12 text-center">
-            <LinkButton href="/blog/" className="font-mono text-xs uppercase tracking-widest text-skin-base/50 hover:text-skin-accent transition-colors">
-              View Archive &rarr;
+    <!-- SECTION 2: SELECTED TRANSMISSIONS (Featured Work) -->
+    {featuredPosts.length > 0 && (
+      <section class="mb-32">
+        <div class="flex items-end justify-between mb-8 border-b border-skin-line/20 pb-2">
+           <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Selected Transmissions</h2>
+           <span class="font-mono text-[10px] text-skin-base/40">Index 01-0{featuredPosts.length}</span>
+        </div>
+        
+        <div class="flex flex-col">
+          {featuredPosts.map(({ data, slug }, index) => (
+            <Card
+              href={`/blog/${slug}/`}
+              frontmatter={data}
+              index={index + 1}
+              secHeading={false}
+            />
+          ))}
+        </div>
+
+        <div class="mt-8 flex justify-end">
+           <LinkButton href="/projects" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors">
+              [ View All Projects ]
+           </LinkButton>
+        </div>
+      </section>
+    )}
+
+
+    <!-- SECTION 3: THE ARCHIVE (Bento-free, Grid-aligned) -->
+    <!-- This section uses the "Corner Bracket" utility for a schematic look -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-skin-line/20 pt-16">
+      
+      <!-- Left: Recent Logs -->
+      <div class="corner-brackets border border-transparent hover:border-transparent">
+        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-6 block">Raw Log Data</span>
+        
+        <ul class="space-y-6">
+           {recentPosts.slice(0, 3).map(({ data, slug }) => (
+             <li>
+               <a href={`/blog/${slug}/`} class="group block">
+                 <span class="font-mono text-[10px] text-skin-base/30 block mb-1 group-hover:text-skin-accent transition-colors">
+                   {data.pubDatetime.toLocaleDateString('en-US', {year: 'numeric', month:'2-digit', day:'2-digit'})}
+                 </span>
+                 <h4 class="font-serif text-xl text-skin-base group-hover:underline decoration-1 underline-offset-4 decoration-skin-base/30">
+                   {data.title}
+                 </h4>
+               </a>
+             </li>
+           ))}
+        </ul>
+
+        <div class="mt-8">
+           <LinkButton href="/blog" className="text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
+             View Full Log &rarr;
+           </LinkButton>
+        </div>
+      </div>
+
+      <!-- Right: Call to Action / CV -->
+      <div class="flex flex-col justify-between corner-brackets bg-skin-card-muted/30">
+         <div>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">System Access</span>
+            <h3 class="font-serif text-3xl mb-4">Collaboration</h3>
+            <p class="text-sm font-light text-skin-base/70 leading-relaxed max-w-sm">
+              Open to research collaborations and consulting in high-performance computing and open-science tooling.
+            </p>
+         </div>
+
+         <div class="flex flex-col gap-4 mt-12">
+            <LinkButton href="/resume" className="flex items-center justify-between w-full px-4 py-3 border border-skin-line/40 hover:bg-skin-text-base hover:text-skin-inverted hover:border-skin-text-base transition-all duration-300">
+               <span class="text-xs font-mono uppercase tracking-widest">Download CV</span>
+               <TbArrowDown className="w-4 h-4" />
             </LinkButton>
-          </div>
-        </section>
-      )
-    }
+            
+            <a href="mailto:shravan@example.com" class="text-xs font-mono text-center text-skin-base/40 hover:text-skin-base transition-colors">
+              Initiate Contact Protocol
+            </a>
+         </div>
+      </div>
 
-    <div class="mt-24 max-w-2xl mx-auto p-8 border border-skin-line/20 rounded-sm text-center">
-      <TbHeartHandshake className="w-8 h-8 mx-auto mb-4 text-skin-accent/60" />
-      <h3 class="font-serif text-xl mb-2">Patronage</h3>
-      <p class="text-sm text-skin-base/60 mb-6 font-light">
-        If my open-source contributions have added value to your work, consider supporting the continued development.
-      </p>
-      <iframe
-        src="https://github.com/sponsors/shravanngoswamii/button"
-        title="Sponsor shravanngoswamii"
-        height="32"
-        width="114"
-        style="border: 0; margin: 0 auto; filter: grayscale(100%); opacity: 0.8;"
-        class="hover:filter-none hover:opacity-100 transition-all duration-500"
-      ></iframe>
-    </div>
+    </section>
 
   </main>
 
