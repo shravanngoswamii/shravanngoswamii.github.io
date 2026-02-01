@@ -17,21 +17,33 @@ const { page } = Astro.props;
       <LinkButton
         disabled={!page.url.prev}
         href={page.url.prev as string}
-        className={`mr-4 select-none ${page.url.prev ? "" : "disabled"}`}
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 focus-outline ${
+          page.url.prev 
+            ? "border-skin-line/30 bg-skin-card hover:border-skin-accent hover:text-skin-accent hover:shadow-sm" 
+            : "border-transparent text-skin-base/30 cursor-not-allowed"
+        }`}
         ariaLabel="Previous"
       >
-        <TbChevronLeft className="w-6 h-6" />
-        Prev
+        <TbChevronLeft className="w-5 h-5" />
+        <span class="font-medium">Prev</span>
       </LinkButton>
-      {page.currentPage} / {page.lastPage}
+      
+      <div class="flex items-center text-sm font-medium text-skin-base/60 bg-skin-card px-3 py-1 rounded-md border border-skin-line/10 select-none">
+        {page.currentPage} <span class="mx-1 opacity-50">/</span> {page.lastPage}
+      </div>
+
       <LinkButton
         disabled={!page.url.next}
         href={page.url.next as string}
-        className={`mx-4 select-none ${page.url.next ? "" : "disabled"}`}
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 focus-outline ${
+          page.url.next 
+            ? "border-skin-line/30 bg-skin-card hover:border-skin-accent hover:text-skin-accent hover:shadow-sm" 
+            : "border-transparent text-skin-base/30 cursor-not-allowed"
+        }`}
         ariaLabel="Next"
       >
-        Next
-        <TbChevronRight className="w-6 h-6" />
+        <span class="font-medium">Next</span>
+        <TbChevronRight className="w-5 h-5" />
       </LinkButton>
     </nav>
   )
@@ -39,9 +51,6 @@ const { page } = Astro.props;
 
 <style>
   .pagination-wrapper {
-    @apply mb-8 mt-auto flex justify-center;
-  }
-  .disabled {
-    @apply pointer-events-none select-none opacity-50 hover:text-skin-base group-hover:fill-skin-base;
+    @apply mb-8 mt-12 flex justify-center items-center gap-4;
   }
 </style>

@@ -1,9 +1,7 @@
 ---
 import { LOGO_IMAGE, SITE } from "@config";
 import Search from "./Search.astro";
-import Hr from "./Hr.astro";
 import { TbMenu2, TbX, TbMoon, TbSun, TbDeviceDesktop, TbCoffee } from "react-icons/tb";
-// import LinkButton from "./LinkButton.astro";
 
 export interface Props {
   activeNav?: "projects" | "resume" | "blog" | "tags" | "publications";
@@ -12,11 +10,11 @@ export interface Props {
 const { activeNav } = Astro.props;
 ---
 
-<header>
+<header class="sticky top-0 z-30 w-full transition-all duration-300 glass" id="main-header">
   <a id="skip-to-content" href="#main-content">Skip to content</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
-      <a href="/" class="logo whitespace-nowrap">
+      <a href="/" class="logo whitespace-nowrap group">
         {
           LOGO_IMAGE.enable ? (
             <img
@@ -26,7 +24,9 @@ const { activeNav } = Astro.props;
               height={LOGO_IMAGE.height}
             />
           ) : (
-            SITE.title
+            <span class="text-xl font-bold font-serif tracking-tight text-skin-base group-hover:text-skin-accent transition-colors duration-300">
+              {SITE.title}
+            </span>
           )
         }
       </a>
@@ -42,10 +42,9 @@ const { activeNav } = Astro.props;
             <TbX className="menu-close icon-tabler hidden" />
           </div>
         </button>
-        <ul id="menu-items" class="display-none sm:flex">
+        <ul id="menu-items" class="display-none sm:flex gap-1">
           <li>
             <a href="/blog/" class={activeNav === "blog" ? "active" : ""}>
-              {/* CHANGED from /posts/ to /blog/ */}
               Blog
             </a>
           </li>
@@ -71,87 +70,63 @@ const { activeNav } = Astro.props;
             </a>
           </li>
           <li>
-            <a href="/tags/" class={activeNav === "tags" ? "active" : ""}>
-              Tags
-            </a>
-          </li>
-          <li>
             <Search />
           </li>
           {
             SITE.lightAndDarkMode && (
-              <li class="relative">
+              <li class="relative ml-2">
                 <button
                   id="theme-btn"
-                  class="focus-outline"
+                  class="focus-outline p-2 rounded-lg hover:bg-skin-card-muted transition-colors"
                   title="Toggle theme"
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <TbMoon id="moon-svg" className="icon-tabler" />
-                  <TbSun id="sun-svg" className="icon-tabler" />
+                  <TbMoon id="moon-svg" className="icon-tabler !w-5 !h-5" />
+                  <TbSun id="sun-svg" className="icon-tabler !w-5 !h-5" />
                 </button>
+                
+                {/* Theme Dropdown */}
                 <div
                   id="theme-dropdown"
-                  class="absolute right-0 top-full mt-2 w-48 rounded-xl bg-skin-card border border-skin-line shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50 overflow-hidden transition-all duration-200"
+                  class="absolute right-0 top-full mt-3 w-48 rounded-xl bg-skin-card border border-skin-line shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50 overflow-hidden transition-all duration-200 transform origin-top-right"
                 >
-                  <div class="py-2">
-                    <div class="px-4 py-2 text-xs font-bold text-skin-base/50 uppercase tracking-wider">Theme</div>
+                  <div class="py-1">
+                    <div class="px-4 py-2 text-[10px] font-bold text-skin-base/40 uppercase tracking-widest">Theme</div>
                     
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="light"
-                    >
-                      <TbSun className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="light">
+                      <TbSun className="theme-icon" />
                       <span>Light</span>
                     </button>
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="dark"
-                    >
-                      <TbMoon className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="dark">
+                      <TbMoon className="theme-icon" />
                       <span>Dark</span>
                     </button>
 
                     <div class="my-1 border-t border-skin-line/10"></div>
-                    <div class="px-4 py-2 text-xs font-bold text-skin-base/50 uppercase tracking-wider">Catppuccin</div>
+                    <div class="px-4 py-2 text-[10px] font-bold text-skin-base/40 uppercase tracking-widest">Catppuccin</div>
 
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="latte"
-                    >
-                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="latte">
+                      <TbCoffee className="theme-icon" />
                       <span>Latte</span>
                     </button>
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="frappe"
-                    >
-                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="frappe">
+                      <TbCoffee className="theme-icon" />
                       <span>Frappé</span>
                     </button>
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="macchiato"
-                    >
-                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="macchiato">
+                      <TbCoffee className="theme-icon" />
                       <span>Macchiato</span>
                     </button>
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="mocha"
-                    >
-                      <TbCoffee className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="mocha">
+                      <TbCoffee className="theme-icon" />
                       <span>Mocha</span>
                     </button>
 
                     <div class="my-1 border-t border-skin-line/10"></div>
 
-                    <button
-                      class="theme-option group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-skin-base hover:bg-skin-card-muted transition-colors"
-                      data-theme="auto"
-                    >
-                      <TbDeviceDesktop className="text-lg text-skin-base/70 group-hover:text-skin-accent transition-colors" />
+                    <button class="theme-option group" data-theme="auto">
+                      <TbDeviceDesktop className="theme-icon" />
                       <span>Auto</span>
                     </button>
                   </div>
@@ -163,40 +138,36 @@ const { activeNav } = Astro.props;
       </nav>
     </div>
   </div>
-  <Hr />
 </header>
 
 <style>
   #skip-to-content {
-    @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
+    @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 rounded-md shadow-lg;
   }
   .nav-container {
-    @apply mx-auto flex max-w-3xl flex-col items-center sm:flex-row;
+    @apply mx-auto flex max-w-4xl flex-col items-center sm:flex-row;
   }
   .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8;
+    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-4;
   }
   .logo {
-    @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
+    @apply absolute py-1 sm:static;
   }
   .hamburger-menu {
-    @apply self-end p-2 sm:hidden;
-  }
-  .hamburger-menu svg {
-    @apply h-6 w-6 scale-125 fill-skin-base;
+    @apply self-end p-2 sm:hidden hover:bg-skin-card-muted rounded-md transition-colors;
   }
 
   nav {
     @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
   nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0;
+    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-2 sm:gap-y-0 sm:grid-cols-none sm:grid-rows-none sm:flex;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;
   }
   nav ul li a {
-    @apply w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1;
+    @apply w-full px-4 py-2 text-center text-sm font-medium text-skin-base/80 hover:text-skin-accent hover:bg-skin-card-muted rounded-md transition-all sm:w-auto sm:px-3 sm:py-2;
   }
   nav ul li:nth-last-child(2) a {
     @apply w-auto;
@@ -206,23 +177,18 @@ const { activeNav } = Astro.props;
     @apply col-span-1;
   }
   nav a.active {
-    @apply underline decoration-wavy decoration-2 underline-offset-4;
+    @apply text-skin-accent bg-skin-accent/10 font-semibold;
   }
   nav a.active svg {
     @apply fill-skin-accent;
   }
 
-  nav button {
-    @apply p-1;
+  /* Theme Options */
+  .theme-option {
+    @apply flex w-full items-center gap-3 px-4 py-2 text-sm text-skin-base/80 hover:bg-skin-accent/10 hover:text-skin-accent transition-colors cursor-pointer;
   }
-  nav button svg {
-    @apply h-6 w-6 fill-skin-base hover:fill-skin-accent;
-  }
-  #theme-btn {
-    @apply p-3 sm:p-1;
-  }
-  #theme-btn svg {
-    @apply scale-125 hover:rotate-12 sm:scale-100;
+  .theme-icon {
+    @apply text-lg text-skin-base/50 group-hover:text-skin-accent transition-colors;
   }
 
   .menu-icon .menu-close {

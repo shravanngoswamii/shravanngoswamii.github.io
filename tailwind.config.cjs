@@ -15,10 +15,10 @@ module.exports = {
   ],
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
-    // Remove the following screen breakpoint or add other breakpoints
-    // if one breakpoint is not enough for you
     screens: {
       sm: "640px",
+      md: "768px",
+      lg: "1024px",
     },
 
     extend: {
@@ -67,8 +67,8 @@ module.exports = {
       },
       fontFamily: {
         mono: ["IBM Plex Mono", "monospace"],
-        sans: ["Lato", "sans-serif"],
-        serif: ["Lora", "serif"],
+        sans: ["Inter", "sans-serif"],
+        serif: ["Outfit", "sans-serif"],
       },
 
       typography: {
