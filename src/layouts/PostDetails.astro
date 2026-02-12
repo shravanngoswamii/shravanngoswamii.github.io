@@ -7,6 +7,7 @@ import Datetime from "@components/Datetime";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
+import Giscus from "@components/Giscus.astro";
 import { SITE } from "@config";
 import { getPublications, processLatex } from "@utils/bibtexUtils";
 import { TbChevronLeft, TbChevronRight, TbChevronUp, TbBook } from "react-icons/tb";
@@ -145,6 +146,9 @@ const nextPost =
     </div>
 
     <hr class="my-6 border-dashed" />
+
+    <!-- Comments Section -->
+    <Giscus />
 
     <!-- Previous/Next Post Buttons -->
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">

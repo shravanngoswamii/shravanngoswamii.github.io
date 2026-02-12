@@ -1,0 +1,90 @@
+---
+interface Props {
+  mapping?: string;
+}
+
+const { mapping = 'url' } = Astro.props;
+---
+
+<div class="giscus-wrapper">
+  <div class="giscus"></div>
+</div>
+
+<script define:vars={{ mapping }}>
+  function loadGiscus() {
+    const container = document.querySelector('.giscus');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+      .matches
+      ? 'dark'
+      : 'light';
+    const theme = savedTheme || systemTheme;
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'shravanngoswamii/comments');
+    script.setAttribute('data-repo-id', 'R_kgDOQ90dlg');
+    script.setAttribute('data-category', 'Announcements');
+    script.setAttribute('data-category-id', 'DIC_kwDOQ90dls4C1NXa');
+    script.setAttribute('data-mapping', mapping);
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', theme);
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('data-loading', 'lazy');
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  function updateGiscusTheme() {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+
+    iframe.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'data-theme'
+      ) {
+        updateGiscusTheme();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+
+  loadGiscus();
+  document.addEventListener('astro:page-load', loadGiscus);
+  document.addEventListener('astro:after-swap', loadGiscus);
+</script>
+
+<style>
+  .giscus-wrapper {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgb(var(--color-border) / 0.3);
+  }
+
+  .giscus {
+    min-height: 150px;
+  }
+</style>
