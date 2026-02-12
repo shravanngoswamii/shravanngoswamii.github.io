@@ -71,4 +71,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-You can reach me via [LinkedIn](https://www.linkedin.com/in/shravangoswami) or [Email](mailto:shravanngoswamii@gmail.com).
+You can reach me via [LinkedIn](https://www.linkedin.com/in/shravangoswami) or [Email](mailto:contact@shravangoswami.com).
