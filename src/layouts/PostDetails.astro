@@ -77,10 +77,10 @@ const nextPost =
 
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
-      class="focus-outline mb-2 mt-8 flex hover:opacity-75 items-center"
+      class="focus-outline mb-2 mt-28 sm:mt-20 flex hover:opacity-75 items-center"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
-      <TbChevronLeft className="inline-block h-6 w-6 scale-90 fill-skin-base group-hover:fill-skin-accent" />
+      <TbChevronLeft className="inline-block h-6 w-6 scale-90" />
       <span>Go back</span>
     </button>
   </div>
@@ -137,7 +137,7 @@ const nextPost =
         id="back-to-top"
         class="focus-outline whitespace-nowrap py-1 hover:opacity-75 flex items-center"
       >
-        <TbChevronUp className="h-6 w-6 scale-90 fill-skin-base group-hover:fill-skin-accent" />
+        <TbChevronUp className="h-6 w-6 scale-90" />
         <span>Back to Top</span>
       </button>
 

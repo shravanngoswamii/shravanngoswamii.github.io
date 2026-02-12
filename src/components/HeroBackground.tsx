@@ -14,133 +14,114 @@ const HeroBackground = () => {
     let height = canvas.height = window.innerHeight;
 
     // --- CONFIGURATION ---
-    const PARTICLE_COUNT = 3000;    // High density for "Silk" look
-    const NOISE_SCALE = 0.003;      // Smoothness of the flow (Lower = larger curves)
-    const SPEED = 1.5;              // Flow speed
-    const FADE_RATE = 0.04;         // How fast trails vanish (Lower = longer trails)
-    const MOUSE_FORCE = 50;         // Power of interaction
+    const isMobile = width < 768;
+    const PARTICLE_COUNT = isMobile ? 300 : 1200; // Dense mist
+    const MOUSE_RADIUS = 200; 
+    const DRAG = 0.95; // Fluid viscosity (0.9=thick, 0.99=thin)
+    const GRAVITY_X = 0.2; // Constant wind flow
+    const GRAVITY_Y = 0.05; // Slight drop
 
-    // --- STATE ---
-    let particles: Particle[] = [];
-    const mouse = { x: -1000, y: -1000 };
+    let particles: AerosolParticle[] = [];
+    const mouse = { x: -1000, y: -1000, vx: 0, vy: 0, prevX: -1000, prevY: -1000 };
 
-    // --- PERLIN NOISE IMPLEMENTATION (Simplified) ---
-    // A fast pseudo-random gradient noise generator for the vector field
-    const noiseVector = (x: number, y: number) => {
-      // Simple pseudo-random hash
-      const sinX = Math.sin(x);
-      const cosY = Math.cos(y);
-      return Math.sin(sinX * 12.9898 + cosY * 78.233) * 43758.5453;
-    };
-
-    // Smoother noise function
-    const getFlowAngle = (x: number, y: number) => {
-        const angle = (Math.cos(x * NOISE_SCALE) + Math.sin(y * NOISE_SCALE)) * Math.PI * 2;
-        return angle;
-    };
-
-    // --- PARTICLE CLASS ---
-    class Particle {
+    class AerosolParticle {
       x: number;
       y: number;
       vx: number;
       vy: number;
-      history: {x: number, y: number}[];
-      age: number;
-      lifeSpan: number;
+      size: number;
+      life: number;
+      maxLife: number;
 
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = 0;
-        this.vy = 0;
-        this.history = [];
-        this.age = 0;
-        this.lifeSpan = Math.random() * 200 + 50;
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = (Math.random() - 0.5) * 2;
+        this.size = Math.random() * 2; // Varying mist sizes
+        this.maxLife = Math.random() * 100 + 50;
+        this.life = Math.random() * this.maxLife;
       }
 
       update() {
-        // 1. GET FIELD VECTOR
-        // Calculate the natural flow angle at this position
-        const angle = getFlowAngle(this.x, this.y);
-        
-        // Convert angle to velocity
-        const targetVx = Math.cos(angle) * SPEED;
-        const targetVy = Math.sin(angle) * SPEED;
-
-        // 2. MOUSE INTERACTION
-        // If mouse is near, disrupt the flow vector
+        // 1. MOUSE INTERACTION (Injection/Spray)
         const dx = mouse.x - this.x;
         const dy = mouse.y - this.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < 200) {
-            const force = (200 - dist) / 200;
-            this.vx += (dx / dist) * force * -MOUSE_FORCE * 0.1; // Push away
-            this.vy += (dy / dist) * force * -MOUSE_FORCE * 0.1;
+
+        if (dist < MOUSE_RADIUS) {
+            const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+            const angle = Math.atan2(dy, dx);
+            const burst = 4; // Spray power
+
+            // Push away + Add Mouse Velocity (Drag effect)
+            this.vx -= Math.cos(angle) * burst * force * 0.5;
+            this.vy -= Math.sin(angle) * burst * force * 0.5;
+            
+            this.vx += mouse.vx * 0.1 * force;
+            this.vy += mouse.vy * 0.1 * force;
         }
 
-        // 3. APPLY PHYSICS
-        // Blend current velocity with field velocity (Inertia)
-        this.vx += (targetVx - this.vx) * 0.1;
-        this.vy += (targetVy - this.vy) * 0.1;
+        // 2. PHYSICS
+        this.vx *= DRAG;
+        this.vy *= DRAG;
+        
+        // Constant "Wind Tunnel" flow
+        this.vx += GRAVITY_X;
+        this.vy += GRAVITY_Y;
 
         this.x += this.vx;
         this.y += this.vy;
 
-        // 4. LIFECYCLE
-        this.age++;
-        
-        // Reset if off screen or too old
-        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.age > this.lifeSpan) {
-            this.x = Math.random() * width;
+        // 3. WRAPPING (Infinite Stream)
+        if (this.x > width) {
+            this.x = -10;
             this.y = Math.random() * height;
-            this.age = 0;
-            this.vx = 0; 
-            this.vy = 0;
-            this.history = []; // Clear trail
+            this.vx = Math.random() * 2;
         }
+        if (this.x < -10) this.x = width + 10;
+        if (this.y > height) this.y = -10;
+        if (this.y < -10) this.y = height + 10;
       }
 
-      draw(ctx: CanvasRenderingContext2D) {
-        // Draw the current segment
-        // We draw short lines instead of points to create the "Silk" effect
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
-        
-        // Opacity based on speed and age
+      draw(context: CanvasRenderingContext2D) {
         const speed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-        const alpha = Math.min(speed * 0.2, 0.5) * (1 - this.age/this.lifeSpan);
+        const alpha = Math.min(speed / 5, 0.6); // Faster = more visible (Compression)
         
-        // Color: Mix of Chemistry (Cyan) and Biology (Organic White/Green)
-        // Using a "Silver-Cyan" tint for premium feel
-        ctx.strokeStyle = `rgba(100, 150, 160, ${alpha})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        context.beginPath();
+        
+        // "Mechanical" rendering:
+        // Draw lines for fast particles, dots for slow ones
+        if (speed > 3) {
+            context.moveTo(this.x, this.y);
+            context.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
+            context.lineWidth = this.size * 0.5;
+            context.strokeStyle = `rgba(160, 170, 180, ${alpha})`;
+            context.stroke();
+        } else {
+            context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            context.fillStyle = `rgba(140, 150, 160, ${alpha * 0.8})`;
+            context.fill();
+        }
       }
     }
 
     const init = () => {
       particles = [];
       for (let i = 0; i < PARTICLE_COUNT; i++) {
-        particles.push(new Particle());
+        particles.push(new AerosolParticle());
       }
     };
 
     const animate = () => {
-      // FADE EFFECT (Crucial for the "Silk" look)
-      // Instead of clearing, we draw a semi-transparent rect.
-      // This leaves trails of previous frames.
-      
-      // Use "destination-in" to fade out existing pixels to alpha 0 over time
-      // This is cleaner than drawing a colored rect which can look muddy
-      ctx.globalCompositeOperation = 'destination-in';
-      ctx.fillStyle = `rgba(0, 0, 0, ${1 - FADE_RATE})`; // e.g. 0.96 keeps 96% of the old pixel
+      // Create trails using semi-transparent clear
+      ctx.fillStyle = 'rgba(var(--color-fill), 0.2)'; // Assumes dark/light background
+      // Use composite operation to ensure trails fade correctly on any background color
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = `rgba(0, 0, 0, 0.15)`; // Trail Fade Rate
       ctx.fillRect(0, 0, width, height);
-
-      // Reset to drawing mode
-      ctx.globalCompositeOperation = 'lighter'; // Additive blending makes overlaps glow
+      
+      ctx.globalCompositeOperation = 'source-over'; // Reset
 
       particles.forEach(p => {
         p.update();
@@ -161,23 +142,20 @@ const HeroBackground = () => {
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      // Calculate velocity
+      mouse.vx = (e.clientX - rect.left) - mouse.prevX;
+      mouse.vy = (e.clientY - rect.top) - mouse.prevY;
+      mouse.prevX = mouse.x = e.clientX - rect.left;
+      mouse.prevY = mouse.y = e.clientY - rect.top;
     };
 
-    const handleMouseLeave = () => {
-        mouse.x = -1000;
-        mouse.y = -1000;
-    }
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
+    // Passive listeners for performance
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 
@@ -185,7 +163,7 @@ const HeroBackground = () => {
     <canvas 
       ref={canvasRef} 
       className="absolute inset-0 pointer-events-none mix-blend-screen"
-      style={{ opacity: 0.8 }} 
+      style={{ opacity: 0.9 }} 
     />
   );
 };

@@ -1,7 +1,7 @@
 ---
 import { SITE } from "@config";
 import Search from "./Search.astro";
-import { TbMenu2, TbX, TbMoon, TbSun } from "react-icons/tb";
+import { TbMoon, TbSun } from "react-icons/tb";
 
 export interface Props {
   activeNav?: "projects" | "resume" | "blog" | "tags" | "publications";
@@ -11,163 +11,176 @@ const { activeNav } = Astro.props;
 ---
 
 <!-- 
-  PREMIUM LAYOUT STRATEGY: 
-  1. Mobile: A sturdy, full-width glass header for usability.
-  2. Desktop: A "Floating Command Console" (Pill shape) centered at the top.
+  PREMIUM NAVIGATION SYSTEM
+  Desktop: Top Floating Pill (Unchanged)
+  Mobile: Double-Decker Technical Console (Solves navigability & density)
 -->
 
-<!-- WRAPPER: Fixed, high z-index, allows clicks to pass through empty areas -->
-<header class="fixed top-0 left-0 right-0 z-40 flex flex-col items-center pointer-events-none transition-all duration-300">
-  
-  <!-- DESKTOP: FLOATING CONSOLE (Hidden on mobile) -->
-  <div class="hidden sm:flex mt-6 pointer-events-auto">
+<!-- DESKTOP HEADER (Hidden on Mobile) -->
+<header id="main-header" class="hidden sm:flex fixed top-0 left-0 right-0 z-40 justify-center pointer-events-none transition-transform duration-300">
+  <div class="mt-6 pointer-events-auto">
     <div class="
       group relative flex items-center gap-1 p-1.5 pr-3
       rounded-full 
-      bg-skin-fill/70 backdrop-blur-xl supports-[backdrop-filter]:bg-skin-fill/60
+      bg-skin-fill/80 backdrop-blur-xl supports-[backdrop-filter]:bg-skin-fill/60
       border border-skin-line/10 
       shadow-2xl shadow-skin-text-base/5
       transition-all duration-500 ease-out
-      hover:scale-[1.01] hover:bg-skin-fill/90 hover:border-skin-line/20 hover:shadow-skin-text-base/10
+      hover:scale-[1.01] hover:bg-skin-fill/95 hover:border-skin-line/20 hover:shadow-skin-text-base/10
     ">
       
-      <!-- LOGO: Circular Anchor -->
-      <a href="/" class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10" aria-label="Home">
+      <!-- LOGO -->
+      <a href="/" class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-inverted hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10">
         SG
       </a>
 
-      <!-- SEPARATOR -->
       <div class="w-px h-4 bg-skin-line/20 mx-2"></div>
 
       <!-- NAV LINKS -->
       <nav class="flex items-center">
         <ul class="flex items-center gap-1 text-xs font-mono uppercase tracking-widest font-medium">
-          <li>
-            <a href="/blog/" class={`
-              px-4 py-2 rounded-full transition-all duration-300
-              ${activeNav === "blog" 
-                ? "bg-skin-text-base text-skin-inverted shadow-md" 
-                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}
-            `}>
-              Journal
-            </a>
-          </li>
-          <li>
-            <a href="/projects/" class={`
-              px-4 py-2 rounded-full transition-all duration-300
-              ${activeNav === "projects" 
-                ? "bg-skin-text-base text-skin-inverted shadow-md" 
-                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}
-            `}>
-              Work
-            </a>
-          </li>
-          <li>
-            <a href="/publications/" class={`
-              px-4 py-2 rounded-full transition-all duration-300
-              ${activeNav === "publications" 
-                ? "bg-skin-text-base text-skin-inverted shadow-md" 
-                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}
-            `}>
-              Research
-            </a>
-          </li>
+          <li><a href="/blog/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Journal</a></li>
+          <li><a href="/projects/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Work</a></li>
+          <li><a href="/publications/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Research</a></li>
+          <li><a href="/resume/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>CV</a></li>
         </ul>
       </nav>
 
-      <!-- SEPARATOR -->
       <div class="w-px h-4 bg-skin-line/20 mx-2"></div>
 
       <!-- UTILITIES -->
       <div class="flex items-center gap-1">
-        <div class="scale-90 hover:scale-100 transition-transform">
-           <Search />
-        </div>
-        
-        {
-          SITE.lightAndDarkMode && (
-            <div class="relative group/theme ml-1">
-              <button
-                id="theme-btn"
-                class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all"
-                title="Toggle theme"
-                aria-label="auto"
-              >
-                <TbMoon id="moon-svg" className="w-4 h-4" />
-                <TbSun id="sun-svg" className="w-4 h-4" />
-              </button>
-              
-              <!-- Floating Theme Menu -->
-              <div
-                id="theme-dropdown"
-                class="absolute right-0 top-full mt-4 w-32 p-1 rounded-xl bg-skin-fill/95 backdrop-blur-md border border-skin-line/10 shadow-xl hidden group-hover/theme:block hover:block origin-top-right transition-all"
-              >
-                <button class="theme-option w-full text-left px-3 py-2 text-[10px] font-mono uppercase tracking-widest rounded-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors" data-theme="light">Light</button>
-                <button class="theme-option w-full text-left px-3 py-2 text-[10px] font-mono uppercase tracking-widest rounded-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors" data-theme="dark">Dark</button>
-                <button class="theme-option w-full text-left px-3 py-2 text-[10px] font-mono uppercase tracking-widest rounded-lg hover:bg-skin-text-base hover:text-skin-inverted transition-colors" data-theme="auto">Auto</button>
-              </div>
-            </div>
-          )
-        }
+        <div class="scale-90 hover:scale-100 transition-transform"><Search /></div>
+        {SITE.lightAndDarkMode && (
+            <button id="theme-btn-d" class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all" aria-label="Toggle theme">
+                <TbMoon id="moon-svg-d" className="w-4 h-4" /><TbSun id="sun-svg-d" className="w-4 h-4" />
+            </button>
+        )}
       </div>
-    </div>
-  </div>
-
-  <!-- MOBILE: FULL WIDTH BLUR HEADER (Pointer events auto to catch clicks) -->
-  <div class="sm:hidden w-full h-16 pointer-events-auto bg-skin-fill/85 backdrop-blur-md border-b border-skin-line/10 flex items-center justify-between px-4">
-    <a href="/" class="font-serif text-lg font-bold text-skin-base">
-      SG.
-    </a>
-
-    <button
-      class="hamburger-menu p-2 text-skin-base hover:bg-skin-card-muted rounded-md transition-colors"
-      aria-label="Open Menu"
-      aria-expanded="false"
-      aria-controls="menu-items"
-    >
-      <TbMenu2 className="menu-open w-6 h-6" />
-      <TbX className="menu-close w-6 h-6 hidden" />
-    </button>
-  </div>
-  
-  <!-- MOBILE MENU OVERLAY -->
-  <div id="menu-items" class="display-none fixed inset-0 top-16 bg-skin-fill z-30 p-8 sm:hidden pointer-events-auto flex flex-col gap-8 overflow-y-auto">
-    <nav>
-      <ul class="flex flex-col gap-6 text-2xl font-serif text-skin-base">
-        <li><a href="/blog/" class="block border-b border-skin-line/10 pb-2">Journal</a></li>
-        <li><a href="/projects/" class="block border-b border-skin-line/10 pb-2">Work</a></li>
-        <li><a href="/publications/" class="block border-b border-skin-line/10 pb-2">Research</a></li>
-        <li><a href="/resume/" class="block border-b border-skin-line/10 pb-2">CV</a></li>
-      </ul>
-    </nav>
-    
-    <div class="mt-auto pt-8 border-t border-skin-line/20 flex items-center justify-between">
-       <span class="text-xs font-mono uppercase tracking-widest opacity-50">Preferences</span>
-       <!-- Theme Toggle Mobile Logic handled by script below -->
     </div>
   </div>
 </header>
 
-<script>
-  function toggleNav() {
-    const menuBtn = document.querySelector(".hamburger-menu");
-    const menuOpen = document.querySelector(".menu-open");
-    const menuClose = document.querySelector(".menu-close");
-    const menuItems = document.querySelector("#menu-items");
 
-    menuBtn?.addEventListener("click", () => {
-      const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
-      menuBtn.setAttribute("aria-expanded", isExpanded ? "false" : "true");
-      menuBtn.setAttribute("aria-label", isExpanded ? "Open Menu" : "Close Menu");
-      
-      menuOpen?.classList.toggle("hidden");
-      menuClose?.classList.toggle("hidden");
-      menuItems?.classList.toggle("display-none");
-      
-      document.body.style.overflow = isExpanded ? "auto" : "hidden";
-    });
+<!-- MOBILE: DOUBLE-DECKER CONSOLE -->
+<!-- 
+  Row 1: Identity & Controls (Fixed height)
+  Row 2: Scrollable Navigation Track (Fixed height, horizontally scrollable)
+-->
+<header id="mobile-header" class="sm:hidden fixed top-0 left-0 right-0 z-50 bg-skin-fill/90 backdrop-blur-xl border-b border-skin-line/10 shadow-lg transition-transform duration-300">
+  
+  <!-- DECK 1: IDENTITY -->
+  <div class="flex items-center justify-between h-14 px-4 border-b border-skin-line/5">
+    <a href="/" class="font-serif text-xl font-bold text-skin-base tracking-tighter flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-skin-accent animate-pulse"></span>
+      SG.
+    </a>
+    
+    <div class="flex items-center gap-3">
+       <div class="scale-90 opacity-70"><Search /></div>
+       {SITE.lightAndDarkMode && (
+         <button id="theme-btn-m" class="p-2 text-skin-base/60 hover:text-skin-base bg-skin-card-muted rounded-md" aria-label="Toggle theme">
+            <TbMoon id="moon-svg-m" className="w-4 h-4" />
+            <TbSun id="sun-svg-m" className="w-4 h-4" />
+         </button>
+       )}
+    </div>
+  </div>
+
+  <!-- DECK 2: PRECISION NAV TRACK -->
+  <nav class="h-12 overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
+    <ul class="flex items-center h-full px-4 min-w-max text-xs font-mono uppercase tracking-widest">
+       
+       <!-- Item 1 -->
+       <li>
+         <a href="/blog/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
+           Journal
+         </a>
+       </li>
+       <li class="mx-2 text-skin-line/30">|</li>
+       
+       <!-- Item 2 -->
+       <li>
+         <a href="/projects/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
+           Work
+         </a>
+       </li>
+       <li class="mx-2 text-skin-line/30">|</li>
+
+       <!-- Item 3 -->
+       <li>
+         <a href="/publications/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
+           Research
+         </a>
+       </li>
+       <li class="mx-2 text-skin-line/30">|</li>
+
+       <!-- Item 4 -->
+       <li>
+         <a href="/resume/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
+           CV
+         </a>
+       </li>
+       
+       <!-- End Padding to prevent cut-off -->
+       <li class="w-4"></li>
+    </ul>
+  </nav>
+
+</header>
+
+<script>
+  function setupThemeToggle() {
+    const handleThemeClick = () => {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute("data-theme");
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+      html.classList.add("theme-transition");
+      html.setAttribute("data-theme", nextTheme);
+      localStorage.setItem("theme", nextTheme);
+
+      setTimeout(() => html.classList.remove("theme-transition"), 350);
+    };
+
+    document.querySelector("#theme-btn-d")?.addEventListener("click", handleThemeClick);
+    document.querySelector("#theme-btn-m")?.addEventListener("click", handleThemeClick);
   }
 
-  toggleNav();
-  document.addEventListener("astro:after-swap", toggleNav);
+  setupThemeToggle();
+  document.addEventListener("astro:after-swap", setupThemeToggle);
+</script>
+
+<script>
+  function setupScrollNav() {
+    const desktop = document.querySelector("#main-header") as HTMLElement;
+    const mobile = document.querySelector("#mobile-header") as HTMLElement;
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    function onScroll() {
+      const y = window.scrollY;
+      const down = y > lastY && y > 80;
+      lastY = y;
+
+      if (down) {
+        desktop?.style.setProperty("transform", "translateY(-100%)");
+        mobile?.style.setProperty("transform", "translateY(-100%)");
+      } else {
+        desktop?.style.setProperty("transform", "translateY(0)");
+        mobile?.style.setProperty("transform", "translateY(0)");
+      }
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  setupScrollNav();
+  document.addEventListener("astro:after-swap", setupScrollNav);
 </script>

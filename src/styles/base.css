@@ -28,11 +28,24 @@
   html[data-theme="macchiato"] { --color-fill: 36, 39, 58; --color-text-base: 202, 211, 245; --color-accent: 198, 160, 246; --color-card: 54, 58, 79; --color-card-muted: 30, 32, 48; --color-border: 73, 77, 100; }
   html[data-theme="mocha"] { --color-fill: 30, 30, 46; --color-text-base: 205, 214, 244; --color-accent: 203, 166, 247; --color-card: 49, 50, 68; --color-card-muted: 24, 24, 37; --color-border: 69, 71, 90; }
 
-  #sun-svg, html[data-theme="dark"] #moon-svg { display: none; }
-  #moon-svg, html[data-theme="dark"] #sun-svg { display: block; }
+  #sun-svg, #sun-svg-d, #sun-svg-m,
+  html[data-theme="dark"] #moon-svg,
+  html[data-theme="dark"] #moon-svg-d,
+  html[data-theme="dark"] #moon-svg-m { display: none; }
+  #moon-svg, #moon-svg-d, #moon-svg-m,
+  html[data-theme="dark"] #sun-svg,
+  html[data-theme="dark"] #sun-svg-d,
+  html[data-theme="dark"] #sun-svg-m { display: block; }
   
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base transition-colors duration-500 ease-in-out selection:bg-skin-inverted selection:text-skin-inverted relative;
+    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base selection:bg-skin-inverted selection:text-skin-inverted relative;
+  }
+
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, fill 0.3s ease, stroke 0.3s ease, box-shadow 0.3s ease !important;
   }
 
   /* THE TECHNICAL GRID (Background) */
@@ -61,15 +74,17 @@
   }
 
   svg {
-    @apply inline-block h-5 w-5 fill-skin-base transition-all duration-200;
+    @apply inline-block h-5 w-5 fill-none text-skin-base transition-all duration-200;
   }
   
   .prose {
     @apply prose-headings:!font-serif prose-headings:!font-normal prose-headings:tracking-tight prose-headings:!text-skin-base 
-    prose-p:!text-skin-base/90 prose-p:!font-sans prose-p:text-sm prose-p:leading-7 prose-p:font-light
+    prose-p:!text-skin-base/90 prose-p:!font-sans prose-p:text-sm prose-p:leading-7 prose-p:font-normal
     prose-a:!text-skin-base prose-a:!no-underline prose-a:border-b prose-a:border-textColor/40 hover:prose-a:border-textColor hover:prose-a:text-skin-base prose-a:transition-all 
     prose-blockquote:!border-l-2 prose-blockquote:!border-textColor prose-blockquote:!font-serif prose-blockquote:!italic prose-blockquote:text-skin-base/70
     prose-strong:!text-skin-base prose-strong:font-medium
+    prose-li:!text-skin-base/90 prose-li:!font-sans prose-li:text-sm prose-li:leading-7 prose-li:font-normal
+    prose-ul:!text-skin-base/90 prose-ol:!text-skin-base/90
     prose-code:font-mono prose-code:text-[10px] prose-code:uppercase prose-code:tracking-wider prose-code:bg-skin-card-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm;
   }
 
@@ -98,6 +113,7 @@
     height: 8px;
     border-color: rgba(var(--color-text-base), 0.3);
     transition: all 0.3s ease;
+    pointer-events: none;
   }
   .corner-brackets::before {
     top: 0; left: 0;

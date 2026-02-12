@@ -22,17 +22,20 @@ const getRelatedPubs = (tags: string[]) => {
     pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
   ).map(pub => ({ title: pub.entryTags.title || "", url: pub.entryTags.url }));
 };
+
+const globalIndex = (page.currentPage - 1) * page.size;
 ---
 
 <Layout title={`Blogs | ${SITE.title}`}>
   <Header activeNav="blog" />
-  <Main pageTitle="Blogs" pageDesc="A collection of my writings on research, technology, and development.">
+  <Main pageTitle="Blogs" pageDesc={`${page.total} posts — A collection of my writings on research, technology, and development.`}>
     <ul>
       {
-        page.data.map(({ data, slug }) => (
+        page.data.map(({ data, slug }, index) => (
           <Card 
             href={`/blog/${slug}/`} 
-            frontmatter={data} 
+            frontmatter={data}
+            index={globalIndex + index + 1}
             relatedPublications={getRelatedPubs(data.tags)}
           />
         ))

@@ -7,8 +7,8 @@ import LinkButton from "@components/LinkButton.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { TbArrowDown, TbArrowRight, TbTerminal } from "react-icons/tb";
-import HeroBackground from "@components/HeroBackground"; // The Elastic Mesh Engine
+import { TbArrowDown, TbArrowRight } from "react-icons/tb";
+import HeroBackground from "@components/HeroBackground";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -21,49 +21,35 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   
   <main id="main-content" class="px-4 sm:px-6">
     
-    <!-- 
-      HERO SECTION: INDUSTRIAL PRECISION
-      A layout defined by rigid borders, technical typography, and the elastic physics mesh.
-    -->
     <section class="min-h-[85svh] flex flex-col justify-center relative border-x border-skin-line/10 my-8 overflow-hidden">
       
-      <!-- BACKGROUND: ELASTIC MESH PHYSICS -->
       <div class="absolute inset-0 -z-10 bg-skin-fill/50">
          <HeroBackground client:load />
       </div>
 
-      <!-- DECORATIVE CORNER BRACKETS (The "Frame") -->
       <div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-skin-text-base/30"></div>
       <div class="absolute top-0 right-0 w-8 h-8 border-t border-r border-skin-text-base/30"></div>
       <div class="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-skin-text-base/30"></div>
       <div class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-skin-text-base/30"></div>
 
-      <!-- TOP BAR: TECHNICAL DATA -->
       <div class="absolute top-0 left-0 w-full flex justify-between items-start p-6 font-mono text-[10px] uppercase tracking-widest text-skin-base/50">
          <div class="flex flex-col gap-1">
-           <span>Sys.Ref: SG-2025</span>
-           <span>Loc: Cambridge, UK</span>
+           <span>Building things that work</span>
          </div>
          <div class="text-right flex flex-col gap-1">
-           <span>Status: Operational</span>
-           <span class="animate-pulse">● Live</span>
+           <span>Available for collaboration</span>
          </div>
       </div>
 
-      <!-- CENTER: THE MAIN IDENTITY -->
       <div class="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
          
-         <!-- Role Label -->
          <div class="inline-flex items-center gap-3 px-3 py-1 border border-skin-line/30 rounded-full bg-skin-fill/80 backdrop-blur-sm mb-8">
-            <TbTerminal class="w-3 h-3 text-skin-accent" />
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/70">Research Assistant // Systems Engineer</span>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/70">Writes code. Reads docs. Doesn't ask AI.</span>
          </div>
 
-         <!-- Massive Industrial Type -->
          <h1 class="flex flex-col items-center justify-center font-serif text-6xl sm:text-8xl lg:text-9xl leading-[0.85] text-skin-base tracking-tighter">
             <span class="relative">
               SHRAVAN
-              <!-- Decorative Line through text -->
               <span class="absolute top-1/2 left-0 w-full h-[1px] bg-skin-line/0"></span>
             </span>
             <span class="text-skin-base/20 font-sans font-bold tracking-tight italic" style="-webkit-text-stroke: 1px rgba(var(--color-text-base), 0.3); color: transparent;">
@@ -71,17 +57,14 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             </span>
          </h1>
 
-         <!-- Description / Mission -->
-         <p class="mt-8 max-w-lg text-sm sm:text-base font-light leading-relaxed text-skin-base/80 bg-skin-fill/60 backdrop-blur-sm p-4 border border-skin-line/10 rounded-sm">
-           Engineering precision tooling for probabilistic programming. 
-           <br class="hidden sm:block"/>
-           Dedicated to high-performance open source infrastructure.
+         <p class="mt-8 max-w-lg text-sm sm:text-base font-normal leading-relaxed text-skin-base/90 bg-skin-fill/60 backdrop-blur-sm p-4 border border-skin-line/10 rounded-sm">
+           Research Assistant at the University of Cambridge, GSoC 2025 Contributor with The Julia Language, 
+           and pre-final year B.Tech. Computer Science & Engineering student.
          </p>
 
-         <!-- CTA Cluster -->
          <div class="mt-10 flex flex-col sm:flex-row items-center gap-6">
-            <LinkButton href="/projects" className="px-8 py-3 bg-skin-text-base text-skin-inverted hover:bg-skin-accent transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
-               Initialize Projects
+            <LinkButton href="/projects" className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
+               View Projects
             </LinkButton>
             <div class="h-[1px] w-12 bg-skin-line/30 hidden sm:block"></div>
             <div class="scale-90 opacity-70 hover:opacity-100 transition-opacity">
@@ -91,23 +74,14 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
       </div>
 
-      <!-- BOTTOM BAR: SCROLL PROMPT -->
-      <div class="absolute bottom-0 w-full flex justify-center pb-6 pointer-events-none">
-         <div class="flex flex-col items-center gap-2">
-            <div class="w-[1px] h-12 bg-gradient-to-b from-transparent to-skin-line"></div>
-            <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/40">Scroll for Data</span>
-         </div>
-      </div>
-
     </section>
 
 
-    <!-- SECTION 2: FEATURED WORK (KINETIC INDEX) -->
     {featuredPosts.length > 0 && (
       <section class="py-24 sm:py-32">
         <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
-           <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Selected Transmissions</h2>
-           <span class="font-mono text-[10px] text-skin-base/40">Index 01-0{featuredPosts.length}</span>
+           <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Featured Posts</h2>
+           <span class="font-mono text-[10px] text-skin-base/40">{featuredPosts.length} {featuredPosts.length === 1 ? 'post' : 'posts'}</span>
         </div>
         
         <div class="flex flex-col">
@@ -122,20 +96,18 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </div>
 
         <div class="mt-12 flex justify-end">
-           <LinkButton href="/projects" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
-              View All Projects <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+           <LinkButton href="/blog" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
+              All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
            </LinkButton>
         </div>
       </section>
     )}
 
 
-    <!-- SECTION 3: THE ARCHIVE & FOOTER AREA -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-skin-line/20 pt-16 pb-24">
       
-      <!-- Left: Recent Logs -->
       <div class="lg:col-span-6 corner-brackets relative">
-        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block">Raw Log Data</span>
+        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block">Recent Posts</span>
         
         <ul class="space-y-8">
            {recentPosts.slice(0, 3).map(({ data, slug }) => (
@@ -147,7 +119,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
                      {data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
                    </span>
                  </div>
-                 <h4 class="font-serif text-2xl text-skin-base group-hover:italic transition-all">
+                 <h4 class="font-serif text-2xl text-skin-base transition-all">
                    {data.title}
                  </h4>
                </a>
@@ -156,31 +128,30 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </ul>
 
         <div class="mt-12">
-           <LinkButton href="/blog" className="text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
-             View Full Log &rarr;
-           </LinkButton>
+           <a href="/blog/" class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
+             All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+           </a>
         </div>
       </div>
 
-      <!-- Right: Call to Action -->
       <div class="lg:col-span-5 lg:col-start-8 flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10">
          <div>
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">System Status</span>
-            <h3 class="font-serif text-3xl mb-4 text-skin-base">Collaboration Open</h3>
-            <p class="text-sm font-light text-skin-base/70 leading-relaxed max-w-sm">
-              Open to research collaborations and consulting in high-performance computing and open-science tooling.
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">Get in Touch</span>
+            <h3 class="font-serif text-3xl mb-4 text-skin-base">Open to Collaboration</h3>
+            <p class="text-sm font-normal text-skin-base/80 leading-relaxed max-w-sm">
+              Interested in research collaborations, open-source contributions, and high-performance computing projects.
             </p>
          </div>
 
          <div class="flex flex-col gap-4 mt-16">
-            <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-text-base hover:text-skin-inverted hover:border-skin-text-base transition-all duration-300 group">
-               <span class="text-xs font-mono uppercase tracking-widest">Download CV</span>
+            <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
+               <span class="text-xs font-mono uppercase tracking-widest">View CV</span>
                <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
             </LinkButton>
             
             <div class="flex justify-center mt-2">
-              <a href="mailto:shravan@example.com" class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40">
-                INITIATE_CONTACT_PROTOCOL_V1
+              <a href="mailto:shravanngoswamii@gmail.com" class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40 uppercase tracking-widest">
+                shravanngoswamii@gmail.com
               </a>
             </div>
          </div>

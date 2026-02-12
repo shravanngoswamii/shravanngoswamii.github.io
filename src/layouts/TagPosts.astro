@@ -36,10 +36,11 @@ const getRelatedPubs = (tags: string[]) => {
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>
       {
-        page.data.map(({ data, slug }) => (
+        page.data.map(({ data, slug }, index) => (
           <Card 
             href={`/blog/${slug}/`} 
-            frontmatter={data} 
+            frontmatter={data}
+            index={index + 1}
             relatedPublications={getRelatedPubs(data.tags)}
           />
         ))
