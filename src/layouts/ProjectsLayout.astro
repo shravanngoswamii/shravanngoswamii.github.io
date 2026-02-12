@@ -45,9 +45,9 @@ const { frontmatter } = Astro.props;
     <!-- Projects List -->
     <div class="space-y-4">
         {frontmatter.projects.map((project) => (
-          <article class="group flex gap-4 p-4 rounded-lg border border-skin-line/20 bg-skin-card/5 transition-all hover:border-skin-line/40 hover:bg-skin-card/10">
+          <article class="group flex flex-col sm:flex-row gap-4 p-4 rounded-lg border border-skin-line/20 bg-skin-card/5 transition-all hover:border-skin-line/40 hover:bg-skin-card/10">
             {/* Image */}
-            <div class="hidden sm:flex w-32 shrink-0 items-center justify-center bg-skin-fill/30 rounded-md p-3 border border-skin-line/10">
+            <div class="flex w-full sm:w-32 h-24 sm:h-auto shrink-0 items-center justify-center bg-skin-fill/30 rounded-md p-3 border border-skin-line/10">
               {project.imageSrcLight && project.imageSrcDark ? (
                 <>
                   <img
