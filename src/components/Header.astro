@@ -50,7 +50,9 @@ const { activeNav } = Astro.props;
 
       <!-- UTILITIES -->
       <div class="flex items-center gap-1">
-        <div class="scale-90 hover:scale-100 transition-transform"><Search /></div>
+        <button id="search-btn-d" class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all" aria-label="Search">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </button>
         {SITE.lightAndDarkMode && (
             <button id="theme-btn-d" class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all" aria-label="Toggle theme">
                 <TbMoon id="moon-svg-d" className="w-4 h-4" /><TbSun id="sun-svg-d" className="w-4 h-4" />
@@ -71,13 +73,16 @@ const { activeNav } = Astro.props;
       
       <!-- Right Controls -->
       <div class="flex items-center gap-2 relative">
-        <Search />
+        <button id="search-btn-m" class="w-10 h-10 flex items-center justify-center text-skin-base/70 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-card" aria-label="Search">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </button>
         {SITE.lightAndDarkMode && (
           <button id="theme-btn-m" class="w-10 h-10 flex items-center justify-center text-skin-base/70 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-card" aria-label="Toggle theme">
             <TbMoon id="moon-svg-m" className="w-5 h-5" />
             <TbSun id="sun-svg-m" className="w-5 h-5" />
           </button>
         )}
+
         <button id="mobile-menu-toggle" class="w-10 h-10 flex items-center justify-center text-skin-base hover:bg-skin-card rounded-lg transition-all" aria-label="Menu">
           <TbMenu2 id="menu-icon" className="w-6 h-6 transition-transform" />
           <TbX id="close-icon" className="w-6 h-6 hidden transition-transform" />
@@ -122,6 +127,11 @@ const { activeNav } = Astro.props;
 
 <!-- Backdrop for dropdown -->
 <div id="mobile-backdrop" class="sm:hidden fixed inset-0 z-40 bg-black/0 backdrop-blur-0 pointer-events-none transition-all duration-300"></div>
+
+<!-- Global Search Component (shared between desktop and mobile) - button hidden, modal accessible via custom buttons -->
+<div class="hidden">
+  <Search />
+</div>
 
 <script>
   function setupThemeToggle() {
@@ -177,6 +187,25 @@ const { activeNav } = Astro.props;
 
   setupScrollNav();
   document.addEventListener("astro:after-swap", setupScrollNav);
+</script>
+
+<script>
+  function setupSearchButtons() {
+    const searchBtnD = document.querySelector("#search-btn-d");
+    const searchBtnM = document.querySelector("#search-btn-m");
+    const searchComponent = document.querySelector("site-search");
+    
+    const openSearch = () => {
+      const openBtn = searchComponent?.querySelector("button[data-open-modal]");
+      openBtn?.click();
+    };
+    
+    searchBtnD?.addEventListener("click", openSearch);
+    searchBtnM?.addEventListener("click", openSearch);
+  }
+  
+  setupSearchButtons();
+  document.addEventListener("astro:after-swap", setupSearchButtons);
 </script>
 
 <script>
