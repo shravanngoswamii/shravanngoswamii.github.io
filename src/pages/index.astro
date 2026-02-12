@@ -21,7 +21,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   
   <main id="main-content" class="px-4 sm:px-6">
     
-    <section class="min-h-[85svh] flex flex-col justify-center relative border-x border-skin-line/10 my-8 overflow-hidden">
+    <section class="min-h-[85svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden">
       
       <div class="absolute inset-0 -z-10 bg-skin-fill/50">
          <HeroBackground client:load />
@@ -44,7 +44,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       <div class="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
          
          <div class="inline-flex items-center gap-3 px-3 py-1 border border-skin-line/30 rounded-full bg-skin-fill/80 backdrop-blur-sm mb-8">
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/70">Writes code. Reads docs. Doesn't ask AI.</span>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/70">Human Developer & Writer with a natural brain — no AI required</span>
          </div>
 
          <h1 class="flex flex-col items-center justify-center font-serif text-6xl sm:text-8xl lg:text-9xl leading-[0.85] text-skin-base tracking-tighter">
@@ -66,6 +66,9 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             <LinkButton href="/projects" className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
                View Projects
             </LinkButton>
+            <a href="https://github.com/sponsors/shravanngoswamii?o=esb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-xs uppercase tracking-widest rounded-sm">
+               ❤️ Sponsor
+            </a>
             <div class="h-[1px] w-12 bg-skin-line/30 hidden sm:block"></div>
             <div class="scale-90 opacity-70 hover:opacity-100 transition-opacity">
                <Socials />

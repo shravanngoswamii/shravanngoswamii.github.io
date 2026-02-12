@@ -147,11 +147,6 @@ const structuredData = {
 
       let themeValue = getPreferTheme();
 
-      function setPreference(theme) {
-        localStorage.setItem("theme", theme);
-        reflectPreference(theme);
-      }
-
       function reflectPreference(theme) {
         document.firstElementChild.setAttribute("data-theme", theme);
         

@@ -1,7 +1,7 @@
 ---
 import { SITE } from "@config";
 import Search from "./Search.astro";
-import { TbMoon, TbSun } from "react-icons/tb";
+import { TbMoon, TbSun, TbMenu2, TbX } from "react-icons/tb";
 
 export interface Props {
   activeNav?: "projects" | "resume" | "blog" | "tags" | "publications";
@@ -62,72 +62,66 @@ const { activeNav } = Astro.props;
 </header>
 
 
-<!-- MOBILE: DOUBLE-DECKER CONSOLE -->
-<!-- 
-  Row 1: Identity & Controls (Fixed height)
-  Row 2: Scrollable Navigation Track (Fixed height, horizontally scrollable)
--->
-<header id="mobile-header" class="sm:hidden fixed top-0 left-0 right-0 z-50 bg-skin-fill/90 backdrop-blur-xl border-b border-skin-line/10 shadow-lg transition-transform duration-300">
-  
-  <!-- DECK 1: IDENTITY -->
-  <div class="flex items-center justify-between h-14 px-4 border-b border-skin-line/5">
-    <a href="/" class="font-serif text-xl font-bold text-skin-base tracking-tighter flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-skin-accent animate-pulse"></span>
-      SG.
-    </a>
-    
-    <div class="flex items-center gap-3">
-       <div class="scale-90 opacity-70"><Search /></div>
-       {SITE.lightAndDarkMode && (
-         <button id="theme-btn-m" class="p-2 text-skin-base/60 hover:text-skin-base bg-skin-card-muted rounded-md" aria-label="Toggle theme">
-            <TbMoon id="moon-svg-m" className="w-4 h-4" />
-            <TbSun id="sun-svg-m" className="w-4 h-4" />
-         </button>
-       )}
+<!-- MOBILE HEADER -->
+<header id="mobile-header" class="sm:hidden fixed top-0 left-0 right-0 z-50 transition-transform duration-300">
+  <div class="bg-skin-fill/90 backdrop-blur-lg border-b border-skin-line/10">
+    <div class="flex items-center justify-between h-16 px-4">
+      <!-- Logo -->
+      <a href="/" class="font-serif text-xl font-bold text-skin-base">SG</a>
+      
+      <!-- Right Controls -->
+      <div class="flex items-center gap-2 relative">
+        {SITE.lightAndDarkMode && (
+          <button id="theme-btn-m" class="w-10 h-10 flex items-center justify-center text-skin-base/70 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-card" aria-label="Toggle theme">
+            <TbMoon id="moon-svg-m" className="w-5 h-5" />
+            <TbSun id="sun-svg-m" className="w-5 h-5" />
+          </button>
+        )}
+        <button id="mobile-menu-toggle" class="w-10 h-10 flex items-center justify-center text-skin-base hover:bg-skin-card rounded-lg transition-all" aria-label="Menu">
+          <TbMenu2 id="menu-icon" className="w-6 h-6 transition-transform" />
+          <TbX id="close-icon" className="w-6 h-6 hidden transition-transform" />
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="mobile-dropdown" class="absolute top-full right-0 mt-3 w-56 opacity-0 invisible scale-95 origin-top-right transition-all duration-300 ease-out">
+          <div class="bg-skin-card/95 backdrop-blur-xl border border-skin-line/20 shadow-2xl overflow-hidden" style="border-radius: 1rem 1rem 2rem 1rem;">
+            <div class="flex items-center justify-between px-4 pt-3 pb-1">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-skin-base/40">Menu</span>
+              <Search />
+            </div>
+            <nav class="p-3 pt-2">
+              <ul class="space-y-1">
+                <li>
+                  <a href="/blog/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "blog" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                    Journal
+                  </a>
+                </li>
+                <li>
+                  <a href="/projects/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "projects" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                    Work
+                  </a>
+                </li>
+                <li>
+                  <a href="/publications/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "publications" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                    Research
+                  </a>
+                </li>
+                <li>
+                  <a href="/resume/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "resume" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                    CV
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- DECK 2: PRECISION NAV TRACK -->
-  <nav class="h-12 overflow-x-auto overflow-y-hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
-    <ul class="flex items-center h-full px-4 min-w-max text-xs font-mono uppercase tracking-widest">
-       
-       <!-- Item 1 -->
-       <li>
-         <a href="/blog/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
-           Journal
-         </a>
-       </li>
-       <li class="mx-2 text-skin-line/30">|</li>
-       
-       <!-- Item 2 -->
-       <li>
-         <a href="/projects/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
-           Work
-         </a>
-       </li>
-       <li class="mx-2 text-skin-line/30">|</li>
-
-       <!-- Item 3 -->
-       <li>
-         <a href="/publications/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
-           Research
-         </a>
-       </li>
-       <li class="mx-2 text-skin-line/30">|</li>
-
-       <!-- Item 4 -->
-       <li>
-         <a href="/resume/" class={`flex items-center h-8 px-4 rounded-sm transition-all ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted font-bold" : "text-skin-base/60"}`}>
-           CV
-         </a>
-       </li>
-       
-       <!-- End Padding to prevent cut-off -->
-       <li class="w-4"></li>
-    </ul>
-  </nav>
-
 </header>
+
+<!-- Backdrop for dropdown -->
+<div id="mobile-backdrop" class="sm:hidden fixed inset-0 z-40 bg-black/0 backdrop-blur-0 pointer-events-none transition-all duration-300"></div>
 
 <script>
   function setupThemeToggle() {
@@ -183,4 +177,61 @@ const { activeNav } = Astro.props;
 
   setupScrollNav();
   document.addEventListener("astro:after-swap", setupScrollNav);
+</script>
+
+<script>
+  function setupMobileDropdown() {
+    const toggle = document.querySelector("#mobile-menu-toggle");
+    const dropdown = document.querySelector("#mobile-dropdown");
+    const backdrop = document.querySelector("#mobile-backdrop");
+    const menuIcon = document.querySelector("#menu-icon");
+    const closeIcon = document.querySelector("#close-icon");
+    let isOpen = false;
+
+    function openDropdown() {
+      isOpen = true;
+      dropdown?.classList.remove("opacity-0", "invisible", "scale-95");
+      dropdown?.classList.add("opacity-100", "visible", "scale-100");
+      backdrop?.classList.remove("pointer-events-none", "bg-black/0");
+      backdrop?.classList.add("pointer-events-auto", "bg-black/20");
+      menuIcon?.classList.add("hidden", "rotate-90");
+      closeIcon?.classList.remove("hidden");
+    }
+
+    function closeDropdown() {
+      isOpen = false;
+      dropdown?.classList.remove("opacity-100", "visible", "scale-100");
+      dropdown?.classList.add("opacity-0", "invisible", "scale-95");
+      backdrop?.classList.remove("pointer-events-auto", "bg-black/20");
+      backdrop?.classList.add("pointer-events-none", "bg-black/0");
+      menuIcon?.classList.remove("hidden", "rotate-90");
+      closeIcon?.classList.add("hidden");
+    }
+
+    toggle?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isOpen) closeDropdown();
+      else openDropdown();
+    });
+
+    backdrop?.addEventListener("click", closeDropdown);
+
+    // Close on navigation
+    dropdown?.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        setTimeout(closeDropdown, 100);
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (isOpen && !dropdown?.contains(target) && !toggle?.contains(target)) {
+        closeDropdown();
+      }
+    });
+  }
+
+  setupMobileDropdown();
+  document.addEventListener("astro:after-swap", setupMobileDropdown);
 </script>

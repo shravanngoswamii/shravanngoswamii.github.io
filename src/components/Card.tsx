@@ -12,7 +12,7 @@ export interface Props {
   relatedPublications?: { title: string; url?: string }[];
 }
 
-export default function Card({ href, frontmatter, index = 1, secHeading = true }: Props) {
+export default function Card({ href, frontmatter, index = 1 }: Props) {
   const { title, pubDatetime, modDatetime, description, tags } = frontmatter;
 
   // Format index to look like "01", "02" for a cleaner, bolder look
