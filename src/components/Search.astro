@@ -1,130 +1,98 @@
 ---
-// Heavy inspiration taken from Astro Starlight -> https://github.com/withastro/starlight/blob/main/packages/starlight/components/Search.astro
-
 import "@pagefind/default-ui/css/ui.css";
-import { TbSearch } from "react-icons/tb";
 ---
 
-<site-search class="ms-auto" id="search">
-  <button
-    class="flex h-9 w-9 items-center justify-center rounded-md ring-zinc-400 transition-all hover:ring-2"
-    data-open-modal
-    disabled
-  >
-    <TbSearch className="h-7 w-7 search-svg icon-tabler" />
-  </button>
-  <dialog
-    style="color: inherit !important;"
-    aria-label="search"
-    class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-bgColor shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md"
-  >
-    <div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6">
-      <button
-        class="ms-auto cursor-pointer rounded-md bg-zinc-200 p-2 font-semibold dark:bg-zinc-700 search-close-btn"
-        style="color: inherit;"
-        data-close-modal>Close</button
-      >
-      {
-        import.meta.env.DEV ? (
-          <div class="mx-auto text-center">
-            <p>
-              Search is only available in production builds. <br />
-              Try building and previewing the site to test it out locally.
-            </p>
-          </div>
-        ) : (
-          <div class="search-container">
+<div id="search-overlay" class="fixed inset-0 z-[100] hidden">
+  <div id="search-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+  <div class="relative flex items-start justify-center pt-[15vh] px-4">
+    <div id="search-panel" class="w-full max-w-2xl bg-skin-fill border border-skin-line/20 rounded-xl shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 pt-5 pb-3">
+        <span class="text-xs font-mono uppercase tracking-widest text-skin-base/50">Search</span>
+        <button id="search-close-btn" class="cursor-pointer rounded-md bg-skin-card px-3 py-1 text-sm font-medium text-skin-base/70 hover:text-skin-base transition-colors">
+          Esc
+        </button>
+      </div>
+      <div class="px-6 pb-6">
+        {
+          import.meta.env.DEV ? (
+            <div class="text-center py-8 text-skin-base/60">
+              <p>
+                Search is only available in production builds. <br />
+                Try building and previewing the site to test it out locally.
+              </p>
+            </div>
+          ) : (
             <div id="cactus__search" />
-          </div>
-        )
-      }
+          )
+        }
+      </div>
     </div>
-  </dialog>
-</site-search>
+  </div>
+</div>
 
 <script>
-  class SiteSearch extends HTMLElement {
-    private closeBtn: HTMLButtonElement;
-    private dialog: HTMLDialogElement;
-    private dialogFrame: HTMLDivElement;
-    private openBtn: HTMLButtonElement;
+  function setupSearch() {
+    const el = document.getElementById("search-overlay");
+    const backdrop = document.getElementById("search-backdrop");
+    const closeBtn = document.getElementById("search-close-btn");
+    if (!el) return;
+    const overlay: HTMLElement = el;
 
-    closeModal = () => {
-      if (this.dialog.open) {
-        this.dialog.close();
-        window.removeEventListener("click", this.onWindowClick);
+    let pagefindLoaded = false;
+
+    function openSearch() {
+      overlay.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+
+      if (!pagefindLoaded && !import.meta.env.DEV) {
+        pagefindLoaded = true;
+        const onIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
+        onIdle(async () => {
+          const { PagefindUI } = await import("@pagefind/default-ui");
+          new PagefindUI({
+            baseUrl: import.meta.env.BASE_URL,
+            bundlePath: import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
+            element: "#cactus__search",
+            showImages: false,
+            showSubResults: true,
+          });
+          overlay.querySelector<HTMLInputElement>(".pagefind-ui__search-input")?.focus();
+        });
+      } else {
+        requestAnimationFrame(() => {
+          overlay.querySelector<HTMLInputElement>(".pagefind-ui__search-input")?.focus();
+        });
       }
-    };
+    }
 
-    onWindowClick = (event: MouseEvent) => {
-      // check if it's a link
-      const isLink = "href" in (event.target || {});
-      // make sure the click is either a link or outside of the dialog
-      if (
-        isLink ||
-        (document.body.contains(event.target as Node) &&
-          !this.dialogFrame.contains(event.target as Node))
-      )
-        this.closeModal();
-    };
+    function closeSearch() {
+      overlay.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
 
-    onWindowKeydown = (e: KeyboardEvent) => {
-      // check if it's the / key
-      if (e.key === "/" && !this.dialog.open) {
-        this.openModal();
+    document.addEventListener("open-search", openSearch);
+
+    backdrop?.addEventListener("click", closeSearch);
+    closeBtn?.addEventListener("click", closeSearch);
+
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !overlay.classList.contains("hidden")) {
+        closeSearch();
         e.preventDefault();
       }
-    };
-
-    openModal = (event?: MouseEvent) => {
-      this.dialog.showModal();
-      this.querySelector("input")?.focus();
-      event?.stopPropagation();
-      window.addEventListener("click", this.onWindowClick);
-    };
-
-    constructor() {
-      super();
-      this.openBtn = this.querySelector<HTMLButtonElement>(
-        "button[data-open-modal]",
-      )!;
-      this.closeBtn = this.querySelector<HTMLButtonElement>(
-        "button[data-close-modal]",
-      )!;
-      this.dialog = this.querySelector("dialog")!;
-      this.dialogFrame = this.querySelector(".dialog-frame")!;
-
-      this.openBtn.addEventListener("click", this.openModal);
-      this.openBtn.disabled = false;
-      this.closeBtn.addEventListener("click", this.closeModal);
-    }
-
-    connectedCallback() {
-      // Listen for keyboard shortcut
-      window.addEventListener("keydown", this.onWindowKeydown);
-
-      // only add pagefind in production
-      if (import.meta.env.DEV) return;
-      const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-      onIdle(async () => {
-        const { PagefindUI } = await import("@pagefind/default-ui");
-        new PagefindUI({
-          baseUrl: import.meta.env.BASE_URL,
-          bundlePath:
-            import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
-          element: "#cactus__search",
-          showImages: false,
-          showSubResults: true,
-        });
-      });
-    }
-
-    disconnectedCallback() {
-      window.removeEventListener("keydown", this.onWindowKeydown);
-    }
+      if (e.key === "/" && overlay.classList.contains("hidden")) {
+        const active = document.activeElement;
+        const isInput = active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement;
+        if (!isInput) {
+          openSearch();
+          e.preventDefault();
+        }
+      }
+    });
   }
 
-  customElements.define("site-search", SiteSearch);
+  setupSearch();
+  document.addEventListener("astro:after-swap", setupSearch);
 </script>
 
 <style is:global>

@@ -128,10 +128,7 @@ const { activeNav } = Astro.props;
 <!-- Backdrop for dropdown -->
 <div id="mobile-backdrop" class="sm:hidden fixed inset-0 z-40 bg-black/0 backdrop-blur-0 pointer-events-none transition-all duration-300"></div>
 
-<!-- Global Search Component (shared between desktop and mobile) - button hidden, modal accessible via custom buttons -->
-<div class="hidden">
-  <Search />
-</div>
+<Search />
 
 <script>
   function setupThemeToggle() {
@@ -191,19 +188,11 @@ const { activeNav } = Astro.props;
 
 <script>
   function setupSearchButtons() {
-    const searchBtnD = document.querySelector("#search-btn-d");
-    const searchBtnM = document.querySelector("#search-btn-m");
-    const searchComponent = document.querySelector("site-search");
-    
-    const openSearch = () => {
-      const openBtn = searchComponent?.querySelector("button[data-open-modal]");
-      openBtn?.click();
-    };
-    
-    searchBtnD?.addEventListener("click", openSearch);
-    searchBtnM?.addEventListener("click", openSearch);
+    const openSearch = () => document.dispatchEvent(new CustomEvent("open-search"));
+    document.querySelector("#search-btn-d")?.addEventListener("click", openSearch);
+    document.querySelector("#search-btn-m")?.addEventListener("click", openSearch);
   }
-  
+
   setupSearchButtons();
   document.addEventListener("astro:after-swap", setupSearchButtons);
 </script>
