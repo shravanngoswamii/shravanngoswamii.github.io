@@ -1,0 +1,26 @@
+<div class="tab-panel hidden data-[active=true]:block" data-label={Astro.props.label} role="tabpanel">
+    <slot />
+</div>
+
+<style>
+    /* Ensure the padding or margin works nicely inside */
+    .tab-panel :global(> :first-child) {
+        margin-top: 0 !important;
+    }
+    .tab-panel :global(> :last-child) {
+        margin-bottom: 0 !important;
+    }
+    
+    /* Code blocks inside tabs should fill panel naturally */
+    .tab-panel :global(pre) {
+        margin: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background-color: transparent !important;
+    }
+    
+    .tab-panel :global(.code-wrapper) {
+        /* Reset wrapper styles if needed */
+        margin: 0 !important;
+    }
+</style>

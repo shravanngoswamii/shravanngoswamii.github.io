@@ -22,7 +22,7 @@ description: "DeepFake Detection Research"
 
 - https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9721302
 
-```paper
+```text
 51f551d3515f0f99/
 
 EUPL59Yd1plPtBKnxsTegMABQRzz5oFqQ5chJserbPz2Dw?

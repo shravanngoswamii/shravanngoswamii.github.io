@@ -25,11 +25,11 @@ export default function Card({ href, frontmatter, index = 1 }: Props) {
         
         {/* COL 1: KINETIC INDEX */}
         <div className="hidden md:flex w-12 shrink-0 justify-start items-center pl-2">
-          <div className="relative overflow-hidden h-6 w-full">
-            <span className="absolute inset-0 font-mono text-xs text-skin-base/40 tracking-widest transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
+          <div className="relative overflow-hidden h-5 w-full">
+            <span className="absolute inset-0 flex items-center font-mono text-xs text-skin-base/40 tracking-widest transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
               ({formattedIndex})
             </span>
-            <TbArrowUpRight className="absolute inset-0 h-4 w-4 text-skin-base transition-transform duration-500 ease-in-out translate-y-full group-hover:translate-y-0" />
+            <TbArrowUpRight className="absolute inset-0 h-full w-4 text-skin-base transition-transform duration-500 ease-in-out translate-y-full group-hover:translate-y-0" />
           </div>
         </div>
 

@@ -15,10 +15,12 @@ Problem Link: [B - Traveling Takahashi Problem (AtCoder Beginner Contest 375)](h
 
 ## Approach
 
-The code takes a list of points and calculates the total distance between them. It first reads the points, adds the origin $(0, 0)$ at the start, reverses the list, adds origin at end again, updates the size of `n` and and then computes the distance between each pair of consecutive points. Finally, it prints the total distance with precision $20$.
+The code takes a list of points and calculates the total distance between them. It first reads the points, adds the origin $(0, 0)$ at the start, reverses the list, adds origin at end again, updates the size of $n$ and and then computes the distance between each pair of consecutive points. Finally, it prints the total distance with precision $20$.
 
 ## Code Implementation
 
+<Tabs>
+  <TabItem label="C++">
 ```cpp
 #include <bits/stdc++.h>
 #define int long long
@@ -54,3 +56,34 @@ signed main() {
     return 0;
 }
 ```
+  </TabItem>
+  <TabItem label="Python">
+```python
+import math
+
+def solve():
+    n = int(input())
+    points = []
+    for _ in range(n):
+        points.append(list(map(int, input().split())))
+    
+    # Add origin at start and end
+    # Note: The C++ solution logic effectively adds origin at both ends 
+    # (indirectly via reverse logic), here is the direct equivalent:
+    path = [[0, 0]] + points + [[0, 0]]
+    
+    ans = 0.0
+    for i in range(len(path) - 1):
+        x1, y1 = path[i]
+        x2, y2 = path[i+1]
+        dx = x1 - x2
+        dy = y1 - y2
+        ans += math.sqrt(dx*dx + dy*dy)
+        
+    print(f"{ans:.20f}")
+
+if __name__ == "__main__":
+    solve()
+```
+  </TabItem>
+</Tabs>

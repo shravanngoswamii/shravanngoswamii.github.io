@@ -11,6 +11,8 @@ import Giscus from "@components/Giscus.astro";
 import { SITE } from "@config";
 import { getPublications, processLatex } from "@utils/bibtexUtils";
 import { TbChevronLeft, TbChevronRight, TbChevronUp, TbBook } from "react-icons/tb";
+import Tabs from "@components/Tabs.astro";
+import TabItem from "@components/TabItem.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -78,7 +80,7 @@ const nextPost =
 
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
-      class="focus-outline mb-2 mt-28 sm:mt-20 flex hover:opacity-75 items-center"
+      class="focus-outline mb-2 mt-32 sm:mt-28 flex hover:opacity-75 items-center"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
       <TbChevronLeft className="inline-block h-6 w-6 scale-90" />
@@ -94,7 +96,7 @@ const nextPost =
       className="my-2"
     />
     <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Content />
+      <Content components={{ Tabs, TabItem }} />
     </article>
 
     {relatedPublications.length > 0 && (
@@ -235,7 +237,7 @@ const nextPost =
 
   /* Glassy, Glowy, Premium Code Block Style */
   :global(pre) {
-    @apply rounded-xl border border-skin-line/40 p-5 overflow-x-auto;
+    @apply rounded-xl border border-skin-line/40 overflow-x-auto; /* Removed p-5 */
     background-color: rgba(var(--color-card), 0.6) !important; /* Semi-transparent base */
     backdrop-filter: blur(12px); /* Blur effect */
     box-shadow: 
@@ -255,16 +257,20 @@ const nextPost =
 
   /* Copy Button Integration */
   :global(.copy-code) {
-    @apply absolute right-0 top-0 z-20 p-2 rounded-bl-xl bg-skin-card/50 border-b border-l border-skin-line/20 
-           text-skin-base/50 transition-all opacity-0 backdrop-blur-md;
+    @apply absolute right-2 top-2 z-20 p-1.5 opacity-0 transition-all scale-95 cursor-pointer;
+    /* Removed background/border logic to match request "don't like bg and border" */
+    /* Only icon visible */
+    color: rgba(var(--color-text-base), 0.4); 
   }
 
   :global(.code-wrapper:hover .copy-code) {
-    @apply opacity-100;
+    @apply opacity-100 scale-100;
   }
 
   :global(.copy-code:hover) {
-    @apply bg-skin-card text-skin-accent border-skin-line/50;
+    /* Slight glow/color on hover, but no box */
+    color: rgba(var(--color-accent), 1); 
+    filter: drop-shadow(0 0 4px rgba(var(--color-accent), 0.3));
   }
   
   /* Line Numbers Implementation - Minimal & Subtle */
@@ -289,12 +295,16 @@ const nextPost =
 
   :global(pre) {
     /* padding handled in definition above */
-    padding-left: 2.5rem !important; 
+    /* Remove padding entirely from code block container */
+    padding-left: 2rem !important; 
+    padding-right: 1rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
   
   :global(.line-numbers span) {
     display: block;
-    padding-right: 0.5rem;
+    padding-right: 0.75rem; /* Slight padding to separate from code */
     height: 1.3125rem; /* 14px * 1.5 = 21px (1.3125rem). Explicit height helps alignment */
   }
 

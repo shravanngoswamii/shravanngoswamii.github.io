@@ -1,0 +1,103 @@
+<div class="tabs-container my-6">
+  <div class="tabs-header relative flex items-center gap-8 overflow-x-auto border-b border-skin-line/10 scrollbar-none">
+      <!-- Sliding indicator -->
+      <div class="tab-indicator absolute bottom-0 h-[2px] bg-skin-accent transition-all duration-300 ease-out" style="width: 0; left: 0;"></div>
+      <!-- Buttons will be injected here by JS -->
+  </div>
+  <div class="tabs-content relative mt-2">
+      <slot />
+  </div>
+</div>
+
+<script>
+  function setupTabs() {
+    const tabContainers = document.querySelectorAll('.tabs-container');
+    
+    tabContainers.forEach((container) => {
+        // Prevent re-initialization if already processed
+        if(container.hasAttribute('data-tabs-initialized')) return;
+        
+        const header = container.querySelector('.tabs-header');
+        const content = container.querySelector('.tabs-content');
+        const indicator = container.querySelector('.tab-indicator') as HTMLElement;
+        if (!header || !content || !indicator) return;
+        
+        // Find all panels (TabItem components)
+        const panels = Array.from(content.children).filter(child => child.classList.contains('tab-panel'));
+        if(panels.length === 0) return;
+
+        // Mark as init
+        container.setAttribute('data-tabs-initialized', 'true');
+        
+        // Clear existing header content (to prevent duplication on re-runs)
+        const existingButtons = header.querySelectorAll('.tab-btn');
+        existingButtons.forEach(btn => btn.remove());
+        
+        // Function to update indicator position
+        const updateIndicator = (btn: HTMLElement) => {
+            const btnRect = btn.getBoundingClientRect();
+            const headerRect = header.getBoundingClientRect();
+            const left = btnRect.left - headerRect.left + header.scrollLeft;
+            indicator.style.width = `${btnRect.width}px`;
+            indicator.style.left = `${left}px`;
+        };
+        
+        // Generate Buttons
+        panels.forEach((panel, i) => {
+            const label = panel.getAttribute('data-label') || `Tab ${i + 1}`;
+            const btn = document.createElement('button');
+            
+            // Ultra clean text-based tabs
+            btn.className = `tab-btn pb-3 text-sm font-medium transition-colors duration-200 relative whitespace-nowrap
+                ${i === 0 ? 'text-skin-accent' : 'text-skin-base/50 hover:text-skin-base/80'}`;
+            btn.textContent = label;
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+            
+            // panel setup
+            panel.classList.toggle('hidden', i !== 0);
+            
+            // Click Handler
+            btn.addEventListener('click', () => {
+                // Deactivate all
+                panels.forEach(p => p.classList.add('hidden'));
+                Array.from(header.querySelectorAll('.tab-btn')).forEach(b => {
+                    b.setAttribute('aria-selected', 'false');
+                    b.className = 'tab-btn pb-3 text-sm font-medium transition-colors duration-200 relative whitespace-nowrap text-skin-base/50 hover:text-skin-base/80';
+                });
+                
+                // Activate current
+                panel.classList.remove('hidden');
+                btn.setAttribute('aria-selected', 'true');
+                btn.className = 'tab-btn pb-3 text-sm font-medium transition-colors duration-200 relative whitespace-nowrap text-skin-accent';
+                
+                // Update indicator
+                updateIndicator(btn);
+            });
+            
+            header.appendChild(btn);
+            
+            // Set initial indicator position
+            if (i === 0) {
+                setTimeout(() => updateIndicator(btn), 0);
+            }
+        });
+    });
+  }
+
+  // Run on load
+  setupTabs();
+  
+  // Re-run on Astro navigation
+  document.addEventListener('astro:after-swap', setupTabs);
+</script>
+
+<style>
+  /* Optional Scrollbar styling */
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-skin-accent/50 rounded-full;
+  }
+</style>
