@@ -10,8 +10,6 @@ aliases:
   - /posts/back-to-the-arena-2026
 ---
 
-## Table of contents
-
 ## Introduction
 
 As I enter the final semester of my B.Tech in CSE, it’s strange to think about how every decision, big or small, has brought me to where I started. It’s January 2026, and along the way, I’ve achieved some amazing milestones in Open Source and Research. However, there is one chapter I left unfinished: Competitive Programming.

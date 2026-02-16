@@ -12,8 +12,6 @@ aliases:
 
 ![GSoC 2025](/blog/GSoC-2025-The-Journey-Begins/GSoC-Horizontal.svg)
 
-## Table of contents
-
 ## From Rejections to Realization: My GSoC 2025 Journey with Julia and TuringLang
 
 In 2023, I submitted **three proposals** in Google Summer of Code.

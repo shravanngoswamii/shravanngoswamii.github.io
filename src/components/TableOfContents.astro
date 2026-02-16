@@ -1,0 +1,185 @@
+---
+export interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings, mobile = false } = Astro.props;
+
+// Filter headings to only include h2 and h3
+const toc = headings.filter((heading) => heading.depth > 1 && heading.depth < 4);
+---
+
+{/* Desktop Sidebar */}
+{
+  !mobile && (
+    <nav class="toc-container">
+      <h2 class="toc-title">Table of Contents</h2>
+      <ul class="toc-list">
+        {
+          toc.map((heading) => (
+            <li class={`toc-item depth-${heading.depth}`}>
+              <a href={`#${heading.slug}`}>{heading.text}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  )
+}
+
+{/* Mobile Inline Details */}
+{
+  mobile && (
+    <details class="toc-mobile-details">
+      <summary class="toc-mobile-summary">
+        Table of Contents
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+           <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </summary>
+      <nav class="toc-mobile-content">
+        <ul class="toc-list-mobile">
+          {
+            toc.map((heading) => (
+              <li class={`toc-item-mobile depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </details>
+  )
+}
+
+<style>
+  /* Desktop Styles */
+  .toc-container {
+    display: none; /* Hidden by default */
+  }
+
+  @media (min-width: 1024px) {
+    .toc-container {
+      display: block;
+      position: sticky;
+      top: 6rem;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+      padding-left: 1rem;
+      border-left: 1px solid rgba(var(--color-border), 0.5);
+    }
+  }
+
+  .toc-title {
+    @apply font-bold text-lg mb-4 text-skin-base;
+  }
+
+  .toc-list {
+    @apply flex flex-col gap-2 text-sm;
+  }
+
+  .toc-item a {
+    @apply text-skin-base/70 hover:text-skin-accent transition-colors block py-1 border-l-2 border-transparent -ml-[1.05rem] pl-4;
+  }
+
+  .toc-item.active a {
+    @apply text-skin-accent border-skin-accent font-medium;
+  }
+
+  .toc-item.depth-3 {
+    @apply ml-4;
+  }
+
+  /* Mobile Inline Styles */
+  .toc-mobile-details {
+    @apply bg-skin-card/50 border border-skin-line/20 rounded-lg mb-8 lg:hidden;
+  }
+  
+  .toc-mobile-summary {
+    @apply flex items-center justify-between p-4 font-bold text-skin-base cursor-pointer list-none;
+  }
+  
+  .toc-mobile-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-mobile-summary svg {
+    @apply transition-transform duration-300;
+  }
+  
+  .toc-mobile-details[open] .toc-mobile-summary svg {
+    @apply transform rotate-180;
+  }
+
+  .toc-mobile-content {
+    @apply px-4 pb-4 border-t border-skin-line/10 pt-2;
+  }
+
+  .toc-list-mobile {
+    @apply flex flex-col gap-2 text-sm;
+  }
+
+  .toc-item-mobile a {
+     @apply block py-1.5 text-skin-base/80 hover:text-skin-accent transition-colors;
+  }
+
+  .toc-item-mobile.active a {
+    @apply text-skin-accent font-medium;
+  }
+
+  .toc-item-mobile.depth-3 {
+    @apply ml-4 border-l border-skin-line/20 pl-4;
+  }
+</style>
+
+<script>
+  let observer: IntersectionObserver | undefined;
+
+  function initTOC() {
+    // 1. Disconnect previous observer to avoid leaks/duplicates
+    if (observer) {
+      observer.disconnect();
+    }
+
+    // 2. Define callback
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("id");
+        // We match against the current DOM
+        const desktopLink = document.querySelector(`.toc-item a[href="#${id}"]`);
+        const mobileLink = document.querySelector(`.toc-item-mobile a[href="#${id}"]`);
+
+        if (entry.isIntersecting) {
+          // Remove active class from all
+          document.querySelectorAll(".toc-item").forEach((item) => item.classList.remove("active"));
+          document.querySelectorAll(".toc-item-mobile").forEach((item) => item.classList.remove("active"));
+
+          // Add active class to current
+          desktopLink?.parentElement?.classList.add("active");
+          mobileLink?.parentElement?.classList.add("active");
+        }
+      });
+    };
+
+    // 3. Define options
+    const observerOptions = {
+      root: null,
+      rootMargin: "-100px 0px -60% 0px",
+      threshold: 0,
+    };
+
+    // 4. Create and observe
+    observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    document.querySelectorAll("h2, h3").forEach((heading) => {
+      observer.observe(heading);
+    });
+  }
+
+  // Run immediately (initial load)
+  initTOC();
+
+  // Run after view transition (page swap)
+  document.addEventListener("astro:after-swap", initTOC);
+</script>

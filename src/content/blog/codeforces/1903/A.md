@@ -9,8 +9,6 @@ aliases:
   - /posts/1903-A-Halloumi-Boxes
 ---
 
-## Table of contents
-
 <p class="hidden">Problem A 1903</p>
 
 Problem Link: [A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)](https://codeforces.com/problemset/problem/1903/A)

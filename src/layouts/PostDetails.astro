@@ -14,6 +14,7 @@ import { TbChevronLeft, TbChevronRight, TbBook } from "react-icons/tb";
 import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import TableOfContents from "@components/TableOfContents.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -38,7 +39,7 @@ const relatedPublications = publications.filter(pub =>
   pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
 );
 
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 
 // --- START: UPDATED OG IMAGE URL CONSTRUCTION ---
 // If ogImage is explicitly set in frontmatter, use it.
@@ -79,102 +80,127 @@ const nextPost =
 <Layout {...layoutProps}>
   <Header />
 
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
-    <button
-      class="focus-outline mb-2 mt-32 sm:mt-28 flex hover:opacity-75 items-center"
-      onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
-    >
-      <TbChevronLeft className="inline-block h-6 w-6 scale-90" />
-      <span>Go back</span>
-    </button>
-  </div>
-  <main id="main-content">
-    <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
-    <Datetime
-      pubDatetime={pubDatetime}
-      modDatetime={modDatetime}
-      size="lg"
-      className="my-2"
-    />
-    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Content components={{ Tabs, TabItem }} />
-    </article>
+  <div class="mx-auto w-full max-w-screen-xl px-4 pt-32 sm:pt-28">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8">
+      
+      <!-- Left Column (Empty for centering) -->
+      <div class="hidden lg:block"></div>
 
-    {relatedPublications.length > 0 && (
-      <div class="my-8 border-t border-skin-line/30 pt-8">
-        <h3 class="text-xl font-bold text-skin-base mb-4">Associated Publications</h3>
-        <ul class="space-y-4">
-          {relatedPublications.map(pub => (
-            <li class="flex flex-col gap-1">
-              <div class="flex items-baseline gap-2">
-                <span class="text-skin-accent">
-                  <TbBook className="h-4 w-4 inline-block" />
-                </span>
-                <div class="flex-1">
-                  {pub.entryTags.url ? (
-                    <a href={pub.entryTags.url} target="_blank" rel="noopener noreferrer" class="font-medium hover:underline decoration-dashed underline-offset-4">
-                      <span set:html={processLatex(pub.entryTags.title)} />
-                    </a>
-                  ) : (
-                    <span class="font-medium" set:html={processLatex(pub.entryTags.title)} />
-                  )}
-                  <span class="text-sm text-skin-base/60 ml-2">({pub.entryTags.year})</span>
-                </div>
-              </div>
-              <div class="text-sm text-skin-base/80 ml-6 italic">
-                {pub.entryTags.journal || pub.entryTags.booktitle || pub.entryTags.publisher || pub.entryTags.note}
-              </div>
-            </li>
-          ))}
-        </ul>
+      <!-- Center Column (Content) -->
+      <div class="flex flex-col">
+        <!-- Back Button -->
+        <div class="mb-4 mt-8 flex justify-start">
+          <button
+            class="focus-outline flex hover:opacity-75 items-center"
+            onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
+          >
+            <TbChevronLeft className="inline-block h-6 w-6 scale-90" />
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <main id="main-content">
+          <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+          <Datetime
+            pubDatetime={pubDatetime}
+            modDatetime={modDatetime}
+            size="lg"
+            className="my-2"
+          />
+
+          <!-- TOC Mobile (Inline) -->
+          <TableOfContents headings={headings} mobile={true} />
+
+          <article id="article" class="prose mx-auto mt-8 max-w-3xl">
+            <Content components={{ Tabs, TabItem }} />
+          </article>
+
+          {relatedPublications.length > 0 && (
+            <div class="my-8 border-t border-skin-line/30 pt-8">
+              <h3 class="text-xl font-bold text-skin-base mb-4">Associated Publications</h3>
+              <ul class="space-y-4">
+                {relatedPublications.map(pub => (
+                  <li class="flex flex-col gap-1">
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-skin-accent">
+                        <TbBook className="h-4 w-4 inline-block" />
+                      </span>
+                      <div class="flex-1">
+                        {pub.entryTags.url ? (
+                          <a href={pub.entryTags.url} target="_blank" rel="noopener noreferrer" class="font-medium hover:underline decoration-dashed underline-offset-4">
+                            <span set:html={processLatex(pub.entryTags.title)} />
+                          </a>
+                        ) : (
+                          <span class="font-medium" set:html={processLatex(pub.entryTags.title)} />
+                        )}
+                        <span class="text-sm text-skin-base/60 ml-2">({pub.entryTags.year})</span>
+                      </div>
+                    </div>
+                    <div class="text-sm text-skin-base/80 ml-6 italic">
+                      {pub.entryTags.journal || pub.entryTags.booktitle || pub.entryTags.publisher || pub.entryTags.note}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <ul class="my-8">
+            {tags.map((tag) => <Tag tag={tag} />)}
+          </ul>
+
+          <div class="flex items-center justify-center">
+            <ShareLinks />
+          </div>
+
+          <hr class="my-6 border-dashed" />
+
+          <!-- Comments Section -->
+          <Giscus />
+
+          <!-- Previous/Next Post Buttons -->
+          <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {
+              prevPost && (
+                <a
+                  href={`/blog/${prevPost.slug}`}
+                  class="flex w-full gap-1 hover:opacity-75 items-center"
+                >
+                  <TbChevronLeft className="h-6 w-6 flex-none" />
+                  <div>
+                    <span>Previous Post</span>
+                    <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
+                  </div>
+                </a>
+              )
+            }
+            {
+              nextPost && (
+                <a
+                  href={`/blog/${nextPost.slug}`}
+                  class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
+                >
+                  <div>
+                    <span>Next Post</span>
+                    <div class="text-sm text-skin-accent/85">{nextPost.title}</div>
+                  </div>
+                  <TbChevronRight className="h-6 w-6 flex-none" />
+                </a>
+              )
+            }
+          </div>
+        </main>
       </div>
-    )}
 
-    <ul class="my-8">
-      {tags.map((tag) => <Tag tag={tag} />)}
-    </ul>
+      <!-- Right Column (TOC Desktop) -->
+      <aside class="hidden lg:block relative mt-40">
+        <div class="sticky top-24 transition-opacity duration-300">
+          <TableOfContents headings={headings} />
+        </div>
+      </aside>
 
-    <div class="flex items-center justify-center">
-      <ShareLinks />
     </div>
-
-    <hr class="my-6 border-dashed" />
-
-    <!-- Comments Section -->
-    <Giscus />
-
-    <!-- Previous/Next Post Buttons -->
-    <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
-      {
-        prevPost && (
-          <a
-            href={`/blog/${prevPost.slug}`}
-            class="flex w-full gap-1 hover:opacity-75 items-center"
-          >
-            <TbChevronLeft className="h-6 w-6 flex-none" />
-            <div>
-              <span>Previous Post</span>
-              <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
-            </div>
-          </a>
-        )
-      }
-      {
-        nextPost && (
-          <a
-            href={`/blog/${nextPost.slug}`}
-            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
-          >
-            <div>
-              <span>Next Post</span>
-              <div class="text-sm text-skin-accent/85">{nextPost.title}</div>
-            </div>
-            <TbChevronRight className="h-6 w-6 flex-none" />
-          </a>
-        )
-      }
-    </div>
-  </main>
+  </div>
   
   <ClimbingBackToTop />
   
@@ -183,7 +209,7 @@ const nextPost =
 
 <style>
   main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply w-full max-w-3xl pb-12 mx-auto lg:mx-0;
   }
   .post-title {
     @apply text-2xl font-semibold sm:text-3xl text-skin-base;
@@ -434,4 +460,15 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
   );
+
+  /** Hide "Table of Contents" heading if it exists */
+  function hideTOCHeading() {
+    const headings = document.querySelectorAll("h2");
+    headings.forEach((heading) => {
+      if (heading.textContent.trim() === "Table of contents") {
+        heading.style.display = "none";
+      }
+    });
+  }
+  hideTOCHeading();
 </script>
