@@ -31,21 +31,28 @@ import "@pagefind/default-ui/css/ui.css";
 </div>
 
 <script>
+  let searchAbort: AbortController | undefined;
+
   function setupSearch() {
+    // Clean up previous listeners before adding new ones
+    if (searchAbort) searchAbort.abort();
+    searchAbort = new AbortController();
+    const { signal } = searchAbort;
+
     const el = document.getElementById("search-overlay");
     const backdrop = document.getElementById("search-backdrop");
     const closeBtn = document.getElementById("search-close-btn");
     if (!el) return;
     const overlay: HTMLElement = el;
 
-    let pagefindLoaded = false;
-
     function openSearch() {
       overlay.classList.remove("hidden");
       document.body.style.overflow = "hidden";
 
-      if (!pagefindLoaded && !import.meta.env.DEV) {
-        pagefindLoaded = true;
+      const searchContainer = document.getElementById("cactus__search");
+      const needsInit = searchContainer && searchContainer.children.length === 0;
+
+      if (needsInit && !import.meta.env.DEV) {
         const onIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
         onIdle(async () => {
           const { PagefindUI } = await import("@pagefind/default-ui");
@@ -70,10 +77,10 @@ import "@pagefind/default-ui/css/ui.css";
       document.body.style.overflow = "";
     }
 
-    document.addEventListener("open-search", openSearch);
+    document.addEventListener("open-search", openSearch, { signal });
 
-    backdrop?.addEventListener("click", closeSearch);
-    closeBtn?.addEventListener("click", closeSearch);
+    backdrop?.addEventListener("click", closeSearch, { signal });
+    closeBtn?.addEventListener("click", closeSearch, { signal });
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "Escape" && !overlay.classList.contains("hidden")) {
@@ -88,7 +95,7 @@ import "@pagefind/default-ui/css/ui.css";
           e.preventDefault();
         }
       }
-    });
+    }, { signal });
   }
 
   setupSearch();

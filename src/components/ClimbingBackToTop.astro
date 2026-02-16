@@ -200,16 +200,21 @@
 </style>
 
 <script is:inline data-astro-rerun>
-  function initClimbingBackToTop() {
-    const btn = document.getElementById('back-to-top');
-    if (!btn) return;
-    
-    let scrollTimer;
-    let hideTimer;
-    let lastPos = window.pageYOffset;
+  (function() {
+    // Abort previous listeners to prevent stacking across page transitions
+    if (window.__climberAbort) window.__climberAbort.abort();
+    window.__climberAbort = new AbortController();
+    var signal = window.__climberAbort.signal;
 
-    window.addEventListener('scroll', () => {
-      const currentPos = window.pageYOffset || document.documentElement.scrollTop;
+    var btn = document.getElementById('back-to-top');
+    if (!btn) return;
+
+    var scrollTimer;
+    var hideTimer;
+    var lastPos = window.pageYOffset;
+
+    window.addEventListener('scroll', function() {
+      var currentPos = window.pageYOffset || document.documentElement.scrollTop;
 
       // Show on scroll if past threshold
       if (currentPos > 300) {
@@ -232,24 +237,19 @@
       // Clear animation states and hide after scrolling stops
       clearTimeout(scrollTimer);
       clearTimeout(hideTimer);
-      scrollTimer = setTimeout(() => {
+      scrollTimer = setTimeout(function() {
         btn.classList.remove('is-climbing', 'is-descending');
       }, 120);
-      hideTimer = setTimeout(() => {
+      hideTimer = setTimeout(function() {
         btn.classList.remove('visible');
       }, 1500);
 
       lastPos = currentPos <= 0 ? 0 : currentPos;
-    }, { passive: true });
+    }, { passive: true, signal: signal });
 
     // Smooth Scroll to Top
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-  
-  initClimbingBackToTop();
-  
-  // Re-initialize on Astro page transitions
-  document.addEventListener('astro:after-swap', initClimbingBackToTop);
+    }, { signal: signal });
+  })();
 </script>

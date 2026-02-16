@@ -131,7 +131,13 @@ const { activeNav } = Astro.props;
 <Search />
 
 <script>
+  let themeAbort: AbortController | undefined;
+
   function setupThemeToggle() {
+    if (themeAbort) themeAbort.abort();
+    themeAbort = new AbortController();
+    const { signal } = themeAbort;
+
     const handleThemeClick = () => {
       const html = document.documentElement;
       const currentTheme = html.getAttribute("data-theme");
@@ -144,8 +150,8 @@ const { activeNav } = Astro.props;
       setTimeout(() => html.classList.remove("theme-transition"), 350);
     };
 
-    document.querySelector("#theme-btn-d")?.addEventListener("click", handleThemeClick);
-    document.querySelector("#theme-btn-m")?.addEventListener("click", handleThemeClick);
+    document.querySelector("#theme-btn-d")?.addEventListener("click", handleThemeClick, { signal });
+    document.querySelector("#theme-btn-m")?.addEventListener("click", handleThemeClick, { signal });
   }
 
   setupThemeToggle();
@@ -153,7 +159,13 @@ const { activeNav } = Astro.props;
 </script>
 
 <script>
+  let scrollAbort: AbortController | undefined;
+
   function setupScrollNav() {
+    if (scrollAbort) scrollAbort.abort();
+    scrollAbort = new AbortController();
+    const { signal } = scrollAbort;
+
     const desktop = document.querySelector("#main-header") as HTMLElement;
     const mobile = document.querySelector("#mobile-header") as HTMLElement;
     let lastY = window.scrollY;
@@ -179,7 +191,7 @@ const { activeNav } = Astro.props;
         requestAnimationFrame(onScroll);
         ticking = true;
       }
-    }, { passive: true });
+    }, { passive: true, signal });
   }
 
   setupScrollNav();
@@ -187,10 +199,16 @@ const { activeNav } = Astro.props;
 </script>
 
 <script>
+  let searchBtnAbort: AbortController | undefined;
+
   function setupSearchButtons() {
+    if (searchBtnAbort) searchBtnAbort.abort();
+    searchBtnAbort = new AbortController();
+    const { signal } = searchBtnAbort;
+
     const openSearch = () => document.dispatchEvent(new CustomEvent("open-search"));
-    document.querySelector("#search-btn-d")?.addEventListener("click", openSearch);
-    document.querySelector("#search-btn-m")?.addEventListener("click", openSearch);
+    document.querySelector("#search-btn-d")?.addEventListener("click", openSearch, { signal });
+    document.querySelector("#search-btn-m")?.addEventListener("click", openSearch, { signal });
   }
 
   setupSearchButtons();
@@ -198,7 +216,13 @@ const { activeNav } = Astro.props;
 </script>
 
 <script>
+  let dropdownAbort: AbortController | undefined;
+
   function setupMobileDropdown() {
+    if (dropdownAbort) dropdownAbort.abort();
+    dropdownAbort = new AbortController();
+    const { signal } = dropdownAbort;
+
     const toggle = document.querySelector("#mobile-menu-toggle");
     const dropdown = document.querySelector("#mobile-dropdown");
     const backdrop = document.querySelector("#mobile-backdrop");
@@ -230,15 +254,15 @@ const { activeNav } = Astro.props;
       e.stopPropagation();
       if (isOpen) closeDropdown();
       else openDropdown();
-    });
+    }, { signal });
 
-    backdrop?.addEventListener("click", closeDropdown);
+    backdrop?.addEventListener("click", closeDropdown, { signal });
 
     // Close on navigation
     dropdown?.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", () => {
         setTimeout(closeDropdown, 100);
-      });
+      }, { signal });
     });
 
     // Close on outside click
@@ -247,7 +271,7 @@ const { activeNav } = Astro.props;
       if (isOpen && !dropdown?.contains(target) && !toggle?.contains(target)) {
         closeDropdown();
       }
-    });
+    }, { signal });
   }
 
   setupMobileDropdown();
