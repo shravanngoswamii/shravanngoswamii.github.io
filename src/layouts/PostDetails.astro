@@ -176,10 +176,10 @@ const nextPost =
   <!-- Smart Back to Top Button -->
   <button
     id="back-to-top"
-    class="fixed bottom-6 right-6 z-50 hidden rounded-md bg-skin-card/80 backdrop-blur-sm p-2 text-skin-base border border-skin-line/20 shadow-md transition-all duration-300 hover:bg-skin-card hover:border-skin-line/40 hover:-translate-y-1 focus-outline"
+    class="fixed bottom-8 right-8 z-50 hidden text-skin-base/40 transition-all duration-300 hover:text-skin-base hover:-translate-y-1 focus-outline"
     aria-label="Back to top"
   >
-    <TbChevronUp className="h-5 w-5" />
+    <TbChevronUp className="h-6 w-6 stroke-[1.5]" />
   </button>
   
   <Footer />
@@ -192,6 +192,112 @@ const nextPost =
   .post-title {
     @apply text-2xl font-semibold sm:text-3xl text-skin-base;
   }
+  
+  /* Ensure code blocks have proper theme-aware styling */
+  :global(pre) {
+    @apply rounded-lg border border-skin-line/20 overflow-x-auto;
+    line-height: 1.5 !important; 
+    font-size: 0.875rem !important; /* Base font size for container */
+    padding: 1rem !important;
+  }
+  
+  :global(pre code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-size: 0.875rem !important; /* 14px */
+    line-height: 1.5 !important; /* 21px */
+    display: block; 
+  }
+  
+  /* Shiki dual theme support */
+  :global(.astro-code),
+  :global(.astro-code span) {
+    color: var(--shiki-light);
+    background-color: transparent !important;
+  }
+  
+  :global(html[data-theme="latte"] .astro-code),
+  :global(html[data-theme="latte"] .astro-code span) {
+    color: var(--shiki-light);
+    background-color: transparent !important;
+  }
+  
+  :global(html[data-theme="dark"] .astro-code),
+  :global(html[data-theme="dark"] .astro-code span),
+  :global(html[data-theme="frappe"] .astro-code),
+  :global(html[data-theme="frappe"] .astro-code span),
+  :global(html[data-theme="macchiato"] .astro-code),
+  :global(html[data-theme="macchiato"] .astro-code span),
+  :global(html[data-theme="mocha"] .astro-code),
+  :global(html[data-theme="mocha"] .astro-code span) {
+    color: var(--shiki-dark);
+    background-color: transparent !important;
+  }
+
+  /* Glassy, Glowy, Premium Code Block Style */
+  :global(pre) {
+    @apply rounded-xl border border-skin-line/40 p-5 overflow-x-auto;
+    background-color: rgba(var(--color-card), 0.6) !important; /* Semi-transparent base */
+    backdrop-filter: blur(12px); /* Blur effect */
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+      0 2px 4px -1px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Subtle inner highlight */
+    transition: all 0.3s ease;
+  }
+
+  :global(pre:hover) {
+    box-shadow: 
+      0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+      0 4px 6px -2px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(var(--color-border), 0.6);
+  }
+
+  /* Copy Button Integration */
+  :global(.copy-code) {
+    @apply absolute right-0 top-0 z-20 p-2 rounded-bl-xl bg-skin-card/50 border-b border-l border-skin-line/20 
+           text-skin-base/50 transition-all opacity-0 backdrop-blur-md;
+  }
+
+  :global(.code-wrapper:hover .copy-code) {
+    @apply opacity-100;
+  }
+
+  :global(.copy-code:hover) {
+    @apply bg-skin-card text-skin-accent border-skin-line/50;
+  }
+  
+  /* Line Numbers Implementation - Minimal & Subtle */
+  :global(.line-numbers) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2rem; 
+    padding-top: 1rem; /* Match pre padding top exactly */
+    padding-bottom: 1rem;
+    text-align: right;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-size: 0.875rem !important; /* 14px - Match code */
+    line-height: 1.5 !important; /* 21px - Match code */
+    color: rgba(var(--color-text-base), 0.25); 
+    background-color: transparent; 
+    user-select: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  :global(pre) {
+    /* padding handled in definition above */
+    padding-left: 2.5rem !important; 
+  }
+  
+  :global(.line-numbers span) {
+    display: block;
+    padding-right: 0.5rem;
+    height: 1.3125rem; /* 14px * 1.5 = 21px (1.3125rem). Explicit height helps alignment */
+  }
+
 </style>
 
 <script is:inline data-astro-rerun>
@@ -261,23 +367,43 @@ const nextPost =
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
   function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
+      // Create wrapper if not exists
+      let wrapper = codeBlock.parentElement;
+      if (!wrapper || !wrapper.classList.contains("code-wrapper")) {
+        wrapper = document.createElement("div");
+        wrapper.className = "code-wrapper relative group";
+        codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+        wrapper.appendChild(codeBlock);
+      }
 
+      // Create Copy Button
       const copyButton = document.createElement("button");
-      copyButton.className =
-        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
-      copyButton.innerHTML = copyButtonLabel;
-      codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
+      copyButton.className = "copy-code";
+      copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
+      copyButton.setAttribute("aria-label", "Copy code");
+      wrapper.appendChild(copyButton);
 
-      // wrap codebock with relative parent element
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-      wrapper.appendChild(codeBlock);
+      // Add Line Numbers
+      const code = codeBlock.querySelector("code");
+      if (code) {
+        // We need to count lines of the TEXT content, but handle potential empty last line from Prism/Shiki
+        const textContent = code.innerText.replace(/\n$/, '');
+        const lineCount = textContent.split('\n').length;
+        
+        if (lineCount > 1) { 
+             const lineNumbers = document.createElement("div");
+             lineNumbers.className = "line-numbers";
+             lineNumbers.ariaHidden = "true";
+             // Generate spans
+             lineNumbers.innerHTML = Array.from({length: lineCount}, (_, i) => `<span>${i + 1}</span>`).join('');
+             wrapper.appendChild(lineNumbers);
+        }
+      }
+
+      codeBlock.setAttribute("tabindex", "0");
 
       copyButton.addEventListener("click", async () => {
         await copyCode(codeBlock, copyButton);
@@ -290,15 +416,16 @@ const nextPost =
 
       await navigator.clipboard.writeText(text ?? "");
 
-      // visual feedback that task is completed
-      button.innerText = "Copied";
-
+      // visual feedback
+      button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-accent"><path d="M20 6 9 17l-5-5"/></svg>`;
+      
       setTimeout(() => {
-        button.innerText = copyButtonLabel;
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
       }, 700);
     }
   }
   attachCopyButtons();
+
 
   /** Smart Back to Top button - shows when scrolling up */
   function backToTop() {

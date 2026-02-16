@@ -86,7 +86,7 @@
     prose-li:!text-skin-base/90 prose-li:!font-sans prose-li:text-sm prose-li:leading-7 prose-li:font-normal
     prose-ul:!text-skin-base/90 prose-ol:!text-skin-base/90
     prose-a:break-all sm:prose-a:break-normal
-    prose-code:font-mono prose-code:text-[10px] prose-code:uppercase prose-code:tracking-wider prose-code:bg-skin-card-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm;
+    prose-code:font-mono prose-code:text-xs prose-code:bg-skin-card-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-code:text-skin-base;
   }
 
   ::-webkit-scrollbar { @apply w-1; }

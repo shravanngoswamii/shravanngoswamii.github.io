@@ -8,6 +8,12 @@ import rehypeKatex from "rehype-katex";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
+import {
+  transformerNotationDiff,
+  transformerMetaHighlight,
+  transformerNotationWordHighlight,
+} from "@shikijs/transformers";
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
@@ -33,7 +39,13 @@ export default defineConfig({
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
+      defaultColor: false,
       wrap: true,
+      transformers: [
+        transformerNotationDiff(),
+        transformerMetaHighlight(),
+        transformerNotationWordHighlight(),
+      ] as any, // eslint-disable-line @typescript-eslint/no-explicit-any
     },
   },
   vite: {
