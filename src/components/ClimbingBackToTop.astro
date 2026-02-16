@@ -1,7 +1,7 @@
 <!-- Climbing Man Back to Top Component -->
 <button
   id="back-to-top"
-  class="climber-btn fixed bottom-10 right-10 z-50 hover:scale-105"
+  class="climber-btn fixed bottom-4 right-4 sm:bottom-10 sm:right-10 z-50 hover:scale-105"
   aria-label="Return to top"
 >
   <svg class="climber-svg" viewBox="0 0 100 135">
@@ -104,8 +104,15 @@
   }
 
   .climber-svg {
-    width: 60px;
-    height: 90px;
+    width: 40px;
+    height: 60px;
+  }
+
+  @media (min-width: 640px) {
+    .climber-svg {
+      width: 60px;
+      height: 90px;
+    }
   }
 
   /* Rope Animation */
@@ -198,12 +205,13 @@
     if (!btn) return;
     
     let scrollTimer;
+    let hideTimer;
     let lastPos = window.pageYOffset;
 
     window.addEventListener('scroll', () => {
       const currentPos = window.pageYOffset || document.documentElement.scrollTop;
 
-      // Visibility Logic
+      // Show on scroll if past threshold
       if (currentPos > 300) {
         btn.classList.add('visible');
       } else {
@@ -212,22 +220,24 @@
 
       // Direction and Animation Logic
       if (currentPos < lastPos && currentPos > 5) {
-        // Scrolling Up: Climbing
         btn.classList.add('is-climbing');
         btn.classList.remove('is-descending');
       } else if (currentPos > lastPos) {
-        // Scrolling Down: Descending
         btn.classList.add('is-descending');
         btn.classList.remove('is-climbing');
       } else {
         btn.classList.remove('is-climbing', 'is-descending');
       }
 
-      // Clear states when scrolling stops
+      // Clear animation states and hide after scrolling stops
       clearTimeout(scrollTimer);
+      clearTimeout(hideTimer);
       scrollTimer = setTimeout(() => {
         btn.classList.remove('is-climbing', 'is-descending');
       }, 120);
+      hideTimer = setTimeout(() => {
+        btn.classList.remove('visible');
+      }, 1500);
 
       lastPos = currentPos <= 0 ? 0 : currentPos;
     }, { passive: true });
