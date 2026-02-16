@@ -5,6 +5,7 @@ import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Layout from "./Layout.astro";
 import { TbBrandGithub, TbExternalLink } from "react-icons/tb";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 export interface Project {
   title: string;
@@ -122,6 +123,7 @@ const { frontmatter } = Astro.props;
         ))}
       </div>
   </main>
+  <ClimbingBackToTop />
   <Footer />
 </Layout>
 

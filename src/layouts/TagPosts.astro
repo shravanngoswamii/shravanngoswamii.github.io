@@ -9,6 +9,7 @@ import { SITE } from "@config";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 import { getPublications } from "@utils/bibtexUtils";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
@@ -49,6 +50,6 @@ const getRelatedPubs = (tags: string[]) => {
   </Main>
 
   <Pagination {page} />
-
+  <ClimbingBackToTop />
   <Footer noMarginTop={page.lastPage > 1} />
 </Layout>

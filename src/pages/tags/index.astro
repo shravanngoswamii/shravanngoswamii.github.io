@@ -7,6 +7,7 @@ import Main from "@layouts/Main.astro";
 import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 const posts = await getCollection("blog");
 
@@ -20,5 +21,6 @@ let tags = getUniqueTags(posts);
       {tags.map(({ tagName }) => <Tag tag={tagName} size="lg" />)}
     </ul>
   </Main>
+  <ClimbingBackToTop />
   <Footer />
 </Layout>

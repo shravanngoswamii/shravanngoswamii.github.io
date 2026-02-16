@@ -10,9 +10,10 @@ import ShareLinks from "@components/ShareLinks.astro";
 import Giscus from "@components/Giscus.astro";
 import { SITE } from "@config";
 import { getPublications, processLatex } from "@utils/bibtexUtils";
-import { TbChevronLeft, TbChevronRight, TbChevronUp, TbBook } from "react-icons/tb";
+import { TbChevronLeft, TbChevronRight, TbBook } from "react-icons/tb";
 import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -175,14 +176,7 @@ const nextPost =
     </div>
   </main>
   
-  <!-- Smart Back to Top Button -->
-  <button
-    id="back-to-top"
-    class="fixed bottom-8 right-8 z-50 hidden text-skin-base/40 transition-all duration-300 hover:text-skin-base hover:-translate-y-1 focus-outline"
-    aria-label="Back to top"
-  >
-    <TbChevronUp className="h-6 w-6 stroke-[1.5]" />
-  </button>
+  <ClimbingBackToTop />
   
   <Footer />
 </Layout>
@@ -435,43 +429,6 @@ const nextPost =
     }
   }
   attachCopyButtons();
-
-
-  /** Smart Back to Top button - shows when scrolling up */
-  function backToTop() {
-    const backToTopBtn = document.querySelector("#back-to-top");
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    function updateBackToTop() {
-      const currentScrollY = window.scrollY;
-      const scrollingUp = currentScrollY < lastScrollY;
-      const scrolledEnough = currentScrollY > 300;
-
-      if (backToTopBtn) {
-        if (scrollingUp && scrolledEnough) {
-          backToTopBtn.classList.remove("hidden");
-        } else {
-          backToTopBtn.classList.add("hidden");
-        }
-      }
-
-      lastScrollY = currentScrollY;
-      ticking = false;
-    }
-
-    window.addEventListener("scroll", () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateBackToTop);
-        ticking = true;
-      }
-    });
-
-    backToTopBtn?.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-  backToTop();
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>

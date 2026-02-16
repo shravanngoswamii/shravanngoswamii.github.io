@@ -9,6 +9,7 @@ import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { TbArrowDown, TbArrowRight } from "react-icons/tb";
 import HeroBackground from "@components/HeroBackground";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -163,6 +164,6 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     </section>
 
   </main>
-
+  <ClimbingBackToTop />
   <Footer />
 </Layout>

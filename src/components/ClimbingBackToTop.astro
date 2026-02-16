@@ -1,0 +1,245 @@
+<!-- Climbing Man Back to Top Component -->
+<button
+  id="back-to-top"
+  class="climber-btn fixed bottom-10 right-10 z-50 hover:scale-105"
+  aria-label="Return to top"
+>
+  <svg class="climber-svg" viewBox="0 0 100 135">
+    <line x1="50" y1="0" x2="50" y2="132" class="rope-bg" />
+    <line x1="50" y1="0" x2="50" y2="132" class="rope-thread" />
+    
+    <g class="man-group">
+      <!-- Idle Frame -->
+      <g class="pose pose-idle">
+        <circle cx="50" cy="55" r="7" class="head"/>
+        <path d="M50 62 L50 85" />
+        <path d="M50 62 L38 50 L50 38" />
+        <path d="M50 62 L62 62 L50 60" />
+        <circle cx="50" cy="38" r="3.5" class="hand" />
+        <circle cx="50" cy="60" r="3.5" class="hand" />
+        <path d="M50 85 L40 95 L48 110" />
+        <path d="M50 85 L62 100 L55 120" />
+      </g>
+
+      <!-- Descending Frame (Rappel) -->
+      <g class="pose pose-descend">
+        <circle cx="50" cy="52" r="7" class="head"/>
+        <path d="M50 59 L50 82" />
+        <path d="M50 60 L38 55 L50 52" />
+        <path d="M50 60 L62 55 L50 52" />
+        <circle cx="50" cy="52" r="3.5" class="hand" />
+        <path d="M50 82 L42 105 L35 110 M50 82 L58 105 L65 110" />
+      </g>
+
+      <!-- Frame 1: Reach Right High -->
+      <g class="pose pose-1">
+        <circle cx="50" cy="55" r="7" class="head"/>
+        <path d="M50 62 L50 90" />
+        <circle cx="50" cy="15" r="4" class="hand" />
+        <path d="M50 62 L65 35 L50 15" />
+        <circle cx="50" cy="68" r="4" class="hand" />
+        <path d="M50 62 L35 75 L50 75" />
+        <path d="M50 90 L38 95 L30 120" />
+        <path d="M50 90 L62 95 L55 105" />
+      </g>
+
+      <!-- Frame 2: Power Pull -->
+      <g class="pose pose-2">
+        <circle cx="50" cy="48" r="7" class="head"/>
+        <path d="M50 55 L50 83" />
+        <circle cx="50" cy="35" r="4" class="hand" />
+        <path d="M50 55 L35 45 L50 35" />
+        <path d="M50 55 L65 45 L50 35" />
+        <path d="M50 83 L40 95 L50 105" />
+        <path d="M50 83 L60 95 L50 105" />
+      </g>
+
+      <!-- Frame 3: Reach Left High -->
+      <g class="pose pose-3">
+        <circle cx="50" cy="55" r="7" class="head"/>
+        <path d="M50 62 L50 90" />
+        <circle cx="50" cy="15" r="4" class="hand" />
+        <path d="M50 62 L35 35 L50 15" />
+        <circle cx="50" cy="68" r="4" class="hand" />
+        <path d="M50 62 L65 75 L50 75" />
+        <path d="M50 90 L62 95 L70 120" />
+        <path d="M50 90 L38 95 L45 105" />
+      </g>
+
+      <!-- Frame 4: Power Pull Secondary -->
+      <g class="pose pose-4">
+        <circle cx="50" cy="48" r="7" class="head"/>
+        <path d="M50 55 L50 83" />
+        <circle cx="50" cy="35" r="4" class="hand" />
+        <path d="M50 55 L35 45 L50 35" />
+        <path d="M50 55 L65 45 L50 35" />
+        <path d="M50 83 L40 95 L50 105" />
+        <path d="M50 83 L60 95 L50 105" />
+      </g>
+    </g>
+  </svg>
+</button>
+
+<style>
+  /* Theme-aware colors */
+  :root {
+    --climber-color: rgba(var(--color-text-base), 0.6);
+    --rope-color: rgba(var(--color-text-base), 0.1);
+  }
+
+  /* Visibility and interaction transitions */
+  .climber-btn {
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s, transform 0.2s;
+    visibility: hidden;
+    opacity: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .climber-btn.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .climber-svg {
+    width: 60px;
+    height: 90px;
+  }
+
+  /* Rope Animation */
+  .rope-bg {
+    stroke: var(--rope-color);
+    stroke-width: 1.5;
+  }
+  
+  .rope-thread {
+    stroke: var(--climber-color);
+    stroke-width: 2.5;
+    stroke-dasharray: 10 10;
+  }
+
+  /* Climbing: Rope moves down */
+  .is-climbing .rope-thread {
+    animation: rope-feed-up 0.4s linear infinite;
+  }
+
+  /* Descending: Rope moves up */
+  .is-descending .rope-thread {
+    animation: rope-feed-down 0.4s linear infinite;
+  }
+
+  @keyframes rope-feed-up {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -20; }
+  }
+
+  @keyframes rope-feed-down {
+    from { stroke-dashoffset: -20; }
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Sprite Frame Logic */
+  .pose { 
+    opacity: 0;
+    stroke: var(--climber-color); 
+    fill: none; 
+    stroke-width: 5; 
+    stroke-linecap: round; 
+    stroke-linejoin: round;
+  }
+  
+  .hand { fill: var(--climber-color); stroke: none; }
+  .head { fill: var(--climber-color); stroke: none; }
+
+  /* Climbing Cycle (4 Frames) */
+  .is-climbing .pose-1 { animation: frame-seq 0.8s steps(1) infinite; animation-delay: 0s; }
+  .is-climbing .pose-2 { animation: frame-seq 0.8s steps(1) infinite; animation-delay: 0.2s; }
+  .is-climbing .pose-3 { animation: frame-seq 0.8s steps(1) infinite; animation-delay: 0.4s; }
+  .is-climbing .pose-4 { animation: frame-seq 0.8s steps(1) infinite; animation-delay: 0.6s; }
+
+  /* Descending Pose (Single Frame Rappel) */
+  .is-descending .pose-descend { opacity: 1; }
+
+  @keyframes frame-seq {
+    0%, 24.9% { opacity: 1; }
+    25%, 100% { opacity: 0; }
+  }
+
+  /* Idle State Styling */
+  .climber-btn:not(.is-climbing):not(.is-descending) .pose-idle { opacity: 1; }
+
+  /* Physics Dynamics */
+  .is-climbing .man-group {
+    animation: climb-physics 0.4s ease-in-out infinite alternate;
+    transform-origin: center top;
+  }
+
+  .is-descending .man-group {
+    animation: descend-physics 0.4s ease-in-out infinite alternate;
+    transform-origin: center top;
+  }
+
+  @keyframes climb-physics {
+    0% { transform: translateY(0) translateX(-2px) rotate(-2deg); }
+    100% { transform: translateY(-10px) translateX(2px) rotate(2deg); }
+  }
+
+  @keyframes descend-physics {
+    0% { transform: translateY(0) scaleY(1); }
+    100% { transform: translateY(5px) scaleY(0.98); }
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  function initClimbingBackToTop() {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    
+    let scrollTimer;
+    let lastPos = window.pageYOffset;
+
+    window.addEventListener('scroll', () => {
+      const currentPos = window.pageYOffset || document.documentElement.scrollTop;
+
+      // Visibility Logic
+      if (currentPos > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+
+      // Direction and Animation Logic
+      if (currentPos < lastPos && currentPos > 5) {
+        // Scrolling Up: Climbing
+        btn.classList.add('is-climbing');
+        btn.classList.remove('is-descending');
+      } else if (currentPos > lastPos) {
+        // Scrolling Down: Descending
+        btn.classList.add('is-descending');
+        btn.classList.remove('is-climbing');
+      } else {
+        btn.classList.remove('is-climbing', 'is-descending');
+      }
+
+      // Clear states when scrolling stops
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        btn.classList.remove('is-climbing', 'is-descending');
+      }, 120);
+
+      lastPos = currentPos <= 0 ? 0 : currentPos;
+    }, { passive: true });
+
+    // Smooth Scroll to Top
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  
+  initClimbingBackToTop();
+  
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:after-swap', initClimbingBackToTop);
+</script>

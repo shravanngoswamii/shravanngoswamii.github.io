@@ -8,6 +8,7 @@ import { getPublications, processLatex, type Publication } from "@utils/bibtexUt
 import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { TbArrowRight } from "react-icons/tb";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 const publications = await getPublications();
 
@@ -165,5 +166,6 @@ const getRelatedPosts = (pub: Publication) => {
       }
     </div>
   </Main>
+  <ClimbingBackToTop />
   <Footer />
 </Layout>
