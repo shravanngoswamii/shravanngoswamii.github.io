@@ -21,6 +21,7 @@
     "@shikijs/transformers": "^3.22.0",
     "astro": "^5.8.0",
     "bibtex-parse-js": "^0.0.23",
+    "framer-motion": "^12.34.0",
     "fuse.js": "^7.0.0",
     "katex": "^0.16.11",
     "lodash.kebabcase": "^4.1.1",

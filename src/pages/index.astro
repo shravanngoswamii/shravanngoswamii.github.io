@@ -10,6 +10,8 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { TbArrowDown, TbArrowRight } from "react-icons/tb";
 import HeroBackground from "@components/HeroBackground";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import ScrollReveal from "@components/ScrollReveal";
+import SpotlightCard from "@components/SpotlightCard";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -81,29 +83,36 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     </section>
 
 
+
     {featuredPosts.length > 0 && (
       <section class="py-24 sm:py-32">
-        <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
-           <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Featured Posts</h2>
-           <span class="font-mono text-[10px] text-skin-base/40">{featuredPosts.length} {featuredPosts.length === 1 ? 'post' : 'posts'}</span>
-        </div>
-        
+        <ScrollReveal client:visible>
+            <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
+               <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Featured Posts</h2>
+               <span class="font-mono text-[10px] text-skin-base/40">{featuredPosts.length} {featuredPosts.length === 1 ? 'post' : 'posts'}</span>
+            </div>
+        </ScrollReveal>
+            
         <div class="flex flex-col">
           {featuredPosts.map(({ data, slug }, index) => (
-            <Card
-              href={`/blog/${slug}/`}
-              frontmatter={data}
-              index={index + 1}
-              secHeading={false}
-            />
+             <ScrollReveal client:visible delay={index * 0.1}>
+                <Card
+                  href={`/blog/${slug}/`}
+                  frontmatter={data}
+                  index={index + 1}
+                  secHeading={false}
+                />
+             </ScrollReveal>
           ))}
         </div>
 
-        <div class="mt-12 flex justify-end">
-           <LinkButton href="/blog" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
-              All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-           </LinkButton>
-        </div>
+        <ScrollReveal client:visible delay={0.3}>
+            <div class="mt-12 flex justify-end">
+               <LinkButton href="/blog" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
+                  All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+               </LinkButton>
+            </div>
+        </ScrollReveal>
       </section>
     )}
 
@@ -111,54 +120,64 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-skin-line/20 pt-16 pb-24">
       
       <div class="lg:col-span-6 corner-brackets relative">
-        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block">Recent Posts</span>
-        
+        <ScrollReveal client:visible delay={0.1}>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block">Recent Posts</span>
+        </ScrollReveal>
+            
         <ul class="space-y-8">
-           {recentPosts.slice(0, 3).map(({ data, slug }) => (
-             <li>
-               <a href={`/blog/${slug}/`} class="group block">
-                 <div class="flex items-center gap-3 mb-2">
-                   <span class="w-1.5 h-1.5 rounded-full bg-skin-line group-hover:bg-skin-accent transition-colors"></span>
-                   <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
-                     {data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
-                   </span>
-                 </div>
-                 <h4 class="font-serif text-2xl text-skin-base transition-all">
-                   {data.title}
-                 </h4>
-               </a>
+           {recentPosts.slice(0, 3).map(({ data, slug }, index) => ( // Added index
+             <li class="block"> {/* Removed client direct rendering of ScrollReveal inside li without block context if any issues arise, but here we just wrap item content */}
+               <ScrollReveal client:visible delay={index * 0.1}>
+                   <a href={`/blog/${slug}/`} class="group block">
+                     <div class="flex items-center gap-3 mb-2">
+                       <span class="w-1.5 h-1.5 rounded-full bg-skin-line group-hover:bg-skin-accent transition-colors"></span>
+                       <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
+                         {data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
+                       </span>
+                     </div>
+                     <h4 class="font-serif text-2xl text-skin-base transition-all">
+                       {data.title}
+                     </h4>
+                   </a>
+               </ScrollReveal>
              </li>
            ))}
         </ul>
 
-        <div class="mt-12">
-           <a href="/blog/" class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
-             All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-           </a>
-        </div>
+        <ScrollReveal client:visible delay={0.3}>
+            <div class="mt-12">
+               <a href="/blog/" class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
+                 All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+               </a>
+            </div>
+        </ScrollReveal>
       </div>
 
-      <div class="lg:col-span-5 lg:col-start-8 flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10">
-         <div>
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">Get in Touch</span>
-            <h3 class="font-serif text-3xl mb-4 text-skin-base">Open to Collaboration</h3>
-            <p class="text-sm font-normal text-skin-base/80 leading-relaxed max-w-sm">
-              Interested in research collaborations, open-source contributions, and high-performance computing projects.
-            </p>
-         </div>
+      <div class="lg:col-span-5 lg:col-start-8">
+         <ScrollReveal client:visible delay={0.3}>
+             <SpotlightCard client:visible className="flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10 h-full">
+                 <div>
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">Get in Touch</span>
+                    <h3 class="font-serif text-3xl mb-4 text-skin-base">Open to Collaboration</h3>
+                    <p class="text-sm font-normal text-skin-base/80 leading-relaxed max-w-sm">
+                      Interested in research collaborations, open-source contributions, and high-performance computing projects.
+                    </p>
+                 </div>
 
-         <div class="flex flex-col gap-4 mt-16">
-            <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
-               <span class="text-xs font-mono uppercase tracking-widest">View CV</span>
-               <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-            </LinkButton>
-            
-            <div class="flex justify-center mt-2">
-              <a href="mailto:contact@shravangoswami.com" class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40 uppercase tracking-widest">
-                contact@shravangoswami.com
-              </a>
-            </div>
-         </div>
+                 <div class="flex flex-col gap-4 mt-16">
+                    <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
+                       <span class="text-xs font-mono uppercase tracking-widest">View CV</span>
+                       <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+                    </LinkButton>
+                    
+                    <div class="flex justify-center mt-2">
+                      <a href="mailto:contact@shravangoswami.com" class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40 uppercase tracking-widest">
+                        contact@shravangoswami.com
+                      </a>
+                    </div>
+                 </div>
+             </SpotlightCard>
+         </ScrollReveal>
       </div>
 
     </section>
