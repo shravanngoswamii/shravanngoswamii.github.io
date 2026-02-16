@@ -1,6 +1,7 @@
 ---
 import LinkButton from "./LinkButton.astro";
 import socialIcons from "@assets/socialIcons";
+import { TbLink } from "react-icons/tb";
 
 const URL = Astro.url;
 
@@ -39,7 +40,7 @@ const shareLinks = [
 ---
 
 <div class={`social-icons`}>
-  <span class="italic">Share this post on:</span>
+  <span class="italic text-center w-full">Share my thoughts</span>
   <div class="text-center">
     {
       shareLinks.map((social) => {
@@ -55,8 +56,43 @@ const shareLinks = [
         </LinkButton>
       )})
     }
+    <button
+      id="copy-link-btn"
+      class="link-button scale-90 p-2 hover:rotate-6 sm:p-1 focus-outline"
+      title="Copy link to clipboard"
+    >
+      <TbLink className="icon-tabler h-6 w-6" />
+      <span class="sr-only">Copy link to clipboard</span>
+    </button>
   </div>
 </div>
+
+<script>
+  function setupCopyLink() {
+    const copyBtn = document.getElementById("copy-link-btn");
+    if (!copyBtn) return;
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const originalHTML = copyBtn.innerHTML;
+        
+        copyBtn.innerHTML = `<span class="text-xs font-medium">Copied!</span>`;
+        copyBtn.classList.add("text-skin-accent");
+        
+        setTimeout(() => {
+          copyBtn.innerHTML = originalHTML;
+          copyBtn.classList.remove("text-skin-accent");
+        }, 2000);
+      } catch (err) {
+        console.error("Failed to copy link:", err);
+      }
+    });
+  }
+
+  setupCopyLink();
+  document.addEventListener("astro:after-swap", setupCopyLink);
+</script>
 
 <style>
   .social-icons {

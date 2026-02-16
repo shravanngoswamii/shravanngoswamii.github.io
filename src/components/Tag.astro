@@ -21,8 +21,7 @@ const { tag, size = "sm" } = Astro.props;
     class={`${size === "sm" ? "text-sm" : "text-lg"} pr-2 group`}
     data-pagefind-filter="tag"
   >
-    <TbHash className={`${size === "sm" ? " scale-75" : "scale-110"}`} />
-    &nbsp;<span>{tag}</span>
+    <TbHash className={`${size === "sm" ? " scale-75" : "scale-110"}`} /><span>{tag}</span>
   </a>
 </li>
 

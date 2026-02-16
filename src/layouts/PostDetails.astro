@@ -131,17 +131,7 @@ const nextPost =
       {tags.map((tag) => <Tag tag={tag} />)}
     </ul>
 
-    <div
-      class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
-    >
-      <button
-        id="back-to-top"
-        class="focus-outline whitespace-nowrap py-1 hover:opacity-75 flex items-center"
-      >
-        <TbChevronUp className="h-6 w-6 scale-90" />
-        <span>Back to Top</span>
-      </button>
-
+    <div class="flex items-center justify-center">
       <ShareLinks />
     </div>
 
@@ -151,7 +141,7 @@ const nextPost =
     <Giscus />
 
     <!-- Previous/Next Post Buttons -->
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
       {
         prevPost && (
           <a
@@ -182,6 +172,16 @@ const nextPost =
       }
     </div>
   </main>
+  
+  <!-- Smart Back to Top Button -->
+  <button
+    id="back-to-top"
+    class="fixed bottom-6 right-6 z-50 hidden rounded-md bg-skin-card/80 backdrop-blur-sm p-2 text-skin-base border border-skin-line/20 shadow-md transition-all duration-300 hover:bg-skin-card hover:border-skin-line/40 hover:-translate-y-1 focus-outline"
+    aria-label="Back to top"
+  >
+    <TbChevronUp className="h-5 w-5" />
+  </button>
+  
   <Footer />
 </Layout>
 
@@ -300,12 +300,38 @@ const nextPost =
   }
   attachCopyButtons();
 
-  /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
+  /** Smart Back to Top button - shows when scrolling up */
   function backToTop() {
-    document.querySelector("#back-to-top")?.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    const backToTopBtn = document.querySelector("#back-to-top");
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    function updateBackToTop() {
+      const currentScrollY = window.scrollY;
+      const scrollingUp = currentScrollY < lastScrollY;
+      const scrolledEnough = currentScrollY > 300;
+
+      if (backToTopBtn) {
+        if (scrollingUp && scrolledEnough) {
+          backToTopBtn.classList.remove("hidden");
+        } else {
+          backToTopBtn.classList.add("hidden");
+        }
+      }
+
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateBackToTop);
+        ticking = true;
+      }
+    });
+
+    backToTopBtn?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
   backToTop();
