@@ -1,6 +1,7 @@
 ---
 export interface Props {
   headings: { depth: number; slug: string; text: string }[];
+  mobile?: boolean;
 }
 
 const { headings, mobile = false } = Astro.props;
@@ -173,7 +174,7 @@ const toc = headings.filter((heading) => heading.depth > 1 && heading.depth < 4)
     observer = new IntersectionObserver(observerCallback, observerOptions);
 
     document.querySelectorAll("h2, h3").forEach((heading) => {
-      observer.observe(heading);
+      observer?.observe(heading);
     });
   }
 

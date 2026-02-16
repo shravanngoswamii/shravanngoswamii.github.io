@@ -10,7 +10,7 @@ const { mapping = 'url' } = Astro.props;
   <div class="giscus"></div>
 </div>
 
-<script define:vars={{ mapping }}>
+<script is:inline define:vars={{ mapping }}>
   function loadGiscus() {
     const container = document.querySelector('.giscus');
     if (!container) return;
