@@ -11,6 +11,8 @@ export interface Publication {
     booktitle?: string;
     publisher?: string;
     url?: string;
+    doi?: string;
+    abstract?: string;
     keywords?: string;
     note?: string;
     [key: string]: string | undefined;
