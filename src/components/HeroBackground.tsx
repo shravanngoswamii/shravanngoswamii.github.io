@@ -162,8 +162,7 @@ const HeroBackground = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 pointer-events-none mix-blend-screen"
-      style={{ opacity: 0.9 }} 
+      className="absolute inset-0 pointer-events-none mix-blend-screen opacity-90"
     />
   );
 };

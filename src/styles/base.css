@@ -58,6 +58,7 @@
     background-image: 
       linear-gradient(to right, rgba(var(--color-text-base), 0.04) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(var(--color-text-base), 0.04) 1px, transparent 1px);
+    -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
     mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
   }
 
