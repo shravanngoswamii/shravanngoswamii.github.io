@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -12,9 +11,10 @@ import HeroBackground from "@components/HeroBackground";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import ScrollReveal from "@components/ScrollReveal";
 import SpotlightCard from "@components/SpotlightCard";
+import { getAllPosts, getPostUrl } from "@utils/collections";
 
-const posts = await getCollection("blog");
-const sortedPosts = getSortedPosts(posts);
+const allPosts = await getAllPosts();
+const sortedPosts = getSortedPosts(allPosts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 ---
@@ -94,11 +94,11 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </ScrollReveal>
             
         <div class="flex flex-col">
-          {featuredPosts.map(({ data, slug }, index) => (
+          {featuredPosts.map((post, index) => (
              <ScrollReveal client:visible delay={index * 0.1}>
                 <Card
-                  href={`/blog/${slug}/`}
-                  frontmatter={data}
+                  href={getPostUrl(post)}
+                  frontmatter={post.data}
                   index={index + 1}
                   secHeading={false}
                 />
@@ -125,18 +125,18 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </ScrollReveal>
             
         <ul class="space-y-8">
-           {recentPosts.slice(0, 3).map(({ data, slug }, index) => ( // Added index
-             <li class="block"> {/* Removed client direct rendering of ScrollReveal inside li without block context if any issues arise, but here we just wrap item content */}
+           {recentPosts.slice(0, 3).map((post, index) => (
+             <li class="block">
                <ScrollReveal client:visible delay={index * 0.1}>
-                   <a href={`/blog/${slug}/`} class="group block">
+                   <a href={getPostUrl(post)} class="group block">
                      <div class="flex items-center gap-3 mb-2">
                        <span class="w-1.5 h-1.5 rounded-full bg-skin-line group-hover:bg-skin-accent transition-colors"></span>
                        <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
-                         {data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
+                         {post.data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
                        </span>
                      </div>
                      <h4 class="font-serif text-2xl text-skin-base transition-all">
-                       {data.title}
+                       {post.data.title}
                      </h4>
                    </a>
                </ScrollReveal>

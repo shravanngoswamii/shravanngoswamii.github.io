@@ -4,20 +4,19 @@ import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
-import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
-import type { Page } from "astro";
-import type { CollectionEntry } from "astro:content";
+import type { AnyPost } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
+import { getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 export interface Props {
-  page: Page<CollectionEntry<"blog">>;
+  posts: AnyPost[];
   tag: string;
   tagName: string;
 }
 
-const { page, tag, tagName } = Astro.props;
+const { posts, tag, tagName } = Astro.props;
 const publications = await getPublications();
 
 const getRelatedPubs = (tags: string[]) => {
@@ -37,19 +36,18 @@ const getRelatedPubs = (tags: string[]) => {
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>
       {
-        page.data.map(({ data, slug }, index) => (
+        posts.map((post, index) => (
           <Card 
-            href={`/blog/${slug}/`} 
-            frontmatter={data}
+            href={getPostUrl(post)} 
+            frontmatter={post.data}
             index={index + 1}
-            relatedPublications={getRelatedPubs(data.tags)}
+            relatedPublications={getRelatedPubs(post.data.tags)}
           />
         ))
       }
     </ul>
   </Main>
 
-  <Pagination {page} />
   <ClimbingBackToTop />
-  <Footer noMarginTop={page.lastPage > 1} />
+  <Footer />
 </Layout>

@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
-import type { CollectionEntry } from "astro:content";
+
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import Giscus from "@components/Giscus.astro";
@@ -15,13 +15,17 @@ import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
+import type { AnyPost, BlogCollection } from "../types";
+import { COLLECTION_META } from "@utils/collections";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  post: AnyPost;
+  posts: AnyPost[];
+  collection?: BlogCollection;
 }
 
-const { post, posts } = Astro.props;
+const { post, posts, collection = "tech" } = Astro.props;
+const urlPrefix = COLLECTION_META[collection].prefix;
 
 const {
   title,
@@ -32,6 +36,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  toc = true,
 } = post.data;
 
 const publications = await getPublications();
@@ -47,7 +52,7 @@ const { Content, headings } = await post.render();
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 
 const ogUrl = new URL(
-  ogImageUrl ?? `/blog/${post.slug}/og.png`, // <-- CHANGED THIS LINE: Now uses og.png
+  ogImageUrl ?? `${urlPrefix}/${post.slug}/og.png`,
   Astro.url.origin,
 ).href;
 // --- END: UPDATED OG IMAGE URL CONSTRUCTION ---
@@ -109,7 +114,7 @@ const nextPost =
           />
 
           <!-- TOC Mobile (Inline) -->
-          <TableOfContents headings={headings} mobile={true} />
+          {toc && <TableOfContents headings={headings} mobile={true} />}
 
           <article id="article" class="prose mx-auto mt-8 max-w-3xl">
             <Content components={{ Tabs, TabItem }} />
@@ -163,7 +168,7 @@ const nextPost =
             {
               prevPost && (
                 <a
-                  href={`/blog/${prevPost.slug}`}
+                  href={`${urlPrefix}/${prevPost.slug}`}
                   class="flex w-full gap-1 hover:opacity-75 items-center"
                 >
                   <TbChevronLeft className="h-6 w-6 flex-none" />
@@ -177,7 +182,7 @@ const nextPost =
             {
               nextPost && (
                 <a
-                  href={`/blog/${nextPost.slug}`}
+                  href={`${urlPrefix}/${nextPost.slug}`}
                   class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
                 >
                   <div>
@@ -194,9 +199,11 @@ const nextPost =
 
       <!-- Right Column (TOC Desktop) -->
       <aside class="hidden lg:block relative mt-40">
-        <div class="sticky top-24 transition-opacity duration-300">
-          <TableOfContents headings={headings} />
-        </div>
+        {toc && (
+          <div class="sticky top-24 transition-opacity duration-300">
+            <TableOfContents headings={headings} />
+          </div>
+        )}
       </aside>
 
     </div>

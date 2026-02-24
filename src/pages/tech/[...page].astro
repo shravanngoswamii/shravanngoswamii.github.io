@@ -1,6 +1,6 @@
 ---
 import Posts from "@layouts/Posts.astro";
-import { getAllPosts } from "@utils/collections";
+import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import type { GetStaticPaths } from "astro";
 
@@ -8,7 +8,9 @@ export const getStaticPaths = (() => {
   return [{ params: { page: undefined } }];
 }) satisfies GetStaticPaths;
 
-const posts = getSortedPosts(await getAllPosts());
+const posts = getSortedPosts(
+  await getCollection("tech", ({ data }) => !data.draft)
+);
 ---
 
-<Posts {posts} isAll={true} />
+<Posts {posts} collection="tech" />

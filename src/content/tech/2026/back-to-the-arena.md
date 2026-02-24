@@ -8,6 +8,7 @@ featured: true
 description: "My journey from inconsistent CP attempts to Open Source success, and why I'm returning to the algorithmic arena in my final semester."
 aliases:
   - /posts/back-to-the-arena-2026
+  - /blog/back-to-the-arena-2026
 ---
 
 ## Introduction

@@ -6,7 +6,7 @@ import type { MouseEvent } from "react";
 
 export interface Props {
   href?: string;
-  frontmatter: CollectionEntry<"blog">["data"];
+  frontmatter: CollectionEntry<"tech">["data"];
   index?: number;
   secHeading?: boolean;
   relatedPublications?: { title: string; url?: string }[];

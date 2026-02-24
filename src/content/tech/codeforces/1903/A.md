@@ -7,6 +7,7 @@ tags: [CPP, Codeforces, CF800, CP31]
 description: "A. Halloumi Boxes, 800 RATED - Codeforces Round 912 (Div. 2)"
 aliases:
   - /posts/1903-A-Halloumi-Boxes
+  - /blog/1903-A-Halloumi-Boxes
 ---
 
 <p class="hidden">Problem A 1903</p>
