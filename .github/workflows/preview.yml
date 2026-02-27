@@ -28,7 +28,7 @@ jobs:
         run: npm ci
 
       - name: Build the website
-        run: npm run build
+        run: npm run build -- --base /pr-previews/${{ github.event.pull_request.number }}/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
@@ -72,6 +72,7 @@ jobs:
             git push
           else
             echo "Preview directory ${PREVIEW_DIR} not found, skipping."
+  
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
