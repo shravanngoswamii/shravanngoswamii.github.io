@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 interface TimelineItem {
   date: string;
   title: string;
