@@ -1,7 +1,11 @@
 ---
 // src/components/Breadcrumbs.astro
+import { withBase } from "@utils/base";
+
+// Strip the base path before splitting so it works under any sub-path (e.g. PR previews)
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 // Remove current url path and remove trailing slash if exists
-const currentUrlPath = Astro.url.pathname.replace(/\/+$/, "");
+const currentUrlPath = Astro.url.pathname.replace(/\/+$/, "").slice(base.length) || "/";
 
 const breadcrumbList = currentUrlPath.split("/").slice(1);
 
@@ -17,7 +21,7 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
 <nav class="breadcrumb" aria-label="breadcrumb">
   <ul>
     <li>
-      <a href="/">Home</a>
+      <a href={withBase("/")}>Home</a>
       <span aria-hidden="true">&raquo;</span>
     </li>
     {
@@ -34,7 +38,7 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
           </li>
         ) : (
           <li>
-            <a href={`/${breadcrumb}/`}>{breadcrumb}</a>
+            <a href={withBase(`/${breadcrumb}/`)}>{breadcrumb}</a>
             <span aria-hidden="true">&raquo;</span>
           </li>
         ),

@@ -6,6 +6,7 @@ import Header from "@components/Header.astro";
 import Layout from "./Layout.astro";
 import { TbBrandGithub, TbExternalLink } from "react-icons/tb";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
 
 export interface Project {
   title: string;
@@ -52,13 +53,13 @@ const { frontmatter } = Astro.props;
               {project.imageSrcLight && project.imageSrcDark ? (
                 <>
                   <img
-                    src={project.imageSrcLight}
+                    src={withBase(project.imageSrcLight!)}
                     alt={project.title}
                     class="theme-image-light w-full h-full object-contain"
                     loading="lazy"
                   />
                   <img
-                    src={project.imageSrcDark}
+                    src={withBase(project.imageSrcDark!)}
                     alt={project.title}
                     class="theme-image-dark w-full h-full object-contain"
                     loading="lazy"
@@ -67,7 +68,7 @@ const { frontmatter } = Astro.props;
                 </>
               ) : (
                 <img
-                  src={project.imageSrc || project.imageSrcLight || project.imageSrcDark}
+                  src={withBase(project.imageSrc || project.imageSrcLight || project.imageSrcDark || "")}
                   alt={project.title}
                   class="w-full h-full object-contain"
                   loading="lazy"

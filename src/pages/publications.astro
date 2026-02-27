@@ -10,6 +10,7 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { TbArrowRight } from "react-icons/tb";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { getPostUrl } from "@utils/collections";
+import { withBase } from "@utils/base";
 
 const publications = await getPublications();
 
@@ -182,7 +183,7 @@ const getRelatedPosts = (pub: Publication) => {
                               {getRelatedPosts(pub).map(post => (
                                 <li class="flex items-start gap-2 text-xs group/post">
                                   <TbArrowRight className="h-3.5 w-3.5 text-skin-base/50 shrink-0 mt-0.5 group-hover/post:text-skin-accent transition-colors" />
-                                  <a href={getPostUrl(post)} class="text-skin-base/70 hover:text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors">
+                                  <a href={withBase(getPostUrl(post))} class="text-skin-base/70 hover:text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors">
                                     {post.data.title}
                                   </a>
                                 </li>

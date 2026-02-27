@@ -18,6 +18,7 @@ import {
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  base: process.env.BASE_PATH || "/",
   integrations: [
     tailwind({
       applyBaseStyles: false,

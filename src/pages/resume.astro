@@ -5,7 +5,8 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
-const resumePDF = "/resume.pdf";
+import { withBase } from "@utils/base";
+const resumePDF = withBase("/resume.pdf");
 ---
 
 <Layout title={`Resume | ${SITE.title}`}>

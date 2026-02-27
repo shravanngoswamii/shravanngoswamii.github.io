@@ -23,6 +23,7 @@ import Spoiler from "@components/mdx/Spoiler";
 import Timeline from "@components/mdx/Timeline";
 import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
 import Progress from "@components/mdx/Progress";
+import { withBase } from "@utils/base";
 
 export interface Props {
   post: AnyPost;
@@ -258,7 +259,7 @@ const nextPost =
             {
               prevPost && (
                 <a
-                  href={`${urlPrefix}/${prevPost.slug}`}
+                  href={withBase(`${urlPrefix}/${prevPost.slug}`)}
                   class="flex w-full gap-1 hover:opacity-75 items-center"
                 >
                   <TbChevronLeft className="h-6 w-6 flex-none" />
@@ -272,7 +273,7 @@ const nextPost =
             {
               nextPost && (
                 <a
-                  href={`${urlPrefix}/${nextPost.slug}`}
+                  href={withBase(`${urlPrefix}/${nextPost.slug}`)}
                   class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
                 >
                   <div>

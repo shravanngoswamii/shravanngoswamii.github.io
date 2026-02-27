@@ -28,7 +28,9 @@ jobs:
         run: npm ci
 
       - name: Build the website
-        run: npm run build -- --base /pr-previews/${{ github.event.pull_request.number }}/
+        env:
+          BASE_PATH: /pr-previews/${{ github.event.pull_request.number }}/
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

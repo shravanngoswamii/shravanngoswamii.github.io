@@ -9,6 +9,7 @@ import type { AnyPost, BlogCollection } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
 
 export interface Props {
   posts: AnyPost[];
@@ -37,7 +38,7 @@ const getRelatedPubs = (tags: string[]) => {
     <div class="mb-8 flex flex-wrap items-center gap-2">
       {Object.entries(COLLECTION_META).map(([key, m]) => (
         <a
-          href={`${m.prefix}/`}
+          href={withBase(`${m.prefix}/`)}
           class:list={[
             "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
             !isAll && key === collection
@@ -49,7 +50,7 @@ const getRelatedPubs = (tags: string[]) => {
         </a>
       ))}
       <a
-        href="/blog/"
+        href={withBase("/blog/")}
         class:list={[
           "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
           isAll
@@ -63,11 +64,13 @@ const getRelatedPubs = (tags: string[]) => {
     <ul>
       {
         posts.map((post, index) => (
-          <Card 
-            href={getPostUrl(post)} 
+          <Card
+            href={withBase(getPostUrl(post))}
             frontmatter={post.data}
             index={index + 1}
-            relatedPublications={getRelatedPubs(post.data.tags)}            collection={post.collection as BlogCollection}          />
+            relatedPublications={getRelatedPubs(post.data.tags)}
+            collection={post.collection as BlogCollection}
+          />
         ))
       }
     </ul>

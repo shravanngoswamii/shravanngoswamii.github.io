@@ -9,6 +9,7 @@ import type { AnyPost, BlogCollection } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
 import { getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
 
 export interface Props {
   posts: AnyPost[];
@@ -37,8 +38,8 @@ const getRelatedPubs = (tags: string[]) => {
     <ul>
       {
         posts.map((post, index) => (
-          <Card 
-            href={getPostUrl(post)} 
+          <Card
+            href={withBase(getPostUrl(post))}
             frontmatter={post.data}
             index={index + 1}
             relatedPublications={getRelatedPubs(post.data.tags)}

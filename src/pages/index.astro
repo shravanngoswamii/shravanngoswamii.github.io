@@ -13,6 +13,7 @@ import SpotlightCard from "@components/SpotlightCard";
 import { getAllPosts, getPostUrl } from "@utils/collections";
 import ShelfCard from "@components/ShelfCard.astro";
 import { getCollection } from "astro:content";
+import { withBase } from "@utils/base";
 
 const allPosts = await getAllPosts();
 const sortedPosts = getSortedPosts(allPosts);
@@ -70,7 +71,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
          </p>
 
          <div class="mt-10 flex flex-col sm:flex-row items-center gap-6">
-            <LinkButton href="/projects" className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
+            <LinkButton href={withBase("/projects")} className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
                View Projects
             </LinkButton>
             <a href="https://github.com/sponsors/shravanngoswamii?o=esb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-xs uppercase tracking-widest rounded-sm">
@@ -100,7 +101,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
         <div class="flex flex-col gap-6">
           {featuredPosts.map((post, index) => (
              <ScrollReveal client:visible delay={index * 0.1}>
-                <a href={getPostUrl(post)} class="group block border border-skin-line/20 hover:border-skin-line/40 rounded-sm transition-all duration-500 overflow-hidden">
+                <a href={withBase(getPostUrl(post))} class="group block border border-skin-line/20 hover:border-skin-line/40 rounded-sm transition-all duration-500 overflow-hidden">
                   <div class="p-8 sm:p-10 flex flex-col sm:flex-row sm:items-start gap-6">
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center gap-3 mb-4">
@@ -131,7 +132,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
 
         <ScrollReveal client:visible delay={0.3}>
             <div class="mt-12 flex justify-end">
-               <LinkButton href="/blog" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
+               <LinkButton href={withBase("/blog")} className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
                   All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                </LinkButton>
             </div>
@@ -151,7 +152,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
            {recentPosts.slice(0, 3).map((post, index) => (
              <li class="block">
                <ScrollReveal client:visible delay={index * 0.1}>
-                   <a href={getPostUrl(post)} class="group block">
+                   <a href={withBase(getPostUrl(post))} class="group block">
                      <div class="flex items-center gap-3 mb-2">
                        <span class="w-1.5 h-1.5 rounded-full" style={`background-color: rgb(var(--color-collection-${post.collection}))`}></span>
                        <span class="font-mono text-[10px] uppercase tracking-widest" style={`color: rgb(var(--color-collection-${post.collection}))`}>
@@ -172,7 +173,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
 
         <ScrollReveal client:visible delay={0.3}>
             <div class="mt-12">
-               <a href="/blog/" class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
+               <a href={withBase("/blog/")} class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
                  All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                </a>
             </div>
@@ -191,7 +192,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
                  </div>
 
                  <div class="flex flex-col gap-4 mt-16">
-                    <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
+                    <LinkButton href={withBase("/resume")} className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
                        <span class="text-xs font-mono uppercase tracking-widest">View CV</span>
                        <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
                     </LinkButton>
@@ -213,7 +214,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
       <ScrollReveal client:visible>
         <div class="flex items-end justify-between mb-10 border-b border-skin-line/15 pb-3">
           <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Shelves</h2>
-          <a href="/shelf/" class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
+          <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
         </div>
       </ScrollReveal>
 
@@ -223,7 +224,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
           <div>
             <div class="flex items-center justify-between mb-5">
               <span class="font-serif text-xl text-skin-base">Books</span>
-              <a href="/shelf/" class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
+              <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
             </div>
             <div class="grid grid-cols-4 gap-2.5">
               {shelfBooks.map(item => (
@@ -235,19 +236,19 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
                   status={item.data.status}
                   rating={item.data.rating}
                   compact
-                  href={`/shelf/${item.id}/`}
+                  href={withBase(`/shelf/${item.id}/`)}
                 />
               ))}
             </div>
           </div>
         </ScrollReveal>
 
-        {/* Visual Media */}
+        {/* Visual Media */
         <ScrollReveal client:visible delay={0.2}>
           <div>
             <div class="flex items-center justify-between mb-5">
               <span class="font-serif text-xl text-skin-base">Visual Media</span>
-              <a href="/shelf/" class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
+              <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
             </div>
             <div class="grid grid-cols-4 gap-2.5">
               {shelfVisual.map(item => (
@@ -259,7 +260,7 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
                   status={item.data.status}
                   rating={item.data.rating}
                   compact
-                  href={`/shelf/${item.id}/`}
+                  href={withBase(`/shelf/${item.id}/`)}
                 />
               ))}
             </div>
