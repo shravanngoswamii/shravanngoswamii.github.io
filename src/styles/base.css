@@ -10,7 +10,10 @@
     --color-accent: 80, 80, 80;
     --color-card: 255, 255, 255;
     --color-card-muted: 240, 240, 238;
-    --color-border: 210, 210, 205; 
+    --color-border: 210, 210, 205;
+    --color-collection-tech: 59, 130, 246;
+    --color-collection-cinema: 217, 119, 6;
+    --color-collection-philosophy: 124, 58, 237;
   }
 
   html[data-theme="dark"] {
@@ -20,6 +23,9 @@
     --color-card: 18, 18, 18;
     --color-card-muted: 24, 24, 24;
     --color-border: 45, 45, 45;
+    --color-collection-tech: 96, 165, 250;
+    --color-collection-cinema: 251, 191, 36;
+    --color-collection-philosophy: 167, 139, 250;
   }
 
   /* Legacy theme support... */

@@ -1,7 +1,14 @@
 ---
-import Posts from "@layouts/Posts.astro";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import ShelfCard from "@components/ShelfCard.astro";
+import { SITE } from "@config";
 import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
+import { COLLECTION_META, getPostUrl } from "@utils/collections";
+import Datetime from "@components/Datetime";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -11,6 +18,121 @@ export const getStaticPaths = (() => {
 const posts = getSortedPosts(
   await getCollection("philosophy", ({ data }) => !data.draft)
 );
+
+const philosophyShelf = (await getCollection("shelf"))
+  .filter(i => i.data.categories.includes("philosophy"))
+  .slice(0, 6);
 ---
 
-<Posts {posts} collection="philosophy" />
+<Layout title={`Philosophy | ${SITE.title}`}>
+  <Header activeNav="blog" />
+
+  {/* ===== PHILOSOPHY HERO ===== */}
+  <div class="relative overflow-hidden" style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)">
+    <div class="absolute top-4 right-8 text-[220px] font-serif leading-none select-none pointer-events-none opacity-[0.025]" style="color: rgb(var(--color-collection-philosophy))">φ</div>
+    <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))">Philosophy</span>
+        <span class="font-mono text-[10px] text-skin-base/30">{posts.length} {posts.length === 1 ? 'essay' : 'essays'}</span>
+      </div>
+      <h1 class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-4 italic">
+        Reflections & Inquiries
+      </h1>
+      <p class="text-base text-skin-base/60 leading-relaxed max-w-xl font-serif italic">
+        {COLLECTION_META.philosophy.description}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        {Object.entries(COLLECTION_META).map(([key, m]) => (
+          <a
+            href={`${m.prefix}/`}
+            class:list={[
+              "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
+              key === "philosophy"
+                ? "border-transparent font-medium"
+                : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+            ]}
+            style={key === "philosophy" ? `background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))` : ""}
+          >
+            {m.label}
+          </a>
+        ))}
+        <a href="/blog/" class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted">
+          All
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* ===== PHILOSOPHY POSTS ===== */}
+  <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
+    <div class="flex flex-col">
+      {posts.map((post, index) => {
+        const d = post.data as any;
+        const postThinkers = d.thinkers as string[] | undefined;
+        return (
+          <a href={getPostUrl(post)} class="group block border-b border-skin-line/15 hover:bg-skin-card-muted/30 transition-all duration-300 py-8 first:pt-0">
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-[10px] text-skin-base/25 w-6">{(index + 1).toString().padStart(2, '0')}</span>
+                {d.tradition && (
+                  <span class="font-serif text-xs italic" style="color: rgba(var(--color-collection-philosophy), 0.6)">{d.tradition}</span>
+                )}
+              </div>
+              <h2 class="font-serif text-2xl sm:text-3xl italic text-skin-base leading-tight group-hover:opacity-80 transition-opacity pl-9">
+                {post.data.title}
+              </h2>
+              <p class="text-sm text-skin-base/60 leading-relaxed pl-9 font-serif max-w-2xl">
+                {post.data.description}
+              </p>
+              <div class="flex flex-wrap items-center gap-3 pl-9 mt-1">
+                {postThinkers && postThinkers.length > 0 && (
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30">with</span>
+                    {postThinkers.map((t) => (
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-serif border border-skin-line/15 text-skin-base/50" style="background: rgba(var(--color-collection-philosophy), 0.05)">{t}</span>
+                    ))}
+                  </div>
+                )}
+                <span class="text-skin-base/30 text-[10px]">·</span>
+                <Datetime pubDatetime={post.data.pubDatetime} modDatetime={post.data.modDatetime} />
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </main>
+
+  {/* ===== PHILOSOPHY SHELF PREVIEW ===== */}
+  <section class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-16">
+    <div class="border-t border-skin-line/15 pt-10">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 block mb-1">Shelf</span>
+          <h2 class="font-serif text-2xl text-skin-base italic">From the Shelf</h2>
+        </div>
+        <a href="/shelf/" class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/30 pb-0.5">
+          View all →
+        </a>
+      </div>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+        {philosophyShelf.map(item => (
+          <ShelfCard
+            type={item.data.type}
+            title={item.data.title}
+            creator={item.data.creator}
+            genre={item.data.genre}
+            status={item.data.status}
+            rating={item.data.rating}
+            year={item.data.year}
+            compact
+            href={`/shelf/${item.id}/`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>

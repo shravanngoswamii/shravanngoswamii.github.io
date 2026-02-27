@@ -67,8 +67,7 @@ const getRelatedPubs = (tags: string[]) => {
             href={getPostUrl(post)} 
             frontmatter={post.data}
             index={index + 1}
-            relatedPublications={getRelatedPubs(post.data.tags)}
-          />
+            relatedPublications={getRelatedPubs(post.data.tags)}            collection={post.collection as BlogCollection}          />
         ))
       }
     </ul>

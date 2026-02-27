@@ -1,7 +1,14 @@
 ---
-import Posts from "@layouts/Posts.astro";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import ShelfCard from "@components/ShelfCard.astro";
+import { SITE } from "@config";
 import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
+import { COLLECTION_META, getPostUrl } from "@utils/collections";
+import Datetime from "@components/Datetime";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -11,6 +18,123 @@ export const getStaticPaths = (() => {
 const posts = getSortedPosts(
   await getCollection("cinema", ({ data }) => !data.draft)
 );
+
+const cinemaShelf = (await getCollection("shelf"))
+  .filter(i => i.data.categories.includes("cinema"))
+  .slice(0, 6);
 ---
 
-<Posts {posts} collection="cinema" />
+<Layout title={`Cinema | ${SITE.title}`}>
+  <Header activeNav="blog" />
+
+  {/* ===== CINEMA HERO ===== */}
+  <div class="relative overflow-hidden" style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)">
+    <div class="absolute inset-0 opacity-[0.02] pointer-events-none" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(var(--color-collection-cinema), 0.5) 60px, rgba(var(--color-collection-cinema), 0.5) 61px); background-size: 61px 100%;"></div>
+    <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))">Cinema</span>
+        <span class="font-mono text-[10px] text-skin-base/30">{posts.length} {posts.length === 1 ? 'review' : 'reviews'}</span>
+      </div>
+      <h1 class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-4">
+        On Film & Storytelling
+      </h1>
+      <p class="text-base text-skin-base/60 leading-relaxed max-w-xl font-sans">
+        {COLLECTION_META.cinema.description}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        {Object.entries(COLLECTION_META).map(([key, m]) => (
+          <a
+            href={`${m.prefix}/`}
+            class:list={[
+              "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
+              key === "cinema"
+                ? "border-transparent font-medium"
+                : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+            ]}
+            style={key === "cinema" ? `background: rgba(var(--color-collection-cinema), 0.15); color: rgb(var(--color-collection-cinema))` : ""}
+          >
+            {m.label}
+          </a>
+        ))}
+        <a href="/blog/" class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted">
+          All
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* ===== CINEMA POSTS GRID ===== */}
+  <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
+    <div class="grid grid-cols-1 gap-6">
+      {posts.map((post) => {
+        const d = post.data as any;
+        return (
+          <a href={getPostUrl(post)} class="group block border border-skin-line/15 hover:border-skin-line/30 rounded-sm transition-all duration-300 overflow-hidden" style="border-left: 3px solid rgba(var(--color-collection-cinema), 0.4)">
+            <div class="p-6 sm:p-8 flex flex-col sm:flex-row gap-6">
+              {/* Rating badge */}
+              {d.rating !== undefined && (
+                <div class="flex sm:flex-col items-center sm:items-center gap-2 sm:w-20 shrink-0">
+                  <span class="text-3xl sm:text-4xl font-serif font-medium" style="color: rgb(var(--color-collection-cinema))">{d.rating}</span>
+                  <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30">/10</span>
+                </div>
+              )}
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mb-3">
+                  {d.director && (
+                    <span class="text-xs font-serif italic text-skin-base/50">{d.director}</span>
+                  )}
+                  {d.year && (
+                    <span class="font-mono text-[10px] text-skin-base/30">{d.year}</span>
+                  )}
+                </div>
+                <h2 class="font-serif text-2xl sm:text-3xl text-skin-base mb-3 leading-tight group-hover:opacity-80 transition-opacity">
+                  {post.data.title}
+                </h2>
+                <p class="text-sm text-skin-base/60 leading-relaxed mb-4 line-clamp-2">
+                  {post.data.description}
+                </p>
+                <div class="flex items-center gap-3 text-skin-base/40">
+                  <Datetime pubDatetime={post.data.pubDatetime} modDatetime={post.data.modDatetime} />
+                  <span class="font-mono text-[10px] uppercase tracking-widest group-hover:text-skin-base/70 transition-colors">Read →</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </main>
+
+  {/* ===== CINEMA SHELF PREVIEW ===== */}
+  <section class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-16">
+    <div class="border-t border-skin-line/15 pt-10">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 block mb-1">Shelf</span>
+          <h2 class="font-serif text-2xl text-skin-base">From the Shelf</h2>
+        </div>
+        <a href="/shelf/" class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/30 pb-0.5">
+          View all →
+        </a>
+      </div>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+        {cinemaShelf.map(item => (
+          <ShelfCard
+            type={item.data.type}
+            title={item.data.title}
+            creator={item.data.creator}
+            genre={item.data.genre}
+            status={item.data.status}
+            rating={item.data.rating}
+            year={item.data.year}
+            compact
+            href={`/shelf/${item.id}/`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>

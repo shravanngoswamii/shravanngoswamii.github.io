@@ -48,4 +48,20 @@ const philosophy = defineCollection({
     }),
 });
 
-export const collections = { tech, cinema, philosophy };
+const shelf = defineCollection({
+  type: "content",
+  schema: () =>
+    z.object({
+      title: z.string(),
+      creator: z.string(),
+      genre: z.string(),
+      type: z.enum(["book", "movie", "series", "anime", "game", "course", "video", "documentary", "sitcom", "miniseries"]),
+      categories: z.array(z.enum(["tech", "cinema", "philosophy"])).min(1),
+      status: z.enum(["done", "in-progress", "wishlist"]),
+      rating: z.number().min(0).max(10).optional(),
+      year: z.number().optional(),
+      description: z.string().optional(),
+    }),
+});
+
+export const collections = { tech, cinema, philosophy, shelf };

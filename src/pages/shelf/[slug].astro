@@ -1,0 +1,159 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { getCoverGradient, SHELF_STATUS, SHELF_TYPE } from "@utils/shelf";
+import { SITE } from "@config";
+import Callout from "@components/mdx/Callout";
+import QuoteBlock from "@components/mdx/QuoteBlock";
+import Spoiler from "@components/mdx/Spoiler";
+import Timeline from "@components/mdx/Timeline";
+import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
+import Progress from "@components/mdx/Progress";
+
+export interface Props {
+  entry: CollectionEntry<"shelf">;
+}
+
+export async function getStaticPaths() {
+  const items = await getCollection("shelf");
+  return items.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+const gradient = getCoverGradient(data.title);
+const statusInfo = SHELF_STATUS[data.status];
+const typeInfo = SHELF_TYPE[data.type];
+const hasContent = entry.body && entry.body.trim().length > 0;
+
+const isBook = data.type === "book";
+const isFilm = ["movie", "documentary", "miniseries"].includes(data.type);
+const isSeries = ["series", "sitcom"].includes(data.type);
+const isAnime = data.type === "anime";
+const isGame = data.type === "game";
+---
+
+<Layout title={`${data.title} | ${SITE.title}`}>
+  <Header />
+
+  <div class="relative overflow-hidden" style="background: linear-gradient(135deg, rgba(var(--color-text-base), 0.02) 0%, transparent 60%)">
+    <div class="mx-auto w-full max-w-3xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
+      <a
+        href="/shelf/"
+        class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors mb-10 group"
+      >
+        <span class="group-hover:-translate-x-0.5 transition-transform">←</span> Back to Shelf
+      </a>
+
+      <div class="flex flex-col sm:flex-row gap-8">
+        <div class="w-36 sm:w-44 shrink-0">
+          <div
+            class="relative w-full aspect-[2/3] rounded overflow-hidden shadow-lg"
+            style={`background: ${gradient}`}
+          >
+            <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"></div>
+            {isBook && (
+              <>
+                <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25"></div>
+                <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10"></div>
+              </>
+            )}
+            {isFilm && (
+              <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"></div>
+            )}
+            {isSeries && (
+              <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"></div>
+            )}
+            {isAnime && (
+              <div class="absolute inset-0 pointer-events-none opacity-[0.05]" style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"></div>
+            )}
+            {isGame && (
+              <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;6&quot; height=&quot;6&quot; viewBox=&quot;0 0 6 6&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Crect width=&quot;3&quot; height=&quot;3&quot; fill=&quot;%23ffffff&quot;/%3E%3C/svg%3E'); background-size: 6px 6px;"></div>
+            )}
+            <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;4&quot; height=&quot;4&quot; viewBox=&quot;0 0 4 4&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M1 3h1v1H1V3zm2-2h1v1H3V1z&quot; fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;/%3E%3C/svg%3E');"></div>
+            <div class="absolute top-2.5 left-2.5 z-10">
+              <span class="text-xs select-none">{typeInfo.icon}</span>
+            </div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center z-10">
+              <h2 class="text-white font-serif text-sm sm:text-base leading-snug drop-shadow-sm">{data.title}</h2>
+              <p class="font-mono text-[7px] uppercase tracking-widest text-white/25 mt-1">{data.genre}</p>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8">
+              <div class="text-center pb-3 px-3">
+                <p class="font-serif text-white/55 text-[11px] italic">{data.creator}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider rounded-sm bg-skin-card-muted text-skin-base/60">
+              {typeInfo.label}
+            </span>
+            {data.categories.map(cat => (
+              <span
+                class="px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider rounded-sm"
+                style={`background: rgba(var(--color-collection-${cat}), 0.1); color: rgb(var(--color-collection-${cat}))`}
+              >
+                {cat}
+              </span>
+            ))}
+            {data.year && (
+              <span class="font-mono text-[11px] text-skin-base/40">{data.year}</span>
+            )}
+          </div>
+
+          <h1 class="font-serif text-3xl sm:text-4xl text-skin-base leading-tight mb-2">
+            {data.title}
+          </h1>
+          <p class="font-serif text-sm italic text-skin-base/50 mb-5">
+            {data.creator}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 mb-5">
+            {data.rating !== undefined && (
+              <div class="flex items-center gap-1.5">
+                <span class="font-mono text-2xl font-medium text-skin-accent">{data.rating}</span>
+                <span class="font-mono text-[9px] text-skin-base/30">/10</span>
+              </div>
+            )}
+            <span
+              class="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider rounded-sm"
+              style={`background: ${statusInfo.color}20; color: ${statusInfo.color}`}
+            >
+              {statusInfo.label}
+            </span>
+          </div>
+
+          {data.description && (
+            <p class="text-sm text-skin-base/60 leading-relaxed">
+              {data.description}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {hasContent && (
+    <main id="main-content" class="mx-auto w-full max-w-3xl px-4 sm:px-6 pb-20 pt-10">
+      <div class="border-t border-skin-line/15 pt-8">
+        <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 mb-6 block">Notes & Thoughts</span>
+        <article class="prose max-w-none">
+          <Content components={{ Callout, QuoteBlock, Spoiler, Timeline, Comparison, ComparisonSide, Progress }} />
+        </article>
+      </div>
+    </main>
+  )}
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>

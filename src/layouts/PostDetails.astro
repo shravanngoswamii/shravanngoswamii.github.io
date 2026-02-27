@@ -17,6 +17,12 @@ import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import type { AnyPost, BlogCollection } from "../types";
 import { COLLECTION_META } from "@utils/collections";
+import Callout from "@components/mdx/Callout";
+import QuoteBlock from "@components/mdx/QuoteBlock";
+import Spoiler from "@components/mdx/Spoiler";
+import Timeline from "@components/mdx/Timeline";
+import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
+import Progress from "@components/mdx/Progress";
 
 export interface Props {
   post: AnyPost;
@@ -38,6 +44,12 @@ const {
   tags,
   toc = true,
 } = post.data;
+
+const director = 'director' in post.data ? (post.data as any).director : undefined;
+const filmYear = 'year' in post.data ? (post.data as any).year : undefined;
+const rating = 'rating' in post.data ? (post.data as any).rating : undefined;
+const thinkers = 'thinkers' in post.data ? (post.data as any).thinkers as string[] | undefined : undefined;
+const tradition = 'tradition' in post.data ? (post.data as any).tradition as string | undefined : undefined;
 
 const publications = await getPublications();
 const relatedPublications = publications.filter(pub => 
@@ -85,7 +97,102 @@ const nextPost =
 <Layout {...layoutProps}>
   <Header />
 
-  <div class="mx-auto w-full max-w-screen-xl px-4 pt-32 sm:pt-28">
+  {/* ============ COLLECTION-THEMED HERO HEADER ============ */}
+  {collection === "cinema" && (
+    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)">
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(--color-collection-cinema), 0.5) 40px, rgba(var(--color-collection-cinema), 0.5) 41px); background-size: 41px 100%;"></div>
+      <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+        <div class="max-w-3xl mx-auto">
+          <div class="mb-4 flex justify-start">
+            <button class="focus-outline flex hover:opacity-75 items-center text-skin-base/60" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()">
+              <TbChevronLeft className="inline-block h-5 w-5" /><span class="text-sm">Back</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-3 mb-5">
+            <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))">Cinema</span>
+            {filmYear && <span class="font-mono text-sm text-skin-base/50">{filmYear}</span>}
+          </div>
+          <h1 transition:name={slugifyStr(title)} class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4">{title}</h1>
+          <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl mb-6 font-sans">{description}</p>
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
+            {director && (
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Directed by</span>
+                <span class="text-base font-serif text-skin-base">{director}</span>
+              </div>
+            )}
+            {rating !== undefined && (
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Rating</span>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-2xl font-serif font-medium" style="color: rgb(var(--color-collection-cinema))">{rating}</span>
+                  <span class="text-sm text-skin-base/30 font-mono">/10</span>
+                </div>
+              </div>
+            )}
+            <div class="flex flex-col">
+              <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Published</span>
+              <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {collection === "philosophy" && (
+    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)">
+
+      <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+        <div class="max-w-3xl mx-auto">
+          <div class="mb-4 flex justify-start">
+            <button class="focus-outline flex hover:opacity-75 items-center text-skin-base/60" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()">
+              <TbChevronLeft className="inline-block h-5 w-5" /><span class="text-sm">Back</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-3 mb-5">
+            <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))">Philosophy</span>
+            {tradition && <span class="font-serif text-sm italic text-skin-base/50">{tradition}</span>}
+          </div>
+          <h1 transition:name={slugifyStr(title)} class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4">{title}</h1>
+          <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl font-serif italic mb-6">{description}</p>
+          {thinkers && thinkers.length > 0 && (
+            <div class="flex flex-wrap items-center gap-2 py-4 border-t border-skin-line/15">
+              <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35">In dialogue with</span>
+              {thinkers.map((t) => (
+                <span class="px-3 py-1 rounded-full text-xs font-serif border border-skin-line/20 text-skin-base/70" style="background: rgba(var(--color-collection-philosophy), 0.06)">{t}</span>
+              ))}
+            </div>
+          )}
+          <div class="flex items-center gap-4 mt-2">
+            <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {collection === "tech" && (
+    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.04) 0%, transparent 50%)">
+      <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+        <div class="max-w-3xl mx-auto">
+          <div class="mb-4 flex justify-start">
+            <button class="focus-outline flex hover:opacity-75 items-center text-skin-base/60" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()">
+              <TbChevronLeft className="inline-block h-5 w-5" /><span class="text-sm">Back</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-3 mb-5">
+            <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))">Tech</span>
+          </div>
+          <h1 transition:name={slugifyStr(title)} class="font-serif text-3xl sm:text-4xl leading-tight text-skin-base mb-4">{title}</h1>
+          <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="my-2" />
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* ============ MAIN CONTENT GRID ============ */}
+  <div class="mx-auto w-full max-w-screen-xl px-4">
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8">
       
       <!-- Left Column (Empty for centering) -->
@@ -93,31 +200,14 @@ const nextPost =
 
       <!-- Center Column (Content) -->
       <div class="flex flex-col">
-        <!-- Back Button -->
-        <div class="mb-4 mt-8 flex justify-start">
-          <button
-            class="focus-outline flex hover:opacity-75 items-center"
-            onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
-          >
-            <TbChevronLeft className="inline-block h-6 w-6 scale-90" />
-            <span>Go back</span>
-          </button>
-        </div>
 
         <main id="main-content">
-          <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
-          <Datetime
-            pubDatetime={pubDatetime}
-            modDatetime={modDatetime}
-            size="lg"
-            className="my-2"
-          />
 
           <!-- TOC Mobile (Inline) -->
           {toc && <TableOfContents headings={headings} mobile={true} />}
 
           <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-            <Content components={{ Tabs, TabItem }} />
+            <Content components={{ Tabs, TabItem, Callout, QuoteBlock, Spoiler, Timeline, Comparison, ComparisonSide, Progress }} />
           </article>
 
           {relatedPublications.length > 0 && (

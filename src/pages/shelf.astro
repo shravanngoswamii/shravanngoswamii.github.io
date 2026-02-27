@@ -1,0 +1,152 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import ShelfCard from "@components/ShelfCard.astro";
+import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import { SHELF_STATUS, SHELF_TYPE, type ShelfStatus, type ShelfType } from "@utils/shelf";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+
+const allItems = await getCollection("shelf");
+const statusOrder: ShelfStatus[] = ["in-progress", "done", "wishlist"];
+const types = [...new Set(allItems.map(i => i.data.type))].sort() as ShelfType[];
+
+const statusCounts = Object.fromEntries(
+  statusOrder.map(s => [s, allItems.filter(i => i.data.status === s).length])
+);
+const typeCounts = Object.fromEntries(
+  types.map(t => [t, allItems.filter(i => i.data.type === t).length])
+);
+---
+
+<Layout title={`Shelf | ${SITE.title}`}>
+  <Header />
+
+  <div class="mx-auto w-full max-w-5xl px-4 sm:px-6 pt-36 sm:pt-32 pb-6">
+    <div class="mb-8">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-3">Collection</p>
+      <h1 class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight">Shelf</h1>
+      <p class="text-sm text-skin-base/50 mt-3 max-w-lg leading-relaxed">
+        Everything I've consumed, am consuming, or plan to — books, films, series, games, courses, and more.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3 border-b border-skin-line/15 pb-4">
+      <div class="flex flex-wrap gap-2" id="shelf-status-tabs">
+        <button data-filter="all" class="shelf-tab active px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all">
+          All <span class="text-skin-base/30 ml-1">{allItems.length}</span>
+        </button>
+        {statusOrder.map(s => (
+          <button data-filter={`status:${s}`} class="shelf-tab px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all">
+            {SHELF_STATUS[s].label} <span class="text-skin-base/30 ml-1">{statusCounts[s] || 0}</span>
+          </button>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-1.5" id="shelf-type-tabs">
+        {types.map(t => (
+          <button data-filter={`type:${t}`} class="shelf-type-tab px-2 py-1 text-[10px] font-mono uppercase tracking-widest rounded-sm transition-all">
+            {SHELF_TYPE[t].icon} {SHELF_TYPE[t].label} <span class="text-skin-base/25 ml-0.5">{typeCounts[t]}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="mx-auto w-full max-w-5xl px-4 sm:px-6 pb-20 pt-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-8" id="shelf-grid">
+      {allItems.map(item => (
+        <ShelfCard
+          type={item.data.type}
+          title={item.data.title}
+          creator={item.data.creator}
+          genre={item.data.genre}
+          status={item.data.status}
+          rating={item.data.rating}
+          year={item.data.year}
+          description={item.data.description}
+          href={`/shelf/${item.id}/`}
+        />
+      ))}
+    </div>
+  </main>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>
+
+<style>
+  .shelf-tab {
+    color: rgba(var(--color-text-base), 0.5);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .shelf-tab:hover {
+    color: rgba(var(--color-text-base), 0.8);
+    background: rgba(var(--color-text-base), 0.04);
+  }
+  .shelf-tab.active {
+    color: rgb(var(--color-text-base));
+    background: rgba(var(--color-text-base), 0.08);
+    font-weight: 500;
+  }
+  .shelf-type-tab {
+    color: rgba(var(--color-text-base), 0.4);
+    background: transparent;
+    border: 1px solid rgba(var(--color-line), 0.15);
+    cursor: pointer;
+  }
+  .shelf-type-tab:hover {
+    color: rgba(var(--color-text-base), 0.7);
+    background: rgba(var(--color-text-base), 0.03);
+  }
+  .shelf-type-tab.active {
+    color: rgb(var(--color-text-base));
+    background: rgba(var(--color-text-base), 0.06);
+    border-color: rgba(var(--color-text-base), 0.2);
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const statusTabs = document.querySelectorAll<HTMLButtonElement>(".shelf-tab");
+    const typeTabs = document.querySelectorAll<HTMLButtonElement>(".shelf-type-tab");
+    const items = document.querySelectorAll<HTMLElement>(".shelf-card");
+
+    let activeStatus = "all";
+    let activeType = "all";
+
+    function applyFilters() {
+      items.forEach(item => {
+        const matchStatus = activeStatus === "all" || `status:${item.dataset.status}` === activeStatus;
+        const matchType = activeType === "all" || `type:${item.dataset.type}` === activeType;
+        item.style.display = matchStatus && matchType ? "" : "none";
+      });
+    }
+
+    statusTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        statusTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        activeStatus = tab.dataset.filter!;
+        applyFilters();
+      });
+    });
+
+    typeTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        if (tab.classList.contains("active")) {
+          tab.classList.remove("active");
+          activeType = "all";
+        } else {
+          typeTabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          activeType = tab.dataset.filter!;
+        }
+        applyFilters();
+      });
+    });
+  });
+</script>

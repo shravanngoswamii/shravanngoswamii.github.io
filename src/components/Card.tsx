@@ -10,9 +10,16 @@ export interface Props {
   index?: number;
   secHeading?: boolean;
   relatedPublications?: { title: string; url?: string }[];
+  collection?: "tech" | "cinema" | "philosophy";
 }
 
-export default function Card({ href, frontmatter, index = 1 }: Props) {
+const COLLECTION_LABELS: Record<string, string> = {
+  tech: "Tech",
+  cinema: "Cinema",
+  philosophy: "Philosophy",
+};
+
+export default function Card({ href, frontmatter, index = 1, collection }: Props) {
   const { title, pubDatetime, modDatetime, description, tags } = frontmatter;
 
   // Format index to look like "01", "02" for a cleaner, bolder look
@@ -48,6 +55,21 @@ export default function Card({ href, frontmatter, index = 1 }: Props) {
         {/* COL 3: Editorial Meta Data */}
         <div className="flex flex-row md:flex-col items-center md:items-end md:w-52 md:shrink-0 justify-between gap-2 mt-4 md:mt-0 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
           
+          <div className="flex items-center gap-3">
+            {collection && (
+              <span
+                className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest"
+                style={{ color: `rgb(var(--color-collection-${collection}))` }}
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ backgroundColor: `rgb(var(--color-collection-${collection}))` }}
+                />
+                {COLLECTION_LABELS[collection]}
+              </span>
+            )}
+          </div>
+
           <div className="text-xs font-mono text-skin-base/40 uppercase tracking-widest whitespace-nowrap">
             <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
           </div>
