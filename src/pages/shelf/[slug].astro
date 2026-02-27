@@ -6,6 +6,7 @@ import Footer from "@components/Footer.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { getCoverGradient, SHELF_STATUS, SHELF_TYPE } from "@utils/shelf";
 import { SITE } from "@config";
+import { withBase } from "@utils/base";
 import Callout from "@components/mdx/Callout";
 import QuoteBlock from "@components/mdx/QuoteBlock";
 import Spoiler from "@components/mdx/Spoiler";
@@ -46,7 +47,7 @@ const isGame = data.type === "game";
   <div class="relative overflow-hidden" style="background: linear-gradient(135deg, rgba(var(--color-text-base), 0.02) 0%, transparent 60%)">
     <div class="mx-auto w-full max-w-3xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
       <a
-        href="/shelf/"
+        href={withBase("/shelf/")}
         class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors mb-10 group"
       >
         <span class="group-hover:-translate-x-0.5 transition-transform">←</span> Back to Shelf

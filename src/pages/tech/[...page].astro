@@ -9,6 +9,7 @@ import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -55,7 +56,7 @@ const techShelf = (await getCollection("shelf"))
             {m.label}
           </a>
         ))}
-        <a href="/blog/" class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted">
+        <a href={withBase("/blog/")} class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted">
           All
         </a>
       </div>
@@ -65,7 +66,7 @@ const techShelf = (await getCollection("shelf"))
   <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
     <ul>
       {posts.map(post => (
-        <Card href={getPostUrl(post)} frontmatter={post.data} />
+        <Card href={withBase(getPostUrl(post))} frontmatter={post.data} />
       ))}
     </ul>
   </main>
@@ -78,7 +79,7 @@ const techShelf = (await getCollection("shelf"))
             <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 block mb-1">Shelf</span>
             <h2 class="font-mono text-xl text-skin-base">From the Shelf</h2>
           </div>
-          <a href="/shelf/" class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/30 pb-0.5">
+          <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/30 pb-0.5">
             View all →
           </a>
         </div>
@@ -93,7 +94,7 @@ const techShelf = (await getCollection("shelf"))
               rating={item.data.rating}
               year={item.data.year}
               compact
-              href={`/shelf/${item.id}/`}
+              href={withBase(`/shelf/${item.id}/`)}
             />
           ))}
         </div>
