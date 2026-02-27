@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import ShelfCard from "@components/ShelfCard.astro";
 import { SITE } from "@config";
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import Datetime from "@components/Datetime";
@@ -18,7 +18,7 @@ export const getStaticPaths = (() => {
 
 const posts = getSortedPosts(
   await getCollection("philosophy", ({ data }) => !data.draft)
-);
+) as unknown as CollectionEntry<"philosophy">[];
 
 const philosophyShelf = (await getCollection("shelf"))
   .filter(i => i.data.categories.includes("philosophy"))
@@ -68,15 +68,15 @@ const philosophyShelf = (await getCollection("shelf"))
   <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
     <div class="flex flex-col">
       {posts.map((post, index) => {
-        const d = post.data as any;
-        const postThinkers = d.thinkers as string[] | undefined;
+        const postThinkers = post.data.thinkers;
+        const tradition = post.data.tradition;
         return (
           <a href={withBase(getPostUrl(post))} class="group block border-b border-skin-line/15 hover:bg-skin-card-muted/30 transition-all duration-300 py-8 first:pt-0">
             <div class="flex flex-col gap-3">
               <div class="flex items-center gap-3">
                 <span class="font-mono text-[10px] text-skin-base/25 w-6">{(index + 1).toString().padStart(2, '0')}</span>
-                {d.tradition && (
-                  <span class="font-serif text-xs italic" style="color: rgba(var(--color-collection-philosophy), 0.6)">{d.tradition}</span>
+                {tradition && (
+                  <span class="font-serif text-xs italic" style="color: rgba(var(--color-collection-philosophy), 0.6)">{tradition}</span>
                 )}
               </div>
               <h2 class="font-serif text-2xl sm:text-3xl italic text-skin-base leading-tight group-hover:opacity-80 transition-opacity pl-9">
@@ -89,7 +89,7 @@ const philosophyShelf = (await getCollection("shelf"))
                 {postThinkers && postThinkers.length > 0 && (
                   <div class="flex items-center gap-1.5">
                     <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30">with</span>
-                    {postThinkers.map((t) => (
+                    {postThinkers.map((t: string) => (
                       <span class="px-2 py-0.5 rounded-full text-[10px] font-serif border border-skin-line/15 text-skin-base/50" style="background: rgba(var(--color-collection-philosophy), 0.05)">{t}</span>
                     ))}
                   </div>

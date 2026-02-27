@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import ShelfCard from "@components/ShelfCard.astro";
 import { SITE } from "@config";
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import Datetime from "@components/Datetime";
@@ -18,7 +18,7 @@ export const getStaticPaths = (() => {
 
 const posts = getSortedPosts(
   await getCollection("cinema", ({ data }) => !data.draft)
-);
+) as unknown as CollectionEntry<"cinema">[];
 
 const cinemaShelf = (await getCollection("shelf"))
   .filter(i => i.data.categories.includes("cinema"))
@@ -68,24 +68,24 @@ const cinemaShelf = (await getCollection("shelf"))
   <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
     <div class="grid grid-cols-1 gap-6">
       {posts.map((post) => {
-        const d = post.data as any;
+        const { rating, director, year } = post.data;
         return (
           <a href={withBase(getPostUrl(post))} class="group block border border-skin-line/15 hover:border-skin-line/30 rounded-sm transition-all duration-300 overflow-hidden" style="border-left: 3px solid rgba(var(--color-collection-cinema), 0.4)">
             <div class="p-6 sm:p-8 flex flex-col sm:flex-row gap-6">
               {/* Rating badge */}
-              {d.rating !== undefined && (
+              {rating !== undefined && (
                 <div class="flex sm:flex-col items-center sm:items-center gap-2 sm:w-20 shrink-0">
-                  <span class="text-3xl sm:text-4xl font-serif font-medium" style="color: rgb(var(--color-collection-cinema))">{d.rating}</span>
+                  <span class="text-3xl sm:text-4xl font-serif font-medium" style="color: rgb(var(--color-collection-cinema))">{rating}</span>
                   <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30">/10</span>
                 </div>
               )}
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mb-3">
-                  {d.director && (
-                    <span class="text-xs font-serif italic text-skin-base/50">{d.director}</span>
+                  {director && (
+                    <span class="text-xs font-serif italic text-skin-base/50">{director}</span>
                   )}
-                  {d.year && (
-                    <span class="font-mono text-[10px] text-skin-base/30">{d.year}</span>
+                  {year && (
+                    <span class="font-mono text-[10px] text-skin-base/30">{year}</span>
                   )}
                 </div>
                 <h2 class="font-serif text-2xl sm:text-3xl text-skin-base mb-3 leading-tight group-hover:opacity-80 transition-opacity">
