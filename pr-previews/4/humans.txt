@@ -1,0 +1,22 @@
+  _________.__                                     
+ /   _____/|  |______________ ___  ______    ____  
+ \_____  \ |  |  \_  __ \__  \\  \/ |__  \  /    \ 
+ /        \|   Y  \  | \// __ \\   / / __ \|   |  \
+/_______  /|___|  /__|  (____  /\_/ (____  /___|  /
+  ______\/      \/           \/          \/   ._\/ 
+ /  _____/  ____  _______  _  ______    _____ |__| 
+/   \  ___ /  _ \/  ___| \/ \/ |__  \  /     \|  | 
+\    \_\  (  <_> )___ \ \     / / __ \|  Y Y  \  | 
+ \______  /\____/____  > \/\_/ (____  /__|_|  /__| 
+        \/           \/             \/      \/     
+
+The humans.txt (https://humanstxt.org/) file explains 
+the team, technology, and graphic assets behind this site,
+shravangoswami.com
+_______________________________________________________________________________
+
+> Static Site Generator: [Astro](https://astro.build/)
+
+> Static Search Engine: [Pagefind](https://pagefind.app/)
+
+> Template: [Astro Paper](https://github.com/satnaing/astro-paper) -- Initially used Astro Paper and improved a lot on top of it, now its nothing close to that anymore!
