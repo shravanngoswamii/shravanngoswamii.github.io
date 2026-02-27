@@ -46,11 +46,11 @@ const {
   toc = true,
 } = post.data;
 
-const director = 'director' in post.data ? (post.data as any).director : undefined;
-const filmYear = 'year' in post.data ? (post.data as any).year : undefined;
-const rating = 'rating' in post.data ? (post.data as any).rating : undefined;
-const thinkers = 'thinkers' in post.data ? (post.data as any).thinkers as string[] | undefined : undefined;
-const tradition = 'tradition' in post.data ? (post.data as any).tradition as string | undefined : undefined;
+const director = post.collection === "cinema" ? post.data.director : undefined;
+const filmYear = post.collection === "cinema" ? post.data.year : undefined;
+const rating = post.collection === "cinema" ? post.data.rating : undefined;
+const thinkers = post.collection === "philosophy" ? post.data.thinkers : undefined;
+const tradition = post.collection === "philosophy" ? post.data.tradition : undefined;
 
 const publications = await getPublications();
 const relatedPublications = publications.filter(pub => 
