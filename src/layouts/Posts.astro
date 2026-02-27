@@ -10,6 +10,7 @@ import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 import { getPublications } from "@utils/bibtexUtils";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
@@ -34,7 +35,7 @@ const globalIndex = (page.currentPage - 1) * page.size;
       {
         page.data.map(({ data, slug }, index) => (
           <Card 
-            href={`/blog/${slug}/`} 
+            href={withBase(`/blog/${slug}/`)}
             frontmatter={data}
             index={globalIndex + index + 1}
             relatedPublications={getRelatedPubs(data.tags)}

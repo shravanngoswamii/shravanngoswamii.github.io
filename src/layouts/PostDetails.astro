@@ -15,6 +15,7 @@ import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
+import { withBase } from "@utils/base";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -163,7 +164,7 @@ const nextPost =
             {
               prevPost && (
                 <a
-                  href={`/blog/${prevPost.slug}`}
+                  href={withBase(`/blog/${prevPost.slug}`)}
                   class="flex w-full gap-1 hover:opacity-75 items-center"
                 >
                   <TbChevronLeft className="h-6 w-6 flex-none" />
@@ -177,7 +178,7 @@ const nextPost =
             {
               nextPost && (
                 <a
-                  href={`/blog/${nextPost.slug}`}
+                  href={withBase(`/blog/${nextPost.slug}`)}
                   class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
                 >
                   <div>

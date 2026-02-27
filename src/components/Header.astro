@@ -2,6 +2,7 @@
 import { SITE } from "@config";
 import Search from "./Search.astro";
 import { TbMoon, TbSun, TbMenu2, TbX } from "react-icons/tb";
+import { withBase } from "@utils/base";
 
 export interface Props {
   activeNav?: "projects" | "resume" | "blog" | "tags" | "publications";
@@ -30,7 +31,7 @@ const { activeNav } = Astro.props;
     ">
       
       <!-- LOGO -->
-      <a href="/" class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-inverted hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10">
+      <a href={withBase("/")} class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-inverted hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10">
         SG
       </a>
 
@@ -39,10 +40,10 @@ const { activeNav } = Astro.props;
       <!-- NAV LINKS -->
       <nav class="flex items-center">
         <ul class="flex items-center gap-1 text-xs font-mono uppercase tracking-widest font-medium">
-          <li><a href="/blog/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Journal</a></li>
-          <li><a href="/projects/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Work</a></li>
-          <li><a href="/publications/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Research</a></li>
-          <li><a href="/resume/" class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>CV</a></li>
+          <li><a href={withBase("/blog/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Journal</a></li>
+          <li><a href={withBase("/projects/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Work</a></li>
+          <li><a href={withBase("/publications/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Research</a></li>
+          <li><a href={withBase("/resume/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>CV</a></li>
         </ul>
       </nav>
 
@@ -69,7 +70,7 @@ const { activeNav } = Astro.props;
   <div class="bg-skin-fill/90 backdrop-blur-lg border-b border-skin-line/10">
     <div class="flex items-center justify-between h-16 px-4">
       <!-- Logo -->
-      <a href="/" class="font-serif text-xl font-bold text-skin-base">SG</a>
+      <a href={withBase("/")} class="font-serif text-xl font-bold text-skin-base">SG</a>
       
       <!-- Right Controls -->
       <div class="flex items-center gap-2 relative">
@@ -97,22 +98,22 @@ const { activeNav } = Astro.props;
             <nav class="p-3 pt-2">
               <ul class="space-y-1">
                 <li>
-                  <a href="/blog/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "blog" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                  <a href={withBase("/blog/")} class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "blog" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
                     Journal
                   </a>
                 </li>
                 <li>
-                  <a href="/projects/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "projects" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                  <a href={withBase("/projects/")} class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "projects" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
                     Work
                   </a>
                 </li>
                 <li>
-                  <a href="/publications/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "publications" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                  <a href={withBase("/publications/")} class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "publications" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
                     Research
                   </a>
                 </li>
                 <li>
-                  <a href="/resume/" class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "resume" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                  <a href={withBase("/resume/")} class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "resume" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
                     CV
                   </a>
                 </li>

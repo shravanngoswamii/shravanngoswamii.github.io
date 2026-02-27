@@ -1,6 +1,7 @@
 ---
 import { TbHash } from "react-icons/tb";
 import { slugifyStr } from "@utils/slugify";
+import { withBase } from "@utils/base";
 
 export interface Props {
   tag: string;
@@ -16,7 +17,7 @@ const { tag, size = "sm" } = Astro.props;
   }`}
 >
   <a
-    href={`/tags/${slugifyStr(tag)}/`}
+    href={withBase(`/tags/${slugifyStr(tag)}/`)}
     transition:name={slugifyStr(tag)}
     class={`${size === "sm" ? "text-sm" : "text-lg"} pr-2 group`}
     data-pagefind-filter="tag"

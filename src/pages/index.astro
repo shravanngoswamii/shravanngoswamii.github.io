@@ -12,6 +12,7 @@ import HeroBackground from "@components/HeroBackground";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import ScrollReveal from "@components/ScrollReveal";
 import SpotlightCard from "@components/SpotlightCard";
+import { withBase } from "@utils/base";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
@@ -66,7 +67,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
          </p>
 
          <div class="mt-10 flex flex-col sm:flex-row items-center gap-6">
-            <LinkButton href="/projects" className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
+            <LinkButton href={withBase("/projects")} className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
                View Projects
             </LinkButton>
             <a href="https://github.com/sponsors/shravanngoswamii?o=esb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-xs uppercase tracking-widest rounded-sm">
@@ -97,9 +98,8 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           {featuredPosts.map(({ data, slug }, index) => (
              <ScrollReveal client:visible delay={index * 0.1}>
                 <Card
-                  href={`/blog/${slug}/`}
+                  href={withBase(`/blog/${slug}/`)}
                   frontmatter={data}
-                  index={index + 1}
                   secHeading={false}
                 />
              </ScrollReveal>
@@ -108,7 +108,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
         <ScrollReveal client:visible delay={0.3}>
             <div class="mt-12 flex justify-end">
-               <LinkButton href="/blog" className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
+               <LinkButton href={withBase("/blog")} className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
                   All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                </LinkButton>
             </div>
@@ -128,7 +128,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
            {recentPosts.slice(0, 3).map(({ data, slug }, index) => ( // Added index
              <li class="block"> {/* Removed client direct rendering of ScrollReveal inside li without block context if any issues arise, but here we just wrap item content */}
                <ScrollReveal client:visible delay={index * 0.1}>
-                   <a href={`/blog/${slug}/`} class="group block">
+                   <a href={withBase(`/blog/${slug}/`)} class="group block">
                      <div class="flex items-center gap-3 mb-2">
                        <span class="w-1.5 h-1.5 rounded-full bg-skin-line group-hover:bg-skin-accent transition-colors"></span>
                        <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
@@ -146,7 +146,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
         <ScrollReveal client:visible delay={0.3}>
             <div class="mt-12">
-               <a href="/blog/" class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
+               <a href={withBase("/blog/")} class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
                  All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                </a>
             </div>
@@ -165,7 +165,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
                  </div>
 
                  <div class="flex flex-col gap-4 mt-16">
-                    <LinkButton href="/resume" className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
+                    <LinkButton href={withBase("/resume")} className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
                        <span class="text-xs font-mono uppercase tracking-widest">View CV</span>
                        <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
                     </LinkButton>

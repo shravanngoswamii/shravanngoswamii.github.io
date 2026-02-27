@@ -3,6 +3,7 @@ import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
 import { TbArrowUpRight } from "react-icons/tb";
 import type { MouseEvent } from "react";
+import { withBase } from "@utils/base";
 
 export interface Props {
   href?: string;
@@ -58,7 +59,7 @@ export default function Card({ href, frontmatter, index = 1 }: Props) {
               <span key={tag} className="flex gap-2">
                 {i > 0 && <span className="opacity-30">/</span>}
                 <a
-                  href={`/tags/${slugifyStr(tag)}/`}
+                  href={withBase(`/tags/${slugifyStr(tag)}/`)}
                   className="relative z-20 hover:text-skin-accent group-hover:text-skin-base transition-colors duration-300"
                   onClick={(e: MouseEvent) => e.stopPropagation()}
                 >{tag}</a>

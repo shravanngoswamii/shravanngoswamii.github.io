@@ -1,5 +1,6 @@
 ---
 import Socials from "./Socials.astro";
+import { withBase } from "@utils/base";
 
 const currentYear = new Date().getFullYear();
 
@@ -28,7 +29,7 @@ const { noMarginTop = false } = Astro.props;
 
     <!-- Footer Meta -->
     <div class="flex flex-col items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-skin-base/30">
-      <a href="/humans.txt" class="hover:text-skin-base transition-colors">
+      <a href={withBase("/humans.txt")} class="hover:text-skin-base transition-colors">
         &copy; {currentYear}
       </a>
     </div>
