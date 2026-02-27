@@ -4,6 +4,10 @@ on:
   pull_request_target:
     types: [opened, synchronize, closed]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-and-preview:
     if: github.event.action == 'opened' || github.event.action == 'synchronize'
@@ -21,7 +25,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build the website
         run: npm run build
@@ -34,43 +38,40 @@ jobs:
           target-folder: pr-previews/${{ github.event.pull_request.number }}
           clean: false
           commit-message: Deploy preview for PR ${{ github.event.pull_request.number }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-  comment-preview-url:
-    needs: build-and-preview
-    if: needs.build-and-preview.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
       - name: Comment Preview URL
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             <!-- preview-url-comment -->
-            Preview the changes: https://shravanngoswamii.github.io/portfolio/pr-previews/${{ github.event.pull_request.number }}
-            Please avoid using the search feature and navigation bar in PR previews!
+            Preview the changes: https://shravanngoswamii.github.io/pr-previews/${{ github.event.pull_request.number }}
           comment_tag: preview-url-comment
-        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   delete-preview-directory:
-    if: github.event.action == 'closed' || github.event.pull_request.merged == true
+    if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout gh-pages branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove PR Preview Directory
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           PREVIEW_DIR="pr-previews/${PR_NUMBER}"
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull origin gh-pages
-          rm -rf ${PREVIEW_DIR}
-          git add .
-          git commit -m "Remove preview for merged PR #${PR_NUMBER}"
-          git push
+          if [ -d "${PREVIEW_DIR}" ]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git pull origin gh-pages
+            rm -rf "${PREVIEW_DIR}"
+            git add .
+            git diff --staged --quiet || git commit -m "Remove preview for PR #${PR_NUMBER}"
+            git push
+          else
+            echo "Preview directory ${PREVIEW_DIR} not found, skipping."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
