@@ -12,4 +12,4 @@ Lately, I've been reflecting on the idea of temporality and how our understandin
 
 These are some raw thoughts I'm putting together, maybe eventually this turns into a deeper essay about meaning constraint.
 
-*To be continued...*
+_To be continued..._

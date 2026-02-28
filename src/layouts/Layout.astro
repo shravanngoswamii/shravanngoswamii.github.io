@@ -118,9 +118,12 @@ const structuredData = {
     />
 
     <!-- LUXURY FONTS: Playfair Display (Serif), Inter (Sans), JetBrains Mono (Code) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
 
     <meta name="theme-color" content="" />
 
@@ -136,21 +139,23 @@ const structuredData = {
     <ClientRouter />
 
     <script is:inline>
-      const primaryColorScheme = ""; 
+      const primaryColorScheme = "";
 
       const currentTheme = localStorage.getItem("theme");
 
       function getPreferTheme() {
         if (currentTheme) return currentTheme;
         if (primaryColorScheme) return primaryColorScheme;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
       }
 
       let themeValue = getPreferTheme();
 
       function reflectPreference(theme) {
         document.firstElementChild.setAttribute("data-theme", theme);
-        
+
         const body = document.body;
         if (body) {
           const computedStyles = window.getComputedStyle(body);

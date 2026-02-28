@@ -5,7 +5,12 @@ interface Props {
   showPercent?: boolean;
 }
 
-export default function Progress({ label, value, max = 100, showPercent = true }: Props) {
+export default function Progress({
+  label,
+  value,
+  max = 100,
+  showPercent = true,
+}: Props) {
   const percent = Math.round((value / max) * 100);
 
   return (
@@ -15,7 +20,9 @@ export default function Progress({ label, value, max = 100, showPercent = true }
           {label}
         </span>
         {showPercent && (
-          <span className="font-mono text-[11px] text-skin-base/40">{percent}%</span>
+          <span className="font-mono text-[11px] text-skin-base/40">
+            {percent}%
+          </span>
         )}
       </div>
       <div className="w-full h-1.5 bg-skin-card-muted rounded-full overflow-hidden">

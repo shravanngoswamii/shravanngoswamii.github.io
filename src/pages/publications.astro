@@ -4,7 +4,11 @@ import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
-import { getPublications, processLatex, type Publication } from "@utils/bibtexUtils";
+import {
+  getPublications,
+  processLatex,
+  type Publication,
+} from "@utils/bibtexUtils";
 import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { TbArrowRight } from "react-icons/tb";
@@ -52,9 +56,12 @@ publications.forEach((pub) => {
 
 const getRelatedPosts = (pub: Publication) => {
   if (!pub.entryTags.keywords) return [];
-  const keywords = pub.entryTags.keywords.toLowerCase().split(",").map(k => k.trim());
-  return sortedPosts.filter(post => 
-    post.data.tags.some(tag => keywords.includes(tag.toLowerCase()))
+  const keywords = pub.entryTags.keywords
+    .toLowerCase()
+    .split(",")
+    .map((k) => k.trim());
+  return sortedPosts.filter((post) =>
+    post.data.tags.some((tag) => keywords.includes(tag.toLowerCase())),
   );
 };
 ---
@@ -88,10 +95,17 @@ const getRelatedPosts = (pub: Publication) => {
                                 rel="noopener noreferrer"
                                 class="text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors duration-200"
                               >
-                                <span set:html={processLatex(pub.entryTags.title) + '&nbsp;<span class="text-[0.7em] opacity-50">↗</span>'} />
+                                <span
+                                  set:html={
+                                    processLatex(pub.entryTags.title) +
+                                    '&nbsp;<span class="text-[0.7em] opacity-50">↗</span>'
+                                  }
+                                />
                               </a>
                             ) : (
-                              <span set:html={processLatex(pub.entryTags.title)} />
+                              <span
+                                set:html={processLatex(pub.entryTags.title)}
+                              />
                             )}
                           </h3>
                           {pub.entryTags.year && (
@@ -102,9 +116,7 @@ const getRelatedPosts = (pub: Publication) => {
                         </div>
 
                         <div class="text-sm text-skin-base/80">
-                          <span
-                            set:html={processLatex(pub.entryTags.author)}
-                          />
+                          <span set:html={processLatex(pub.entryTags.author)} />
                         </div>
 
                         <div class="text-xs text-skin-base/60">
@@ -112,10 +124,14 @@ const getRelatedPosts = (pub: Publication) => {
                             <span class="italic">{pub.entryTags.journal}</span>
                           )}
                           {pub.entryTags.booktitle && (
-                            <span class="italic">{pub.entryTags.booktitle}</span>
+                            <span class="italic">
+                              {pub.entryTags.booktitle}
+                            </span>
                           )}
                           {pub.entryTags.publisher && (
-                            <span class="italic">{pub.entryTags.publisher}</span>
+                            <span class="italic">
+                              {pub.entryTags.publisher}
+                            </span>
                           )}
                           {pub.entryTags.note && (
                             <span class="inline-flex items-center gap-1">
@@ -137,11 +153,24 @@ const getRelatedPosts = (pub: Publication) => {
                               <details class="group/abstract">
                                 <summary class="cursor-pointer select-none list-none flex items-center gap-2">
                                   <span class="inline-flex items-center gap-1 text-xs font-medium text-skin-base/50 hover:text-skin-accent transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform group-open/abstract:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      class="h-3 w-3 transition-transform group-open/abstract:rotate-90"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    >
+                                      <polyline points="9 18 15 12 9 6" />
+                                    </svg>
                                     Abstract
                                   </span>
                                   {pub.entryTags.doi && (
-                                    <span class="text-skin-base/25 select-none">|</span>
+                                    <span class="text-skin-base/25 select-none">
+                                      |
+                                    </span>
                                   )}
                                   {pub.entryTags.doi && (
                                     <a
@@ -151,7 +180,19 @@ const getRelatedPosts = (pub: Publication) => {
                                       class="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs font-mono bg-skin-accent/10 text-skin-accent border border-skin-accent/30 hover:bg-skin-accent/20 transition-colors"
                                       onclick="((e) => e.stopPropagation())(arguments[0])"
                                     >
-                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-2.5 w-2.5 shrink-0"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      >
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                      </svg>
                                       DOI: {pub.entryTags.doi}
                                     </a>
                                   )}
@@ -167,7 +208,19 @@ const getRelatedPosts = (pub: Publication) => {
                                 rel="noopener noreferrer"
                                 class="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs font-mono bg-skin-accent/10 text-skin-accent border border-skin-accent/30 hover:bg-skin-accent/20 transition-colors"
                               >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-2.5 w-2.5 shrink-0"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                </svg>
                                 DOI: {pub.entryTags.doi}
                               </a>
                             ) : null}
@@ -177,13 +230,17 @@ const getRelatedPosts = (pub: Publication) => {
                         {getRelatedPosts(pub).length > 0 && (
                           <div class="mt-2 pt-1">
                             <span class="text-xs font-bold uppercase tracking-wider text-skin-base/50 mb-1 block">
-                              My Companion Blog Post{getRelatedPosts(pub).length > 1 ? "s" : ""}
+                              My Companion Blog Post
+                              {getRelatedPosts(pub).length > 1 ? "s" : ""}
                             </span>
                             <ul class="space-y-1">
-                              {getRelatedPosts(pub).map(post => (
+                              {getRelatedPosts(pub).map((post) => (
                                 <li class="flex items-start gap-2 text-xs group/post">
                                   <TbArrowRight className="h-3.5 w-3.5 text-skin-base/50 shrink-0 mt-0.5 group-hover/post:text-skin-accent transition-colors" />
-                                  <a href={withBase(getPostUrl(post))} class="text-skin-base/70 hover:text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors">
+                                  <a
+                                    href={withBase(getPostUrl(post))}
+                                    class="text-skin-base/70 hover:text-skin-accent hover:underline decoration-dashed underline-offset-4 transition-colors"
+                                  >
                                     {post.data.title}
                                   </a>
                                 </li>

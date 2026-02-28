@@ -10,7 +10,11 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { withBase } from "@utils/base";
-import { getDoneShelfItems, sortMergedItems, type MergedItem } from "@utils/shelfAdapter";
+import {
+  getDoneShelfItems,
+  sortMergedItems,
+  type MergedItem,
+} from "@utils/shelfAdapter";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -18,7 +22,7 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const posts = getSortedPosts(
-  await getCollection("tech", ({ data }) => !data.draft)
+  await getCollection("tech", ({ data }) => !data.draft),
 );
 const shelfItems = await getDoneShelfItems("tech");
 const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
@@ -27,51 +31,78 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
 <Layout title={`Tech | ${SITE.title}`}>
   <Header activeNav="blog" />
 
-  <div class="relative overflow-hidden" style="background: linear-gradient(180deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 70%)">
+  <div
+    class="relative overflow-hidden"
+    style="background: linear-gradient(180deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 70%)"
+  >
     <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
       <div class="flex items-center gap-3 mb-6">
-        <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))">Tech</span>
-        <span class="font-mono text-[10px] text-skin-base/30">{allItems.length} {allItems.length === 1 ? 'post' : 'posts'}</span>
+        <span
+          class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+          style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))"
+          >Tech</span
+        >
+        <span class="font-mono text-[10px] text-skin-base/30"
+          >{allItems.length} {allItems.length === 1 ? "post" : "posts"}</span
+        >
       </div>
-      <h1 class="font-mono text-3xl sm:text-4xl text-skin-base leading-tight mb-4">
+      <h1
+        class="font-mono text-3xl sm:text-4xl text-skin-base leading-tight mb-4"
+      >
         Building in the Open
       </h1>
       <p class="text-base text-skin-base/60 leading-relaxed max-w-xl">
         {COLLECTION_META.tech.description}
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-2">
-        {Object.entries(COLLECTION_META).map(([key, m]) => (
-          <a
-            href={withBase(`${m.prefix}/`)}
-            class:list={[
-              "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
-              key === "tech"
-                ? "border-transparent font-medium"
-                : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
-            ]}
-            style={key === "tech" ? `background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))` : ""}
-          >
-            {m.label}
-          </a>
-        ))}
-        <a href={withBase("/blog/")} class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted">
+        {
+          Object.entries(COLLECTION_META).map(([key, m]) => (
+            <a
+              href={withBase(`${m.prefix}/`)}
+              class:list={[
+                "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
+                key === "tech"
+                  ? "border-transparent font-medium"
+                  : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+              ]}
+              style={
+                key === "tech"
+                  ? `background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))`
+                  : ""
+              }
+            >
+              {m.label}
+            </a>
+          ))
+        }
+        <a
+          href={withBase("/blog/")}
+          class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"
+        >
           All
         </a>
       </div>
     </div>
   </div>
 
-  <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8"
+  >
     <ul>
-      {allItems.map(item => {
-        const isShelf = item.kind === "shelf";
-        const href = isShelf ? withBase(item.href) : withBase(getPostUrl(item));
-        return isShelf ? (
-          <ShelfListCard item={item} href={href} />
-        ) : (
-          <Card href={href} frontmatter={item.data as any} />
-        );
-      })}
+      {
+        allItems.map((item) => {
+          const isShelf = item.kind === "shelf";
+          const href = isShelf
+            ? withBase(item.href)
+            : withBase(getPostUrl(item));
+          return isShelf ? (
+            <ShelfListCard item={item} href={href} />
+          ) : (
+            <Card href={href} frontmatter={item.data as any} />
+          );
+        })
+      }
     </ul>
   </main>
 

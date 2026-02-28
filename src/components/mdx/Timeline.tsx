@@ -18,7 +18,11 @@ export default function Timeline({ items }: Props) {
             <div className="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-1">
               {item.date}
             </div>
-            <div className="font-serif text-lg text-skin-base mb-1" role="heading" aria-level={4}>
+            <div
+              className="font-serif text-lg text-skin-base mb-1"
+              role="heading"
+              aria-level={4}
+            >
               {item.title}
             </div>
             {item.description && (

@@ -21,9 +21,15 @@ const { frontmatter } = Astro.props;
   <Header />
   <Breadcrumbs />
   <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-4">
-    <h1 class="text-2xl font-semibold sm:text-3xl text-skin-base mb-6">{frontmatter.title}</h1>
+    <h1 class="text-2xl font-semibold sm:text-3xl text-skin-base mb-6">
+      {frontmatter.title}
+    </h1>
     <div class="mb-6">
-      <img src={withBase("/assets/dev.svg")} class="sm:w-1/2 mx-auto" alt="coding dev illustration" />
+      <img
+        src={withBase("/assets/dev.svg")}
+        class="sm:w-1/2 mx-auto"
+        alt="coding dev illustration"
+      />
     </div>
     <section id="about" class="prose prose-img:border-0">
       <slot />

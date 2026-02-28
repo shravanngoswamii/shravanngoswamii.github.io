@@ -3,12 +3,27 @@ import "@pagefind/default-ui/css/ui.css";
 ---
 
 <div id="search-overlay" class="fixed inset-0 z-[100] hidden">
-  <div id="search-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-  <div class="relative flex items-start justify-center pt-[10vh] sm:pt-[15vh] px-4 h-full">
-    <div id="search-panel" class="w-full max-w-2xl max-h-[80vh] bg-skin-fill border border-skin-line/20 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+  <div
+    id="search-backdrop"
+    class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+  >
+  </div>
+  <div
+    class="relative flex items-start justify-center pt-[10vh] sm:pt-[15vh] px-4 h-full"
+  >
+    <div
+      id="search-panel"
+      class="w-full max-w-2xl max-h-[80vh] bg-skin-fill border border-skin-line/20 rounded-xl shadow-2xl flex flex-col overflow-hidden"
+    >
       <div class="flex items-center justify-between px-6 pt-5 pb-3">
-        <span class="text-xs font-mono uppercase tracking-widest text-skin-base/50">Search</span>
-        <button id="search-close-btn" class="cursor-pointer rounded-md bg-skin-card px-3 py-1 text-sm font-medium text-skin-base/70 hover:text-skin-base transition-colors">
+        <span
+          class="text-xs font-mono uppercase tracking-widest text-skin-base/50"
+          >Search</span
+        >
+        <button
+          id="search-close-btn"
+          class="cursor-pointer rounded-md bg-skin-card px-3 py-1 text-sm font-medium text-skin-base/70 hover:text-skin-base transition-colors"
+        >
           Esc
         </button>
       </div>
@@ -50,24 +65,31 @@ import "@pagefind/default-ui/css/ui.css";
       document.body.style.overflow = "hidden";
 
       const searchContainer = document.getElementById("cactus__search");
-      const needsInit = searchContainer && searchContainer.children.length === 0;
+      const needsInit =
+        searchContainer && searchContainer.children.length === 0;
 
       if (needsInit && !import.meta.env.DEV) {
-        const onIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
+        const onIdle =
+          window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
         onIdle(async () => {
           const { PagefindUI } = await import("@pagefind/default-ui");
           new PagefindUI({
             baseUrl: import.meta.env.BASE_URL,
-            bundlePath: import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
+            bundlePath:
+              import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
             element: "#cactus__search",
             showImages: false,
             showSubResults: true,
           });
-          overlay.querySelector<HTMLInputElement>(".pagefind-ui__search-input")?.focus();
+          overlay
+            .querySelector<HTMLInputElement>(".pagefind-ui__search-input")
+            ?.focus();
         });
       } else {
         requestAnimationFrame(() => {
-          overlay.querySelector<HTMLInputElement>(".pagefind-ui__search-input")?.focus();
+          overlay
+            .querySelector<HTMLInputElement>(".pagefind-ui__search-input")
+            ?.focus();
         });
       }
     }
@@ -82,20 +104,26 @@ import "@pagefind/default-ui/css/ui.css";
     backdrop?.addEventListener("click", closeSearch, { signal });
     closeBtn?.addEventListener("click", closeSearch, { signal });
 
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !overlay.classList.contains("hidden")) {
-        closeSearch();
-        e.preventDefault();
-      }
-      if (e.key === "/" && overlay.classList.contains("hidden")) {
-        const active = document.activeElement;
-        const isInput = active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement;
-        if (!isInput) {
-          openSearch();
+    window.addEventListener(
+      "keydown",
+      (e: KeyboardEvent) => {
+        if (e.key === "Escape" && !overlay.classList.contains("hidden")) {
+          closeSearch();
           e.preventDefault();
         }
-      }
-    }, { signal });
+        if (e.key === "/" && overlay.classList.contains("hidden")) {
+          const active = document.activeElement;
+          const isInput =
+            active instanceof HTMLInputElement ||
+            active instanceof HTMLTextAreaElement;
+          if (!isInput) {
+            openSearch();
+            e.preventDefault();
+          }
+        }
+      },
+      { signal },
+    );
   }
 
   setupSearch();

@@ -12,15 +12,22 @@ const baseSchema = ({ image }: { image: (...args: unknown[]) => z.ZodType }) =>
     draft: z.boolean().optional(),
     tags: z.array(z.string()).default(["others"]),
     ogImage: image()
-      .refine((img: { width: number; height: number }) => img.width >= 1200 && img.height >= 630, {
-        message: "OpenGraph image must be at least 1200 X 630 pixels!",
-      })
+      .refine(
+        (img: { width: number; height: number }) =>
+          img.width >= 1200 && img.height >= 630,
+        {
+          message: "OpenGraph image must be at least 1200 X 630 pixels!",
+        },
+      )
       .or(z.string())
       .optional(),
     description: z.string(),
     canonicalURL: z.string().optional(),
     aliases: z.array(z.string()).optional().default([]),
-    crossTopics: z.array(z.enum(["tech", "cinema", "philosophy"])).optional().default([]),
+    crossTopics: z
+      .array(z.enum(["tech", "cinema", "philosophy"]))
+      .optional()
+      .default([]),
     toc: z.boolean().optional().default(true),
     shelf: z.array(z.string()).optional().default([]),
   });
@@ -51,7 +58,18 @@ const shelf = defineCollection({
       title: z.string(),
       creator: z.string(),
       genre: z.string(),
-      type: z.enum(["book", "movie", "series", "anime", "game", "course", "video", "documentary", "sitcom", "miniseries"]),
+      type: z.enum([
+        "book",
+        "movie",
+        "series",
+        "anime",
+        "game",
+        "course",
+        "video",
+        "documentary",
+        "sitcom",
+        "miniseries",
+      ]),
       categories: z.array(z.enum(["tech", "cinema", "philosophy"])).min(1),
       status: z.enum(["done", "in-progress", "wishlist"]),
       rating: z.number().min(0).max(10).optional(),

@@ -10,7 +10,11 @@ import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import Datetime from "@components/Datetime";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { withBase } from "@utils/base";
-import { getDoneShelfItems, sortMergedItems, type MergedItem } from "@utils/shelfAdapter";
+import {
+  getDoneShelfItems,
+  sortMergedItems,
+  type MergedItem,
+} from "@utils/shelfAdapter";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -18,7 +22,7 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const posts = getSortedPosts(
-  await getCollection("philosophy", ({ data }) => !data.draft)
+  await getCollection("philosophy", ({ data }) => !data.draft),
 ) as unknown as CollectionEntry<"philosophy">[];
 const shelfItems = await getDoneShelfItems("philosophy");
 const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
@@ -28,34 +32,56 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
   <Header activeNav="blog" />
 
   {/* ===== PHILOSOPHY HERO ===== */}
-  <div class="relative overflow-hidden" style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)">
+  <div
+    class="relative overflow-hidden"
+    style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)"
+  >
     <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
       <div class="flex items-center gap-3 mb-6">
-        <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))">Philosophy</span>
-        <span class="font-mono text-[10px] text-skin-base/30">{allItems.length} {allItems.length === 1 ? 'essay' : 'essays'}</span>
+        <span
+          class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+          style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))"
+          >Philosophy</span
+        >
+        <span class="font-mono text-[10px] text-skin-base/30"
+          >{allItems.length} {allItems.length === 1 ? "essay" : "essays"}</span
+        >
       </div>
-      <h1 class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-4 italic">
+      <h1
+        class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-4 italic"
+      >
         Ideas Worth Sitting With
       </h1>
-      <p class="text-base text-skin-base/60 leading-relaxed max-w-xl font-serif italic">
+      <p
+        class="text-base text-skin-base/60 leading-relaxed max-w-xl font-serif italic"
+      >
         {COLLECTION_META.philosophy.description}
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-2">
-        {Object.entries(COLLECTION_META).map(([key, m]) => (
-          <a
-            href={withBase(`${m.prefix}/`)}
-            class:list={[
-              "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
-              key === "philosophy"
-                ? "border-transparent font-medium"
-                : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
-            ]}
-            style={key === "philosophy" ? `background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))` : ""}
-          >
-            {m.label}
-          </a>
-        ))}
-        <a href={withBase("/blog/")} class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted">
+        {
+          Object.entries(COLLECTION_META).map(([key, m]) => (
+            <a
+              href={withBase(`${m.prefix}/`)}
+              class:list={[
+                "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
+                key === "philosophy"
+                  ? "border-transparent font-medium"
+                  : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+              ]}
+              style={
+                key === "philosophy"
+                  ? `background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))`
+                  : ""
+              }
+            >
+              {m.label}
+            </a>
+          ))
+        }
+        <a
+          href={withBase("/blog/")}
+          class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"
+        >
           All
         </a>
       </div>
@@ -63,45 +89,74 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
   </div>
 
   {/* ===== PHILOSOPHY POSTS ===== */}
-  <main id="main-content" class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8">
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8"
+  >
     <div class="flex flex-col">
-      {allItems.map((item, index) => {
-        const isShelf = item.kind === "shelf";
-        const href = isShelf ? withBase(item.href) : withBase(getPostUrl(item as CollectionEntry<"philosophy">));
-        if (isShelf) return <ShelfListCard item={item} href={href} />;
-        const postThinkers = (item as CollectionEntry<"philosophy">).data.thinkers;
-        const tradition = (item as CollectionEntry<"philosophy">).data.tradition;
-        return (
-          <a href={href} class="group block border-b border-skin-line/15 hover:bg-skin-card-muted/30 transition-all duration-300 py-8 first:pt-0">
-            <div class="flex flex-col gap-3">
-              <div class="flex items-center gap-3">
-                <span class="font-mono text-[10px] text-skin-base/25 w-6">{(index + 1).toString().padStart(2, '0')}</span>
-                {tradition && (
-                  <span class="font-serif text-xs italic" style="color: rgba(var(--color-collection-philosophy), 0.6)">{tradition}</span>
-                )}
+      {
+        allItems.map((item, index) => {
+          const isShelf = item.kind === "shelf";
+          const href = isShelf
+            ? withBase(item.href)
+            : withBase(getPostUrl(item as CollectionEntry<"philosophy">));
+          if (isShelf) return <ShelfListCard item={item} href={href} />;
+          const postThinkers = (item as CollectionEntry<"philosophy">).data
+            .thinkers;
+          const tradition = (item as CollectionEntry<"philosophy">).data
+            .tradition;
+          return (
+            <a
+              href={href}
+              class="group block border-b border-skin-line/15 hover:bg-skin-card-muted/30 transition-all duration-300 py-8 first:pt-0"
+            >
+              <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-3">
+                  <span class="font-mono text-[10px] text-skin-base/25 w-6">
+                    {(index + 1).toString().padStart(2, "0")}
+                  </span>
+                  {tradition && (
+                    <span
+                      class="font-serif text-xs italic"
+                      style="color: rgba(var(--color-collection-philosophy), 0.6)"
+                    >
+                      {tradition}
+                    </span>
+                  )}
+                </div>
+                <h2 class="font-serif text-2xl sm:text-3xl italic text-skin-base leading-tight group-hover:opacity-80 transition-opacity pl-9">
+                  {item.data.title}
+                </h2>
+                <p class="text-sm text-skin-base/60 leading-relaxed pl-9 font-serif max-w-2xl">
+                  {item.data.description}
+                </p>
+                <div class="flex flex-wrap items-center gap-3 pl-9 mt-1">
+                  {postThinkers && postThinkers.length > 0 && (
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30">
+                        with
+                      </span>
+                      {postThinkers.map((t: string) => (
+                        <span
+                          class="px-2 py-0.5 rounded-full text-[10px] font-serif border border-skin-line/15 text-skin-base/50"
+                          style="background: rgba(var(--color-collection-philosophy), 0.05)"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <span class="text-skin-base/30 text-[10px]">·</span>
+                  <Datetime
+                    pubDatetime={item.data.pubDatetime}
+                    modDatetime={item.data.modDatetime}
+                  />
+                </div>
               </div>
-              <h2 class="font-serif text-2xl sm:text-3xl italic text-skin-base leading-tight group-hover:opacity-80 transition-opacity pl-9">
-                {item.data.title}
-              </h2>
-              <p class="text-sm text-skin-base/60 leading-relaxed pl-9 font-serif max-w-2xl">
-                {item.data.description}
-              </p>
-              <div class="flex flex-wrap items-center gap-3 pl-9 mt-1">
-                {postThinkers && postThinkers.length > 0 && (
-                  <div class="flex items-center gap-1.5">
-                    <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30">with</span>
-                    {postThinkers.map((t: string) => (
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-serif border border-skin-line/15 text-skin-base/50" style="background: rgba(var(--color-collection-philosophy), 0.05)">{t}</span>
-                    ))}
-                  </div>
-                )}
-                <span class="text-skin-base/30 text-[10px]">·</span>
-                <Datetime pubDatetime={item.data.pubDatetime} modDatetime={item.data.modDatetime} />
-              </div>
-            </div>
-          </a>
-        );
-      })}
+            </a>
+          );
+        })
+      }
     </div>
   </main>
 

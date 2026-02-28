@@ -26,9 +26,18 @@ const pageDesc = isAll
 const publications = await getPublications();
 
 const getRelatedPubs = (tags: string[]) => {
-  return publications.filter(pub => 
-    pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
-  ).map(pub => ({ title: pub.entryTags.title || "", url: pub.entryTags.url }));
+  return publications
+    .filter(
+      (pub) =>
+        pub.entryTags.keywords &&
+        tags.some((tag) =>
+          pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+        ),
+    )
+    .map((pub) => ({
+      title: pub.entryTags.title || "",
+      url: pub.entryTags.url,
+    }));
 };
 ---
 
@@ -36,19 +45,21 @@ const getRelatedPubs = (tags: string[]) => {
   <Header activeNav="blog" />
   <Main pageTitle={pageTitle} pageDesc={pageDesc}>
     <div class="mb-8 flex flex-wrap items-center gap-2">
-      {Object.entries(COLLECTION_META).map(([key, m]) => (
-        <a
-          href={withBase(`${m.prefix}/`)}
-          class:list={[
-            "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
-            !isAll && key === collection
-              ? "bg-skin-inverted text-skin-inverted"
-              : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
-          ]}
-        >
-          {m.label}
-        </a>
-      ))}
+      {
+        Object.entries(COLLECTION_META).map(([key, m]) => (
+          <a
+            href={withBase(`${m.prefix}/`)}
+            class:list={[
+              "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
+              !isAll && key === collection
+                ? "bg-skin-inverted text-skin-inverted"
+                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+            ]}
+          >
+            {m.label}
+          </a>
+        ))
+      }
       <a
         href={withBase("/blog/")}
         class:list={[

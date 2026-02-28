@@ -2,7 +2,10 @@ import type socialIcons from "@assets/socialIcons";
 import type { CollectionEntry } from "astro:content";
 
 export type BlogCollection = "tech" | "cinema" | "philosophy";
-export type AnyPost = CollectionEntry<"tech"> | CollectionEntry<"cinema"> | CollectionEntry<"philosophy">;
+export type AnyPost =
+  | CollectionEntry<"tech">
+  | CollectionEntry<"cinema">
+  | CollectionEntry<"philosophy">;
 
 export type Site = {
   website: string;

@@ -48,11 +48,17 @@ const {
   toc = true,
 } = post.data;
 
-const thinkers = post.collection === "philosophy" ? post.data.thinkers : undefined;
-const tradition = post.collection === "philosophy" ? post.data.tradition : undefined;
+const thinkers =
+  post.collection === "philosophy" ? post.data.thinkers : undefined;
+const tradition =
+  post.collection === "philosophy" ? post.data.tradition : undefined;
 const publications = await getPublications();
-const relatedPublications = publications.filter(pub => 
-  pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
+const relatedPublications = publications.filter(
+  (pub) =>
+    pub.entryTags.keywords &&
+    tags.some((tag) =>
+      pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+    ),
 );
 
 const { Content, headings } = await post.render();
@@ -96,145 +102,277 @@ const nextPost =
 
 /* ========== Read More ========== */
 const readMorePosts = posts
-  .filter(p => p.slug !== post.slug)
-  .filter(p => p.data.tags.some(t => tags.includes(t)) || p.collection === collection)
+  .filter((p) => p.slug !== post.slug)
+  .filter(
+    (p) =>
+      p.data.tags.some((t) => tags.includes(t)) || p.collection === collection,
+  )
   .slice(0, 4)
-  .map(p => ({ title: p.data.title, slug: p.slug, collection: p.collection as string }));
+  .map((p) => ({
+    title: p.data.title,
+    slug: p.slug,
+    collection: p.collection as string,
+  }));
 ---
 
 <Layout {...layoutProps}>
   <Header />
 
   {/* ============ COLLECTION-THEMED HERO HEADER ============ */}
-  {collection === "cinema" && (
-    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)">
-      <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(--color-collection-cinema), 0.5) 40px, rgba(var(--color-collection-cinema), 0.5) 41px); background-size: 41px 100%;"></div>
-      <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
-        <div class="max-w-3xl mx-auto">
-          <div class="flex items-center gap-3 mb-5">
-            <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))">Cinema</span>
-          </div>
-          <h1 transition:name={slugifyStr(title)} class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4">{title}</h1>
-          <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl mb-6 font-sans">{description}</p>
-          <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
-            <div class="flex flex-col">
-              <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Published</span>
-              <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="" />
+  {
+    collection === "cinema" && (
+      <div
+        class="relative overflow-hidden border-b border-skin-line/10"
+        style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)"
+      >
+        <div
+          class="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(--color-collection-cinema), 0.5) 40px, rgba(var(--color-collection-cinema), 0.5) 41px); background-size: 41px 100%;"
+        />
+        <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center gap-3 mb-5">
+              <span
+                class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+                style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))"
+              >
+                Cinema
+              </span>
+            </div>
+            <h1
+              transition:name={slugifyStr(title)}
+              class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4"
+            >
+              {title}
+            </h1>
+            <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl mb-6 font-sans">
+              {description}
+            </p>
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Published
+                </span>
+                <Datetime
+                  pubDatetime={pubDatetime}
+                  modDatetime={modDatetime}
+                  size="lg"
+                  className=""
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
-  {collection === "philosophy" && (
-    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)">
-
-      <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
-        <div class="max-w-3xl mx-auto">
-          <div class="flex items-center gap-3 mb-5">
-            <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))">Philosophy</span>
-            {tradition && <span class="font-serif text-sm italic text-skin-base/50">{tradition}</span>}
-          </div>
-          <h1 transition:name={slugifyStr(title)} class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4">{title}</h1>
-          <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl font-serif italic mb-6">{description}</p>
-          {thinkers && thinkers.length > 0 && (
-            <div class="flex flex-wrap items-center gap-2 py-4 border-t border-skin-line/15">
-              <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35">In dialogue with</span>
-              {thinkers.map((t) => (
-                <span class="px-3 py-1 rounded-full text-xs font-serif border border-skin-line/20 text-skin-base/70" style="background: rgba(var(--color-collection-philosophy), 0.06)">{t}</span>
-              ))}
+  {
+    collection === "philosophy" && (
+      <div
+        class="relative overflow-hidden border-b border-skin-line/10"
+        style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)"
+      >
+        <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center gap-3 mb-5">
+              <span
+                class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+                style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))"
+              >
+                Philosophy
+              </span>
+              {tradition && (
+                <span class="font-serif text-sm italic text-skin-base/50">
+                  {tradition}
+                </span>
+              )}
             </div>
-          )}
-          <div class="flex items-center gap-4 mt-2">
-            <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="" />
+            <h1
+              transition:name={slugifyStr(title)}
+              class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4"
+            >
+              {title}
+            </h1>
+            <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl font-serif italic mb-6">
+              {description}
+            </p>
+            {thinkers && thinkers.length > 0 && (
+              <div class="flex flex-wrap items-center gap-2 py-4 border-t border-skin-line/15">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35">
+                  In dialogue with
+                </span>
+                {thinkers.map((t) => (
+                  <span
+                    class="px-3 py-1 rounded-full text-xs font-serif border border-skin-line/20 text-skin-base/70"
+                    style="background: rgba(var(--color-collection-philosophy), 0.06)"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div class="flex items-center gap-4 mt-2">
+              <Datetime
+                pubDatetime={pubDatetime}
+                modDatetime={modDatetime}
+                size="lg"
+                className=""
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
-  {collection === "tech" && (
-    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 50%)">
-      <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
-        <div class="max-w-3xl mx-auto">
-          <div class="flex items-center gap-3 mb-5">
-            <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))">Tech</span>
+  {
+    collection === "tech" && (
+      <div
+        class="relative overflow-hidden border-b border-skin-line/10"
+        style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 50%)"
+      >
+        <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center gap-3 mb-5">
+              <span
+                class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+                style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))"
+              >
+                Tech
+              </span>
+            </div>
+            <h1
+              transition:name={slugifyStr(title)}
+              class="font-serif text-3xl sm:text-4xl leading-tight text-skin-base mb-4"
+            >
+              {title}
+            </h1>
+            <Datetime
+              pubDatetime={pubDatetime}
+              modDatetime={modDatetime}
+              size="lg"
+              className="my-2"
+            />
           </div>
-          <h1 transition:name={slugifyStr(title)} class="font-serif text-3xl sm:text-4xl leading-tight text-skin-base mb-4">{title}</h1>
-          <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="my-2" />
         </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
   {/* ============ MAIN CONTENT GRID ============ */}
   <div class="mx-auto w-full max-w-screen-xl px-4">
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8">
-      
+    <div
+      class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8"
+    >
       <!-- Left Column -->
       <div class="hidden lg:block">
         <div class="relative mt-8 flex flex-col items-center" id="left-sidebar">
           <div id="sidebar-quotes" class="w-full"></div>
-          {readMorePosts.length > 0 && (
-            <div class="sticky bottom-8 mt-16 top-24 w-full max-w-[180px]">
-              <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">Read More</span>
-              <div class="flex flex-col gap-3">
-                {readMorePosts.map(p => (
-                  <a href={withBase(`${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`)} class="group block">
-                    <div class="flex items-start gap-2">
-                      <span class="w-1 h-1 rounded-full mt-1.5 shrink-0" style={`background: rgb(var(--color-collection-${p.collection}))`}></span>
-                      <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">{p.title}</span>
-                    </div>
-                  </a>
-                ))}
+          {
+            readMorePosts.length > 0 && (
+              <div class="sticky bottom-8 mt-16 top-24 w-full max-w-[180px]">
+                <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">
+                  Read More
+                </span>
+                <div class="flex flex-col gap-3">
+                  {readMorePosts.map((p) => (
+                    <a
+                      href={withBase(
+                        `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
+                      )}
+                      class="group block"
+                    >
+                      <div class="flex items-start gap-2">
+                        <span
+                          class="w-1 h-1 rounded-full mt-1.5 shrink-0"
+                          style={`background: rgb(var(--color-collection-${p.collection}))`}
+                        />
+                        <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">
+                          {p.title}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )
+          }
         </div>
       </div>
 
       <!-- Center Column (Content) -->
       <div class="flex flex-col">
-
         <main id="main-content">
-
           <!-- TOC Mobile (Inline) -->
           {toc && <TableOfContents headings={headings} mobile={true} />}
 
           <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-            <Content components={{ Tabs, TabItem, Callout, QuoteBlock, Spoiler, Timeline, Comparison, ComparisonSide, Progress, ShelfPin, ShelfMention }} />
+            <Content
+              components={{
+                Tabs,
+                TabItem,
+                Callout,
+                QuoteBlock,
+                Spoiler,
+                Timeline,
+                Comparison,
+                ComparisonSide,
+                Progress,
+                ShelfPin,
+                ShelfMention,
+              }}
+            />
           </article>
 
-          {relatedPublications.length > 0 && (
-            <div class="my-8 border-t border-skin-line/30 pt-8">
-              <h3 class="text-xl font-bold text-skin-base mb-4">Associated Publications</h3>
-              <ul class="space-y-4">
-                {relatedPublications.map(pub => (
-                  <li class="flex flex-col gap-1">
-                    <div class="flex items-baseline gap-2">
-                      <span class="text-skin-accent">
-                        <TbBook className="h-4 w-4 inline-block" />
-                      </span>
-                      <div class="flex-1">
-                        {pub.entryTags.url ? (
-                          <a href={pub.entryTags.url} target="_blank" rel="noopener noreferrer" class="font-medium hover:underline decoration-dashed underline-offset-4">
-                            <span set:html={processLatex(pub.entryTags.title)} />
-                          </a>
-                        ) : (
-                          <span class="font-medium" set:html={processLatex(pub.entryTags.title)} />
-                        )}
-                        <span class="text-sm text-skin-base/60 ml-2">({pub.entryTags.year})</span>
+          {
+            relatedPublications.length > 0 && (
+              <div class="my-8 border-t border-skin-line/30 pt-8">
+                <h3 class="text-xl font-bold text-skin-base mb-4">
+                  Associated Publications
+                </h3>
+                <ul class="space-y-4">
+                  {relatedPublications.map((pub) => (
+                    <li class="flex flex-col gap-1">
+                      <div class="flex items-baseline gap-2">
+                        <span class="text-skin-accent">
+                          <TbBook className="h-4 w-4 inline-block" />
+                        </span>
+                        <div class="flex-1">
+                          {pub.entryTags.url ? (
+                            <a
+                              href={pub.entryTags.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="font-medium hover:underline decoration-dashed underline-offset-4"
+                            >
+                              <span
+                                set:html={processLatex(pub.entryTags.title)}
+                              />
+                            </a>
+                          ) : (
+                            <span
+                              class="font-medium"
+                              set:html={processLatex(pub.entryTags.title)}
+                            />
+                          )}
+                          <span class="text-sm text-skin-base/60 ml-2">
+                            ({pub.entryTags.year})
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="text-sm text-skin-base/80 ml-6 italic">
-                      {pub.entryTags.journal || pub.entryTags.booktitle || pub.entryTags.publisher || pub.entryTags.note}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                      <div class="text-sm text-skin-base/80 ml-6 italic">
+                        {pub.entryTags.journal ||
+                          pub.entryTags.booktitle ||
+                          pub.entryTags.publisher ||
+                          pub.entryTags.note}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
 
           <ul class="my-8">
             {tags.map((tag) => <Tag tag={tag} />)}
@@ -250,21 +388,35 @@ const readMorePosts = posts
           <Giscus />
 
           <!-- Mobile Read More (shown after comments on small screens) -->
-          {readMorePosts.length > 0 && (
-            <div class="lg:hidden mt-12 pt-8 border-t border-skin-line/15">
-              <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-4">Read More</span>
-              <div class="flex flex-col gap-3">
-                {readMorePosts.map(p => (
-                  <a href={withBase(`${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`)} class="group block">
-                    <div class="flex items-start gap-2">
-                      <span class="w-1.5 h-1.5 rounded-full mt-1 shrink-0" style={`background: rgb(var(--color-collection-${p.collection}))`}></span>
-                      <span class="text-sm text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug">{p.title}</span>
-                    </div>
-                  </a>
-                ))}
+          {
+            readMorePosts.length > 0 && (
+              <div class="lg:hidden mt-12 pt-8 border-t border-skin-line/15">
+                <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-4">
+                  Read More
+                </span>
+                <div class="flex flex-col gap-3">
+                  {readMorePosts.map((p) => (
+                    <a
+                      href={withBase(
+                        `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
+                      )}
+                      class="group block"
+                    >
+                      <div class="flex items-start gap-2">
+                        <span
+                          class="w-1.5 h-1.5 rounded-full mt-1 shrink-0"
+                          style={`background: rgb(var(--color-collection-${p.collection}))`}
+                        />
+                        <span class="text-sm text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug">
+                          {p.title}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )
+          }
 
           <!-- Previous/Next Post Buttons -->
           <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -277,7 +429,9 @@ const readMorePosts = posts
                   <TbChevronLeft className="h-6 w-6 flex-none" />
                   <div>
                     <span>Previous Post</span>
-                    <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
+                    <div class="text-sm text-skin-accent/85">
+                      {prevPost.title}
+                    </div>
                   </div>
                 </a>
               )
@@ -290,7 +444,9 @@ const readMorePosts = posts
                 >
                   <div>
                     <span>Next Post</span>
-                    <div class="text-sm text-skin-accent/85">{nextPost.title}</div>
+                    <div class="text-sm text-skin-accent/85">
+                      {nextPost.title}
+                    </div>
                   </div>
                   <TbChevronRight className="h-6 w-6 flex-none" />
                 </a>
@@ -302,18 +458,19 @@ const readMorePosts = posts
 
       <!-- Right Column (TOC Desktop) -->
       <aside class="hidden lg:block relative mt-40">
-        {toc && (
-          <div class="sticky top-24 transition-opacity duration-300">
-            <TableOfContents headings={headings} />
-          </div>
-        )}
+        {
+          toc && (
+            <div class="sticky top-24 transition-opacity duration-300">
+              <TableOfContents headings={headings} />
+            </div>
+          )
+        }
       </aside>
-
     </div>
   </div>
-  
+
   <ClimbingBackToTop />
-  
+
   <Footer />
 </Layout>
 
@@ -333,35 +490,37 @@ const readMorePosts = posts
       padding: 0;
     }
   }
-  
+
   /* Ensure code blocks have proper theme-aware styling */
   :global(pre) {
     @apply rounded-lg border border-skin-line/20 overflow-x-auto;
-    line-height: 1.5 !important; 
+    line-height: 1.5 !important;
     font-size: 0.875rem !important; /* Base font size for container */
     padding: 1rem !important;
   }
-  
+
   :global(pre code) {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace !important;
     font-size: 0.875rem !important; /* 14px */
     line-height: 1.5 !important; /* 21px */
-    display: block; 
+    display: block;
   }
-  
+
   /* Shiki dual theme support */
   :global(.astro-code),
   :global(.astro-code span) {
     color: var(--shiki-light);
     background-color: transparent !important;
   }
-  
+
   :global(html[data-theme="latte"] .astro-code),
   :global(html[data-theme="latte"] .astro-code span) {
     color: var(--shiki-light);
     background-color: transparent !important;
   }
-  
+
   :global(html[data-theme="dark"] .astro-code),
   :global(html[data-theme="dark"] .astro-code span),
   :global(html[data-theme="frappe"] .astro-code),
@@ -377,18 +536,21 @@ const readMorePosts = posts
   /* Glassy, Glowy, Premium Code Block Style */
   :global(pre) {
     @apply rounded-xl border border-skin-line/40 overflow-x-auto; /* Removed p-5 */
-    background-color: rgba(var(--color-card), 0.6) !important; /* Semi-transparent base */
+    background-color: rgba(
+      var(--color-card),
+      0.6
+    ) !important; /* Semi-transparent base */
     backdrop-filter: blur(12px); /* Blur effect */
-    box-shadow: 
-      0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
       0 2px 4px -1px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Subtle inner highlight */
     transition: all 0.3s ease;
   }
 
   :global(pre:hover) {
-    box-shadow: 
-      0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
     border-color: rgba(var(--color-border), 0.6);
@@ -399,7 +561,7 @@ const readMorePosts = posts
     @apply absolute right-2 top-2 z-20 p-1.5 opacity-0 transition-all scale-95 cursor-pointer;
     /* Removed background/border logic to match request "don't like bg and border" */
     /* Only icon visible */
-    color: rgba(var(--color-text-base), 0.4); 
+    color: rgba(var(--color-text-base), 0.4);
   }
 
   :global(.code-wrapper:hover .copy-code) {
@@ -408,25 +570,27 @@ const readMorePosts = posts
 
   :global(.copy-code:hover) {
     /* Slight glow/color on hover, but no box */
-    color: rgba(var(--color-accent), 1); 
+    color: rgba(var(--color-accent), 1);
     filter: drop-shadow(0 0 4px rgba(var(--color-accent), 0.3));
   }
-  
+
   /* Line Numbers Implementation - Minimal & Subtle */
   :global(.line-numbers) {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 2rem; 
+    width: 2rem;
     padding-top: 1rem; /* Match pre padding top exactly */
     padding-bottom: 1rem;
     text-align: right;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace !important;
     font-size: 0.875rem !important; /* 14px - Match code */
     line-height: 1.5 !important; /* 21px - Match code */
-    color: rgba(var(--color-text-base), 0.25); 
-    background-color: transparent; 
+    color: rgba(var(--color-text-base), 0.25);
+    background-color: transparent;
     user-select: none;
     pointer-events: none;
     overflow: hidden;
@@ -435,18 +599,17 @@ const readMorePosts = posts
   :global(pre) {
     /* padding handled in definition above */
     /* Remove padding entirely from code block container */
-    padding-left: 2rem !important; 
+    padding-left: 2rem !important;
     padding-right: 1rem !important;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
   }
-  
+
   :global(.line-numbers span) {
     display: block;
     padding-right: 0.75rem; /* Slight padding to separate from code */
     height: 1.3125rem; /* 14px * 1.5 = 21px (1.3125rem). Explicit height helps alignment */
   }
-
 </style>
 
 <script is:inline data-astro-rerun>
@@ -539,16 +702,19 @@ const readMorePosts = posts
       const code = codeBlock.querySelector("code");
       if (code) {
         // We need to count lines of the TEXT content, but handle potential empty last line from Prism/Shiki
-        const textContent = code.innerText.replace(/\n$/, '');
-        const lineCount = textContent.split('\n').length;
-        
-        if (lineCount > 1) { 
-             const lineNumbers = document.createElement("div");
-             lineNumbers.className = "line-numbers";
-             lineNumbers.ariaHidden = "true";
-             // Generate spans
-             lineNumbers.innerHTML = Array.from({length: lineCount}, (_, i) => `<span>${i + 1}</span>`).join('');
-             wrapper.appendChild(lineNumbers);
+        const textContent = code.innerText.replace(/\n$/, "");
+        const lineCount = textContent.split("\n").length;
+
+        if (lineCount > 1) {
+          const lineNumbers = document.createElement("div");
+          lineNumbers.className = "line-numbers";
+          lineNumbers.ariaHidden = "true";
+          // Generate spans
+          lineNumbers.innerHTML = Array.from(
+            { length: lineCount },
+            (_, i) => `<span>${i + 1}</span>`,
+          ).join("");
+          wrapper.appendChild(lineNumbers);
         }
       }
 
@@ -567,7 +733,7 @@ const readMorePosts = posts
 
       // visual feedback
       button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-accent"><path d="M20 6 9 17l-5-5"/></svg>`;
-      
+
       setTimeout(() => {
         button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
       }, 700);
@@ -599,19 +765,23 @@ const readMorePosts = posts
 
     container.innerHTML = "";
 
-    const quotes = Array.from(article.querySelectorAll('figure.not-prose[data-position="left"]'));
+    const quotes = Array.from(
+      article.querySelectorAll('figure.not-prose[data-position="left"]'),
+    );
     if (quotes.length === 0) return;
 
     const sidebarTop = sidebar.getBoundingClientRect().top + window.scrollY;
 
-    quotes.forEach(quote => {
+    quotes.forEach((quote) => {
       const quotePageY = quote.getBoundingClientRect().top + window.scrollY;
       const topPos = quotePageY - sidebarTop;
 
       const bq = quote.querySelector("blockquote");
       const author = quote.getAttribute("data-author") || "";
       const source = quote.getAttribute("data-source") || "";
-      const text = bq ? bq.textContent.replace(/[\u201C\u201D"]/g, "").trim() : "";
+      const text = bq
+        ? bq.textContent.replace(/[\u201C\u201D"]/g, "").trim()
+        : "";
       if (!text) return;
 
       const mirror = document.createElement("div");
@@ -620,7 +790,9 @@ const readMorePosts = posts
         `<div style="max-width:180px;width:100%;padding:0.75rem;border-left:2px solid rgba(var(--color-text-base),0.12);background:rgba(var(--color-card),0.3);border-radius:0 4px 4px 0">` +
         `<p style="font-size:11px;font-style:italic;color:rgba(var(--color-text-base),0.5);line-height:1.6;font-family:ui-serif,Georgia,serif">\u201C${text}\u201D</p>` +
         `<span style="display:block;margin-top:0.5rem;font-family:ui-monospace,monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(var(--color-text-base),0.3)">${author}</span>` +
-        (source ? `<span style="display:block;font-family:ui-monospace,monospace;font-size:8px;font-style:italic;color:rgba(var(--color-text-base),0.2)">\u2014 ${source}</span>` : "") +
+        (source
+          ? `<span style="display:block;font-family:ui-monospace,monospace;font-size:8px;font-style:italic;color:rgba(var(--color-text-base),0.2)">\u2014 ${source}</span>`
+          : "") +
         `</div>`;
       container.appendChild(mirror);
     });

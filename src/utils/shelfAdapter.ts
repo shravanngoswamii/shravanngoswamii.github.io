@@ -34,7 +34,7 @@ export interface ShelfListingItem {
 
 export function shelfToListingItem(
   item: CollectionEntry<"shelf">,
-  category: BlogCollection
+  category: BlogCollection,
 ): ShelfListingItem {
   const slug = stripExt(item.id);
   return {
@@ -48,8 +48,7 @@ export function shelfToListingItem(
       pubDatetime: item.data.pubDatetime!,
       modDatetime: null,
       description:
-        item.data.description ||
-        `${item.data.title} by ${item.data.creator}`,
+        item.data.description || `${item.data.title} by ${item.data.creator}`,
       tags: item.data.tags ?? [],
       draft: false,
       featured: false,
@@ -70,7 +69,7 @@ export function shelfToListingItem(
 }
 
 export async function getDoneShelfItems(
-  category?: BlogCollection
+  category?: BlogCollection,
 ): Promise<ShelfListingItem[]> {
   const shelf = await getCollection("shelf");
   return shelf
@@ -78,9 +77,14 @@ export async function getDoneShelfItems(
       (i) =>
         i.data.status === "done" &&
         i.data.pubDatetime &&
-        (!category || i.data.categories.includes(category))
+        (!category || i.data.categories.includes(category)),
     )
-    .map((i) => shelfToListingItem(i, category ?? (i.data.categories[0] as BlogCollection)));
+    .map((i) =>
+      shelfToListingItem(
+        i,
+        category ?? (i.data.categories[0] as BlogCollection),
+      ),
+    );
 }
 
 export type MergedItem =
@@ -93,6 +97,6 @@ export function sortMergedItems(items: MergedItem[]): MergedItem[] {
   return items.sort(
     (a, b) =>
       new Date(b.data.pubDatetime).getTime() -
-      new Date(a.data.pubDatetime).getTime()
+      new Date(a.data.pubDatetime).getTime(),
   );
 }

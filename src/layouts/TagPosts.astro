@@ -21,9 +21,18 @@ const { posts, tag, tagName } = Astro.props;
 const publications = await getPublications();
 
 const getRelatedPubs = (tags: string[]) => {
-  return publications.filter(pub => 
-    pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
-  ).map(pub => ({ title: pub.entryTags.title || "", url: pub.entryTags.url }));
+  return publications
+    .filter(
+      (pub) =>
+        pub.entryTags.keywords &&
+        tags.some((tag) =>
+          pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+        ),
+    )
+    .map((pub) => ({
+      title: pub.entryTags.title || "",
+      url: pub.entryTags.url,
+    }));
 };
 ---
 

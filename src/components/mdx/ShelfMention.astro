@@ -8,43 +8,54 @@ export interface Props {
 
 const { id } = Astro.props;
 const allShelf = await getCollection("shelf");
-const item = allShelf.find(i => stripExt(i.id) === id);
+const item = allShelf.find((i) => stripExt(i.id) === id);
 ---
 
-{item ? (
-  <span class="shelf-mention">
-    <a href={`/shelf/${stripExt(item.id)}/`} class="shelf-mention-link">
-      <slot />
-    </a>
-    <span class="shelf-mention-card" aria-hidden="true">
-      <span class="shelf-mention-cover" style={`background: ${getCoverGradient(item.data.title)}`}>
-        <span class="shelf-mention-cover-icon" set:html={SHELF_TYPE[item.data.type].icon} />
-        <span class="shelf-mention-cover-text">
-          <span class="shelf-mention-cover-title">{item.data.title}</span>
-          <span class="shelf-mention-cover-creator">{item.data.creator}</span>
-        </span>
-      </span>
-      <span class="shelf-mention-info">
-        <span class="shelf-mention-title">{item.data.title}</span>
-        <span class="shelf-mention-meta">
-          <span>{item.data.creator}</span>
-          {item.data.year && <span>· {item.data.year}</span>}
-        </span>
-        {item.data.rating !== undefined && (
-          <span class="shelf-mention-rating">
-            {item.data.rating}<span class="shelf-mention-rating-dim">/10</span>
+{
+  item ? (
+    <span class="shelf-mention">
+      <a href={`/shelf/${stripExt(item.id)}/`} class="shelf-mention-link">
+        <slot />
+      </a>
+      <span class="shelf-mention-card" aria-hidden="true">
+        <span
+          class="shelf-mention-cover"
+          style={`background: ${getCoverGradient(item.data.title)}`}
+        >
+          <span
+            class="shelf-mention-cover-icon"
+            set:html={SHELF_TYPE[item.data.type].icon}
+          />
+          <span class="shelf-mention-cover-text">
+            <span class="shelf-mention-cover-title">{item.data.title}</span>
+            <span class="shelf-mention-cover-creator">{item.data.creator}</span>
           </span>
-        )}
-        {item.data.description && (
-          <span class="shelf-mention-desc">{item.data.description}</span>
-        )}
-        <span class="shelf-mention-type">{SHELF_TYPE[item.data.type].label}</span>
+        </span>
+        <span class="shelf-mention-info">
+          <span class="shelf-mention-title">{item.data.title}</span>
+          <span class="shelf-mention-meta">
+            <span>{item.data.creator}</span>
+            {item.data.year && <span>· {item.data.year}</span>}
+          </span>
+          {item.data.rating !== undefined && (
+            <span class="shelf-mention-rating">
+              {item.data.rating}
+              <span class="shelf-mention-rating-dim">/10</span>
+            </span>
+          )}
+          {item.data.description && (
+            <span class="shelf-mention-desc">{item.data.description}</span>
+          )}
+          <span class="shelf-mention-type">
+            {SHELF_TYPE[item.data.type].label}
+          </span>
+        </span>
       </span>
     </span>
-  </span>
-) : (
-  <slot />
-)}
+  ) : (
+    <slot />
+  )
+}
 
 <style>
   .shelf-mention {
@@ -75,7 +86,9 @@ const item = allShelf.find(i => stripExt(i.id) === id);
     width: 14rem;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow:
+      0 8px 30px rgba(0, 0, 0, 0.18),
+      0 2px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(var(--color-border), 0.25);
     background: rgba(var(--color-fill), 0.98);
     backdrop-filter: blur(16px);

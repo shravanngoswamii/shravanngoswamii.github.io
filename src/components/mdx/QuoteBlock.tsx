@@ -7,9 +7,19 @@ interface Props {
   children: ReactNode;
 }
 
-export default function QuoteBlock({ author, source, position = "inline", children }: Props) {
+export default function QuoteBlock({
+  author,
+  source,
+  position = "inline",
+  children,
+}: Props) {
   return (
-    <figure className="not-prose my-8" data-position={position} data-author={author} data-source={source || ""}>
+    <figure
+      className="not-prose my-8"
+      data-position={position}
+      data-author={author}
+      data-source={source || ""}
+    >
       <blockquote className="relative px-8 sm:px-10 py-6">
         <span
           className="absolute top-2 left-2 text-5xl font-serif leading-none select-none pointer-events-none"

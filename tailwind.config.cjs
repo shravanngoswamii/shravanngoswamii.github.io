@@ -68,7 +68,7 @@ module.exports = {
       fontFamily: {
         // "Luxury" font stack
         mono: ["'JetBrains Mono'", "'IBM Plex Mono'", "monospace"],
-        sans: ["'Geist'", "'Inter'", "sans-serif"], 
+        sans: ["'Geist'", "'Inter'", "sans-serif"],
         serif: ["'Playfair Display'", "serif"], // The "Trillionaire" font
       },
 

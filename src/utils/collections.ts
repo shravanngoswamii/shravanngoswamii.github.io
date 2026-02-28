@@ -1,10 +1,26 @@
 import { getCollection } from "astro:content";
 import type { AnyPost, BlogCollection } from "../types";
 
-export const COLLECTION_META: Record<BlogCollection, { label: string; prefix: string; description: string }> = {
-  tech: { label: "Tech", prefix: "/tech", description: "A collection of my writings on research, technology, and development." },
-  cinema: { label: "Cinema", prefix: "/cinema", description: "Thoughts on films, storytelling, and the art of cinema." },
-  philosophy: { label: "Philosophy", prefix: "/philosophy", description: "Reflections on ideas, meaning, and the human condition." },
+export const COLLECTION_META: Record<
+  BlogCollection,
+  { label: string; prefix: string; description: string }
+> = {
+  tech: {
+    label: "Tech",
+    prefix: "/tech",
+    description:
+      "A collection of my writings on research, technology, and development.",
+  },
+  cinema: {
+    label: "Cinema",
+    prefix: "/cinema",
+    description: "Thoughts on films, storytelling, and the art of cinema.",
+  },
+  philosophy: {
+    label: "Philosophy",
+    prefix: "/philosophy",
+    description: "Reflections on ideas, meaning, and the human condition.",
+  },
 };
 
 export function getPostUrl(post: AnyPost): string {

@@ -17,6 +17,6 @@ One Piece is not just an anime; it’s an odyssey that has redefined world-build
 
 ### The World-Building
 
-What sets *One Piece* apart is its intricate, inter-connected world. Islands feel alive, political structures mimic our own flawed realities with oppressive governments and rebellion, and the lore remains consistent across over a thousand chapters. Every detail matters, and every character—no matter how seemingly insignificant—has a role to play.
+What sets _One Piece_ apart is its intricate, inter-connected world. Islands feel alive, political structures mimic our own flawed realities with oppressive governments and rebellion, and the lore remains consistent across over a thousand chapters. Every detail matters, and every character—no matter how seemingly insignificant—has a role to play.
 
 If you are looking for an adventure that guarantees an emotional rollercoaster, this is it. It demands an investment of time, but the payoff is an incomparable masterpiece.

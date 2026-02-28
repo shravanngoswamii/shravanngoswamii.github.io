@@ -12,12 +12,21 @@ export const getStaticPaths = (async () => {
   ]);
 
   const allPosts = [
-    ...techPosts.map(p => ({ ...p, _collection: "tech" as BlogCollection })),
-    ...cinemaPosts.map(p => ({ ...p, _collection: "cinema" as BlogCollection })),
-    ...philosophyPosts.map(p => ({ ...p, _collection: "philosophy" as BlogCollection })),
+    ...techPosts.map((p) => ({ ...p, _collection: "tech" as BlogCollection })),
+    ...cinemaPosts.map((p) => ({
+      ...p,
+      _collection: "cinema" as BlogCollection,
+    })),
+    ...philosophyPosts.map((p) => ({
+      ...p,
+      _collection: "philosophy" as BlogCollection,
+    })),
   ];
 
-  const redirectPaths: { params: { alias: string }; props: { destination: string; postTitle: string } }[] = [];
+  const redirectPaths: {
+    params: { alias: string };
+    props: { destination: string; postTitle: string };
+  }[] = [];
 
   for (const post of allPosts) {
     const prefix = COLLECTION_META[post._collection].prefix;
