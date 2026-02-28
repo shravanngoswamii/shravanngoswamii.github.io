@@ -2,7 +2,6 @@
 title: "Random Thoughts on Being and Time"
 pubDatetime: 2026-02-28
 description: "A draft collecting some loose philosophical ideas."
-draft: true
 tags: ["random", "philosophy", "existentialism"]
 thinkers: ["Heidegger", "Sartre"]
 tradition: "Continental"

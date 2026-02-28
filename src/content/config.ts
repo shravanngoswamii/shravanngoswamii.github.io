@@ -78,6 +78,9 @@ const shelf = defineCollection({
       poster: z.string().optional(),
       pubDatetime: z.date().optional(),
       tags: z.array(z.string()).optional().default([]),
+      author: z.string().default(SITE.author),
+      imdbId: z.string().optional(),
+      letterboxdSlug: z.string().optional(),
     }),
 });
 

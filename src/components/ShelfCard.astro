@@ -1,5 +1,11 @@
 ---
-import { getCoverGradient, SHELF_STATUS, SHELF_TYPE, type ShelfType } from "@utils/shelf";
+import {
+  getCoverGradient,
+  SHELF_STATUS,
+  SHELF_TYPE,
+  type ShelfType,
+} from "@utils/shelf";
+import { formatYear } from "@utils/formatYear";
 
 export interface Props {
   type: ShelfType;
@@ -47,17 +53,31 @@ const isVideo = type === "video";
   class:list={["shelf-card group block", compact ? "" : "flex flex-col gap-3"]}
   data-status={status}
   data-type={type}
-  {...(href ? { href } : {})}
+  {...href ? { href } : {}}
 >
-  <div class="shelf-flip-container relative w-full aspect-[2/3]" style="perspective: 800px;">
+  <div
+    class="shelf-flip-container relative w-full aspect-[2/3]"
+    style="perspective: 800px;"
+  >
     {/* Type label — appears on hover above the card */}
-    <div class="shelf-flip-label absolute -top-5 left-0 right-0 text-center opacity-0 transition-all duration-300 pointer-events-none z-20 -translate-y-1">
-      <span class:list={["inline-block px-2 py-0.5 rounded-sm font-mono uppercase tracking-widest", compact ? "text-[7px]" : "text-[8px]"]} style="background: rgba(var(--color-text-base), 0.08); color: rgba(var(--color-text-base), 0.5);">
+    <div
+      class="shelf-flip-label absolute -top-5 left-0 right-0 text-center opacity-0 transition-all duration-300 pointer-events-none z-20 -translate-y-1"
+    >
+      <span
+        class:list={[
+          "inline-block px-2 py-0.5 rounded-sm font-mono uppercase tracking-widest",
+          compact ? "text-[7px]" : "text-[8px]",
+        ]}
+        style="background: rgba(var(--color-text-base), 0.08); color: rgba(var(--color-text-base), 0.5);"
+      >
         {typeInfo.label}
       </span>
     </div>
 
-    <div class="shelf-flip-inner relative w-full h-full transition-transform duration-500" style="transform-style: preserve-3d;">
+    <div
+      class="shelf-flip-inner relative w-full h-full transition-transform duration-500"
+      style="transform-style: preserve-3d;"
+    >
       {/* === FRONT === */}
       <div
         class:list={[
@@ -65,101 +85,178 @@ const isVideo = type === "video";
         ]}
         style={`background: ${gradient}; backface-visibility: hidden;`}
       >
-        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"></div>
-
-        {isBook && (
-          <>
-            <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25"></div>
-            <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10"></div>
-          </>
-        )}
-
-        {isFilm && (
-          <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"></div>
-        )}
-
-        {isSeries && (
-          <>
-            <div class="absolute left-0 inset-y-0 w-[2px] bg-white/10"></div>
-            <div class="absolute right-0 inset-y-0 w-[2px] bg-white/10"></div>
-            <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"></div>
-          </>
-        )}
-
-        {isAnime && (
-          <div class="absolute inset-0 pointer-events-none opacity-[0.05]" style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"></div>
-        )}
-
-        {isGame && (
-          <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;6&quot; height=&quot;6&quot; viewBox=&quot;0 0 6 6&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Crect width=&quot;3&quot; height=&quot;3&quot; fill=&quot;%23ffffff&quot;/%3E%3C/svg%3E'); background-size: 6px 6px;"></div>
-        )}
-
-        {isCourse && (
-          <div class="absolute inset-0 pointer-events-none opacity-[0.05]" style="background: repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(255,255,255,0.3) 12px, rgba(255,255,255,0.3) 13px), repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(255,255,255,0.15) 12px, rgba(255,255,255,0.15) 13px);"></div>
-        )}
-
-        {isVideo && !compact && (
-          <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08]">
-            <svg class="w-16 h-16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        )}
-
-        <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;4&quot; height=&quot;4&quot; viewBox=&quot;0 0 4 4&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M1 3h1v1H1V3zm2-2h1v1H3V1z&quot; fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;/%3E%3C/svg%3E');"></div>
-
-        {!compact && (
-          <div class="absolute top-2.5 right-2.5 z-10">
-            <span
-              class="px-1.5 py-0.5 text-[8px] font-mono uppercase tracking-wider rounded-sm"
-              style={`background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); color: ${statusInfo.color}`}
-            >
-              {statusInfo.label}
-            </span>
-          </div>
-        )}
-
-        <div class:list={["absolute z-10", compact ? "top-1.5 left-1.5" : "top-2.5 left-2.5"]}>
-          <span class:list={["select-none text-white/40 leading-none shelf-icon", compact ? "w-2.5 h-2.5" : "w-3 h-3"]} set:html={typeInfo.icon} />
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
+        >
         </div>
 
-        <div class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10">
-          <h3 class:list={["text-white font-serif leading-snug drop-shadow-sm", compact ? "text-[10px] sm:text-[11px]" : "text-sm sm:text-base"]}>
+        {
+          isBook && (
+            <>
+              <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25" />
+              <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10" />
+            </>
+          )
+        }
+
+        {
+          isFilm && (
+            <div
+              class="absolute inset-0 pointer-events-none opacity-[0.06]"
+              style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"
+            />
+          )
+        }
+
+        {
+          isSeries && (
+            <>
+              <div class="absolute left-0 inset-y-0 w-[2px] bg-white/10" />
+              <div class="absolute right-0 inset-y-0 w-[2px] bg-white/10" />
+              <div
+                class="absolute inset-0 pointer-events-none opacity-[0.04]"
+                style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"
+              />
+            </>
+          )
+        }
+
+        {
+          isAnime && (
+            <div
+              class="absolute inset-0 pointer-events-none opacity-[0.05]"
+              style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"
+            />
+          )
+        }
+
+        {
+          isGame && (
+            <div
+              class="absolute inset-0 pointer-events-none opacity-[0.06]"
+              style="background-image: url('data:image/svg+xml,%3Csvg width=%226%22 height=%226%22 viewBox=%220 0 6 6%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%223%22 height=%223%22 fill=%22%23ffffff%22/%3E%3C/svg%3E'); background-size: 6px 6px;"
+            />
+          )
+        }
+
+        {
+          isCourse && (
+            <div
+              class="absolute inset-0 pointer-events-none opacity-[0.05]"
+              style="background: repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(255,255,255,0.3) 12px, rgba(255,255,255,0.3) 13px), repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(255,255,255,0.15) 12px, rgba(255,255,255,0.15) 13px);"
+            />
+          )
+        }
+
+        {
+          isVideo && !compact && (
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08]">
+              <svg class="w-16 h-16" viewBox="0 0 24 24" fill="white">
+                <polygon points="5,3 19,12 5,21" />
+              </svg>
+            </div>
+          )
+        }
+
+        <div
+          class="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style="background-image: url('data:image/svg+xml,%3Csvg width=%224%22 height=%224%22 viewBox=%220 0 4 4%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M1 3h1v1H1V3zm2-2h1v1H3V1z%22 fill=%22%23ffffff%22 fill-opacity=%221%22/%3E%3C/svg%3E');"
+        >
+        </div>
+
+        {
+          !compact && (
+            <div class="absolute top-2.5 right-2.5 z-10">
+              <span
+                class="px-1.5 py-0.5 text-[8px] font-mono uppercase tracking-wider rounded-sm"
+                style={`background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); color: ${statusInfo.color}`}
+              >
+                {statusInfo.label}
+              </span>
+            </div>
+          )
+        }
+
+        <div
+          class:list={[
+            "absolute z-10",
+            compact ? "top-1.5 left-1.5" : "top-2.5 left-2.5",
+          ]}
+        >
+          <span
+            class:list={[
+              "select-none text-white/40 leading-none shelf-icon",
+              compact ? "w-2.5 h-2.5" : "w-3 h-3",
+            ]}
+            set:html={typeInfo.icon}
+          />
+        </div>
+
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10"
+        >
+          <h3
+            class:list={[
+              "text-white font-serif leading-snug drop-shadow-sm",
+              compact ? "text-[10px] sm:text-[11px]" : "text-sm sm:text-base",
+            ]}
+          >
             {title}
           </h3>
-          {!compact && (
-            <p class="font-mono text-[7px] uppercase tracking-widest text-white/25 mt-1.5">{genre}</p>
-          )}
+          {
+            !compact && (
+              <p class="font-mono text-[7px] uppercase tracking-widest text-white/25 mt-1.5">
+                {genre}
+              </p>
+            )
+          }
         </div>
 
-        <div class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8">
-          {compact ? (
-            <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
-              <p class="font-serif text-white/50 text-[8px] truncate italic">{creator}</p>
-              {rating !== undefined && (
-                <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
-                  {rating}<span class="text-white/25">/10</span>
-                </span>
-              )}
-            </div>
-          ) : (
-            <div class="text-center pb-3 px-3">
-              <p class="font-serif text-white/55 text-[11px] italic">{creator}</p>
-              {year && (
-                <p class="text-white/25 text-[9px] font-mono mt-0.5">{year}</p>
-              )}
-            </div>
-          )}
+        <div
+          class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8"
+        >
+          {
+            compact ? (
+              <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
+                <p class="font-serif text-white/50 text-[8px] truncate italic">
+                  {creator}
+                </p>
+                {rating !== undefined && (
+                  <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
+                    {rating}
+                    <span class="text-white/25">/10</span>
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div class="text-center pb-3 px-3">
+                <p class="font-serif text-white/55 text-[11px] italic">
+                  {creator}
+                </p>
+                {year && (
+                  <p class="text-white/25 text-[9px] font-mono mt-0.5">
+                    {formatYear(year)}
+                  </p>
+                )}
+              </div>
+            )
+          }
         </div>
 
-        {!compact && rating !== undefined && (
-          <div class="absolute z-10 bottom-2 right-2.5">
-            <span
-              class="font-mono font-medium text-[10px] backdrop-blur-sm rounded-sm px-1 py-0.5"
-              style="background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.7);"
-            >
-              {rating}<span class="text-white/30">/10</span>
-            </span>
-          </div>
-        )}
+        {
+          !compact && rating !== undefined && (
+            <div class="absolute z-10 bottom-2 right-2.5">
+              <span
+                class="font-mono font-medium text-[10px] backdrop-blur-sm rounded-sm px-1 py-0.5"
+                style="background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.7);"
+              >
+                {rating}
+                <span class="text-white/30">/10</span>
+              </span>
+            </div>
+          )
+        }
       </div>
 
       {/* === BACK === */}
@@ -167,35 +264,77 @@ const isVideo = type === "video";
         class="shelf-flip-back absolute inset-0 rounded overflow-hidden shadow-md"
         style="backface-visibility: hidden; transform: rotateY(180deg);"
       >
-        {poster ? (
-          <img src={poster} alt={`${title} poster`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-        ) : (
-          <div class="absolute inset-0" style={`background: ${gradient}`}></div>
-        )}
+        {
+          poster ? (
+            <img
+              src={poster}
+              alt={`${title} poster`}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div class="absolute inset-0" style={`background: ${gradient}`} />
+          )
+        }
         <div class="absolute inset-0 bg-black/40"></div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10">
-          <h3 class:list={["text-white font-serif leading-snug drop-shadow-sm mb-1", compact ? "text-[10px]" : "text-sm"]}>
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10"
+        >
+          <h3
+            class:list={[
+              "text-white font-serif leading-snug drop-shadow-sm mb-1",
+              compact ? "text-[10px]" : "text-sm",
+            ]}
+          >
             {title}
           </h3>
-          <p class:list={["font-serif text-white/60 italic", compact ? "text-[8px]" : "text-[11px]"]}>{creator}</p>
-          {year && <p class:list={["font-mono text-white/30 mt-1", compact ? "text-[7px]" : "text-[9px]"]}>{year}</p>}
-          {rating !== undefined && (
-            <div class="mt-2">
-              <span class:list={["font-mono font-medium text-white/70", compact ? "text-[8px]" : "text-[11px]"]}>
-                {rating}<span class="text-white/30">/10</span>
-              </span>
-            </div>
-          )}
+          <p
+            class:list={[
+              "font-serif text-white/60 italic",
+              compact ? "text-[8px]" : "text-[11px]",
+            ]}
+          >
+            {creator}
+          </p>
+          {
+            year && (
+              <p
+                class:list={[
+                  "font-mono text-white/30 mt-1",
+                  compact ? "text-[7px]" : "text-[9px]",
+                ]}
+              >
+                {formatYear(year)}
+              </p>
+            )
+          }
+          {
+            rating !== undefined && (
+              <div class="mt-2">
+                <span
+                  class:list={[
+                    "font-mono font-medium text-white/70",
+                    compact ? "text-[8px]" : "text-[11px]",
+                  ]}
+                >
+                  {rating}
+                  <span class="text-white/30">/10</span>
+                </span>
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
   </div>
 
-  {!compact && description && (
-    <p class="text-[11px] text-skin-base/40 leading-relaxed line-clamp-2 px-0.5">
-      {description}
-    </p>
-  )}
+  {
+    !compact && description && (
+      <p class="text-[11px] text-skin-base/40 leading-relaxed line-clamp-2 px-0.5">
+        {description}
+      </p>
+    )
+  }
 </Tag>
 
 <style>

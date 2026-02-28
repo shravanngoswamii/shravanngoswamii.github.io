@@ -35,21 +35,29 @@ const socialImageURL = new URL(
   Astro.url.origin,
 ).href;
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: `${author}`,
-      url: `${profile}`,
-    },
-  ],
-};
+const isArticle = !!pubDatetime;
+
+const structuredData = isArticle
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title,
+      description,
+      image: socialImageURL,
+      datePublished: pubDatetime!.toISOString(),
+      ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonicalURL },
+      author: [{ "@type": "Person", name: author, url: profile }],
+      publisher: { "@type": "Person", name: SITE.author, url: SITE.website },
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE.title,
+      url: SITE.website,
+      description: SITE.desc,
+      author: [{ "@type": "Person", name: author, url: profile }],
+    };
 ---
 
 <!doctype html>
@@ -71,7 +79,7 @@ const structuredData = {
       gtag("config", "G-ZXC7NG6S55");
     </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -82,11 +90,20 @@ const structuredData = {
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={SITE.title}
+      href={withBase("/rss.xml")}
+    />
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:type" content={isArticle ? "article" : "website"} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:locale" content={LOCALE.lang ?? "en"} />
 
     {
       pubDatetime && (
@@ -105,11 +122,13 @@ const structuredData = {
       )
     }
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <meta name="twitter:site" content="@shravangoswamii" />
+    <meta name="twitter:creator" content="@shravangoswamii" />
 
     <script
       type="application/ld+json"

@@ -251,19 +251,19 @@
     // Abort previous listeners to prevent stacking across page transitions
     if (window.__climberAbort) window.__climberAbort.abort();
     window.__climberAbort = new AbortController();
-    var signal = window.__climberAbort.signal;
+    const signal = window.__climberAbort.signal;
 
-    var btn = document.getElementById("back-to-top");
+    const btn = document.getElementById("back-to-top");
     if (!btn) return;
 
-    var scrollTimer;
-    var hideTimer;
-    var lastPos = window.pageYOffset;
+    let scrollTimer;
+    let hideTimer;
+    let lastPos = window.pageYOffset;
 
     window.addEventListener(
       "scroll",
       function () {
-        var currentPos =
+        const currentPos =
           window.pageYOffset || document.documentElement.scrollTop;
 
         // Show on scroll if past threshold

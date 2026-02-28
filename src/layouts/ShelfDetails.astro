@@ -7,9 +7,18 @@ import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import ShareLinks from "@components/ShareLinks.astro";
 import Giscus from "@components/Giscus.astro";
-import { getCoverGradient, SHELF_STATUS, SHELF_TYPE, stripExt } from "@utils/shelf";
+import {
+  getCoverGradient,
+  SHELF_STATUS,
+  SHELF_TYPE,
+  stripExt,
+} from "@utils/shelf";
 import { SITE } from "@config";
 import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
+import { getAllPosts, COLLECTION_META } from "@utils/collections";
+import getSortedPosts from "@utils/getSortedPosts";
+import { withBase } from "@utils/base";
+import { formatYear } from "@utils/formatYear";
 import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 import Callout from "@components/mdx/Callout";
@@ -18,6 +27,7 @@ import Spoiler from "@components/mdx/Spoiler";
 import Timeline from "@components/mdx/Timeline";
 import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
 import Progress from "@components/mdx/Progress";
+import AuthorCard from "@components/AuthorCard";
 
 export interface Props {
   entry: CollectionEntry<"shelf">;
@@ -32,7 +42,7 @@ const gradient = getCoverGradient(data.title);
 const statusInfo = SHELF_STATUS[data.status];
 const typeInfo = SHELF_TYPE[data.type];
 const hasContent = entry.body && entry.body.trim().length > 0;
-const toc = headings.filter(h => h.depth > 1 && h.depth < 4);
+const toc = headings.filter((h) => h.depth > 1 && h.depth < 4);
 const hasToc = toc.length > 0;
 
 const isBook = data.type === "book";
@@ -43,119 +53,243 @@ const isGame = data.type === "game";
 
 const prevItem = index > 0 ? items[index - 1] : null;
 const nextItem = index < items.length - 1 ? items[index + 1] : null;
+
+const allPosts = getSortedPosts(await getAllPosts());
+let readMorePostsRaw = allPosts
+  .filter(
+    (p) =>
+      p.data.tags.some((t) => data.tags.includes(t)) ||
+      data.categories.includes(
+        p.collection as "tech" | "cinema" | "philosophy",
+      ),
+  )
+  .slice(0, 4);
+
+if (readMorePostsRaw.length === 0) {
+  readMorePostsRaw = allPosts.slice(0, 4);
+}
+
+const readMorePosts = readMorePostsRaw.map((p) => ({
+  title: p.data.title,
+  slug: p.slug,
+  collection: p.collection as string,
+}));
+const headerColorVar =
+  data.categories && data.categories[0]
+    ? `--color-collection-${data.categories[0]}`
+    : "--color-text-base";
+const showFilmLinks = isFilm || isAnime || isSeries;
 ---
 
-<Layout title={`${data.title} | ${SITE.title}`} description={data.description} scrollSmooth>
+<Layout
+  title={`${data.title} | ${SITE.title}`}
+  description={data.description}
+  scrollSmooth
+>
   <Header />
 
-  <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-text-base), 0.02) 0%, transparent 60%)">
-    <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+  <div
+    class="relative border-b border-skin-line/10"
+    style={`background: linear-gradient(135deg, rgba(var(${headerColorVar}), 0.08) 0%, transparent 60%)`}
+  >
+    <div
+      class="absolute inset-0 opacity-[0.03] pointer-events-none"
+      style={`background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(${headerColorVar}), 0.5) 40px, rgba(var(${headerColorVar}), 0.5) 41px); background-size: 41px 100%;`}
+    >
+    </div>
+    <div
+      class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10 relative z-10"
+    >
       <div class="max-w-3xl mx-auto">
-
         <div class="flex flex-col sm:flex-row gap-8">
-          <div class="w-32 sm:w-40 shrink-0">
-            <div class="relative w-full aspect-[2/3]" style="perspective: 800px;">
-              <div class="shelf-detail-flip-inner relative w-full h-full transition-transform duration-500" style="transform-style: preserve-3d;">
-
-                {/* FRONT */}
+          <div class="w-32 sm:w-40 shrink-0 group/flip">
+            <div
+              class="relative w-full aspect-[2/3]"
+              style="perspective: 800px;"
+            >
+              <div
+                class="relative w-full h-full transition-transform duration-500 group-hover/flip:[transform:rotateY(180deg)]"
+                style="transform-style: preserve-3d;"
+              >
+                {/* FRONT — Poster (or gradient fallback) */}
                 <div
                   class="absolute inset-0 rounded overflow-hidden shadow-lg"
-                  style={`background: ${gradient}; backface-visibility: hidden;`}
+                  style="backface-visibility: hidden;"
                 >
-                  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"></div>
-                  {isBook && (
-                    <>
-                      <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25"></div>
-                      <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10"></div>
-                    </>
-                  )}
-                  {isFilm && (
-                    <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"></div>
-                  )}
-                  {isSeries && (
-                    <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"></div>
-                  )}
-                  {isAnime && (
-                    <div class="absolute inset-0 pointer-events-none opacity-[0.05]" style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"></div>
-                  )}
-                  {isGame && (
-                    <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;6&quot; height=&quot;6&quot; viewBox=&quot;0 0 6 6&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Crect width=&quot;3&quot; height=&quot;3&quot; fill=&quot;%23ffffff&quot;/%3E%3C/svg%3E'); background-size: 6px 6px;"></div>
-                  )}
-                  <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;4&quot; height=&quot;4&quot; viewBox=&quot;0 0 4 4&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M1 3h1v1H1V3zm2-2h1v1H3V1z&quot; fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;/%3E%3C/svg%3E');"></div>
+                  {
+                    data.poster ? (
+                      <img
+                        src={data.poster}
+                        alt={`${data.title} poster`}
+                        class="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div
+                        class="absolute inset-0"
+                        style={`background: ${gradient}`}
+                      >
+                        <div
+                          class="absolute inset-0 pointer-events-none"
+                          style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
+                        />
+                      </div>
+                    )
+                  }
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"
+                  >
+                  </div>
                   <div class="absolute top-2 left-2 z-10">
-                    <span class="w-3 h-3 select-none text-white/40 leading-none shelf-icon" set:html={typeInfo.icon} />
+                    <span
+                      class="w-3 h-3 select-none text-white/60 leading-none shelf-icon"
+                      set:html={typeInfo.icon}
+                    />
                   </div>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10">
-                    <h2 class="text-white font-serif text-xs sm:text-sm leading-snug drop-shadow-sm">{data.title}</h2>
+                  <div class="absolute bottom-0 inset-x-0 z-10 px-3 pb-3">
+                    <h2
+                      class="text-white font-serif text-xs sm:text-sm leading-snug drop-shadow-md"
+                    >
+                      {data.title}
+                    </h2>
+                    <p
+                      class="font-serif text-white/60 text-[10px] italic mt-0.5"
+                    >
+                      {data.creator}
+                    </p>
                   </div>
-                  <div class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8">
+                </div>
+
+                {/* BACK — Gradient cover */}
+                <div
+                  class="absolute inset-0 rounded overflow-hidden shadow-lg"
+                  style={`backface-visibility: hidden; transform: rotateY(180deg); background: ${gradient};`}
+                >
+                  <div
+                    class="absolute inset-0 pointer-events-none"
+                    style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
+                  >
+                  </div>
+                  {
+                    isBook && (
+                      <>
+                        <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25" />
+                        <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10" />
+                      </>
+                    )
+                  }
+                  {
+                    isFilm && (
+                      <div
+                        class="absolute inset-0 pointer-events-none opacity-[0.06]"
+                        style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"
+                      />
+                    )
+                  }
+                  {
+                    isSeries && (
+                      <div
+                        class="absolute inset-0 pointer-events-none opacity-[0.04]"
+                        style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"
+                      />
+                    )
+                  }
+                  {
+                    isAnime && (
+                      <div
+                        class="absolute inset-0 pointer-events-none opacity-[0.05]"
+                        style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"
+                      />
+                    )
+                  }
+                  {
+                    isGame && (
+                      <div
+                        class="absolute inset-0 pointer-events-none opacity-[0.06]"
+                        style="background-image: url('data:image/svg+xml,%3Csvg width=%226%22 height=%226%22 viewBox=%220 0 6 6%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%223%22 height=%223%22 fill=%22%23ffffff%22/%3E%3C/svg%3E'); background-size: 6px 6px;"
+                      />
+                    )
+                  }
+                  <div
+                    class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                    style="background-image: url('data:image/svg+xml,%3Csvg width=%224%22 height=%224%22 viewBox=%220 0 4 4%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M1 3h1v1H1V3zm2-2h1v1H3V1z%22 fill=%22%23ffffff%22 fill-opacity=%221%22/%3E%3C/svg%3E');"
+                  >
+                  </div>
+                  <div
+                    class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10"
+                  >
+                    <h2
+                      class="text-white font-serif text-xs sm:text-sm leading-snug drop-shadow-sm"
+                    >
+                      {data.title}
+                    </h2>
+                  </div>
+                  <div
+                    class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8"
+                  >
                     <div class="text-center pb-2 px-2">
-                      <p class="font-serif text-white/55 text-[10px] italic">{data.creator}</p>
+                      <p class="font-serif text-white/55 text-[10px] italic">
+                        {data.creator}
+                      </p>
                     </div>
                   </div>
                 </div>
-
-                {/* BACK */}
-                <div
-                  class="absolute inset-0 rounded overflow-hidden shadow-lg"
-                  style="backface-visibility: hidden; transform: rotateY(180deg);"
-                >
-                  {data.poster ? (
-                    <img src={data.poster} alt={`${data.title} poster`} class="absolute inset-0 w-full h-full object-cover" />
-                  ) : (
-                    <div class="absolute inset-0" style={`background: ${gradient}`}></div>
-                  )}
-                  <div class="absolute inset-0 bg-black/40"></div>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10">
-                    <h2 class="text-white font-serif text-sm leading-snug drop-shadow-sm mb-1">{data.title}</h2>
-                    <p class="font-serif text-white/60 text-[11px] italic">{data.creator}</p>
-                    {data.year && <p class="font-mono text-white/30 text-[9px] mt-1">{data.year}</p>}
-                    {data.rating !== undefined && (
-                      <span class="font-mono font-medium text-white/70 text-[11px] mt-2">
-                        {data.rating}<span class="text-white/30">/10</span>
-                      </span>
-                    )}
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>
 
           <div class="flex-1 min-w-0">
             <div class="flex flex-wrap items-center gap-2 mb-4">
-              <span class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm bg-skin-card-muted text-skin-base/60">
+              <span
+                class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm bg-skin-card-muted text-skin-base/60"
+              >
                 {typeInfo.label}
               </span>
-              {data.categories.map(cat => (
-                <span
-                  class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm"
-                  style={`background: rgba(var(--color-collection-${cat}), 0.1); color: rgb(var(--color-collection-${cat}))`}
-                >
-                  {cat}
-                </span>
-              ))}
+              {
+                data.categories.map((cat) => (
+                  <span
+                    class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm"
+                    style={`background: rgba(var(--color-collection-${cat}), 0.1); color: rgb(var(--color-collection-${cat}))`}
+                  >
+                    {cat}
+                  </span>
+                ))
+              }
             </div>
 
-            <h1 class="font-serif text-3xl sm:text-4xl text-skin-base leading-tight mb-2">
+            <h1
+              class="font-serif text-3xl sm:text-4xl text-skin-base leading-tight mb-2"
+            >
               {data.title}
             </h1>
             <p class="font-serif text-sm italic text-skin-base/50 mb-5">
               {data.creator}
             </p>
 
-            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
-              {data.rating !== undefined && (
-                <div class="flex flex-col">
-                  <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Rating</span>
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-2xl font-serif font-medium text-skin-accent">{data.rating}</span>
-                    <span class="text-sm text-skin-base/30 font-mono">/10</span>
+            <div
+              class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15"
+            >
+              {
+                data.rating !== undefined && (
+                  <div class="flex flex-col">
+                    <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                      Rating
+                    </span>
+                    <div class="flex items-baseline gap-1">
+                      <span class="text-2xl font-serif font-medium text-skin-accent">
+                        {data.rating}
+                      </span>
+                      <span class="text-sm text-skin-base/30 font-mono">
+                        /10
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
+                )
+              }
               <div class="flex flex-col">
-                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Status</span>
+                <span
+                  class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5"
+                  >Status</span
+                >
                 <span
                   class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm w-fit"
                   style={`background: ${statusInfo.color}20; color: ${statusInfo.color}`}
@@ -163,25 +297,131 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
                   {statusInfo.label}
                 </span>
               </div>
-              {data.year && (
-                <div class="flex flex-col">
-                  <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Year</span>
-                  <span class="font-mono text-sm text-skin-base/70">{data.year}</span>
-                </div>
-              )}
-              {data.genre && (
-                <div class="flex flex-col">
-                  <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Genre</span>
-                  <span class="font-serif text-sm italic text-skin-base/60">{data.genre}</span>
-                </div>
-              )}
+              {
+                data.year && (
+                  <div class="flex flex-col">
+                    <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                      Year
+                    </span>
+                    <span class="font-mono text-sm text-skin-base/70">
+                      {formatYear(data.year)}
+                    </span>
+                  </div>
+                )
+              }
+              {
+                data.genre && (
+                  <div class="flex flex-col">
+                    <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                      Genre
+                    </span>
+                    <span class="font-serif text-sm italic text-skin-base/60">
+                      {data.genre}
+                    </span>
+                  </div>
+                )
+              }
+              <div class="flex flex-col">
+                <span
+                  class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5"
+                  >Author</span
+                >
+                <AuthorCard
+                  name={data.author}
+                  className="text-sm text-skin-base/70 font-serif"
+                  client:idle
+                />
+              </div>
             </div>
 
-            {data.description && (
-              <p class="text-sm text-skin-base/60 leading-relaxed mt-3">
-                {data.description}
-              </p>
-            )}
+            {
+              showFilmLinks && (
+                <div class="flex items-center gap-3 mt-3">
+                  {data.imdbId && (
+                    <a
+                      href={`https://www.imdb.com/title/${data.imdbId}/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                      title="IMDb"
+                    >
+                      <img
+                        src="/assets/imdb.png"
+                        alt="IMDb"
+                        class="w-4 h-4 object-contain"
+                      />
+                      <span>IMDb</span>
+                    </a>
+                  )}
+                  {data.letterboxdSlug && (
+                    <a
+                      href={`https://letterboxd.com/film/${data.letterboxdSlug}/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                      title="Letterboxd"
+                    >
+                      <img
+                        src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos-rgb-500px.png"
+                        alt="Letterboxd"
+                        class="w-4 h-4 object-contain dark:hidden"
+                      />
+                      <img
+                        src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb-500px.png"
+                        alt="Letterboxd"
+                        class="w-4 h-4 object-contain hidden dark:inline"
+                      />
+                      <span>Letterboxd</span>
+                    </a>
+                  )}
+                  {!data.imdbId && !data.letterboxdSlug && (
+                    <>
+                      <a
+                        href="https://www.imdb.com/user/ur213092538/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                        title="IMDb Profile"
+                      >
+                        <img
+                          src="/assets/imdb.png"
+                          alt="IMDb"
+                          class="w-4 h-4 object-contain"
+                        />
+                        <span>IMDb</span>
+                      </a>
+                      <a
+                        href="https://letterboxd.com/shravangoswami/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                        title="Letterboxd"
+                      >
+                        <img
+                          src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos-rgb-500px.png"
+                          alt="Letterboxd"
+                          class="w-4 h-4 object-contain dark:hidden"
+                        />
+                        <img
+                          src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb-500px.png"
+                          alt="Letterboxd"
+                          class="w-4 h-4 object-contain hidden dark:inline"
+                        />
+                        <span>Letterboxd</span>
+                      </a>
+                    </>
+                  )}
+                </div>
+              )
+            }
+
+            {
+              data.description && (
+                <p class="text-sm text-skin-base/60 leading-relaxed mt-3">
+                  {data.description}
+                </p>
+              )
+            }
           </div>
         </div>
       </div>
@@ -189,24 +429,107 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
   </div>
 
   <div class="mx-auto w-full max-w-screen-xl px-4">
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8">
-      <div class="hidden lg:block"></div>
+    <div
+      class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8"
+    >
+      <div class="hidden lg:block">
+        <div class="relative mt-8 flex flex-col items-center" id="left-sidebar">
+          <div id="sidebar-quotes" class="w-full"></div>
+          {
+            readMorePosts.length > 0 && (
+              <div
+                id="sidebar-readmore"
+                class="w-full max-w-[180px]"
+                style="margin-top: 40vh;"
+              >
+                <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">
+                  From the Same Shelf
+                </span>
+                <div class="flex flex-col gap-3">
+                  {readMorePosts.map((p) => (
+                    <a
+                      href={withBase(
+                        `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
+                      )}
+                      class="group block"
+                    >
+                      <div class="flex items-start gap-2">
+                        <span
+                          class="w-1 h-1 rounded-full mt-1.5 shrink-0"
+                          style={`background: rgb(var(--color-collection-${p.collection}))`}
+                        />
+                        <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">
+                          {p.title}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <a
+                  href={withBase("/shelf")}
+                  class="group flex items-center gap-1.5 mt-4 font-mono text-[9px] uppercase tracking-widest text-skin-base/25 hover:text-skin-accent transition-colors"
+                >
+                  <span>See All</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <>
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </>
+                  </svg>
+                </a>
+              </div>
+            )
+          }
+        </div>
+      </div>
 
       <div class="flex flex-col">
         <main id="main-content">
-          {hasToc && <TableOfContents headings={headings} mobile={true} open={true} />}
+          {
+            hasToc && (
+              <TableOfContents headings={headings} mobile={true} open={true} />
+            )
+          }
 
-          {hasContent && (
-            <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-              <Content components={{ Tabs, TabItem, Callout, QuoteBlock, Spoiler, Timeline, Comparison, ComparisonSide, Progress }} />
-            </article>
-          )}
+          {
+            hasContent && (
+              <article id="article" class="prose mx-auto mt-8 max-w-3xl">
+                <Content
+                  components={{
+                    Tabs,
+                    TabItem,
+                    Callout,
+                    QuoteBlock,
+                    Spoiler,
+                    Timeline,
+                    Comparison,
+                    ComparisonSide,
+                    Progress,
+                  }}
+                />
+              </article>
+            )
+          }
 
-          {!hasContent && (
-            <div class="mx-auto mt-12 max-w-3xl text-center py-16">
-              <p class="text-skin-base/30 font-mono text-sm">No notes yet — check back later.</p>
-            </div>
-          )}
+          {
+            !hasContent && (
+              <div class="mx-auto mt-12 max-w-3xl text-center py-16">
+                <p class="text-skin-base/30 font-mono text-sm">
+                  No notes yet — check back later.
+                </p>
+              </div>
+            )
+          }
 
           <div class="flex items-center justify-center mt-8">
             <ShareLinks />
@@ -217,40 +540,50 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
           <Giscus />
 
           <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {prevItem && (
-              <a
-                href={`/shelf/${stripExt(prevItem.id)}/`}
-                class="flex w-full gap-1 hover:opacity-75 items-center"
-              >
-                <TbChevronLeft className="h-6 w-6 flex-none" />
-                <div>
-                  <span>Previous</span>
-                  <div class="text-sm text-skin-accent/85">{prevItem.data.title}</div>
-                </div>
-              </a>
-            )}
-            {nextItem && (
-              <a
-                href={`/shelf/${stripExt(nextItem.id)}/`}
-                class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
-              >
-                <div>
-                  <span>Next</span>
-                  <div class="text-sm text-skin-accent/85">{nextItem.data.title}</div>
-                </div>
-                <TbChevronRight className="h-6 w-6 flex-none" />
-              </a>
-            )}
+            {
+              prevItem && (
+                <a
+                  href={`/shelf/${stripExt(prevItem.id)}/`}
+                  class="flex w-full gap-1 hover:opacity-75 items-center"
+                >
+                  <TbChevronLeft className="h-6 w-6 flex-none" />
+                  <div>
+                    <span>Previous</span>
+                    <div class="text-sm text-skin-accent/85">
+                      {prevItem.data.title}
+                    </div>
+                  </div>
+                </a>
+              )
+            }
+            {
+              nextItem && (
+                <a
+                  href={`/shelf/${stripExt(nextItem.id)}/`}
+                  class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
+                >
+                  <div>
+                    <span>Next</span>
+                    <div class="text-sm text-skin-accent/85">
+                      {nextItem.data.title}
+                    </div>
+                  </div>
+                  <TbChevronRight className="h-6 w-6 flex-none" />
+                </a>
+              )
+            }
           </div>
         </main>
       </div>
 
       <aside class="hidden lg:block relative mt-8">
-        {hasToc && (
-          <div class="sticky top-24 transition-opacity duration-300">
-            <TableOfContents headings={headings} />
-          </div>
-        )}
+        {
+          hasToc && (
+            <div class="sticky top-24 transition-opacity duration-300">
+              <TableOfContents headings={headings} />
+            </div>
+          )
+        }
       </aside>
     </div>
   </div>
@@ -260,15 +593,21 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
 </Layout>
 
 <style>
-  .shelf-detail-flip-inner {
-    cursor: default;
-  }
-  .shelf-detail-flip-inner:hover {
-    transform: rotateY(180deg);
-  }
-
   main {
     @apply w-full max-w-3xl pb-12 mx-auto lg:mx-0;
+  }
+
+  @media (min-width: 1024px) {
+    :global(figure.not-prose[data-position="left"]),
+    :global(div.not-prose[data-position="left"]) {
+      height: 0 !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
   }
 
   :global(pre) {
@@ -279,7 +618,9 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
   }
 
   :global(pre code) {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace !important;
     font-size: 0.875rem !important;
     line-height: 1.5 !important;
     display: block;
@@ -342,7 +683,9 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
     padding-top: 1rem;
     padding-bottom: 1rem;
     text-align: right;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace !important;
     font-size: 0.875rem !important;
     line-height: 1.5 !important;
     color: rgba(var(--color-text-base), 0.25);
@@ -368,7 +711,8 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
 <script is:inline data-astro-rerun>
   function createProgressBar() {
     const progressContainer = document.createElement("div");
-    progressContainer.className = "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
     const progressBar = document.createElement("div");
     progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
     progressBar.id = "myBar";
@@ -379,8 +723,11 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
 
   function updateScrollProgress() {
     document.addEventListener("scroll", () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
       const myBar = document.getElementById("myBar");
       if (myBar) myBar.style.width = scrolled + "%";
@@ -389,11 +736,14 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
   updateScrollProgress();
 
   function addHeadingLinks() {
-    const headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    const article = document.getElementById("article");
+    if (!article) return;
+    const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
     for (const heading of headings) {
       heading.classList.add("group");
       const link = document.createElement("a");
-      link.className = "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
+      link.className =
+        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
       link.href = "#" + heading.id;
       const span = document.createElement("span");
       span.ariaHidden = "true";
@@ -421,13 +771,16 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
       wrapper.appendChild(copyButton);
       const code = codeBlock.querySelector("code");
       if (code) {
-        const textContent = code.innerText.replace(/\n$/, '');
-        const lineCount = textContent.split('\n').length;
+        const textContent = code.innerText.replace(/\n$/, "");
+        const lineCount = textContent.split("\n").length;
         if (lineCount > 1) {
           const lineNumbers = document.createElement("div");
           lineNumbers.className = "line-numbers";
           lineNumbers.ariaHidden = "true";
-          lineNumbers.innerHTML = Array.from({length: lineCount}, (_, i) => `<span>${i + 1}</span>`).join('');
+          lineNumbers.innerHTML = Array.from(
+            { length: lineCount },
+            (_, i) => `<span>${i + 1}</span>`,
+          ).join("");
           wrapper.appendChild(lineNumbers);
         }
       }
@@ -452,10 +805,98 @@ const nextItem = index < items.length - 1 ? items[index + 1] : null;
   function hideTOCHeading() {
     const headings = document.querySelectorAll("h2");
     headings.forEach((heading) => {
-      if (heading.textContent.trim() === "Table of contents") {
+      if (
+        heading &&
+        heading instanceof HTMLElement &&
+        heading.textContent?.trim() === "Table of contents"
+      ) {
         heading.style.display = "none";
       }
     });
   }
   hideTOCHeading();
+
+  function mirrorSidebarQuotes() {
+    const article = document.getElementById("article");
+    const sidebar = document.getElementById("left-sidebar");
+    const container = document.getElementById("sidebar-quotes");
+    if (!article || !sidebar || !container) return;
+
+    container.innerHTML = "";
+
+    const leftItems = Array.from(
+      article.querySelectorAll('[data-position="left"]'),
+    );
+    if (leftItems.length === 0) return;
+
+    const sidebarTop = sidebar.getBoundingClientRect().top + window.scrollY;
+
+    leftItems.forEach((el) => {
+      const elPageY = el.getBoundingClientRect().top + window.scrollY;
+      const topPos = elPageY - sidebarTop;
+
+      const mirror = document.createElement("div");
+      mirror.style.cssText = `position:absolute;top:${topPos}px;left:0;right:0;display:flex;justify-content:center;`;
+
+      const clone = el.cloneNode(true);
+      if (clone instanceof HTMLElement) {
+        clone.removeAttribute("data-position");
+        const ids = clone.querySelectorAll("[id]");
+        ids.forEach((node) => {
+          const oldId = node.id;
+          const newId = oldId + "-sidebar";
+          node.id = newId;
+          const labels = clone.querySelectorAll(`label[for="${oldId}"]`);
+          labels.forEach((l) => l.setAttribute("for", newId));
+        });
+
+        clone.style.width = "100%";
+        clone.style.maxWidth = "260px";
+        clone.classList.remove("my-8", "my-6", "my-4");
+        clone.classList.add("my-0");
+
+        if (clone.tagName === "FIGURE") {
+          const blockquote = clone.querySelector("blockquote");
+          if (blockquote) {
+            blockquote.classList.replace("px-6", "px-4");
+          }
+        }
+      }
+
+      mirror.appendChild(clone);
+      container.appendChild(mirror);
+    });
+  }
+  mirrorSidebarQuotes();
+  window.addEventListener("load", mirrorSidebarQuotes);
+
+  function positionReadMore() {
+    const article = document.getElementById("article");
+    const readMore = document.getElementById("sidebar-readmore");
+    const container = document.getElementById("sidebar-quotes");
+    if (!article || !readMore) return;
+
+    const articleHeight = article.offsetHeight || 0;
+    const targetTop = articleHeight * 0.45;
+
+    const mirrors = container ? Array.from(container.children) : [];
+    let finalTop = targetTop;
+
+    mirrors.forEach((m) => {
+      if (!(m instanceof HTMLElement)) return;
+      const mTop = parseFloat(m.style.top) || 0;
+      const mBottom = mTop + m.offsetHeight;
+      const readMoreHeight = readMore.offsetHeight || 300;
+
+      const overlap =
+        finalTop < mBottom + 30 && finalTop + readMoreHeight > mTop - 30;
+      if (overlap) {
+        finalTop = mBottom + 40;
+      }
+    });
+
+    readMore.style.marginTop = finalTop + "px";
+  }
+  positionReadMore();
+  window.addEventListener("load", positionReadMore);
 </script>

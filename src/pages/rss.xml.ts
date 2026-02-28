@@ -15,6 +15,8 @@ export async function GET() {
       title: post.data.title,
       description: post.data.description,
       pubDate: new Date(post.data.modDatetime ?? post.data.pubDatetime),
+      author: post.data.author,
+      categories: post.data.tags,
     })),
   });
 }

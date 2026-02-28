@@ -15,41 +15,41 @@ export default function QuoteBlock({
 }: Props) {
   return (
     <figure
-      className="not-prose my-8"
+      className="not-prose my-8 relative px-6 py-8 flex flex-col items-center text-center"
       data-position={position}
       data-author={author}
       data-source={source || ""}
     >
-      <blockquote className="relative px-8 sm:px-10 py-6">
-        <span
-          className="absolute top-2 left-2 text-5xl font-serif leading-none select-none pointer-events-none"
-          style={{ color: "rgba(var(--color-text-base), 0.06)" }}
-          aria-hidden="true"
-        >
-          &ldquo;
-        </span>
-        <div className="font-serif text-lg sm:text-xl italic text-skin-base/80 leading-relaxed">
+      <span
+        className="absolute top-0 left-0 text-7xl font-serif leading-none select-none pointer-events-none"
+        style={{ color: "rgba(var(--color-text-base), 0.05)" }}
+        aria-hidden="true"
+      >
+        &ldquo;
+      </span>
+      <blockquote className="relative z-10 w-full mb-4">
+        <div className="font-serif text-lg sm:text-xl italic text-skin-base/80 leading-relaxed inline-block">
           {children}
         </div>
-        <span
-          className="absolute bottom-1 right-3 text-5xl font-serif leading-none select-none pointer-events-none"
-          style={{ color: "rgba(var(--color-text-base), 0.06)" }}
-          aria-hidden="true"
-        >
-          &rdquo;
-        </span>
       </blockquote>
-      <figcaption className="mt-3 px-8 sm:px-10 flex items-center gap-2">
-        <span className="w-6 h-[1px] bg-skin-line/40"></span>
-        <span className="font-mono text-[11px] uppercase tracking-widest text-skin-base/50">
+      <figcaption className="relative z-10 flex flex-col items-center gap-1.5 mt-2">
+        <span className="w-8 h-[1px] bg-skin-line/40 mb-1"></span>
+        <span className="font-mono text-[11px] uppercase tracking-widest text-skin-base/60">
           {author}
         </span>
         {source && (
-          <span className="font-mono text-[10px] italic normal-case tracking-normal text-skin-base/30">
+          <span className="font-mono text-[10px] italic normal-case tracking-normal text-skin-base/40">
             — {source}
           </span>
         )}
       </figcaption>
+      <span
+        className="absolute bottom-0 right-0 text-7xl font-serif leading-none flex items-end select-none pointer-events-none translate-y-4"
+        style={{ color: "rgba(var(--color-text-base), 0.05)" }}
+        aria-hidden="true"
+      >
+        &rdquo;
+      </span>
     </figure>
   );
 }

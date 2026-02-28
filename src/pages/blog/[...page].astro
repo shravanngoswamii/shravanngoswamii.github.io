@@ -113,7 +113,7 @@ const getRelatedPubs = (tags: string[]) => {
           ) : (
             <Card
               href={href}
-              frontmatter={item.data as any}
+              frontmatter={item.data}
               index={index + 1}
               relatedPublications={getRelatedPubs(item.data.tags)}
               collection={collection}

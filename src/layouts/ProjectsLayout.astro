@@ -22,6 +22,7 @@ export interface Project {
 export interface Props {
   frontmatter: {
     title: string;
+    description?: string;
     projects: Project[];
   };
 }
@@ -29,7 +30,10 @@ export interface Props {
 const { frontmatter } = Astro.props;
 ---
 
-<Layout title={`${frontmatter.title} | ${SITE.title}`}>
+<Layout
+  title={`${frontmatter.title} | ${SITE.title}`}
+  description={frontmatter.description}
+>
   <Header activeNav="projects" />
   <Breadcrumbs />
 

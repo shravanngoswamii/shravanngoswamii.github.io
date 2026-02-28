@@ -11,7 +11,7 @@ export function ComparisonSide({ label, children }: SideProps) {
       <div className="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-3 pb-2 border-b border-skin-line/10">
         {label}
       </div>
-      <div className="text-sm text-skin-base/80 leading-relaxed [&>p]:mb-2 [&>p:last-child]:mb-0">
+      <div className="text-sm text-skin-base/80 leading-relaxed text-justify [&>p]:mb-2 [&>p:last-child]:mb-0">
         {children}
       </div>
     </div>

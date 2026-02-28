@@ -3,6 +3,7 @@ interface Props {
   value: number;
   max?: number;
   showPercent?: boolean;
+  position?: "left" | "inline";
 }
 
 export default function Progress({
@@ -10,11 +11,18 @@ export default function Progress({
   value,
   max = 100,
   showPercent = true,
+  position = "inline",
 }: Props) {
   const percent = Math.round((value / max) * 100);
 
   return (
-    <div className="not-prose my-4">
+    <div
+      className="not-prose my-4"
+      data-position={position}
+      data-component="progress"
+      data-progress-label={label}
+      data-progress-percent={`${percent}`}
+    >
       <div className="flex items-center justify-between mb-1.5">
         <span className="font-mono text-[11px] uppercase tracking-widest text-skin-base/70">
           {label}

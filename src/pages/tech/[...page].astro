@@ -99,7 +99,7 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
           return isShelf ? (
             <ShelfListCard item={item} href={href} />
           ) : (
-            <Card href={href} frontmatter={item.data as any} />
+            <Card href={href} frontmatter={item.data} />
           );
         })
       }

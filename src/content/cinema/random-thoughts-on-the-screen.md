@@ -2,7 +2,8 @@
 title: "Random Thoughts on The Screen"
 pubDatetime: 2026-02-28
 description: "A draft about what movies mean to me right now."
-draft: true
+# draft: true
+author: Jitendra Verma
 tags: ["random", "cinema"]
 ---
 

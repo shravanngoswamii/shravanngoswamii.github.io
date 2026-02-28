@@ -1,13 +1,20 @@
 import { slugifyStr } from "@utils/slugify";
 import Datetime from "./Datetime";
-import type { CollectionEntry } from "astro:content";
 import { TbArrowUpRight } from "react-icons/tb";
 import type { MouseEvent } from "react";
 import { withBase } from "@utils/base";
 
+export interface CardFrontmatter {
+  title: string;
+  pubDatetime: Date;
+  modDatetime?: Date | null;
+  description: string;
+  tags: string[];
+}
+
 export interface Props {
   href?: string;
-  frontmatter: CollectionEntry<"tech">["data"];
+  frontmatter: CardFrontmatter;
   index?: number;
   secHeading?: boolean;
   relatedPublications?: { title: string; url?: string }[];

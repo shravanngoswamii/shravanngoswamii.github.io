@@ -18,6 +18,7 @@ import TableOfContents from "@components/TableOfContents.astro";
 import ShelfPin from "@components/mdx/ShelfPin.astro";
 import ShelfMention from "@components/mdx/ShelfMention.astro";
 import type { AnyPost, BlogCollection } from "../types";
+import AuthorCard from "@components/AuthorCard";
 import { COLLECTION_META } from "@utils/collections";
 import Callout from "@components/mdx/Callout";
 import QuoteBlock from "@components/mdx/QuoteBlock";
@@ -26,6 +27,8 @@ import Timeline from "@components/mdx/Timeline";
 import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
 import Progress from "@components/mdx/Progress";
 import { withBase } from "@utils/base";
+import { getAllPosts } from "@utils/collections";
+import getSortedPosts from "@utils/getSortedPosts";
 
 export interface Props {
   post: AnyPost;
@@ -62,9 +65,6 @@ const relatedPublications = publications.filter(
 );
 
 const { Content, headings } = await post.render();
-const wordCount = post.body ? post.body.split(/\s+/).filter(Boolean).length : 0;
-const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-
 // --- START: UPDATED OG IMAGE URL CONSTRUCTION ---
 // If ogImage is explicitly set in frontmatter, use it.
 // Otherwise, construct the path using the post.slug for the directory and 'og.png' for the filename.
@@ -101,18 +101,31 @@ const nextPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
 
 /* ========== Read More ========== */
-const readMorePosts = posts
+const sidebarHeadings: Record<string, string> = {
+  tech: "Down the Rabbit Hole",
+  cinema: "More on the Reel",
+  philosophy: "Further Down the Path",
+};
+const sidebarHeading = sidebarHeadings[collection] || "Wander Further";
+
+const allSitePosts = getSortedPosts(await getAllPosts());
+let readMorePosts = allSitePosts
   .filter((p) => p.slug !== post.slug)
   .filter(
     (p) =>
       p.data.tags.some((t) => tags.includes(t)) || p.collection === collection,
   )
-  .slice(0, 4)
-  .map((p) => ({
-    title: p.data.title,
-    slug: p.slug,
-    collection: p.collection as string,
-  }));
+  .slice(0, 4);
+
+if (readMorePosts.length === 0) {
+  readMorePosts = allSitePosts.filter((p) => p.slug !== post.slug).slice(0, 4);
+}
+
+const readMoreMapped = readMorePosts.map((p) => ({
+  title: p.data.title,
+  slug: p.slug,
+  collection: p.collection as string,
+}));
 ---
 
 <Layout {...layoutProps}>
@@ -122,7 +135,7 @@ const readMorePosts = posts
   {
     collection === "cinema" && (
       <div
-        class="relative overflow-hidden border-b border-skin-line/10"
+        class="relative border-b border-skin-line/10"
         style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)"
       >
         <div
@@ -151,6 +164,16 @@ const readMorePosts = posts
             <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
               <div class="flex flex-col">
                 <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Author
+                </span>
+                <AuthorCard
+                  name={author}
+                  className="text-sm text-skin-base/70 font-serif"
+                  client:idle
+                />
+              </div>
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
                   Published
                 </span>
                 <Datetime
@@ -161,6 +184,41 @@ const readMorePosts = posts
                 />
               </div>
             </div>
+            <div class="flex items-center gap-3 mt-4">
+              <a
+                href="https://letterboxd.com/shravangoswami/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                title="Letterboxd"
+              >
+                <img
+                  src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos-rgb-500px.png"
+                  alt="Letterboxd"
+                  class="w-4 h-4 object-contain dark:hidden"
+                />
+                <img
+                  src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb-500px.png"
+                  alt="Letterboxd"
+                  class="w-4 h-4 object-contain hidden dark:inline"
+                />
+                <span>Letterboxd</span>
+              </a>
+              <a
+                href="https://www.imdb.com/user/ur213092538/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                title="IMDb"
+              >
+                <img
+                  src="/assets/imdb.png"
+                  alt="IMDb"
+                  class="w-4 h-4 object-contain"
+                />
+                <span>IMDb</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -170,7 +228,7 @@ const readMorePosts = posts
   {
     collection === "philosophy" && (
       <div
-        class="relative overflow-hidden border-b border-skin-line/10"
+        class="relative border-b border-skin-line/10"
         style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)"
       >
         <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
@@ -212,13 +270,28 @@ const readMorePosts = posts
                 ))}
               </div>
             )}
-            <div class="flex items-center gap-4 mt-2">
-              <Datetime
-                pubDatetime={pubDatetime}
-                modDatetime={modDatetime}
-                size="lg"
-                className=""
-              />
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mt-2">
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Author
+                </span>
+                <AuthorCard
+                  name={author}
+                  className="text-sm text-skin-base/70 font-serif"
+                  client:idle
+                />
+              </div>
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Published
+                </span>
+                <Datetime
+                  pubDatetime={pubDatetime}
+                  modDatetime={modDatetime}
+                  size="lg"
+                  className=""
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -229,7 +302,7 @@ const readMorePosts = posts
   {
     collection === "tech" && (
       <div
-        class="relative overflow-hidden border-b border-skin-line/10"
+        class="relative border-b border-skin-line/10"
         style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 50%)"
       >
         <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
@@ -248,12 +321,29 @@ const readMorePosts = posts
             >
               {title}
             </h1>
-            <Datetime
-              pubDatetime={pubDatetime}
-              modDatetime={modDatetime}
-              size="lg"
-              className="my-2"
-            />
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mt-2">
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Author
+                </span>
+                <AuthorCard
+                  name={author}
+                  className="text-sm text-skin-base/70 font-serif"
+                  client:idle
+                />
+              </div>
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Published
+                </span>
+                <Datetime
+                  pubDatetime={pubDatetime}
+                  modDatetime={modDatetime}
+                  size="lg"
+                  className=""
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -270,13 +360,17 @@ const readMorePosts = posts
         <div class="relative mt-8 flex flex-col items-center" id="left-sidebar">
           <div id="sidebar-quotes" class="w-full"></div>
           {
-            readMorePosts.length > 0 && (
-              <div class="sticky bottom-8 mt-16 top-24 w-full max-w-[180px]">
+            readMoreMapped.length > 0 && (
+              <div
+                id="sidebar-readmore"
+                class="w-full max-w-[180px]"
+                style="margin-top: 40vh;"
+              >
                 <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">
-                  Read More
+                  {sidebarHeading}
                 </span>
                 <div class="flex flex-col gap-3">
-                  {readMorePosts.map((p) => (
+                  {readMoreMapped.map((p) => (
                     <a
                       href={withBase(
                         `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
@@ -295,6 +389,28 @@ const readMorePosts = posts
                     </a>
                   ))}
                 </div>
+                <a
+                  href={withBase(urlPrefix)}
+                  class="group flex items-center gap-1.5 mt-4 font-mono text-[9px] uppercase tracking-widest text-skin-base/25 hover:text-skin-accent transition-colors"
+                >
+                  <span>See All</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <>
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </>
+                  </svg>
+                </a>
               </div>
             )
           }
@@ -389,13 +505,13 @@ const readMorePosts = posts
 
           <!-- Mobile Read More (shown after comments on small screens) -->
           {
-            readMorePosts.length > 0 && (
+            readMoreMapped.length > 0 && (
               <div class="lg:hidden mt-12 pt-8 border-t border-skin-line/15">
                 <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-4">
-                  Read More
+                  {sidebarHeading}
                 </span>
                 <div class="flex flex-col gap-3">
-                  {readMorePosts.map((p) => (
+                  {readMoreMapped.map((p) => (
                     <a
                       href={withBase(
                         `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
@@ -414,6 +530,28 @@ const readMorePosts = posts
                     </a>
                   ))}
                 </div>
+                <a
+                  href={withBase(urlPrefix)}
+                  class="group flex items-center gap-1.5 mt-4 font-mono text-[9px] uppercase tracking-widest text-skin-base/25 hover:text-skin-accent transition-colors"
+                >
+                  <span>See All</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <>
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </>
+                  </svg>
+                </a>
               </div>
             )
           }
@@ -483,11 +621,15 @@ const readMorePosts = posts
   }
 
   @media (min-width: 1024px) {
-    :global(figure.not-prose[data-position="left"]) {
-      height: 0;
-      overflow: hidden;
+    :global(figure.not-prose[data-position="left"]),
+    :global(div.not-prose[data-position="left"]) {
+      height: 0 !important;
+      overflow: hidden !important;
       margin: 0 !important;
-      padding: 0;
+      padding: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
     }
   }
 
@@ -657,9 +799,9 @@ const readMorePosts = posts
   /** Attaches links to headings in the document,
    * allowing sharing of sections easily */
   function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6"),
-    );
+    const article = document.getElementById("article");
+    if (!article) return;
+    const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
     for (const heading of headings) {
       heading.classList.add("group");
       const link = document.createElement("a");
@@ -765,38 +907,76 @@ const readMorePosts = posts
 
     container.innerHTML = "";
 
-    const quotes = Array.from(
-      article.querySelectorAll('figure.not-prose[data-position="left"]'),
+    const leftItems = Array.from(
+      article.querySelectorAll('[data-position="left"]'),
     );
-    if (quotes.length === 0) return;
+    if (leftItems.length === 0) return;
 
     const sidebarTop = sidebar.getBoundingClientRect().top + window.scrollY;
 
-    quotes.forEach((quote) => {
-      const quotePageY = quote.getBoundingClientRect().top + window.scrollY;
-      const topPos = quotePageY - sidebarTop;
-
-      const bq = quote.querySelector("blockquote");
-      const author = quote.getAttribute("data-author") || "";
-      const source = quote.getAttribute("data-source") || "";
-      const text = bq
-        ? bq.textContent.replace(/[\u201C\u201D"]/g, "").trim()
-        : "";
-      if (!text) return;
+    leftItems.forEach((el) => {
+      const elPageY = el.getBoundingClientRect().top + window.scrollY;
+      const topPos = elPageY - sidebarTop;
 
       const mirror = document.createElement("div");
       mirror.style.cssText = `position:absolute;top:${topPos}px;left:0;right:0;display:flex;justify-content:center;`;
-      mirror.innerHTML =
-        `<div style="max-width:180px;width:100%;padding:0.75rem;border-left:2px solid rgba(var(--color-text-base),0.12);background:rgba(var(--color-card),0.3);border-radius:0 4px 4px 0">` +
-        `<p style="font-size:11px;font-style:italic;color:rgba(var(--color-text-base),0.5);line-height:1.6;font-family:ui-serif,Georgia,serif">\u201C${text}\u201D</p>` +
-        `<span style="display:block;margin-top:0.5rem;font-family:ui-monospace,monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(var(--color-text-base),0.3)">${author}</span>` +
-        (source
-          ? `<span style="display:block;font-family:ui-monospace,monospace;font-size:8px;font-style:italic;color:rgba(var(--color-text-base),0.2)">\u2014 ${source}</span>`
-          : "") +
-        `</div>`;
+
+      const clone = el.cloneNode(true);
+      clone.removeAttribute("data-position"); // So it doesn't get hidden by CSS
+
+      // Fix ID conflicts for things like Spoiler labels and checkboxes
+      const ids = clone.querySelectorAll("[id]");
+      ids.forEach((node) => {
+        const oldId = node.id;
+        const newId = oldId + "-sidebar";
+        node.id = newId;
+        const labels = clone.querySelectorAll(`label[for="${oldId}"]`);
+        labels.forEach((l) => l.setAttribute("for", newId));
+      });
+
+      // Adjust styles slightly for the narrower sidebar context
+      clone.style.width = "100%";
+      clone.style.maxWidth = "260px";
+      clone.classList.remove("my-8", "my-6", "my-4");
+      clone.classList.add("my-0");
+
+      // Optional tweaks depending on component
+      if (clone.tagName === "FIGURE") {
+        const blockquote = clone.querySelector("blockquote");
+        if (blockquote) {
+          blockquote.classList.replace("px-6", "px-4");
+        }
+      }
+
+      mirror.appendChild(clone);
       container.appendChild(mirror);
     });
   }
   mirrorSidebarQuotes();
   window.addEventListener("load", mirrorSidebarQuotes);
+
+  function positionReadMore() {
+    const article = document.getElementById("article");
+    const readMore = document.getElementById("sidebar-readmore");
+    const container = document.getElementById("sidebar-quotes");
+    if (!article || !readMore) return;
+
+    const articleHeight = article.offsetHeight;
+    const targetTop = articleHeight * 0.45;
+
+    const mirrors = container ? Array.from(container.children) : [];
+    let finalTop = targetTop;
+
+    mirrors.forEach((m) => {
+      const mTop = parseFloat(m.style.top) || 0;
+      const mBottom = mTop + m.offsetHeight;
+      if (finalTop >= mTop - 30 && finalTop <= mBottom + 30) {
+        finalTop = mBottom + 40;
+      }
+    });
+
+    readMore.style.marginTop = finalTop + "px";
+  }
+  positionReadMore();
+  window.addEventListener("load", positionReadMore);
 </script>

@@ -61,6 +61,41 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
       <p class="text-base text-skin-base/60 leading-relaxed max-w-xl font-sans">
         {COLLECTION_META.cinema.description}
       </p>
+      <div class="flex items-center gap-4 mt-5">
+        <a
+          href="https://letterboxd.com/shravangoswami/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+          title="Letterboxd"
+        >
+          <img
+            src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos-rgb-500px.png"
+            alt="Letterboxd"
+            class="w-5 h-5 object-contain dark:hidden"
+          />
+          <img
+            src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb-500px.png"
+            alt="Letterboxd"
+            class="w-5 h-5 object-contain hidden dark:inline"
+          />
+          <span>Letterboxd</span>
+        </a>
+        <a
+          href="https://www.imdb.com/user/ur213092538/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+          title="IMDb"
+        >
+          <img
+            src="/assets/imdb.png"
+            alt="IMDb"
+            class="w-5 h-5 object-contain"
+          />
+          <span>IMDb</span>
+        </a>
+      </div>
       <div class="mt-8 flex flex-wrap items-center gap-2">
         {
           Object.entries(COLLECTION_META).map(([key, m]) => (

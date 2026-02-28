@@ -55,31 +55,36 @@ const { activeNav } = Astro.props;
             <a
               href={withBase("/blog/")}
               class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
-              >Journal</a>
+              >Journal</a
+            >
           </li>
           <li>
             <a
               href={withBase("/shelf/")}
               class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "shelf" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
-              >Shelf</a>
+              >Shelf</a
+            >
           </li>
           <li>
             <a
               href={withBase("/projects/")}
               class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
-              >Work</a>
+              >Work</a
+            >
           </li>
           <li>
             <a
               href={withBase("/publications/")}
               class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
-              >Research</a>
+              >Research</a
+            >
           </li>
           <li>
             <a
               href={withBase("/resume/")}
               class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
-              >CV</a>
+              >CV</a
+            >
           </li>
         </ul>
       </nav>

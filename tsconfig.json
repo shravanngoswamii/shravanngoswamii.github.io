@@ -11,7 +11,8 @@
       "@pages/*": ["./src/pages/*"],
       "@styles/*": ["./src/styles/*"],
       "@types": ["./src/types.ts"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@data/*": ["./src/data/*"]
     }
   },
   "include": ["src/**/*", "astro.config.ts", "remark-collapse.d.ts"],

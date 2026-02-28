@@ -6,11 +6,16 @@ interface TimelineItem {
 
 interface Props {
   items: TimelineItem[];
+  position?: "left" | "inline";
 }
 
-export default function Timeline({ items }: Props) {
+export default function Timeline({ items, position = "inline" }: Props) {
   return (
-    <div className="not-prose my-8">
+    <div
+      className="not-prose my-8"
+      data-position={position}
+      data-component="timeline"
+    >
       <div className="relative pl-8 border-l border-skin-line/30">
         {items.map((item, i) => (
           <div key={i} className="relative mb-8 last:mb-0">

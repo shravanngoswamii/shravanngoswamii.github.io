@@ -49,43 +49,57 @@ const sections = typeOrder
 <Layout title={`Shelf | ${SITE.title}`}>
   <Header activeNav="shelf" />
 
-  <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-6">
-    <div class="mb-8">
-      <p
-        class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-3"
-      >
-        Collection
-      </p>
-      <h1 class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight">
-        Shelf
-      </h1>
-      <p class="text-sm text-skin-base/50 mt-3 max-w-lg leading-relaxed">
-        Everything I've consumed, am consuming, or plan to — books, films,
-        series, games, courses, and more.
-      </p>
-    </div>
-
+  <div
+    class="relative overflow-hidden border-b border-skin-line/10"
+    style="background: linear-gradient(135deg, rgba(var(--color-collection-shelf), 0.08) 0%, transparent 60%)"
+  >
     <div
-      class="flex flex-wrap gap-2 border-b border-skin-line/15 pb-4"
-      id="shelf-status-tabs"
+      class="absolute inset-0 opacity-[0.03] pointer-events-none"
+      style="background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(var(--color-collection-shelf), 0.5) 20px, rgba(var(--color-collection-shelf), 0.5) 21px); background-size: 100% 100%;"
     >
-      <button
-        data-filter="all"
-        class="shelf-tab active px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all"
+    </div>
+    <div
+      class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-6 relative z-10"
+    >
+      <div class="mb-8">
+        <p
+          class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-3"
+        >
+          Collection
+        </p>
+        <h1
+          class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight"
+        >
+          Shelf
+        </h1>
+        <p class="text-sm text-skin-base/50 mt-3 max-w-lg leading-relaxed">
+          Everything I've consumed, am consuming, or plan to — books, films,
+          series, games, courses, and more.
+        </p>
+      </div>
+
+      <div
+        class="flex flex-wrap gap-2 border-b border-skin-line/15 pb-4"
+        id="shelf-status-tabs"
       >
-        All <span class="text-skin-base/30 ml-1">{allItems.length}</span>
-      </button>
-      {
-        statusOrder.map((s) => (
-          <button
-            data-filter={`status:${s}`}
-            class="shelf-tab px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all"
-          >
-            {SHELF_STATUS[s].label}{" "}
-            <span class="text-skin-base/30 ml-1">{statusCounts[s] || 0}</span>
-          </button>
-        ))
-      }
+        <button
+          data-filter="all"
+          class="shelf-tab active px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all"
+        >
+          All <span class="text-skin-base/30 ml-1">{allItems.length}</span>
+        </button>
+        {
+          statusOrder.map((s) => (
+            <button
+              data-filter={`status:${s}`}
+              class="shelf-tab px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all"
+            >
+              {SHELF_STATUS[s].label}{" "}
+              <span class="text-skin-base/30 ml-1">{statusCounts[s] || 0}</span>
+            </button>
+          ))
+        }
+      </div>
     </div>
   </div>
 

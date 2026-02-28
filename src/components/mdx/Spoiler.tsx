@@ -2,14 +2,23 @@ import type { ReactNode } from "react";
 
 interface Props {
   label?: string;
+  position?: "left" | "inline";
   children: ReactNode;
 }
 
-export default function Spoiler({ label = "Reveal spoiler", children }: Props) {
+export default function Spoiler({
+  label = "Reveal spoiler",
+  position = "inline",
+  children,
+}: Props) {
   const id = `spoiler-${Math.random().toString(36).slice(2, 9)}`;
 
   return (
-    <div className="not-prose my-6 relative rounded-sm border border-skin-line/20 overflow-hidden">
+    <div
+      className="not-prose my-6 relative rounded-sm border border-skin-line/20 overflow-hidden"
+      data-position={position}
+      data-component="spoiler"
+    >
       <input type="checkbox" id={id} className="peer sr-only" />
       <div className="p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-0 peer-checked:select-auto transition-all duration-500">
         {children}

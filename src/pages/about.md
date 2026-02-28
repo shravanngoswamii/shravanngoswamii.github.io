@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
+description: "Learn more about Shravan Goswami — software developer, open-source contributor, and the person behind this blog."
 ---
 
 Shravan Goswami's Personal Blog

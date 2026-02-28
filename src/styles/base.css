@@ -14,6 +14,7 @@
     --color-collection-tech: 59, 130, 246;
     --color-collection-cinema: 217, 119, 6;
     --color-collection-philosophy: 124, 58, 237;
+    --color-collection-shelf: 16, 185, 129; /* Emerald 500 */
   }
 
   html[data-theme="dark"] {
@@ -26,6 +27,7 @@
     --color-collection-tech: 96, 165, 250;
     --color-collection-cinema: 251, 191, 36;
     --color-collection-philosophy: 167, 139, 250;
+    --color-collection-shelf: 52, 211, 153; /* Emerald 400 */
   }
 
   /* Legacy theme support... */
@@ -150,11 +152,11 @@
 
   .prose {
     @apply prose-headings:!font-serif prose-headings:!font-normal prose-headings:tracking-tight prose-headings:!text-skin-base 
-    prose-p:!text-skin-base/90 prose-p:!font-sans prose-p:text-sm prose-p:leading-7 prose-p:font-normal
+    prose-p:!text-skin-base/90 prose-p:!font-sans prose-p:text-sm prose-p:leading-7 prose-p:font-normal prose-p:text-justify
     prose-a:!text-skin-base prose-a:!no-underline prose-a:border-b prose-a:border-textColor/40 hover:prose-a:border-textColor hover:prose-a:text-skin-base prose-a:transition-all 
     prose-blockquote:!border-l-2 prose-blockquote:!border-textColor prose-blockquote:!font-serif prose-blockquote:!italic prose-blockquote:text-skin-base/70
     prose-strong:!text-skin-base prose-strong:font-medium
-    prose-li:!text-skin-base/90 prose-li:!font-sans prose-li:text-sm prose-li:leading-7 prose-li:font-normal
+    prose-li:!text-skin-base/90 prose-li:!font-sans prose-li:text-sm prose-li:leading-7 prose-li:font-normal prose-li:text-justify
     prose-ul:!text-skin-base/90 prose-ol:!text-skin-base/90
     prose-a:break-all sm:prose-a:break-normal
     prose-code:font-mono prose-code:text-xs prose-code:bg-skin-card-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-code:text-skin-base;
@@ -230,5 +232,7 @@
   .shelf-icon svg {
     width: 100%;
     height: 100%;
+    stroke: rgba(255, 255, 255, 0.5) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
   }
 }

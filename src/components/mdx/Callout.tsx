@@ -4,6 +4,7 @@ import { TbInfoCircle, TbAlertTriangle, TbBulb, TbFlame } from "react-icons/tb";
 interface Props {
   type?: "note" | "warning" | "insight" | "important";
   title?: string;
+  position?: "left" | "inline";
   children: ReactNode;
 }
 
@@ -38,13 +39,22 @@ const config = {
   },
 };
 
-export default function Callout({ type = "note", title, children }: Props) {
+export default function Callout({
+  type = "note",
+  title,
+  position = "inline",
+  children,
+}: Props) {
   const c = config[type];
   const Icon = c.icon;
 
   return (
     <div
       className={`not-prose my-6 rounded-sm border border-skin-line/20 border-l-[3px] ${c.border} ${c.bg} p-5`}
+      data-position={position}
+      data-component="callout"
+      data-callout-type={type}
+      data-callout-title={title || c.defaultTitle}
     >
       <div className="flex items-center gap-2 mb-2">
         <Icon className={`w-4 h-4 ${c.iconColor}`} />
@@ -52,7 +62,7 @@ export default function Callout({ type = "note", title, children }: Props) {
           {title || c.defaultTitle}
         </span>
       </div>
-      <div className="text-sm text-skin-base/80 leading-relaxed [&>p]:mb-2 [&>p:last-child]:mb-0">
+      <div className="text-sm text-skin-base/80 leading-relaxed text-justify [&>p]:mb-2 [&>p:last-child]:mb-0">
         {children}
       </div>
     </div>

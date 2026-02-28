@@ -1,10 +1,5 @@
 ---
-import {
-  getCoverGradient,
-  SHELF_TYPE,
-  SHELF_STATUS,
-  stripExt,
-} from "@utils/shelf";
+import { getCoverGradient, SHELF_TYPE, stripExt } from "@utils/shelf";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
@@ -22,7 +17,6 @@ const { items } = Astro.props;
         {items.map((item) => {
           const gradient = getCoverGradient(item.data.title);
           const typeInfo = SHELF_TYPE[item.data.type];
-          const statusInfo = SHELF_STATUS[item.data.status];
           const isBook = item.data.type === "book";
           const isFilm = ["movie", "documentary", "miniseries"].includes(
             item.data.type,
