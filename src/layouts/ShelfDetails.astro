@@ -101,7 +101,9 @@ const showFilmLinks = isFilm || isAnime || isSeries;
       class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10 relative z-10"
     >
       <div class="max-w-3xl mx-auto">
-        <div class="flex flex-col sm:flex-row gap-8">
+        <div
+          class="flex flex-col items-center sm:items-start sm:flex-row gap-8"
+        >
           <div class="w-32 sm:w-40 shrink-0 group/flip">
             <div
               class="relative w-full aspect-[2/3]"
@@ -237,8 +239,10 @@ const showFilmLinks = isFilm || isAnime || isSeries;
             </div>
           </div>
 
-          <div class="flex-1 min-w-0">
-            <div class="flex flex-wrap items-center gap-2 mb-4">
+          <div class="flex-1 min-w-0 text-center sm:text-left">
+            <div
+              class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-4"
+            >
               <span
                 class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm bg-skin-card-muted text-skin-base/60"
               >
@@ -266,7 +270,7 @@ const showFilmLinks = isFilm || isAnime || isSeries;
             </p>
 
             <div
-              class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15"
+              class="flex flex-wrap items-center justify-center sm:justify-start gap-x-8 gap-y-3 py-4 border-t border-skin-line/15"
             >
               {
                 data.rating !== undefined && (
@@ -336,7 +340,7 @@ const showFilmLinks = isFilm || isAnime || isSeries;
 
             {
               showFilmLinks && (
-                <div class="flex items-center gap-3 mt-3">
+                <div class="flex items-center justify-center sm:justify-start gap-3 mt-3">
                   {data.imdbId && (
                     <a
                       href={`https://www.imdb.com/title/${data.imdbId}/`}

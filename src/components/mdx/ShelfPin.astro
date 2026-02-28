@@ -41,11 +41,43 @@ const posClass = `film-pin--${position}`;
       </span>
     </div>
     <div class="film-pin-flip-inner">
-      {/* === FRONT === */}
-      <div
-        class="film-pin-flip-front film-pin-cover"
-        style={`background: ${gradient}`}
-      >
+      {/* === FRONT (poster by default) === */}
+      <div class="film-pin-flip-front film-pin-cover">
+        {
+          data.poster ? (
+            <img
+              src={data.poster}
+              alt={`${data.title} poster`}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div class="absolute inset-0" style={`background: ${gradient}`} />
+          )
+        }
+        <div class="absolute top-1.5 left-1.5 z-10">
+          <span class="w-2.5 h-2.5 shelf-icon" set:html={typeInfo.icon} />
+        </div>
+        <div
+          class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6"
+        >
+          <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
+            <p class="font-serif text-white/50 text-[8px] truncate italic">
+              {data.creator}
+            </p>
+            {
+              data.rating !== undefined && (
+                <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
+                  {data.rating}
+                  <span class="text-white/25">/10</span>
+                </span>
+              )
+            }
+          </div>
+        </div>
+      </div>
+      {/* === BACK (gradient art on hover) === */}
+      <div class="film-pin-flip-back" style={`background: ${gradient}`}>
         <div
           class="absolute inset-0 pointer-events-none"
           style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
@@ -100,51 +132,6 @@ const posClass = `film-pin--${position}`;
           style="background-image: url('data:image/svg+xml,%3Csvg width=%224%22 height=%224%22 viewBox=%220 0 4 4%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M1 3h1v1H1V3zm2-2h1v1H3V1z%22 fill=%22%23ffffff%22 fill-opacity=%221%22/%3E%3C/svg%3E');"
         >
         </div>
-        <div class="absolute top-1.5 left-1.5 z-10">
-          <span class="w-2.5 h-2.5 shelf-icon" set:html={typeInfo.icon} />
-        </div>
-        <div
-          class="absolute inset-0 flex flex-col items-center justify-center px-2 text-center z-10"
-        >
-          <h3
-            class="text-white font-serif text-[10px] sm:text-[11px] leading-snug drop-shadow-sm"
-          >
-            {data.title}
-          </h3>
-        </div>
-        <div
-          class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6"
-        >
-          <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
-            <p class="font-serif text-white/50 text-[8px] truncate italic">
-              {data.creator}
-            </p>
-            {
-              data.rating !== undefined && (
-                <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
-                  {data.rating}
-                  <span class="text-white/25">/10</span>
-                </span>
-              )
-            }
-          </div>
-        </div>
-      </div>
-      {/* === BACK === */}
-      <div class="film-pin-flip-back">
-        {
-          data.poster ? (
-            <img
-              src={data.poster}
-              alt={`${data.title} poster`}
-              class="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div class="absolute inset-0" style={`background: ${gradient}`} />
-          )
-        }
-        <div class="absolute inset-0 bg-black/40"></div>
         <div
           class="absolute inset-0 flex flex-col items-center justify-center px-2 text-center z-10"
         >
@@ -161,14 +148,6 @@ const posClass = `film-pin--${position}`;
               <p class="font-mono text-white/30 text-[7px] mt-0.5">
                 {formatYear(data.year)}
               </p>
-            )
-          }
-          {
-            data.rating !== undefined && (
-              <span class="font-mono font-medium text-[8px] text-white/70 mt-1">
-                {data.rating}
-                <span class="text-white/30">/10</span>
-              </span>
             )
           }
         </div>

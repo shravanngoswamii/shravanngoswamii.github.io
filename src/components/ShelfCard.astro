@@ -78,12 +78,104 @@ const isVideo = type === "video";
       class="shelf-flip-inner relative w-full h-full transition-transform duration-500"
       style="transform-style: preserve-3d;"
     >
-      {/* === FRONT === */}
+      {/* === FRONT (poster by default) === */}
       <div
         class:list={[
           "shelf-flip-front absolute inset-0 rounded overflow-hidden shadow-md",
         ]}
-        style={`background: ${gradient}; backface-visibility: hidden;`}
+        style="backface-visibility: hidden;"
+      >
+        {
+          poster ? (
+            <img
+              src={poster}
+              alt={`${title} poster`}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div class="absolute inset-0" style={`background: ${gradient}`} />
+          )
+        }
+
+        {
+          !compact && (
+            <div class="absolute top-2.5 right-2.5 z-10">
+              <span
+                class="px-1.5 py-0.5 text-[8px] font-mono uppercase tracking-wider rounded-sm"
+                style={`background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); color: ${statusInfo.color}`}
+              >
+                {statusInfo.label}
+              </span>
+            </div>
+          )
+        }
+
+        <div
+          class:list={[
+            "absolute z-10",
+            compact ? "top-1.5 left-1.5" : "top-2.5 left-2.5",
+          ]}
+        >
+          <span
+            class:list={[
+              "select-none text-white/40 leading-none shelf-icon",
+              compact ? "w-2.5 h-2.5" : "w-3 h-3",
+            ]}
+            set:html={typeInfo.icon}
+          />
+        </div>
+
+        <div
+          class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8"
+        >
+          {
+            compact ? (
+              <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
+                <p class="font-serif text-white/50 text-[8px] truncate italic">
+                  {creator}
+                </p>
+                {rating !== undefined && (
+                  <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
+                    {rating}
+                    <span class="text-white/25">/10</span>
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div class="text-center pb-3 px-3">
+                <p class="font-serif text-white/55 text-[11px] italic">
+                  {creator}
+                </p>
+                {year && (
+                  <p class="text-white/25 text-[9px] font-mono mt-0.5">
+                    {formatYear(year)}
+                  </p>
+                )}
+              </div>
+            )
+          }
+        </div>
+
+        {
+          !compact && rating !== undefined && (
+            <div class="absolute z-10 bottom-2 right-2.5">
+              <span
+                class="font-mono font-medium text-[10px] backdrop-blur-sm rounded-sm px-1 py-0.5"
+                style="background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.7);"
+              >
+                {rating}
+                <span class="text-white/30">/10</span>
+              </span>
+            </div>
+          )
+        }
+      </div>
+
+      {/* === BACK (gradient art on hover) === */}
+      <div
+        class="shelf-flip-back absolute inset-0 rounded overflow-hidden shadow-md"
+        style={`backface-visibility: hidden; transform: rotateY(180deg); background: ${gradient};`}
       >
         <div
           class="absolute inset-0 pointer-events-none"
@@ -165,34 +257,6 @@ const isVideo = type === "video";
         >
         </div>
 
-        {
-          !compact && (
-            <div class="absolute top-2.5 right-2.5 z-10">
-              <span
-                class="px-1.5 py-0.5 text-[8px] font-mono uppercase tracking-wider rounded-sm"
-                style={`background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); color: ${statusInfo.color}`}
-              >
-                {statusInfo.label}
-              </span>
-            </div>
-          )
-        }
-
-        <div
-          class:list={[
-            "absolute z-10",
-            compact ? "top-1.5 left-1.5" : "top-2.5 left-2.5",
-          ]}
-        >
-          <span
-            class:list={[
-              "select-none text-white/40 leading-none shelf-icon",
-              compact ? "w-2.5 h-2.5" : "w-3 h-3",
-            ]}
-            set:html={typeInfo.icon}
-          />
-        </div>
-
         <div
           class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10"
         >
@@ -216,113 +280,16 @@ const isVideo = type === "video";
         <div
           class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8"
         >
-          {
-            compact ? (
-              <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
-                <p class="font-serif text-white/50 text-[8px] truncate italic">
-                  {creator}
-                </p>
-                {rating !== undefined && (
-                  <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
-                    {rating}
-                    <span class="text-white/25">/10</span>
-                  </span>
-                )}
-              </div>
-            ) : (
-              <div class="text-center pb-3 px-3">
-                <p class="font-serif text-white/55 text-[11px] italic">
-                  {creator}
-                </p>
-                {year && (
-                  <p class="text-white/25 text-[9px] font-mono mt-0.5">
-                    {formatYear(year)}
-                  </p>
-                )}
-              </div>
-            )
-          }
-        </div>
-
-        {
-          !compact && rating !== undefined && (
-            <div class="absolute z-10 bottom-2 right-2.5">
-              <span
-                class="font-mono font-medium text-[10px] backdrop-blur-sm rounded-sm px-1 py-0.5"
-                style="background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.7);"
-              >
-                {rating}
-                <span class="text-white/30">/10</span>
-              </span>
-            </div>
-          )
-        }
-      </div>
-
-      {/* === BACK === */}
-      <div
-        class="shelf-flip-back absolute inset-0 rounded overflow-hidden shadow-md"
-        style="backface-visibility: hidden; transform: rotateY(180deg);"
-      >
-        {
-          poster ? (
-            <img
-              src={poster}
-              alt={`${title} poster`}
-              class="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div class="absolute inset-0" style={`background: ${gradient}`} />
-          )
-        }
-        <div class="absolute inset-0 bg-black/40"></div>
-        <div
-          class="absolute inset-0 flex flex-col items-center justify-center px-3 text-center z-10"
-        >
-          <h3
-            class:list={[
-              "text-white font-serif leading-snug drop-shadow-sm mb-1",
-              compact ? "text-[10px]" : "text-sm",
-            ]}
-          >
-            {title}
-          </h3>
-          <p
-            class:list={[
-              "font-serif text-white/60 italic",
-              compact ? "text-[8px]" : "text-[11px]",
-            ]}
-          >
-            {creator}
-          </p>
-          {
-            year && (
-              <p
-                class:list={[
-                  "font-mono text-white/30 mt-1",
-                  compact ? "text-[7px]" : "text-[9px]",
-                ]}
-              >
-                {formatYear(year)}
-              </p>
-            )
-          }
-          {
-            rating !== undefined && (
-              <div class="mt-2">
-                <span
-                  class:list={[
-                    "font-mono font-medium text-white/70",
-                    compact ? "text-[8px]" : "text-[11px]",
-                  ]}
-                >
-                  {rating}
-                  <span class="text-white/30">/10</span>
-                </span>
-              </div>
-            )
-          }
+          <div class="text-center pb-2 px-2">
+            <p
+              class:list={[
+                "font-serif text-white/55 italic",
+                compact ? "text-[8px]" : "text-[10px]",
+              ]}
+            >
+              {creator}
+            </p>
+          </div>
         </div>
       </div>
     </div>

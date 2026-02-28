@@ -116,24 +116,35 @@ const shelfItems = shelfRaw
       {/* Mobile: Shelf + Recent (stacked at bottom) */}
       <div class="lg:hidden mt-12 space-y-10">
         <div>
-          <span
-            class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3"
-            >Shelf</span
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30"
+              >Shelf</span
+            >
+            <a
+              href={withBase("/shelf/")}
+              class="font-mono text-[9px] uppercase tracking-widest text-skin-base/30 hover:text-skin-base transition-colors"
+              >Browse the shelf →</a
+            >
+          </div>
+          <div
+            class="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide"
           >
-          <div class="grid grid-cols-3 gap-2">
             {
               shelfItems.map((item) => (
-                <ShelfCard
-                  type={item.data.type}
-                  title={item.data.title}
-                  creator={item.data.creator}
-                  genre={item.data.genre}
-                  status={item.data.status}
-                  rating={item.data.rating}
-                  poster={item.data.poster}
-                  compact={true}
-                  href={withBase(`/shelf/${stripExt(item.id)}/`)}
-                />
+                <div class="shrink-0 w-[120px] snap-start">
+                  <ShelfCard
+                    type={item.data.type}
+                    title={item.data.title}
+                    creator={item.data.creator}
+                    genre={item.data.genre}
+                    status={item.data.status}
+                    rating={item.data.rating}
+                    poster={item.data.poster}
+                    compact={true}
+                    href={withBase(`/shelf/${stripExt(item.id)}/`)}
+                  />
+                </div>
               ))
             }
           </div>

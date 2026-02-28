@@ -30,10 +30,47 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
           class="shelf-list-flip-inner relative w-full h-full transition-transform duration-500"
           style="transform-style: preserve-3d;"
         >
-          {/* FRONT */}
+          {/* FRONT (poster by default) */}
           <div
             class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
-            style={`background: ${gradient}; backface-visibility: hidden;`}
+            style="backface-visibility: hidden;"
+          >
+            {
+              poster ? (
+                <img
+                  src={poster}
+                  alt={`${title} poster`}
+                  class="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div
+                  class="absolute inset-0"
+                  style={`background: ${gradient}`}
+                />
+              )
+            }
+            <div class="absolute top-1 left-1 z-10">
+              <span
+                class="w-2 h-2 text-white/40 shelf-icon"
+                set:html={typeInfo.icon}
+              />
+            </div>
+            <div
+              class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-4"
+            >
+              <p
+                class="text-center pb-1 px-1 font-serif text-white/50 text-[6px] italic truncate"
+              >
+                {shelfMeta.creator}
+              </p>
+            </div>
+          </div>
+
+          {/* BACK (gradient art on hover) */}
+          <div
+            class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
+            style={`background: ${gradient}; backface-visibility: hidden; transform: rotateY(180deg);`}
           >
             <div
               class="absolute inset-0 pointer-events-none"
@@ -61,12 +98,6 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
               style='background-image: url(&apos;data:image/svg+xml,%3Csvg width="4" height="4" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M1 3h1v1H1V3zm2-2h1v1H3V1z" fill="%23ffffff" fill-opacity="1"/%3E%3C/svg%3E&apos;);'
             >
             </div>
-            <div class="absolute top-1 left-1 z-10">
-              <span
-                class="w-2 h-2 text-white/40 shelf-icon"
-                set:html={typeInfo.icon}
-              />
-            </div>
             <div
               class="absolute inset-0 flex items-center justify-center px-1 text-center z-10"
             >
@@ -84,45 +115,6 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
               >
                 {shelfMeta.creator}
               </p>
-            </div>
-          </div>
-
-          {/* BACK */}
-          <div
-            class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
-            style="backface-visibility: hidden; transform: rotateY(180deg);"
-          >
-            {
-              poster ? (
-                <img
-                  src={poster}
-                  alt={`${title} poster`}
-                  class="absolute inset-0 w-full h-full object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <div
-                  class="absolute inset-0"
-                  style={`background: ${gradient}`}
-                />
-              )
-            }
-            <div class="absolute inset-0 bg-black/50"></div>
-            <div
-              class="absolute inset-0 flex flex-col items-center justify-center px-1 text-center z-10"
-            >
-              <p
-                class="text-white font-serif text-[7px] leading-tight drop-shadow-sm"
-              >
-                {title}
-              </p>
-              {
-                shelfMeta.rating !== undefined && (
-                  <span class="font-mono text-white/60 text-[6px] mt-1">
-                    {shelfMeta.rating}/10
-                  </span>
-                )
-              }
             </div>
           </div>
         </div>

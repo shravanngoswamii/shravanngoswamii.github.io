@@ -22,6 +22,14 @@ const item = allShelf.find((i) => stripExt(i.id) === id);
           class="shelf-mention-cover"
           style={`background: ${getCoverGradient(item.data.title)}`}
         >
+          {item.data.poster && (
+            <img
+              src={item.data.poster}
+              alt=""
+              class="shelf-mention-cover-poster"
+              loading="lazy"
+            />
+          )}
           <span
             class="shelf-mention-cover-icon"
             set:html={SHELF_TYPE[item.data.type].icon}
@@ -123,13 +131,22 @@ const item = allShelf.find((i) => stripExt(i.id) === id);
     overflow: hidden;
   }
 
+  .shelf-mention-cover-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
   .shelf-mention-cover-icon {
     position: absolute;
     top: 4px;
     left: 6px;
     width: 10px;
     height: 10px;
-    color: rgba(255, 255, 255, 0.4);
+    color: white;
     z-index: 2;
     display: inline-flex;
   }

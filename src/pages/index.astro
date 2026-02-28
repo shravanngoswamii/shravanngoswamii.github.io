@@ -21,7 +21,7 @@ const sortedPosts = getSortedPosts(allPosts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const allShelf = await getCollection("shelf");
-const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 8);
+const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
 ---
 
 <Layout>
@@ -327,20 +327,24 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 8);
       </ScrollReveal>
 
       <ScrollReveal client:visible delay={0.1}>
-        <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2.5">
+        <div
+          class="flex gap-2.5 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-6 md:overflow-visible md:pb-0"
+        >
           {
             shelfDone.map((item) => (
-              <ShelfCard
-                type={item.data.type}
-                title={item.data.title}
-                creator={item.data.creator}
-                genre={item.data.genre}
-                status={item.data.status}
-                rating={item.data.rating}
-                poster={item.data.poster}
-                compact
-                href={withBase(`/shelf/${stripExt(item.id)}/`)}
-              />
+              <div class="shrink-0 w-[130px] snap-start md:w-auto md:shrink">
+                <ShelfCard
+                  type={item.data.type}
+                  title={item.data.title}
+                  creator={item.data.creator}
+                  genre={item.data.genre}
+                  status={item.data.status}
+                  rating={item.data.rating}
+                  poster={item.data.poster}
+                  compact
+                  href={withBase(`/shelf/${stripExt(item.id)}/`)}
+                />
+              </div>
             ))
           }
         </div>
