@@ -79,11 +79,17 @@ const headerColorVar =
     ? `--color-collection-${data.categories[0]}`
     : "--color-text-base";
 const showFilmLinks = isFilm || isAnime || isSeries;
+
+const ogUrl = new URL(
+  `/shelf/${stripExt(entry.id)}/og.png`,
+  Astro.url.origin,
+).href;
 ---
 
 <Layout
   title={`${data.title} | ${SITE.title}`}
   description={data.description}
+  ogImage={ogUrl}
   scrollSmooth
 >
   <Header />

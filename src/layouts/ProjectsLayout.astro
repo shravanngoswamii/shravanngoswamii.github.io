@@ -33,6 +33,7 @@ const { frontmatter } = Astro.props;
 <Layout
   title={`${frontmatter.title} | ${SITE.title}`}
   description={frontmatter.description}
+  ogImage="/projects/og.png"
 >
   <Header activeNav="projects" />
   <Breadcrumbs />

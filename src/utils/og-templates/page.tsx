@@ -2,7 +2,7 @@ import satori from "satori";
 import { SITE } from "@config";
 import loadGoogleFonts, { type FontOptions } from "../loadGoogleFont";
 
-export default async () => {
+export default async (title: string, description?: string) => {
   return satori(
     <div
       style={{
@@ -17,25 +17,25 @@ export default async () => {
       <div
         style={{
           position: "absolute",
-          top: "-120px",
-          right: "-80px",
+          top: "-100px",
+          left: "50%",
           width: "500px",
           height: "500px",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)",
         }}
       />
       <div
         style={{
           position: "absolute",
-          bottom: "-100px",
-          left: "-60px",
-          width: "400px",
-          height: "400px",
+          bottom: "-80px",
+          left: "-40px",
+          width: "350px",
+          height: "350px",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(236,72,153,0.12) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%)",
         }}
       />
 
@@ -66,36 +66,36 @@ export default async () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
             flex: "1",
+            justifyContent: "center",
           }}
         >
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "12px",
-              marginBottom: "24px",
+              gap: "8px",
+              marginBottom: "20px",
             }}
           >
             <div
               style={{
-                width: "8px",
-                height: "8px",
+                width: "6px",
+                height: "6px",
                 borderRadius: "50%",
-                background: "#22c55e",
+                background: "#f59e0b",
               }}
             />
             <span
               style={{
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: "bold",
-                color: "rgba(255,255,255,0.4)",
+                color: "rgba(255,255,255,0.35)",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase" as const,
               }}
             >
-              Personal Blog
+              {SITE.title}
             </span>
           </div>
 
@@ -108,25 +108,28 @@ export default async () => {
               margin: "0",
             }}
           >
-            {SITE.title}
+            {title}
           </p>
-          <p
-            style={{
-              fontSize: 22,
-              color: "rgba(255,255,255,0.5)",
-              marginTop: "16px",
-              lineHeight: 1.5,
-              maxWidth: "600px",
-            }}
-          >
-            {SITE.desc}
-          </p>
+          {description && (
+            <p
+              style={{
+                fontSize: 22,
+                color: "rgba(255,255,255,0.45)",
+                marginTop: "16px",
+                lineHeight: 1.5,
+                maxWidth: "700px",
+                overflow: "hidden",
+              }}
+            >
+              {description}
+            </p>
+          )}
         </div>
 
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             alignItems: "flex-end",
           }}
         >
@@ -140,32 +143,6 @@ export default async () => {
           >
             {new URL(SITE.website).hostname}
           </span>
-          <div style={{ display: "flex", gap: "6px" }}>
-            <div
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#6366f1",
-              }}
-            />
-            <div
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#f59e0b",
-              }}
-            />
-            <div
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#8b5cf6",
-              }}
-            />
-          </div>
         </div>
       </div>
     </div>,
@@ -174,7 +151,7 @@ export default async () => {
       height: 630,
       embedFont: true,
       fonts: (await loadGoogleFonts(
-        SITE.title + SITE.desc + SITE.website + "PERSONAL BLOG" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        title + (description ?? "") + SITE.title + SITE.website + "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
       )) as FontOptions[],
     },
   );

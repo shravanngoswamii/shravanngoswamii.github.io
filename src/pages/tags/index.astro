@@ -14,7 +14,7 @@ const allPosts = await getAllPosts();
 let tags = getUniqueTags(allPosts);
 ---
 
-<Layout title={`Tags | ${SITE.title}`}>
+<Layout title={`Tags | ${SITE.title}`} ogImage="/tags/og.png">
   <Header activeNav="tags" />
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
     <ul>

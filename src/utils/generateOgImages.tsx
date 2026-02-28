@@ -3,6 +3,7 @@ import type { AnyPost } from "@types";
 import type { CollectionEntry } from "astro:content";
 import postOgImage from "./og-templates/post";
 import siteOgImage from "./og-templates/site";
+import pageOgImage from "./og-templates/page";
 
 function svgBufferToPngBuffer(svg: string) {
   const resvg = new Resvg(svg);
@@ -25,5 +26,13 @@ export async function generateOgImageForShelf(entry: CollectionEntry<"shelf">) {
 
 export async function generateOgImageForSite() {
   const svg = await siteOgImage();
+  return svgBufferToPngBuffer(svg);
+}
+
+export async function generateOgImageForPage(
+  title: string,
+  description?: string,
+) {
+  const svg = await pageOgImage(title, description);
   return svgBufferToPngBuffer(svg);
 }

@@ -28,7 +28,7 @@ const shelfItems = await getDoneShelfItems("philosophy");
 const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
 ---
 
-<Layout title={`Philosophy | ${SITE.title}`}>
+<Layout title={`Philosophy | ${SITE.title}`} ogImage="/philosophy/og.png">
   <Header activeNav="blog" />
 
   {/* ===== PHILOSOPHY HERO ===== */}

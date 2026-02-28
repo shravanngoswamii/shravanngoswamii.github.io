@@ -28,7 +28,7 @@ const shelfItems = await getDoneShelfItems("tech");
 const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
 ---
 
-<Layout title={`Tech | ${SITE.title}`}>
+<Layout title={`Tech | ${SITE.title}`} ogImage="/tech/og.png">
   <Header activeNav="blog" />
 
   <div
@@ -49,7 +49,7 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
       <h1
         class="font-mono text-3xl sm:text-4xl text-skin-base leading-tight mb-4"
       >
-        Source & Signal
+        A Developer's Notebook
       </h1>
       <p class="text-base text-skin-base/60 leading-relaxed max-w-xl">
         {COLLECTION_META.tech.description}
