@@ -2,7 +2,7 @@
 import { SITE } from "@config";
 import { defineCollection, z } from "astro:content";
 
-const baseSchema = ({ image }: { image: Function }) =>
+const baseSchema = ({ image }: { image: (...args: unknown[]) => z.ZodType }) =>
   z.object({
     author: z.string().default(SITE.author),
     pubDatetime: z.date(),
@@ -12,7 +12,7 @@ const baseSchema = ({ image }: { image: Function }) =>
     draft: z.boolean().optional(),
     tags: z.array(z.string()).default(["others"]),
     ogImage: image()
-      .refine((img: any) => img.width >= 1200 && img.height >= 630, {
+      .refine((img: { width: number; height: number }) => img.width >= 1200 && img.height >= 630, {
         message: "OpenGraph image must be at least 1200 X 630 pixels!",
       })
       .or(z.string())
@@ -22,6 +22,7 @@ const baseSchema = ({ image }: { image: Function }) =>
     aliases: z.array(z.string()).optional().default([]),
     crossTopics: z.array(z.enum(["tech", "cinema", "philosophy"])).optional().default([]),
     toc: z.boolean().optional().default(true),
+    shelf: z.array(z.string()).optional().default([]),
   });
 
 const tech = defineCollection({
@@ -31,12 +32,7 @@ const tech = defineCollection({
 
 const cinema = defineCollection({
   type: "content",
-  schema: ({ image }) =>
-    baseSchema({ image }).extend({
-      director: z.string().optional(),
-      year: z.number().optional(),
-      rating: z.number().min(0).max(10).optional(),
-    }),
+  schema: ({ image }) => baseSchema({ image }),
 });
 
 const philosophy = defineCollection({
@@ -61,6 +57,9 @@ const shelf = defineCollection({
       rating: z.number().min(0).max(10).optional(),
       year: z.number().optional(),
       description: z.string().optional(),
+      poster: z.string().optional(),
+      pubDatetime: z.date().optional(),
+      tags: z.array(z.string()).optional().default([]),
     }),
 });
 

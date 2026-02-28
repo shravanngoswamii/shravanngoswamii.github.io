@@ -1,0 +1,254 @@
+---
+import { getCollection } from "astro:content";
+import { getCoverGradient, SHELF_TYPE, stripExt } from "@utils/shelf";
+
+export interface Props {
+  id: string;
+  position?: "left" | "right" | "center" | "outside-left" | "outside-right";
+}
+
+const { id, position = "right" } = Astro.props;
+const allShelf = await getCollection("shelf");
+const item = allShelf.find(i => stripExt(i.id) === id);
+
+if (!item) return;
+
+const { data } = item;
+const gradient = getCoverGradient(data.title);
+const typeInfo = SHELF_TYPE[data.type];
+const isBook = data.type === "book";
+const isFilm = ["movie", "documentary", "miniseries"].includes(data.type);
+const isSeries = ["series", "sitcom"].includes(data.type);
+const isAnime = data.type === "anime";
+const isGame = data.type === "game";
+
+const posClass = `film-pin--${position}`;
+---
+
+<a href={`/shelf/${stripExt(item.id)}/`} class={`film-pin not-prose ${posClass}`} data-film-pin={id}>
+  <div class="film-pin-flip-container">
+    <div class="film-pin-flip-label">
+      <span class="inline-block px-2 py-0.5 rounded-sm font-mono text-[7px] uppercase tracking-widest" style="background: rgba(var(--color-text-base), 0.08); color: rgba(var(--color-text-base), 0.5);">
+        {typeInfo.label}
+      </span>
+    </div>
+    <div class="film-pin-flip-inner">
+      {/* === FRONT === */}
+      <div class="film-pin-flip-front film-pin-cover" style={`background: ${gradient}`}>
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"></div>
+    {isBook && (
+      <>
+        <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25"></div>
+        <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10"></div>
+      </>
+    )}
+    {isFilm && (
+      <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"></div>
+    )}
+    {isSeries && (
+      <>
+        <div class="absolute left-0 inset-y-0 w-[2px] bg-white/10"></div>
+        <div class="absolute right-0 inset-y-0 w-[2px] bg-white/10"></div>
+        <div class="absolute inset-0 pointer-events-none opacity-[0.04]" style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"></div>
+      </>
+    )}
+    {isAnime && (
+      <div class="absolute inset-0 pointer-events-none opacity-[0.05]" style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"></div>
+    )}
+    {isGame && (
+      <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;6&quot; height=&quot;6&quot; viewBox=&quot;0 0 6 6&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Crect width=&quot;3&quot; height=&quot;3&quot; fill=&quot;%23ffffff&quot;/%3E%3C/svg%3E'); background-size: 6px 6px;"></div>
+    )}
+    <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;4&quot; height=&quot;4&quot; viewBox=&quot;0 0 4 4&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M1 3h1v1H1V3zm2-2h1v1H3V1z&quot; fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;/%3E%3C/svg%3E');"></div>
+    <div class="absolute top-1.5 left-1.5 z-10">
+      <span class="w-2.5 h-2.5 shelf-icon" set:html={typeInfo.icon} />
+    </div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center px-2 text-center z-10">
+      <h3 class="text-white font-serif text-[10px] sm:text-[11px] leading-snug drop-shadow-sm">{data.title}</h3>
+    </div>
+    <div class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6">
+      <div class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
+        <p class="font-serif text-white/50 text-[8px] truncate italic">{data.creator}</p>
+        {data.rating !== undefined && (
+          <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
+            {data.rating}<span class="text-white/25">/10</span>
+          </span>
+        )}
+      </div>
+    </div>
+      </div>
+      {/* === BACK === */}
+      <div class="film-pin-flip-back">
+        {data.poster ? (
+          <img src={data.poster} alt={`${data.title} poster`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        ) : (
+          <div class="absolute inset-0" style={`background: ${gradient}`}></div>
+        )}
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center px-2 text-center z-10">
+          <h3 class="text-white font-serif text-[10px] leading-snug drop-shadow-sm mb-0.5">{data.title}</h3>
+          <p class="font-serif text-white/60 italic text-[8px]">{data.creator}</p>
+          {data.year && <p class="font-mono text-white/30 text-[7px] mt-0.5">{data.year}</p>}
+          {data.rating !== undefined && (
+            <span class="font-mono font-medium text-[8px] text-white/70 mt-1">
+              {data.rating}<span class="text-white/30">/10</span>
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="film-pin-meta">
+    <span class="film-pin-name">{data.title}</span>
+    {data.rating !== undefined && (
+      <span class="film-pin-rating">{data.rating}<span class="film-pin-rating-max">/10</span></span>
+    )}
+  </div>
+</a>
+
+<style>
+  .film-pin {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 6.5rem;
+    vertical-align: top;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    position: relative;
+    z-index: 2;
+  }
+  .film-pin:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ===== Position variants ===== */
+
+  .film-pin--right {
+    float: right;
+    margin: 0.25em 0 0.75em 1.25em;
+    shape-outside: margin-box;
+  }
+
+  .film-pin--left {
+    float: left;
+    margin: 0.25em 1.25em 0.75em 0;
+    shape-outside: margin-box;
+  }
+
+  .film-pin--center {
+    float: none;
+    display: flex;
+    margin: 1rem auto;
+  }
+
+  .film-pin--outside-right {
+    float: right;
+    margin: 0.25em -3rem 0.75em 1.25em;
+    shape-outside: margin-box;
+  }
+
+  .film-pin--outside-left {
+    float: left;
+    margin: 0.25em 1.25em 0.75em -3rem;
+    shape-outside: margin-box;
+  }
+
+  @media (max-width: 768px) {
+    .film-pin--outside-right,
+    .film-pin--outside-left {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .film-pin--outside-right {
+      margin-left: 1.25rem;
+    }
+    .film-pin--outside-left {
+      margin-right: 1.25rem;
+    }
+  }
+
+  /* ===== Cover art ===== */
+
+  .film-pin-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2/3;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .film-pin-flip-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2/3;
+    perspective: 800px;
+  }
+  .film-pin-flip-label {
+    position: absolute;
+    top: -1.25rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 20;
+    transform: translateY(-4px);
+  }
+  .film-pin-flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+  }
+  .film-pin-flip-front {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+  }
+  .film-pin-flip-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+  }
+  .film-pin-flip-container:hover .film-pin-flip-inner {
+    transform: rotateY(180deg);
+  }
+  .film-pin-flip-container:hover .film-pin-flip-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .film-pin-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem;
+    padding: 0 2px;
+  }
+  .film-pin-name {
+    font-size: 0.625rem;
+    color: rgba(var(--color-text-base), 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
+  .film-pin-rating {
+    font-family: ui-monospace, monospace;
+    font-size: 0.625rem;
+    color: rgb(var(--color-accent));
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .film-pin-rating-max {
+    color: rgba(var(--color-text-base), 0.25);
+    font-size: 0.5rem;
+  }
+</style>

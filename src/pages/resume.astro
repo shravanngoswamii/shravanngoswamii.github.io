@@ -5,32 +5,130 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import ShelfCard from "@components/ShelfCard.astro";
 import { withBase } from "@utils/base";
+import { getAllPosts, COLLECTION_META, getPostUrl } from "@utils/collections";
+import getSortedPosts from "@utils/getSortedPosts";
+import { stripExt } from "@utils/shelf";
+import { getCollection } from "astro:content";
+
 const resumePDF = withBase("/resume.pdf");
+
+const recentPosts = getSortedPosts(await getAllPosts()).slice(0, 5);
+const shelfRaw = await getCollection("shelf");
+const shelfItems = shelfRaw
+  .filter(i => i.data.status === "done")
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 6);
 ---
 
 <Layout title={`Resume | ${SITE.title}`}>
   <Header activeNav="resume" />
 
-  <main
-    id="main-content"
-    style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 2rem; padding-top: 9rem;"
-  >
-    <h1>Shravan's Resume</h1>
-    <LinkButton
-      href={resumePDF}
-      className="my-6 text-lg underline decoration-dashed underline-offset-8"
-    >
-      Download the PDF
-    </LinkButton>
-    <iframe
-      src={resumePDF}
-      style="display: block; justify-content: center; width: 50%; height: 100vh; border: none; margin: 0 auto;"
-      title="My Resume"
-    >
-      This browser does not support PDFs.
-    </iframe>
-  </main>
+  <div class="mx-auto w-full max-w-screen-xl px-4 pt-28 sm:pt-24 pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,40rem)_1fr] gap-6">
+
+      {/* Left Column — Shelf Cards (desktop only) */}
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 mt-32 w-[240px] mx-auto">
+          <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">Shelf</span>
+          <div class="grid grid-cols-2 gap-3">
+            {shelfItems.map(item => (
+              <ShelfCard
+                type={item.data.type}
+                title={item.data.title}
+                creator={item.data.creator}
+                genre={item.data.genre}
+                status={item.data.status}
+                rating={item.data.rating}
+                poster={item.data.poster}
+                compact={true}
+                href={withBase(`/shelf/${stripExt(item.id)}/`)}
+              />
+            ))}
+          </div>
+        </div>
+      </aside>
+      <main id="main-content" class="flex flex-col items-center">
+        <h1 class="text-2xl font-semibold text-skin-base mb-2">Shravan's Resume</h1>
+        <LinkButton
+          href={resumePDF}
+          className="my-4 text-lg underline decoration-dashed underline-offset-8"
+        >
+          Download the PDF
+        </LinkButton>
+        <iframe
+          src={resumePDF}
+          class="border-none rounded-lg w-full"
+          style="display: block; height: 100vh; margin: 0 auto;"
+          title="My Resume"
+        >
+          This browser does not support PDFs.
+        </iframe>
+      </main>
+
+      {/* Right Column — Recent Blogs (desktop only) */}
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 mt-32 w-[240px] mx-auto">
+          <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">Recent</span>
+          <div class="flex flex-col gap-3">
+            {recentPosts.map(p => {
+              const col = p.collection as keyof typeof COLLECTION_META;
+              return (
+                <a href={withBase(getPostUrl(p))} class="group block">
+                  <div class="flex items-start gap-2">
+                    <span class="w-1 h-1 rounded-full mt-1.5 shrink-0" style={`background: rgb(var(--color-collection-${col}))`} />
+                    <div class="flex flex-col">
+                      <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">{p.data.title}</span>
+                      <span class="text-[9px] font-mono text-skin-base/25 mt-0.5">{COLLECTION_META[col].label}</span>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
+
+    {/* Mobile: Shelf + Recent (stacked at bottom) */}
+    <div class="lg:hidden mt-12 space-y-10">
+      <div>
+        <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">Shelf</span>
+        <div class="grid grid-cols-3 gap-2">
+          {shelfItems.map(item => (
+            <ShelfCard
+              type={item.data.type}
+              title={item.data.title}
+              creator={item.data.creator}
+              genre={item.data.genre}
+              status={item.data.status}
+              rating={item.data.rating}
+              poster={item.data.poster}
+              compact={true}
+              href={withBase(`/shelf/${stripExt(item.id)}/`)}
+            />
+          ))}
+        </div>
+      </div>
+      <div>
+        <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-4">Recent Posts</span>
+        <div class="flex flex-col gap-3">
+          {recentPosts.map(p => {
+            const col = p.collection as keyof typeof COLLECTION_META;
+            return (
+              <a href={withBase(getPostUrl(p))} class="group block">
+                <div class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full mt-1 shrink-0" style={`background: rgb(var(--color-collection-${col}))`} />
+                  <span class="text-sm text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug">{p.data.title}</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+
   <ClimbingBackToTop />
   <Footer />
 </Layout>

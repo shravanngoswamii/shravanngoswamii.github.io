@@ -15,6 +15,8 @@ import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
+import ShelfPin from "@components/mdx/ShelfPin.astro";
+import ShelfMention from "@components/mdx/ShelfMention.astro";
 import type { AnyPost, BlogCollection } from "../types";
 import { COLLECTION_META } from "@utils/collections";
 import Callout from "@components/mdx/Callout";
@@ -46,18 +48,16 @@ const {
   toc = true,
 } = post.data;
 
-const director = post.collection === "cinema" ? post.data.director : undefined;
-const filmYear = post.collection === "cinema" ? post.data.year : undefined;
-const rating = post.collection === "cinema" ? post.data.rating : undefined;
 const thinkers = post.collection === "philosophy" ? post.data.thinkers : undefined;
 const tradition = post.collection === "philosophy" ? post.data.tradition : undefined;
-
 const publications = await getPublications();
 const relatedPublications = publications.filter(pub => 
   pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
 );
 
 const { Content, headings } = await post.render();
+const wordCount = post.body ? post.body.split(/\s+/).filter(Boolean).length : 0;
+const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
 // --- START: UPDATED OG IMAGE URL CONSTRUCTION ---
 // If ogImage is explicitly set in frontmatter, use it.
@@ -93,6 +93,13 @@ const currentPostIndex = allPosts.findIndex((a) => a.slug === post.slug);
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
+
+/* ========== Read More ========== */
+const readMorePosts = posts
+  .filter(p => p.slug !== post.slug)
+  .filter(p => p.data.tags.some(t => tags.includes(t)) || p.collection === collection)
+  .slice(0, 4)
+  .map(p => ({ title: p.data.title, slug: p.slug, collection: p.collection as string }));
 ---
 
 <Layout {...layoutProps}>
@@ -104,33 +111,12 @@ const nextPost =
       <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(--color-collection-cinema), 0.5) 40px, rgba(var(--color-collection-cinema), 0.5) 41px); background-size: 41px 100%;"></div>
       <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
         <div class="max-w-3xl mx-auto">
-          <div class="mb-4 flex justify-start">
-            <button class="focus-outline flex hover:opacity-75 items-center text-skin-base/60" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()">
-              <TbChevronLeft className="inline-block h-5 w-5" /><span class="text-sm">Back</span>
-            </button>
-          </div>
           <div class="flex items-center gap-3 mb-5">
             <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))">Cinema</span>
-            {filmYear && <span class="font-mono text-sm text-skin-base/50">{filmYear}</span>}
           </div>
           <h1 transition:name={slugifyStr(title)} class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4">{title}</h1>
           <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl mb-6 font-sans">{description}</p>
           <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
-            {director && (
-              <div class="flex flex-col">
-                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Directed by</span>
-                <span class="text-base font-serif text-skin-base">{director}</span>
-              </div>
-            )}
-            {rating !== undefined && (
-              <div class="flex flex-col">
-                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Rating</span>
-                <div class="flex items-baseline gap-1">
-                  <span class="text-2xl font-serif font-medium" style="color: rgb(var(--color-collection-cinema))">{rating}</span>
-                  <span class="text-sm text-skin-base/30 font-mono">/10</span>
-                </div>
-              </div>
-            )}
             <div class="flex flex-col">
               <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">Published</span>
               <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} size="lg" className="" />
@@ -146,11 +132,6 @@ const nextPost =
 
       <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
         <div class="max-w-3xl mx-auto">
-          <div class="mb-4 flex justify-start">
-            <button class="focus-outline flex hover:opacity-75 items-center text-skin-base/60" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()">
-              <TbChevronLeft className="inline-block h-5 w-5" /><span class="text-sm">Back</span>
-            </button>
-          </div>
           <div class="flex items-center gap-3 mb-5">
             <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))">Philosophy</span>
             {tradition && <span class="font-serif text-sm italic text-skin-base/50">{tradition}</span>}
@@ -174,14 +155,9 @@ const nextPost =
   )}
 
   {collection === "tech" && (
-    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.04) 0%, transparent 50%)">
+    <div class="relative overflow-hidden border-b border-skin-line/10" style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 50%)">
       <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
         <div class="max-w-3xl mx-auto">
-          <div class="mb-4 flex justify-start">
-            <button class="focus-outline flex hover:opacity-75 items-center text-skin-base/60" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()">
-              <TbChevronLeft className="inline-block h-5 w-5" /><span class="text-sm">Back</span>
-            </button>
-          </div>
           <div class="flex items-center gap-3 mb-5">
             <span class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium" style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))">Tech</span>
           </div>
@@ -196,8 +172,27 @@ const nextPost =
   <div class="mx-auto w-full max-w-screen-xl px-4">
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8">
       
-      <!-- Left Column (Empty for centering) -->
-      <div class="hidden lg:block"></div>
+      <!-- Left Column -->
+      <div class="hidden lg:block">
+        <div class="relative mt-8 flex flex-col items-center" id="left-sidebar">
+          <div id="sidebar-quotes" class="w-full"></div>
+          {readMorePosts.length > 0 && (
+            <div class="sticky bottom-8 mt-16 top-24 w-full max-w-[180px]">
+              <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">Read More</span>
+              <div class="flex flex-col gap-3">
+                {readMorePosts.map(p => (
+                  <a href={withBase(`${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`)} class="group block">
+                    <div class="flex items-start gap-2">
+                      <span class="w-1 h-1 rounded-full mt-1.5 shrink-0" style={`background: rgb(var(--color-collection-${p.collection}))`}></span>
+                      <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">{p.title}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       <!-- Center Column (Content) -->
       <div class="flex flex-col">
@@ -208,7 +203,7 @@ const nextPost =
           {toc && <TableOfContents headings={headings} mobile={true} />}
 
           <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-            <Content components={{ Tabs, TabItem, Callout, QuoteBlock, Spoiler, Timeline, Comparison, ComparisonSide, Progress }} />
+            <Content components={{ Tabs, TabItem, Callout, QuoteBlock, Spoiler, Timeline, Comparison, ComparisonSide, Progress, ShelfPin, ShelfMention }} />
           </article>
 
           {relatedPublications.length > 0 && (
@@ -253,6 +248,23 @@ const nextPost =
 
           <!-- Comments Section -->
           <Giscus />
+
+          <!-- Mobile Read More (shown after comments on small screens) -->
+          {readMorePosts.length > 0 && (
+            <div class="lg:hidden mt-12 pt-8 border-t border-skin-line/15">
+              <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-4">Read More</span>
+              <div class="flex flex-col gap-3">
+                {readMorePosts.map(p => (
+                  <a href={withBase(`${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`)} class="group block">
+                    <div class="flex items-start gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full mt-1 shrink-0" style={`background: rgb(var(--color-collection-${p.collection}))`}></span>
+                      <span class="text-sm text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug">{p.title}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           <!-- Previous/Next Post Buttons -->
           <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -311,6 +323,15 @@ const nextPost =
   }
   .post-title {
     @apply text-2xl font-semibold sm:text-3xl text-skin-base;
+  }
+
+  @media (min-width: 1024px) {
+    :global(figure.not-prose[data-position="left"]) {
+      height: 0;
+      overflow: hidden;
+      margin: 0 !important;
+      padding: 0;
+    }
   }
   
   /* Ensure code blocks have proper theme-aware styling */
@@ -569,4 +590,41 @@ const nextPost =
     });
   }
   hideTOCHeading();
+
+  function mirrorSidebarQuotes() {
+    const article = document.getElementById("article");
+    const sidebar = document.getElementById("left-sidebar");
+    const container = document.getElementById("sidebar-quotes");
+    if (!article || !sidebar || !container) return;
+
+    container.innerHTML = "";
+
+    const quotes = Array.from(article.querySelectorAll('figure.not-prose[data-position="left"]'));
+    if (quotes.length === 0) return;
+
+    const sidebarTop = sidebar.getBoundingClientRect().top + window.scrollY;
+
+    quotes.forEach(quote => {
+      const quotePageY = quote.getBoundingClientRect().top + window.scrollY;
+      const topPos = quotePageY - sidebarTop;
+
+      const bq = quote.querySelector("blockquote");
+      const author = quote.getAttribute("data-author") || "";
+      const source = quote.getAttribute("data-source") || "";
+      const text = bq ? bq.textContent.replace(/[\u201C\u201D"]/g, "").trim() : "";
+      if (!text) return;
+
+      const mirror = document.createElement("div");
+      mirror.style.cssText = `position:absolute;top:${topPos}px;left:0;right:0;display:flex;justify-content:center;`;
+      mirror.innerHTML =
+        `<div style="max-width:180px;width:100%;padding:0.75rem;border-left:2px solid rgba(var(--color-text-base),0.12);background:rgba(var(--color-card),0.3);border-radius:0 4px 4px 0">` +
+        `<p style="font-size:11px;font-style:italic;color:rgba(var(--color-text-base),0.5);line-height:1.6;font-family:ui-serif,Georgia,serif">\u201C${text}\u201D</p>` +
+        `<span style="display:block;margin-top:0.5rem;font-family:ui-monospace,monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(var(--color-text-base),0.3)">${author}</span>` +
+        (source ? `<span style="display:block;font-family:ui-monospace,monospace;font-size:8px;font-style:italic;color:rgba(var(--color-text-base),0.2)">\u2014 ${source}</span>` : "") +
+        `</div>`;
+      container.appendChild(mirror);
+    });
+  }
+  mirrorSidebarQuotes();
+  window.addEventListener("load", mirrorSidebarQuotes);
 </script>

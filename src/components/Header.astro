@@ -5,7 +5,7 @@ import { TbMoon, TbSun, TbMenu2, TbX } from "react-icons/tb";
 import { withBase } from "@utils/base";
 
 export interface Props {
-  activeNav?: "projects" | "resume" | "blog" | "tags" | "publications";
+  activeNav?: "projects" | "resume" | "blog" | "tags" | "publications" | "shelf";
 }
 
 const { activeNav } = Astro.props;
@@ -41,6 +41,7 @@ const { activeNav } = Astro.props;
       <nav class="flex items-center">
         <ul class="flex items-center gap-1 text-xs font-mono uppercase tracking-widest font-medium">
           <li><a href={withBase("/blog/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Journal</a></li>
+          <li><a href={withBase("/shelf/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "shelf" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Shelf</a></li>
           <li><a href={withBase("/projects/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Work</a></li>
           <li><a href={withBase("/publications/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>Research</a></li>
           <li><a href={withBase("/resume/")} class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}>CV</a></li>
@@ -67,7 +68,7 @@ const { activeNav } = Astro.props;
 
 <!-- MOBILE HEADER -->
 <header id="mobile-header" class="sm:hidden fixed top-0 left-0 right-0 z-50 transition-transform duration-300">
-  <div class="bg-skin-fill/90 backdrop-blur-lg border-b border-skin-line/10">
+  <div class="backdrop-blur-xl supports-[backdrop-filter]:bg-skin-fill/30 bg-skin-fill/60">
     <div class="flex items-center justify-between h-16 px-4">
       <!-- Logo -->
       <a href={withBase("/")} class="font-serif text-xl font-bold text-skin-base">SG</a>
@@ -100,6 +101,11 @@ const { activeNav } = Astro.props;
                 <li>
                   <a href={withBase("/blog/")} class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "blog" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
                     Journal
+                  </a>
+                </li>
+                <li>
+                  <a href={withBase("/shelf/")} class={`block px-4 py-2.5 rounded-lg text-sm transition-all ${activeNav === "shelf" ? "bg-skin-fill text-skin-base font-medium" : "text-skin-base/70 hover:bg-skin-fill/50 hover:text-skin-base"}`}>
+                    Shelf
                   </a>
                 </li>
                 <li>

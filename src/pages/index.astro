@@ -14,14 +14,14 @@ import { getAllPosts, getPostUrl } from "@utils/collections";
 import ShelfCard from "@components/ShelfCard.astro";
 import { getCollection } from "astro:content";
 import { withBase } from "@utils/base";
+import { stripExt } from "@utils/shelf";
 
 const allPosts = await getAllPosts();
 const sortedPosts = getSortedPosts(allPosts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const allShelf = await getCollection("shelf");
-const shelfBooks = allShelf.filter(i => i.data.type === "book").slice(0, 4);
-const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
+const shelfDone = allShelf.filter(i => i.data.status === "done").slice(0, 8);
 ---
 
 <Layout>
@@ -209,64 +209,35 @@ const shelfVisual = allShelf.filter(i => i.data.type !== "book").slice(0, 4);
 
     </section>
 
-    {/* ===== SHELVES TEASER ===== */}
+    {/* ===== SHELF ===== */}
     <section class="border-t border-skin-line/20 pt-16 pb-24">
       <ScrollReveal client:visible>
-        <div class="flex items-end justify-between mb-10 border-b border-skin-line/15 pb-3">
-          <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Shelves</h2>
+        <div class="flex items-end justify-between mb-10">
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 block mb-1">Currently exploring</span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-skin-base">The Shelf</h2>
+          </div>
           <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
         </div>
       </ScrollReveal>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Books */}
-        <ScrollReveal client:visible delay={0.1}>
-          <div>
-            <div class="flex items-center justify-between mb-5">
-              <span class="font-serif text-xl text-skin-base">Books</span>
-              <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
-            </div>
-            <div class="grid grid-cols-4 gap-2.5">
-              {shelfBooks.map(item => (
-                <ShelfCard
-                  type={item.data.type}
-                  title={item.data.title}
-                  creator={item.data.creator}
-                  genre={item.data.genre}
-                  status={item.data.status}
-                  rating={item.data.rating}
-                  compact
-                  href={withBase(`/shelf/${item.id}/`)}
-                />
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
-
-        {/* Visual Media */}
-        <ScrollReveal client:visible delay={0.2}>
-          <div>
-            <div class="flex items-center justify-between mb-5">
-              <span class="font-serif text-xl text-skin-base">Visual Media</span>
-              <a href={withBase("/shelf/")} class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">View all →</a>
-            </div>
-            <div class="grid grid-cols-4 gap-2.5">
-              {shelfVisual.map(item => (
-                <ShelfCard
-                  type={item.data.type}
-                  title={item.data.title}
-                  creator={item.data.creator}
-                  genre={item.data.genre}
-                  status={item.data.status}
-                  rating={item.data.rating}
-                  compact
-                  href={withBase(`/shelf/${item.id}/`)}
-                />
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
-      </div>
+      <ScrollReveal client:visible delay={0.1}>
+        <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2.5">
+          {shelfDone.map(item => (
+            <ShelfCard
+              type={item.data.type}
+              title={item.data.title}
+              creator={item.data.creator}
+              genre={item.data.genre}
+              status={item.data.status}
+              rating={item.data.rating}
+              poster={item.data.poster}
+              compact
+              href={withBase(`/shelf/${stripExt(item.id)}/`)}
+            />
+          ))}
+        </div>
+      </ScrollReveal>
     </section>
 
   </main>

@@ -5,7 +5,7 @@ import Footer from "@components/Footer.astro";
 import ShelfCard from "@components/ShelfCard.astro";
 import { SITE } from "@config";
 import { getCollection } from "astro:content";
-import { SHELF_STATUS, SHELF_TYPE, type ShelfStatus, type ShelfType } from "@utils/shelf";
+import { SHELF_STATUS, SHELF_TYPE, stripExt, type ShelfStatus, type ShelfType } from "@utils/shelf";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 
 const allItems = await getCollection("shelf");
@@ -27,7 +27,7 @@ const sections = typeOrder
 ---
 
 <Layout title={`Shelf | ${SITE.title}`}>
-  <Header />
+  <Header activeNav="shelf" />
 
   <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-6">
     <div class="mb-8">
@@ -54,7 +54,7 @@ const sections = typeOrder
     {sections.map(section => (
       <section class="shelf-section mb-14 last:mb-0" id={`section-${section.key}`} data-section={section.key}>
         <div class="flex items-center gap-3 mb-6">
-          <span class="text-2xl select-none">{section.icon}</span>
+          <span class="w-5 h-5 select-none text-skin-accent/60 shelf-icon" set:html={section.icon} />
           <div class="flex-1 min-w-0">
             <div class="flex items-baseline gap-3">
               <h2 class="font-mono text-xs uppercase tracking-widest font-medium text-skin-base/80">{section.label}</h2>
@@ -74,7 +74,8 @@ const sections = typeOrder
               rating={item.data.rating}
               year={item.data.year}
               description={item.data.description}
-              href={`/shelf/${item.id}/`}
+              poster={item.data.poster}
+              href={`/shelf/${stripExt(item.id)}/`}
             />
           ))}
         </div>
