@@ -21,16 +21,14 @@ let themeValue = getPreferTheme();
 
 function setPreference(theme) {
   localStorage.setItem("theme", theme);
-  reflectPreference(theme);
+  reflectPreference(theme, true);
 }
 
-function reflectPreference(theme) {
+function reflectPreference(theme, userInitiated) {
   let themeToApply = theme;
   if (theme === "auto") {
-    // Get the last applied auto theme
     const lastAutoTheme = sessionStorage.getItem("last-auto-theme");
 
-    // Cycle through themes sequentially
     let nextIndex = 0;
     if (lastAutoTheme) {
       const currentIndex = themes.indexOf(lastAutoTheme);
@@ -40,12 +38,26 @@ function reflectPreference(theme) {
     }
 
     themeToApply = themes[nextIndex];
-
-    // Save the new theme as the last applied one
     sessionStorage.setItem("last-auto-theme", themeToApply);
   }
 
-  document.firstElementChild.setAttribute("data-theme", themeToApply);
+  const root = document.documentElement;
+
+  if (userInitiated) {
+    root.classList.add("theme-transition");
+  }
+
+  root.setAttribute("data-theme", themeToApply);
+
+  // Force WebKit/Safari repaint — CSS custom property changes
+  // don't always propagate to composited layers on iPad/Safari
+  if (document.body) {
+    void document.body.offsetHeight;
+  }
+
+  if (userInitiated) {
+    setTimeout(() => root.classList.remove("theme-transition"), 350);
+  }
 
   document
     .querySelector("#theme-btn")
@@ -57,18 +69,10 @@ function reflectPreference(theme) {
       `Current theme: ${themeToApply} (${theme === "auto" ? "Auto" : "Manual"})`,
     );
 
-  // Get a reference to the body element
   const body = document.body;
-
-  // Check if the body element exists before using getComputedStyle
   if (body) {
-    // Get the computed styles for the body element
     const computedStyles = window.getComputedStyle(body);
-
-    // Get the background color property
     const bgColor = computedStyles.backgroundColor;
-
-    // Set the background color in <meta theme-color ... />
     document
       .querySelector("meta[name='theme-color']")
       ?.setAttribute("content", bgColor);
