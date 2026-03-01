@@ -27,7 +27,7 @@ import Spoiler from "@components/mdx/Spoiler";
 import Timeline from "@components/mdx/Timeline";
 import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
 import Progress from "@components/mdx/Progress";
-import AuthorCard from "@components/AuthorCard";
+
 
 export interface Props {
   entry: CollectionEntry<"shelf">;
@@ -113,16 +113,16 @@ const ogUrl = new URL(
           <div class="w-32 sm:w-40 shrink-0 group/flip">
             <div
               class="relative w-full aspect-[2/3]"
-              style="perspective: 800px;"
+              style="perspective: 800px; -webkit-perspective: 800px;"
             >
               <div
-                class="relative w-full h-full transition-transform duration-500 group-hover/flip:[transform:rotateY(180deg)]"
-                style="transform-style: preserve-3d;"
+                class="shelf-details-flip-inner relative w-full h-full transition-transform duration-500"
+                style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d;"
               >
                 {/* FRONT — Poster (or gradient fallback) */}
                 <div
                   class="absolute inset-0 rounded overflow-hidden shadow-lg"
-                  style="backface-visibility: hidden;"
+                  style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
                 >
                   {
                     data.poster ? (
@@ -170,7 +170,7 @@ const ogUrl = new URL(
                 {/* BACK — Gradient cover */}
                 <div
                   class="absolute inset-0 rounded overflow-hidden shadow-lg"
-                  style={`backface-visibility: hidden; transform: rotateY(180deg); background: ${gradient};`}
+                  style={`backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); -webkit-transform: rotateY(180deg); background: ${gradient};`}
                 >
                   <div
                     class="absolute inset-0 pointer-events-none"
@@ -331,17 +331,6 @@ const ogUrl = new URL(
                   </div>
                 )
               }
-              <div class="flex flex-col">
-                <span
-                  class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5"
-                  >Author</span
-                >
-                <AuthorCard
-                  name={data.author}
-                  className="text-sm text-skin-base/70 font-serif"
-                  client:idle
-                />
-              </div>
             </div>
 
             {
@@ -715,6 +704,11 @@ const ogUrl = new URL(
     display: block;
     padding-right: 0.75rem;
     height: 1.3125rem;
+  }
+
+  .group\/flip:hover .shelf-details-flip-inner {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
   }
 </style>
 

@@ -18,7 +18,7 @@ import TableOfContents from "@components/TableOfContents.astro";
 import ShelfPin from "@components/mdx/ShelfPin.astro";
 import ShelfMention from "@components/mdx/ShelfMention.astro";
 import type { AnyPost, BlogCollection } from "../types";
-import AuthorCard from "@components/AuthorCard";
+
 import { COLLECTION_META } from "@utils/collections";
 import Callout from "@components/mdx/Callout";
 import QuoteBlock from "@components/mdx/QuoteBlock";
@@ -164,16 +164,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
             <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
               <div class="flex flex-col">
                 <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
-                  Author
-                </span>
-                <AuthorCard
-                  name={author}
-                  className="text-sm text-skin-base/70 font-serif"
-                  client:idle
-                />
-              </div>
-              <div class="flex flex-col">
-                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
                   Published
                 </span>
                 <Datetime
@@ -273,16 +263,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
             <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mt-2">
               <div class="flex flex-col">
                 <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
-                  Author
-                </span>
-                <AuthorCard
-                  name={author}
-                  className="text-sm text-skin-base/70 font-serif"
-                  client:idle
-                />
-              </div>
-              <div class="flex flex-col">
-                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
                   Published
                 </span>
                 <Datetime
@@ -322,16 +302,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
               {title}
             </h1>
             <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mt-2">
-              <div class="flex flex-col">
-                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
-                  Author
-                </span>
-                <AuthorCard
-                  name={author}
-                  className="text-sm text-skin-base/70 font-serif"
-                  client:idle
-                />
-              </div>
               <div class="flex flex-col">
                 <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
                   Published

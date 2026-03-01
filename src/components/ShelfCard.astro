@@ -57,7 +57,7 @@ const isVideo = type === "video";
 >
   <div
     class="shelf-flip-container relative w-full aspect-[2/3]"
-    style="perspective: 800px;"
+    style="perspective: 800px; -webkit-perspective: 800px;"
   >
     {/* Type label — appears on hover above the card */}
     <div
@@ -76,14 +76,14 @@ const isVideo = type === "video";
 
     <div
       class="shelf-flip-inner relative w-full h-full transition-transform duration-500"
-      style="transform-style: preserve-3d;"
+      style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d;"
     >
       {/* === FRONT (poster by default) === */}
       <div
         class:list={[
           "shelf-flip-front absolute inset-0 rounded overflow-hidden shadow-md",
         ]}
-        style="backface-visibility: hidden;"
+        style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
       >
         {
           poster ? (
@@ -175,7 +175,7 @@ const isVideo = type === "video";
       {/* === BACK (gradient art on hover) === */}
       <div
         class="shelf-flip-back absolute inset-0 rounded overflow-hidden shadow-md"
-        style={`backface-visibility: hidden; transform: rotateY(180deg); background: ${gradient};`}
+        style={`backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); -webkit-transform: rotateY(180deg); background: ${gradient};`}
       >
         <div
           class="absolute inset-0 pointer-events-none"
@@ -307,6 +307,7 @@ const isVideo = type === "video";
 <style>
   .shelf-flip-container:hover .shelf-flip-inner {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
   }
   .shelf-flip-container:hover .shelf-flip-label {
     opacity: 1;

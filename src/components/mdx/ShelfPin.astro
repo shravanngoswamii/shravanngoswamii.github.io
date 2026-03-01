@@ -246,6 +246,7 @@ const posClass = `film-pin--${position}`;
     width: 100%;
     aspect-ratio: 2/3;
     perspective: 800px;
+    -webkit-perspective: 800px;
   }
   .film-pin-flip-label {
     position: absolute;
@@ -265,11 +266,15 @@ const posClass = `film-pin--${position}`;
     height: 100%;
     transition: transform 0.5s ease;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
   }
   .film-pin-flip-front {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
   }
   .film-pin-flip-back {
     position: absolute;
@@ -278,10 +283,13 @@ const posClass = `film-pin--${position}`;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
   }
   .film-pin-flip-container:hover .film-pin-flip-inner {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
   }
   .film-pin-flip-container:hover .film-pin-flip-label {
     opacity: 1;

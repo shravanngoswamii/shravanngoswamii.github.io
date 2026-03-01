@@ -26,15 +26,18 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
   >
     {/* Poster — always on the left */}
     <div class="flex-none w-12 sm:w-14 md:w-16 ml-1 sm:ml-2">
-      <div class="relative w-full aspect-[2/3]" style="perspective: 800px;">
+      <div
+        class="relative w-full aspect-[2/3]"
+        style="perspective: 800px; -webkit-perspective: 800px;"
+      >
         <div
           class="shelf-list-flip-inner relative w-full h-full transition-transform duration-500"
-          style="transform-style: preserve-3d;"
+          style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d;"
         >
           {/* FRONT (poster by default) */}
           <div
             class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
-            style="backface-visibility: hidden;"
+            style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
           >
             {
               poster ? (
@@ -71,7 +74,7 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
           {/* BACK (gradient art on hover) */}
           <div
             class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
-            style={`background: ${gradient}; backface-visibility: hidden; transform: rotateY(180deg);`}
+            style={`background: ${gradient}; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); -webkit-transform: rotateY(180deg);`}
           >
             <div
               class="absolute inset-0 pointer-events-none"
@@ -153,9 +156,7 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
       >
         {title}
       </h3>
-      <p
-        class="text-[11px] sm:text-xs text-skin-base/50 font-serif italic mb-1 sm:mb-2"
-      >
+      <p class="text-[11px] sm:text-xs text-skin-base/50 font-serif italic mb-1 sm:mb-2">
         {shelfMeta.creator}
       </p>
       <p
@@ -181,5 +182,6 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
 <style>
   .group:hover .shelf-list-flip-inner {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
   }
 </style>

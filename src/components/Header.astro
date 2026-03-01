@@ -276,11 +276,26 @@ const { activeNav } = Astro.props;
       const currentTheme = html.getAttribute("data-theme");
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
-      html.classList.add("theme-transition");
       html.setAttribute("data-theme", nextTheme);
       localStorage.setItem("theme", nextTheme);
 
-      setTimeout(() => html.classList.remove("theme-transition"), 350);
+      // Force WebKit/Safari to repaint ALL elements.
+      // Safari caches composited layers and skips repainting off-screen
+      // elements when CSS custom properties change. Cycling display:none
+      // on body forces a full render-tree teardown and rebuild.
+      // This runs synchronously so the browser never renders "none".
+      if (document.body) {
+        const sx = window.scrollX, sy = window.scrollY;
+        document.body.style.display = "none";
+        void document.body.offsetHeight;
+        document.body.style.display = "";
+        window.scrollTo(sx, sy);
+
+        const bgColor = window.getComputedStyle(document.body).backgroundColor;
+        document
+          .querySelector("meta[name='theme-color']")
+          ?.setAttribute("content", bgColor);
+      }
     };
 
     document
