@@ -7,6 +7,7 @@ import {
   TbWorld,
 } from "react-icons/tb";
 import authorsData from "@data/authors.json";
+import { withBase } from "@utils/base";
 
 type AuthorSocial = { name: string; href: string };
 type AuthorInfo = {
@@ -112,7 +113,7 @@ export default function AuthorCard({
           <div className="bg-skin-fill border border-skin-line/30 rounded-md shadow-lg overflow-hidden">
             <div className="flex items-center gap-3 p-3">
               <img
-                src={author.image}
+                src={withBase(author.image)}
                 alt={author.name}
                 className="w-10 h-10 rounded-full object-cover ring-1 ring-skin-line/20"
               />
