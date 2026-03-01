@@ -17,16 +17,17 @@ const isBook = item?.data.type === "book";
 const isFilm = item
   ? ["movie", "documentary", "miniseries"].includes(item.data.type)
   : false;
-const isSeries = item
-  ? ["series", "sitcom"].includes(item.data.type)
-  : false;
+const isSeries = item ? ["series", "sitcom"].includes(item.data.type) : false;
 const isAnime = item?.data.type === "anime";
 ---
 
 {
   item ? (
     <span class="shelf-mention group">
-      <a href={withBase(`/shelf/${stripExt(item.id)}/`)} class="shelf-mention-link">
+      <a
+        href={withBase(`/shelf/${stripExt(item.id)}/`)}
+        class="shelf-mention-link"
+      >
         <slot />
       </a>
       <span class="shelf-mention-popup" aria-hidden="true">
@@ -201,6 +202,4 @@ const isAnime = item?.data.type === "anime";
     width: 100%;
     height: 100%;
   }
-
-
 </style>

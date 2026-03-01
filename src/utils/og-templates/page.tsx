@@ -151,7 +151,11 @@ export default async (title: string, description?: string) => {
       height: 630,
       embedFont: true,
       fonts: (await loadGoogleFonts(
-        title + (description ?? "") + SITE.title + SITE.website + "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        title +
+          (description ?? "") +
+          SITE.title +
+          SITE.website +
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
       )) as FontOptions[],
     },
   );
