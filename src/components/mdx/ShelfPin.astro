@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import { getCoverGradient, SHELF_TYPE, stripExt } from "@utils/shelf";
 import { formatYear } from "@utils/formatYear";
+import { withBase } from "@utils/base";
 
 export interface Props {
   id: string;
@@ -27,7 +28,7 @@ const posClass = `film-pin--${position}`;
 ---
 
 <a
-  href={`/shelf/${stripExt(item.id)}/`}
+  href={withBase(`/shelf/${stripExt(item.id)}/`)}
   class={`film-pin not-prose ${posClass}`}
   data-film-pin={id}
 >

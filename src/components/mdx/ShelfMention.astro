@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { getCoverGradient, SHELF_TYPE, stripExt } from "@utils/shelf";
+import { withBase } from "@utils/base";
 
 export interface Props {
   id: string;
@@ -25,7 +26,7 @@ const isAnime = item?.data.type === "anime";
 {
   item ? (
     <span class="shelf-mention group">
-      <a href={`/shelf/${stripExt(item.id)}/`} class="shelf-mention-link">
+      <a href={withBase(`/shelf/${stripExt(item.id)}/`)} class="shelf-mention-link">
         <slot />
       </a>
       <span class="shelf-mention-popup" aria-hidden="true">

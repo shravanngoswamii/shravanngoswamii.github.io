@@ -81,7 +81,7 @@ const headerColorVar =
 const showFilmLinks = isFilm || isAnime || isSeries;
 
 const ogUrl = new URL(
-  `/shelf/${stripExt(entry.id)}/og.png`,
+  withBase(`/shelf/${stripExt(entry.id)}/og.png`),
   Astro.url.origin,
 ).href;
 ---
@@ -356,7 +356,7 @@ const ogUrl = new URL(
                       title="IMDb"
                     >
                       <img
-                        src="/assets/imdb.png"
+                        src={withBase("/assets/imdb.png")}
                         alt="IMDb"
                         class="w-4 h-4 object-contain"
                       />
@@ -394,7 +394,7 @@ const ogUrl = new URL(
                         title="IMDb Profile"
                       >
                         <img
-                          src="/assets/imdb.png"
+                          src={withBase("/assets/imdb.png")}
                           alt="IMDb"
                           class="w-4 h-4 object-contain"
                         />
@@ -553,7 +553,7 @@ const ogUrl = new URL(
             {
               prevItem && (
                 <a
-                  href={`/shelf/${stripExt(prevItem.id)}/`}
+                  href={withBase(`/shelf/${stripExt(prevItem.id)}/`)}
                   class="flex w-full gap-1 hover:opacity-75 items-center"
                 >
                   <TbChevronLeft className="h-6 w-6 flex-none" />
@@ -569,7 +569,7 @@ const ogUrl = new URL(
             {
               nextItem && (
                 <a
-                  href={`/shelf/${stripExt(nextItem.id)}/`}
+                  href={withBase(`/shelf/${stripExt(nextItem.id)}/`)}
                   class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
                 >
                   <div>

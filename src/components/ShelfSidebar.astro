@@ -1,5 +1,6 @@
 ---
 import { getCoverGradient, SHELF_TYPE, stripExt } from "@utils/shelf";
+import { withBase } from "@utils/base";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
@@ -23,7 +24,7 @@ const { items } = Astro.props;
           );
           return (
             <a
-              href={`/shelf/${stripExt(item.id)}/`}
+              href={withBase(`/shelf/${stripExt(item.id)}/`)}
               class="shelf-sidebar-card group"
             >
               <div

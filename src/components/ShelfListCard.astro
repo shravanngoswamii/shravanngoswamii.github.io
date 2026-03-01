@@ -22,9 +22,10 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
   class="group block w-full relative border-t border-skin-line/20 first:border-t-0"
 >
   <div
-    class="py-8 flex flex-col md:flex-row md:items-start gap-5 relative z-10 transition-colors duration-500 ease-out group-hover:bg-skin-fill/50"
+    class="py-6 sm:py-8 flex flex-row items-start gap-4 sm:gap-5 relative z-10 transition-colors duration-500 ease-out group-hover:bg-skin-fill/50"
   >
-    <div class="flex-none w-14 md:w-16 ml-2">
+    {/* Poster — always on the left */}
+    <div class="flex-none w-12 sm:w-14 md:w-16 ml-1 sm:ml-2">
       <div class="relative w-full aspect-[2/3]" style="perspective: 800px;">
         <div
           class="shelf-list-flip-inner relative w-full h-full transition-transform duration-500"
@@ -121,10 +122,11 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
       </div>
     </div>
 
+    {/* Content — right of poster */}
     <div
-      class="flex-1 min-w-0 pr-4 md:pr-8 transition-transform duration-500 ease-out group-hover:translate-x-1"
+      class="flex-1 min-w-0 pr-2 sm:pr-4 md:pr-8 transition-transform duration-500 ease-out group-hover:translate-x-1"
     >
-      <div class="flex items-center gap-2 mb-2">
+      <div class="flex items-center gap-2 mb-1 sm:mb-2">
         <span
           class="px-1.5 py-0.5 rounded-sm text-[8px] font-mono uppercase tracking-widest"
           style="background: rgba(var(--color-text-base), 0.06); color: rgba(var(--color-text-base), 0.4)"
@@ -140,29 +142,30 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
         }
         {
           shelfMeta.year && (
-            <span class="font-mono text-[10px] text-skin-base/25">
+            <span class="font-mono text-[10px] text-skin-base/25 hidden sm:inline">
               {shelfMeta.year}
             </span>
           )
         }
       </div>
       <h3
-        class="text-2xl sm:text-3xl font-serif text-skin-base mb-2 leading-tight transition-colors duration-300"
+        class="text-lg sm:text-2xl md:text-3xl font-serif text-skin-base mb-1 sm:mb-2 leading-tight transition-colors duration-300"
       >
         {title}
       </h3>
-      <p class="text-xs text-skin-base/50 font-serif italic mb-2">
+      <p class="text-[11px] sm:text-xs text-skin-base/50 font-serif italic mb-1 sm:mb-2">
         {shelfMeta.creator}
       </p>
       <p
-        class="text-sm text-skin-base/70 font-normal leading-relaxed transition-colors duration-300 group-hover:text-skin-base/90"
+        class="text-xs sm:text-sm text-skin-base/70 font-normal leading-relaxed transition-colors duration-300 group-hover:text-skin-base/90 line-clamp-2 sm:line-clamp-none"
       >
         {description}
       </p>
     </div>
 
+    {/* Date — hidden on small mobile, shown on larger */}
     <div
-      class="flex flex-row md:flex-col items-center md:items-end md:w-44 md:shrink-0 justify-between gap-2 mt-4 md:mt-0 opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+      class="hidden sm:flex flex-col items-end w-44 shrink-0 justify-start mt-1 opacity-60 group-hover:opacity-100 transition-opacity duration-500"
     >
       <div
         class="text-xs font-mono text-skin-base/40 uppercase tracking-widest whitespace-nowrap"
