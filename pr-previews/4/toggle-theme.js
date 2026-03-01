@@ -21,10 +21,10 @@ let themeValue = getPreferTheme();
 
 function setPreference(theme) {
   localStorage.setItem("theme", theme);
-  reflectPreference(theme, true);
+  reflectPreference(theme);
 }
 
-function reflectPreference(theme, userInitiated) {
+function reflectPreference(theme) {
   let themeToApply = theme;
   if (theme === "auto") {
     const lastAutoTheme = sessionStorage.getItem("last-auto-theme");
@@ -41,23 +41,7 @@ function reflectPreference(theme, userInitiated) {
     sessionStorage.setItem("last-auto-theme", themeToApply);
   }
 
-  const root = document.documentElement;
-
-  if (userInitiated) {
-    root.classList.add("theme-transition");
-  }
-
-  root.setAttribute("data-theme", themeToApply);
-
-  // Force WebKit/Safari repaint — CSS custom property changes
-  // don't always propagate to composited layers on iPad/Safari
-  if (document.body) {
-    void document.body.offsetHeight;
-  }
-
-  if (userInitiated) {
-    setTimeout(() => root.classList.remove("theme-transition"), 350);
-  }
+  document.firstElementChild.setAttribute("data-theme", themeToApply);
 
   document
     .querySelector("#theme-btn")
