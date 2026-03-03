@@ -1,13 +1,13 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import type { BlogCollection } from "../types";
+import type { Topic } from "../types";
 import { stripExt } from "./shelf";
 
 export interface ShelfListingItem {
   kind: "shelf";
   id: string;
   slug: string;
-  collection: BlogCollection;
+  topic: Topic;
   href: string;
   data: {
     title: string;
@@ -20,8 +20,9 @@ export interface ShelfListingItem {
     author: string;
     shelf: string[];
     aliases: string[];
-    crossTopics: BlogCollection[];
+    crossTopics: Topic[];
     toc: boolean;
+    topic: Topic;
     shelfMeta: {
       type: string;
       creator: string;
@@ -34,14 +35,14 @@ export interface ShelfListingItem {
 
 export function shelfToListingItem(
   item: CollectionEntry<"shelf">,
-  category: BlogCollection,
+  category: Topic,
 ): ShelfListingItem {
   const slug = stripExt(item.id);
   return {
     kind: "shelf",
     id: item.id,
     slug,
-    collection: category,
+    topic: category,
     href: `/shelf/${slug}/`,
     data: {
       title: item.data.title,
@@ -55,8 +56,9 @@ export function shelfToListingItem(
       author: "",
       shelf: [],
       aliases: [],
-      crossTopics: item.data.categories as BlogCollection[],
+      crossTopics: item.data.categories as Topic[],
       toc: true,
+      topic: category,
       shelfMeta: {
         type: item.data.type,
         creator: item.data.creator,
@@ -69,7 +71,7 @@ export function shelfToListingItem(
 }
 
 export async function getDoneShelfItems(
-  category?: BlogCollection,
+  category?: Topic,
 ): Promise<ShelfListingItem[]> {
   const shelf = await getCollection("shelf");
   return shelf
@@ -80,17 +82,12 @@ export async function getDoneShelfItems(
         (!category || i.data.categories.includes(category)),
     )
     .map((i) =>
-      shelfToListingItem(
-        i,
-        category ?? (i.data.categories[0] as BlogCollection),
-      ),
+      shelfToListingItem(i, category ?? (i.data.categories[0] as Topic)),
     );
 }
 
 export type MergedItem =
-  | (CollectionEntry<"tech"> & { kind?: undefined })
-  | (CollectionEntry<"cinema"> & { kind?: undefined })
-  | (CollectionEntry<"philosophy"> & { kind?: undefined })
+  | (CollectionEntry<"blog"> & { kind?: undefined })
   | ShelfListingItem;
 
 export function sortMergedItems(items: MergedItem[]): MergedItem[] {

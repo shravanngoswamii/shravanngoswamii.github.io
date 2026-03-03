@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import ShelfListCard from "@components/ShelfListCard.astro";
 import { SITE } from "@config";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import getSortedPosts from "@utils/getSortedPosts";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import Datetime from "@components/Datetime";
@@ -22,8 +22,8 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const posts = getSortedPosts(
-  await getCollection("philosophy", ({ data }) => !data.draft),
-) as unknown as CollectionEntry<"philosophy">[];
+  await getCollection("blog", ({ data }) => !data.draft && data.topic === "philosophy"),
+);
 const shelfItems = await getDoneShelfItems("philosophy");
 const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
 ---
@@ -99,12 +99,10 @@ const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
           const isShelf = item.kind === "shelf";
           const href = isShelf
             ? withBase(item.href)
-            : withBase(getPostUrl(item as CollectionEntry<"philosophy">));
+            : withBase(getPostUrl(item));
           if (isShelf) return <ShelfListCard item={item} href={href} />;
-          const postThinkers = (item as CollectionEntry<"philosophy">).data
-            .thinkers;
-          const tradition = (item as CollectionEntry<"philosophy">).data
-            .tradition;
+          const postThinkers = item.data.thinkers;
+          const tradition = item.data.tradition;
           return (
             <a
               href={href}

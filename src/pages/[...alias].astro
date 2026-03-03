@@ -1,27 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
-import { COLLECTION_META } from "@utils/collections";
-import type { BlogCollection } from "../types";
+import { getPostUrl } from "@utils/collections";
 
 export const getStaticPaths = (async () => {
-  const [techPosts, cinemaPosts, philosophyPosts] = await Promise.all([
-    getCollection("tech", ({ data }) => !data.draft),
-    getCollection("cinema", ({ data }) => !data.draft),
-    getCollection("philosophy", ({ data }) => !data.draft),
-  ]);
-
-  const allPosts = [
-    ...techPosts.map((p) => ({ ...p, _collection: "tech" as BlogCollection })),
-    ...cinemaPosts.map((p) => ({
-      ...p,
-      _collection: "cinema" as BlogCollection,
-    })),
-    ...philosophyPosts.map((p) => ({
-      ...p,
-      _collection: "philosophy" as BlogCollection,
-    })),
-  ];
+  const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 
   const redirectPaths: {
     params: { alias: string };
@@ -29,7 +12,6 @@ export const getStaticPaths = (async () => {
   }[] = [];
 
   for (const post of allPosts) {
-    const prefix = COLLECTION_META[post._collection].prefix;
     for (const alias of post.data.aliases || []) {
       const normalizedAlias = alias.startsWith("/")
         ? alias.substring(1)
@@ -41,7 +23,7 @@ export const getStaticPaths = (async () => {
       redirectPaths.push({
         params: { alias: cleanNormalizedAlias },
         props: {
-          destination: `${prefix}/${post.slug}/`,
+          destination: getPostUrl(post),
           postTitle: post.data.title,
         },
       });

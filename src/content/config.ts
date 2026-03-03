@@ -1,51 +1,37 @@
-// src/content/config.ts
 import { SITE } from "@config";
 import { defineCollection, z } from "astro:content";
 
-const baseSchema = ({ image }: { image: (...args: unknown[]) => z.ZodType }) =>
-  z.object({
-    author: z.string().default(SITE.author),
-    pubDatetime: z.date(),
-    modDatetime: z.date().optional().nullable(),
-    title: z.string(),
-    featured: z.boolean().optional(),
-    draft: z.boolean().optional(),
-    tags: z.array(z.string()).default(["others"]),
-    ogImage: image()
-      .refine(
-        (img: { width: number; height: number }) =>
-          img.width >= 1200 && img.height >= 630,
-        {
-          message: "OpenGraph image must be at least 1200 X 630 pixels!",
-        },
-      )
-      .or(z.string())
-      .optional(),
-    description: z.string(),
-    canonicalURL: z.string().optional(),
-    aliases: z.array(z.string()).optional().default([]),
-    crossTopics: z
-      .array(z.enum(["tech", "cinema", "philosophy"]))
-      .optional()
-      .default([]),
-    toc: z.boolean().optional().default(true),
-    shelf: z.array(z.string()).optional().default([]),
-  });
+export const TOPICS = ["tech", "cinema", "philosophy"] as const;
+export type Topic = (typeof TOPICS)[number];
 
-const tech = defineCollection({
-  type: "content",
-  schema: ({ image }) => baseSchema({ image }),
-});
-
-const cinema = defineCollection({
-  type: "content",
-  schema: ({ image }) => baseSchema({ image }),
-});
-
-const philosophy = defineCollection({
+const blog = defineCollection({
   type: "content",
   schema: ({ image }) =>
-    baseSchema({ image }).extend({
+    z.object({
+      author: z.string().default(SITE.author),
+      pubDatetime: z.date(),
+      modDatetime: z.date().optional().nullable(),
+      title: z.string(),
+      featured: z.boolean().optional(),
+      draft: z.boolean().optional(),
+      tags: z.array(z.string()).default(["others"]),
+      ogImage: image()
+        .refine(
+          (img: { width: number; height: number }) =>
+            img.width >= 1200 && img.height >= 630,
+          {
+            message: "OpenGraph image must be at least 1200 X 630 pixels!",
+          },
+        )
+        .or(z.string())
+        .optional(),
+      description: z.string(),
+      canonicalURL: z.string().optional(),
+      aliases: z.array(z.string()).optional().default([]),
+      crossTopics: z.array(z.enum(TOPICS)).optional().default([]),
+      toc: z.boolean().optional().default(true),
+      shelf: z.array(z.string()).optional().default([]),
+      topic: z.enum(TOPICS).default("tech"),
       thinkers: z.array(z.string()).optional(),
       tradition: z.string().optional(),
     }),
@@ -70,7 +56,7 @@ const shelf = defineCollection({
         "sitcom",
         "miniseries",
       ]),
-      categories: z.array(z.enum(["tech", "cinema", "philosophy"])).min(1),
+      categories: z.array(z.enum(TOPICS)).min(1),
       status: z.enum(["done", "in-progress", "wishlist"]),
       rating: z.number().min(0).max(10).optional(),
       year: z.number().optional(),
@@ -84,4 +70,4 @@ const shelf = defineCollection({
     }),
 });
 
-export const collections = { tech, cinema, philosophy, shelf };
+export const collections = { blog, shelf };

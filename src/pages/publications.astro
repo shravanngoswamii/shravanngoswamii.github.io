@@ -19,7 +19,7 @@ import { withBase } from "@utils/base";
 const publications = await getPublications();
 
 // Fetch and sort blog posts
-const posts = await getCollection("tech");
+const posts = await getCollection("blog", ({ data }) => data.topic === "tech");
 const sortedPosts = getSortedPosts(posts);
 
 // Sort publications by year (descending)

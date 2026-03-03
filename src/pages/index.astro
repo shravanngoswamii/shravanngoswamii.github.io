@@ -10,7 +10,7 @@ import HeroBackground from "@components/HeroBackground";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import ScrollReveal from "@components/ScrollReveal";
 import SpotlightCard from "@components/SpotlightCard";
-import { getAllPosts, getPostUrl } from "@utils/collections";
+import { getAllPosts, getPostUrl, getPostTopic } from "@utils/collections";
 import ShelfCard from "@components/ShelfCard.astro";
 import { getCollection } from "astro:content";
 import { withBase } from "@utils/base";
@@ -149,13 +149,13 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
                       <div class="flex items-center gap-3 mb-4">
                         <span
                           class="w-2 h-2 rounded-full"
-                          style={`background-color: rgb(var(--color-collection-${post.collection}))`}
+                          style={`background-color: rgb(var(--color-collection-${getPostTopic(post)}))`}
                         />
                         <span
                           class="font-mono text-[10px] uppercase tracking-widest"
-                          style={`color: rgb(var(--color-collection-${post.collection}))`}
+                          style={`color: rgb(var(--color-collection-${getPostTopic(post)}))`}
                         >
-                          {post.collection}
+                          {getPostTopic(post)}
                         </span>
                         <span class="font-mono text-[10px] text-skin-base/30">
                           {post.data.pubDatetime.toLocaleDateString("en-US", {
@@ -217,13 +217,13 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
                     <div class="flex items-center gap-3 mb-2">
                       <span
                         class="w-1.5 h-1.5 rounded-full"
-                        style={`background-color: rgb(var(--color-collection-${post.collection}))`}
+                        style={`background-color: rgb(var(--color-collection-${getPostTopic(post)}))`}
                       />
                       <span
                         class="font-mono text-[10px] uppercase tracking-widest"
-                        style={`color: rgb(var(--color-collection-${post.collection}))`}
+                        style={`color: rgb(var(--color-collection-${getPostTopic(post)}))`}
                       >
-                        {post.collection}
+                        {getPostTopic(post)}
                       </span>
                       <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
                         {post.data.pubDatetime.toLocaleDateString("en-US", {

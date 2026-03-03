@@ -15,6 +15,33 @@ const { noMarginTop = false } = Astro.props;
   <div class="w-full h-[1px] bg-skin-line/30 mb-12"></div>
 
   <div class="flex flex-col items-center py-12 gap-8">
+    <!-- Newsletter Subscribe -->
+    <div class="flex flex-col items-center gap-3 text-center max-w-xs w-full">
+      <span
+        class="text-[10px] font-mono uppercase tracking-[0.3em] text-skin-base/40"
+        >Stay in the loop</span
+      >
+      <form
+        class="flex w-full gap-2"
+        id="footer-subscribe"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          class="flex-1 min-w-0 px-3 py-1.5 rounded-sm text-xs font-mono bg-skin-fill border border-skin-line/40 text-skin-base placeholder:text-skin-base/30 focus:outline-none focus:border-skin-accent transition-colors"
+        />
+        <button
+          type="submit"
+          class="px-3 py-1.5 rounded-sm text-[10px] font-mono uppercase tracking-wider text-skin-accent bg-skin-accent/10 hover:bg-skin-accent/20 backdrop-blur-sm transition-all whitespace-nowrap"
+          >Subscribe</button
+        >
+      </form>
+    </div>
+
+    <div class="w-16 h-[1px] bg-skin-line/10"></div>
+
     <!-- Signature Block -->
     <div class="flex flex-col items-center gap-2 text-center">
       <span
@@ -45,3 +72,23 @@ const { noMarginTop = false } = Astro.props;
     </div>
   </div>
 </footer>
+
+<script>
+  function initSubscribeForm() {
+    const form = document.getElementById("footer-subscribe") as HTMLFormElement | null;
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = "1";
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = new FormData(form).get("email") as string;
+      if (!email) return;
+      window.open(
+        `https://shravangoswami.substack.com/subscribe?freeSignupEmail=${encodeURIComponent(email)}`,
+        "_blank",
+        "noopener"
+      );
+    });
+  }
+  initSubscribeForm();
+  document.addEventListener("astro:after-swap", initSubscribeForm);
+</script>

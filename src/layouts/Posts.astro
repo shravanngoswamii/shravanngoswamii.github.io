@@ -5,7 +5,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import { SITE } from "@config";
-import type { AnyPost, BlogCollection } from "../types";
+import type { AnyPost, Topic } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
 import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
@@ -13,12 +13,12 @@ import { withBase } from "@utils/base";
 
 export interface Props {
   posts: AnyPost[];
-  collection?: BlogCollection;
+  topic?: Topic;
   isAll?: boolean;
 }
 
-const { posts, collection = "tech", isAll = false } = Astro.props;
-const meta = COLLECTION_META[collection];
+const { posts, topic = "tech", isAll = false } = Astro.props;
+const meta = COLLECTION_META[topic];
 const pageTitle = isAll ? "Blog" : meta.label;
 const pageDesc = isAll
   ? `${posts.length} ${posts.length === 1 ? "piece" : "pieces"} of writing \u2014 Tech, Cinema & Philosophy, all in one place.`
@@ -51,7 +51,7 @@ const getRelatedPubs = (tags: string[]) => {
             href={withBase(`${m.prefix}/`)}
             class:list={[
               "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
-              !isAll && key === collection
+              !isAll && key === topic
                 ? "bg-skin-inverted text-skin-inverted"
                 : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
             ]}
@@ -80,7 +80,7 @@ const getRelatedPubs = (tags: string[]) => {
             frontmatter={post.data}
             index={index + 1}
             relatedPublications={getRelatedPubs(post.data.tags)}
-            collection={post.collection as BlogCollection}
+            collection={post.data.topic}
           />
         ))
       }

@@ -1,8 +1,8 @@
 import { getCollection } from "astro:content";
-import type { AnyPost, BlogCollection } from "../types";
+import type { AnyPost, Topic } from "../types";
 
 export const COLLECTION_META: Record<
-  BlogCollection,
+  Topic,
   { label: string; prefix: string; description: string }
 > = {
   tech: {
@@ -23,20 +23,28 @@ export const COLLECTION_META: Record<
   },
 };
 
-export function getPostUrl(post: AnyPost): string {
-  const meta = COLLECTION_META[post.collection as BlogCollection];
-  return `${meta.prefix}/${post.slug}/`;
+export function getPostSlug(post: AnyPost): string {
+  const topic = post.data.topic ?? "tech";
+  const topicPrefix = `${topic}/`;
+  return post.slug.startsWith(topicPrefix)
+    ? post.slug.slice(topicPrefix.length)
+    : post.slug;
 }
 
-export function getCollectionLabel(collection: BlogCollection): string {
-  return COLLECTION_META[collection].label;
+export function getPostUrl(post: AnyPost): string {
+  const topic = post.data.topic ?? "tech";
+  const meta = COLLECTION_META[topic];
+  return `${meta.prefix}/${getPostSlug(post)}/`;
+}
+
+export function getPostTopic(post: AnyPost): Topic {
+  return post.data.topic ?? "tech";
+}
+
+export function getCollectionLabel(topic: Topic): string {
+  return COLLECTION_META[topic].label;
 }
 
 export async function getAllPosts(): Promise<AnyPost[]> {
-  const [tech, cinema, philosophy] = await Promise.all([
-    getCollection("tech"),
-    getCollection("cinema"),
-    getCollection("philosophy"),
-  ]);
-  return [...tech, ...cinema, ...philosophy] as AnyPost[];
+  return getCollection("blog");
 }

@@ -7,7 +7,7 @@ import LinkButton from "@components/LinkButton.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import ShelfCard from "@components/ShelfCard.astro";
 import { withBase } from "@utils/base";
-import { getAllPosts, COLLECTION_META, getPostUrl } from "@utils/collections";
+import { getAllPosts, COLLECTION_META, getPostUrl, getPostTopic } from "@utils/collections";
 import getSortedPosts from "@utils/getSortedPosts";
 import { stripExt } from "@utils/shelf";
 import { getCollection } from "astro:content";
@@ -89,7 +89,7 @@ const shelfItems = shelfRaw
           <div class="flex flex-col gap-3">
             {
               recentPosts.map((p) => {
-                const col = p.collection as keyof typeof COLLECTION_META;
+                const col = getPostTopic(p);
                 return (
                   <a href={withBase(getPostUrl(p))} class="group block">
                     <div class="flex items-start gap-2">
@@ -158,7 +158,7 @@ const shelfItems = shelfRaw
           <div class="flex flex-col gap-3">
             {
               recentPosts.map((p) => {
-                const col = p.collection as keyof typeof COLLECTION_META;
+                const col = getPostTopic(p);
                 return (
                   <a href={withBase(getPostUrl(p))} class="group block">
                     <div class="flex items-start gap-2">

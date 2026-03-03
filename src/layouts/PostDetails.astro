@@ -17,9 +17,9 @@ import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import ShelfPin from "@components/mdx/ShelfPin.astro";
 import ShelfMention from "@components/mdx/ShelfMention.astro";
-import type { AnyPost, BlogCollection } from "../types";
+import type { AnyPost } from "../types";
 
-import { COLLECTION_META } from "@utils/collections";
+import { COLLECTION_META, getPostTopic, getPostSlug, getAllPosts } from "@utils/collections";
 import Callout from "@components/mdx/Callout";
 import QuoteBlock from "@components/mdx/QuoteBlock";
 import Spoiler from "@components/mdx/Spoiler";
@@ -27,17 +27,16 @@ import Timeline from "@components/mdx/Timeline";
 import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
 import Progress from "@components/mdx/Progress";
 import { withBase } from "@utils/base";
-import { getAllPosts } from "@utils/collections";
 import getSortedPosts from "@utils/getSortedPosts";
 
 export interface Props {
   post: AnyPost;
   posts: AnyPost[];
-  collection?: BlogCollection;
 }
 
-const { post, posts, collection = "tech" } = Astro.props;
-const urlPrefix = COLLECTION_META[collection].prefix;
+const { post, posts } = Astro.props;
+const topic = getPostTopic(post);
+const urlPrefix = COLLECTION_META[topic].prefix;
 
 const {
   title,
@@ -51,10 +50,8 @@ const {
   toc = true,
 } = post.data;
 
-const thinkers =
-  post.collection === "philosophy" ? post.data.thinkers : undefined;
-const tradition =
-  post.collection === "philosophy" ? post.data.tradition : undefined;
+const thinkers = post.data.thinkers;
+const tradition = post.data.tradition;
 const publications = await getPublications();
 const relatedPublications = publications.filter(
   (pub) =>
@@ -71,7 +68,7 @@ const { Content, headings } = await post.render();
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 
 const ogUrl = new URL(
-  ogImageUrl ?? `${urlPrefix}/${post.slug}/og.png`,
+  ogImageUrl ?? `${urlPrefix}/${getPostSlug(post)}/og.png`,
   Astro.url.origin,
 ).href;
 // --- END: UPDATED OG IMAGE URL CONSTRUCTION ---
@@ -89,12 +86,12 @@ const layoutProps = {
 
 /* ========== Prev/Next Posts ========== */
 
-const allPosts = posts.map(({ data: { title }, slug }) => ({
-  slug,
-  title,
+const allPosts = posts.map((p) => ({
+  slug: getPostSlug(p),
+  title: p.data.title,
 }));
 
-const currentPostIndex = allPosts.findIndex((a) => a.slug === post.slug);
+const currentPostIndex = allPosts.findIndex((a) => a.slug === getPostSlug(post));
 
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
@@ -106,14 +103,15 @@ const sidebarHeadings: Record<string, string> = {
   cinema: "More on the Reel",
   philosophy: "Further Down the Path",
 };
-const sidebarHeading = sidebarHeadings[collection] || "Wander Further";
+const sidebarHeading = sidebarHeadings[topic] || "Wander Further";
 
 const allSitePosts = getSortedPosts(await getAllPosts());
 let readMorePosts = allSitePosts
   .filter((p) => p.slug !== post.slug)
   .filter(
     (p) =>
-      p.data.tags.some((t) => tags.includes(t)) || p.collection === collection,
+      p.data.tags.some((t) => tags.includes(t)) ||
+      getPostTopic(p) === topic,
   )
   .slice(0, 4);
 
@@ -123,8 +121,8 @@ if (readMorePosts.length === 0) {
 
 const readMoreMapped = readMorePosts.map((p) => ({
   title: p.data.title,
-  slug: p.slug,
-  collection: p.collection as string,
+  slug: getPostSlug(p),
+  topic: getPostTopic(p),
 }));
 ---
 
@@ -133,7 +131,7 @@ const readMoreMapped = readMorePosts.map((p) => ({
 
   {/* ============ COLLECTION-THEMED HERO HEADER ============ */}
   {
-    collection === "cinema" && (
+    topic === "cinema" && (
       <div
         class="relative border-b border-skin-line/10"
         style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)"
@@ -216,7 +214,7 @@ const readMoreMapped = readMorePosts.map((p) => ({
   }
 
   {
-    collection === "philosophy" && (
+    topic === "philosophy" && (
       <div
         class="relative border-b border-skin-line/10"
         style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)"
@@ -280,7 +278,7 @@ const readMoreMapped = readMorePosts.map((p) => ({
   }
 
   {
-    collection === "tech" && (
+    topic === "tech" && (
       <div
         class="relative border-b border-skin-line/10"
         style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 50%)"
@@ -343,14 +341,14 @@ const readMoreMapped = readMorePosts.map((p) => ({
                   {readMoreMapped.map((p) => (
                     <a
                       href={withBase(
-                        `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
+                        `${COLLECTION_META[p.topic]?.prefix || "/blog"}/${p.slug}`,
                       )}
                       class="group block"
                     >
                       <div class="flex items-start gap-2">
                         <span
                           class="w-1 h-1 rounded-full mt-1.5 shrink-0"
-                          style={`background: rgb(var(--color-collection-${p.collection}))`}
+                          style={`background: rgb(var(--color-collection-${p.topic}))`}
                         />
                         <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">
                           {p.title}
@@ -484,14 +482,14 @@ const readMoreMapped = readMorePosts.map((p) => ({
                   {readMoreMapped.map((p) => (
                     <a
                       href={withBase(
-                        `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
+                        `${COLLECTION_META[p.topic]?.prefix || "/blog"}/${p.slug}`,
                       )}
                       class="group block"
                     >
                       <div class="flex items-start gap-2">
                         <span
                           class="w-1.5 h-1.5 rounded-full mt-1 shrink-0"
-                          style={`background: rgb(var(--color-collection-${p.collection}))`}
+                          style={`background: rgb(var(--color-collection-${p.topic}))`}
                         />
                         <span class="text-sm text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug">
                           {p.title}

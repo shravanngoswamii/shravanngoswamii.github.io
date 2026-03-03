@@ -59,9 +59,7 @@ let readMorePostsRaw = allPosts
   .filter(
     (p) =>
       p.data.tags.some((t) => data.tags.includes(t)) ||
-      data.categories.includes(
-        p.collection as "tech" | "cinema" | "philosophy",
-      ),
+      data.categories.includes(p.data.topic),
   )
   .slice(0, 4);
 
@@ -72,7 +70,7 @@ if (readMorePostsRaw.length === 0) {
 const readMorePosts = readMorePostsRaw.map((p) => ({
   title: p.data.title,
   slug: p.slug,
-  collection: p.collection as string,
+  topic: p.data.topic,
 }));
 const headerColorVar =
   data.categories && data.categories[0]
@@ -124,23 +122,22 @@ const ogUrl = new URL(
                   class="absolute inset-0 rounded overflow-hidden shadow-lg"
                   style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
                 >
+                  <div
+                    class="absolute inset-0"
+                    style={`background: ${gradient}`}
+                  >
+                    <div
+                      class="absolute inset-0 pointer-events-none"
+                      style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
+                    />
+                  </div>
                   {
-                    data.poster ? (
+                    data.poster && (
                       <img
                         src={data.poster}
                         alt={`${data.title} poster`}
                         class="absolute inset-0 w-full h-full object-cover"
                       />
-                    ) : (
-                      <div
-                        class="absolute inset-0"
-                        style={`background: ${gradient}`}
-                      >
-                        <div
-                          class="absolute inset-0 pointer-events-none"
-                          style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
-                        />
-                      </div>
                     )
                   }
                   <div
@@ -448,14 +445,14 @@ const ogUrl = new URL(
                   {readMorePosts.map((p) => (
                     <a
                       href={withBase(
-                        `${COLLECTION_META[p.collection as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
+                        `${COLLECTION_META[p.topic as keyof typeof COLLECTION_META]?.prefix || "/blog"}/${p.slug}`,
                       )}
                       class="group block"
                     >
                       <div class="flex items-start gap-2">
                         <span
                           class="w-1 h-1 rounded-full mt-1.5 shrink-0"
-                          style={`background: rgb(var(--color-collection-${p.collection}))`}
+                          style={`background: rgb(var(--color-collection-${p.topic}))`}
                         />
                         <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">
                           {p.title}

@@ -39,18 +39,17 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
             class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
             style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
           >
+            <div
+              class="absolute inset-0"
+              style={`background: ${gradient}`}
+            />
             {
-              poster ? (
+              poster && (
                 <img
                   src={poster}
                   alt={`${title} poster`}
                   class="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
-                />
-              ) : (
-                <div
-                  class="absolute inset-0"
-                  style={`background: ${gradient}`}
                 />
               )
             }

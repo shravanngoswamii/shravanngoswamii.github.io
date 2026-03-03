@@ -217,6 +217,12 @@ const structuredData = isArticle
   </head>
 
   <body class="selection:bg-skin-accent selection:text-white">
+    <div
+      id="nav-progress"
+      class="fixed top-0 left-0 h-[2px] z-[9999] pointer-events-none"
+      style="width: 0%; background: rgba(var(--color-accent), 1); transition: none; opacity: 0;"
+    >
+    </div>
     <noscript
       ><iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-MMG7M2PS"
@@ -225,5 +231,52 @@ const structuredData = isArticle
         style="display:none;visibility:hidden"></iframe></noscript
     >
     <slot />
+
+    <script is:inline>
+      (function () {
+        let bar = document.getElementById("nav-progress");
+        let raf;
+        let w = 0;
+
+        function start() {
+          if (!bar) bar = document.getElementById("nav-progress");
+          if (!bar) return;
+          cancelAnimationFrame(raf);
+          w = 0;
+          bar.style.transition = "none";
+          bar.style.width = "0%";
+          bar.style.opacity = "1";
+          void bar.offsetWidth;
+          tick();
+        }
+
+        function tick() {
+          w += (90 - w) * 0.25;
+          bar.style.transition = "none";
+          bar.style.width = w + "%";
+          if (w < 89.5) {
+            raf = requestAnimationFrame(tick);
+          }
+        }
+
+        function finish() {
+          cancelAnimationFrame(raf);
+          if (!bar) bar = document.getElementById("nav-progress");
+          if (!bar) return;
+          bar.style.transition = "width 0.15s ease-out";
+          bar.style.width = "100%";
+          setTimeout(function () {
+            bar.style.transition = "opacity 0.3s ease";
+            bar.style.opacity = "0";
+          }, 150);
+        }
+
+        document.addEventListener("astro:before-preparation", start);
+        document.addEventListener("astro:after-swap", finish);
+        document.addEventListener("astro:page-load", function () {
+          bar = document.getElementById("nav-progress");
+        });
+      })();
+    </script>
   </body>
 </html>

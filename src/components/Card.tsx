@@ -18,7 +18,7 @@ export interface Props {
   index?: number;
   secHeading?: boolean;
   relatedPublications?: { title: string; url?: string }[];
-  collection?: "tech" | "cinema" | "philosophy";
+  collection?: string;
 }
 
 const COLLECTION_LABELS: Record<string, string> = {

@@ -1,15 +1,11 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-
-export interface Props {
-  post: CollectionEntry<"tech">;
-}
+import type { AnyPost } from "@types";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("tech", ({ data }) => !data.draft);
-
+  const posts = await getCollection("blog", ({ data }) => !data.draft && data.topic === "tech");
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
@@ -17,9 +13,8 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-
-const posts = await getCollection("tech");
-const sortedPosts = getSortedPosts(posts);
+const allTopicPosts = await getCollection("blog", ({ data }) => data.topic === "tech");
+const sortedPosts = getSortedPosts(allTopicPosts as AnyPost[]);
 ---
 
-<PostDetails post={post} posts={sortedPosts} collection="tech" />
+<PostDetails post={post} posts={sortedPosts} />

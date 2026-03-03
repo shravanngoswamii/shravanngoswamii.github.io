@@ -5,7 +5,7 @@ import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import ShelfListCard from "@components/ShelfListCard.astro";
 import { SITE } from "@config";
-import { getAllPosts, COLLECTION_META, getPostUrl } from "@utils/collections";
+import { getAllPosts, COLLECTION_META, getPostUrl, getPostTopic } from "@utils/collections";
 import getSortedPosts from "@utils/getSortedPosts";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { withBase } from "@utils/base";
@@ -15,7 +15,6 @@ import {
   sortMergedItems,
   type MergedItem,
 } from "@utils/shelfAdapter";
-import type { BlogCollection } from "@types";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (() => {
@@ -106,8 +105,8 @@ const getRelatedPubs = (tags: string[]) => {
             ? withBase(item.href)
             : withBase(getPostUrl(item));
           const collection = isShelf
-            ? item.collection
-            : (item.collection as BlogCollection);
+            ? item.topic
+            : getPostTopic(item);
           return isShelf ? (
             <ShelfListCard item={item} href={href} />
           ) : (

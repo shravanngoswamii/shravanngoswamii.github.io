@@ -5,7 +5,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import { SITE } from "@config";
-import type { AnyPost, BlogCollection } from "../types";
+import type { AnyPost } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
 import { getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
@@ -52,7 +52,7 @@ const getRelatedPubs = (tags: string[]) => {
             frontmatter={post.data}
             index={index + 1}
             relatedPublications={getRelatedPubs(post.data.tags)}
-            collection={post.collection as BlogCollection}
+            collection={post.data.topic}
           />
         ))
       }
