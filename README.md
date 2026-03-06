@@ -1,54 +1,18 @@
 # Shravan Goswami's Personal Portfolio Website
 
-Welcome to my personal portfolio website! This project showcases my skills, projects, and professional experience.
-
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+Why did you came here -- to copy my code? Well I made it with Gemini, Claude and Copilot -- feel free to copy mine but better design your own portfolio, not difficult to make these days and it's fun to make.
 
 ## Introduction
 
-This repository contains the source code for my personal portfolio website. It is designed to highlight my work, achievements, and skills as a developer.
-
-## Technologies Used
-
-The project is built using the following technologies:
-
-- **Astro**: 55.4%
-- **TypeScript**: 31.1%
-- **Python**: 5.1%
-- **JavaScript**: 4.4%
-- **CSS**: 4%
+Source code for my personal website. I post most random stuff of my life here.
 
 ## Installation
 
-To set up the project locally, follow these steps:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/shravanngoswamii/shravanngoswamii.github.io.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd shravanngoswamii.github.io
-   ```
-3. Install the dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the development server:
-   ```bash
-   npm start
-   ```
+Delete your GitHub and either go to sleep or get a life if you can't setup a static Astro site without guide!
 
 ## Contributing
 
-Contributions are welcome! If you have any ideas or suggestions, please open an issue or submit a pull request.
+Contributions are welcome! But why would you contribute here -- go make your own portfolio and contribute there.
 
 1. Fork the repository.
 2. Create a new branch:
@@ -63,11 +27,11 @@ Contributions are welcome! If you have any ideas or suggestions, please open an 
    ```bash
    git push origin feature-branch
    ```
-5. Open a pull request.
+5. Open a pull request. (please don't)
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License, so feel free to fork or clone it for any purpose. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
