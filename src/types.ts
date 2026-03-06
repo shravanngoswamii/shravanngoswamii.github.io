@@ -1,4 +1,8 @@
 import type socialIcons from "@assets/socialIcons";
+import type { CollectionEntry } from "astro:content";
+
+export type Topic = "tech" | "cinema" | "philosophy";
+export type AnyPost = CollectionEntry<"blog">;
 
 export type Site = {
   website: string;

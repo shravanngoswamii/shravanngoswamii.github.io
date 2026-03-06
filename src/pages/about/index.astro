@@ -1,0 +1,263 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Socials from "@components/Socials.astro";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import ScrollReveal from "@components/ScrollReveal";
+import { SITE } from "@config";
+import { withBase } from "@utils/base";
+import { TbArrowRight } from "react-icons/tb";
+---
+
+<Layout
+  title={`About | ${SITE.title}`}
+  description="Learn more about Shravan Goswami — software developer, open-source contributor, and the person behind this blog."
+  ogImage="/about/og.png"
+>
+  <Header />
+
+  <main id="main-content" class="px-4 sm:px-6">
+    {/* ===== HERO ===== */}
+    <section
+      class="relative border-x border-skin-line/10 mt-20 sm:mt-8 overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 -z-10 opacity-[0.04] pointer-events-none"
+        style="background-image: radial-gradient(circle at 30% 20%, rgba(var(--color-accent), 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(var(--color-collection-philosophy), 0.4) 0%, transparent 50%);"
+      >
+      </div>
+
+      <div
+        class="absolute top-0 left-0 w-8 h-8 border-t border-l border-skin-text-base/20"
+      >
+      </div>
+      <div
+        class="absolute top-0 right-0 w-8 h-8 border-t border-r border-skin-text-base/20"
+      >
+      </div>
+      <div
+        class="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-skin-text-base/20"
+      >
+      </div>
+      <div
+        class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-skin-text-base/20"
+      >
+      </div>
+
+      <div class="max-w-4xl mx-auto py-24 sm:py-32 px-4">
+        <div
+          class="flex flex-col sm:flex-row items-center sm:items-start gap-8"
+        >
+          <div class="relative shrink-0">
+            <div
+              class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-skin-line/20"
+            >
+              <img
+                src={withBase("/assets/luffy.png")}
+                alt="Shravan Goswami"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div
+              class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-skin-fill"
+              title="Available"
+            >
+            </div>
+          </div>
+
+          <div class="text-center sm:text-left">
+            <span
+              class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block"
+              >About</span
+            >
+            <h1
+              class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-3"
+            >
+              Shravan Goswami
+            </h1>
+            <p
+              class="text-base text-skin-base/60 leading-relaxed max-w-lg mb-6"
+            >
+              Software developer and open-source contributor. Research Assistant
+              at the University of Cambridge, GSoC 2025 contributor with
+              TuringLang. Writing about tech, cinema, philosophy, and the things
+              that make us think.
+            </p>
+            <div
+              class="flex flex-wrap items-center justify-center sm:justify-start gap-3"
+            >
+              <a
+                href={withBase("/resume")}
+                class="inline-flex items-center gap-2 px-4 py-2 bg-skin-inverted text-skin-inverted hover:bg-skin-accent transition-colors font-mono text-[10px] uppercase tracking-widest rounded-sm"
+              >
+                Resume
+              </a>
+              <a
+                href="mailto:contact@shravangoswami.com"
+                class="inline-flex items-center gap-2 px-4 py-2 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-[10px] uppercase tracking-widest rounded-sm"
+              >
+                Get in Touch
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== INTERESTS ===== */}
+    <section class="max-w-4xl mx-auto py-16 border-t border-skin-line/20">
+      <ScrollReveal client:visible>
+        <span
+          class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 mb-8 block"
+          >What I care about</span
+        >
+      </ScrollReveal>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <ScrollReveal client:visible delay={0.05}>
+          <a
+            href={withBase("/tech/")}
+            class="group block p-6 border border-skin-line/15 rounded-sm hover:border-skin-line/40 transition-all duration-300"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span
+                class="w-2 h-2 rounded-full"
+                style="background: rgb(var(--color-collection-tech))"></span>
+              <span
+                class="font-mono text-[10px] uppercase tracking-widest"
+                style="color: rgb(var(--color-collection-tech))">Tech</span
+              >
+            </div>
+            <p class="text-sm text-skin-base/50 leading-relaxed">
+              Open-source tools, programming languages, high-performance
+              computing, and the craft of building things that work.
+            </p>
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-skin-base/30 group-hover:text-skin-base/60 transition-colors"
+            >
+              Explore <TbArrowRight
+                className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+              />
+            </span>
+          </a>
+        </ScrollReveal>
+
+        <ScrollReveal client:visible delay={0.1}>
+          <a
+            href={withBase("/cinema/")}
+            class="group block p-6 border border-skin-line/15 rounded-sm hover:border-skin-line/40 transition-all duration-300"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span
+                class="w-2 h-2 rounded-full"
+                style="background: rgb(var(--color-collection-cinema))"></span>
+              <span
+                class="font-mono text-[10px] uppercase tracking-widest"
+                style="color: rgb(var(--color-collection-cinema))">Cinema</span
+              >
+            </div>
+            <p class="text-sm text-skin-base/50 leading-relaxed">
+              Films as philosophy, the craft of storytelling, and why some
+              images refuse to leave your mind.
+            </p>
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-skin-base/30 group-hover:text-skin-base/60 transition-colors"
+            >
+              Explore <TbArrowRight
+                className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+              />
+            </span>
+          </a>
+        </ScrollReveal>
+
+        <ScrollReveal client:visible delay={0.15}>
+          <a
+            href={withBase("/philosophy/")}
+            class="group block p-6 border border-skin-line/15 rounded-sm hover:border-skin-line/40 transition-all duration-300"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span
+                class="w-2 h-2 rounded-full"
+                style="background: rgb(var(--color-collection-philosophy))"
+              ></span>
+              <span
+                class="font-mono text-[10px] uppercase tracking-widest"
+                style="color: rgb(var(--color-collection-philosophy))"
+                >Philosophy</span
+              >
+            </div>
+            <p class="text-sm text-skin-base/50 leading-relaxed">
+              Ideas that refuse to sit still — meaning, ethics, consciousness,
+              and the human condition.
+            </p>
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-skin-base/30 group-hover:text-skin-base/60 transition-colors"
+            >
+              Explore <TbArrowRight
+                className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+              />
+            </span>
+          </a>
+        </ScrollReveal>
+      </div>
+    </section>
+
+    {/* ===== COLOPHON ===== */}
+    <section class="max-w-4xl mx-auto py-16 border-t border-skin-line/20">
+      <ScrollReveal client:visible>
+        <div class="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-16">
+          <div class="sm:w-1/2">
+            <span
+              class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 mb-4 block"
+              >Colophon</span
+            >
+            <p class="text-sm text-skin-base/50 leading-relaxed">
+              Built with <a
+                href="https://astro.build/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-skin-accent hover:underline">Astro</a
+              >, styled with <a
+                href="https://tailwindcss.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-skin-accent hover:underline">Tailwind CSS</a
+              >, and deployed on <a
+                href="https://pages.github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-skin-accent hover:underline">GitHub Pages</a
+              >. Search powered by <a
+                href="https://pagefind.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-skin-accent hover:underline">Pagefind</a
+              >. Based on <a
+                href="https://github.com/satnaing/astro-paper"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-skin-accent hover:underline">Astro Paper</a
+              >, heavily modified.
+            </p>
+          </div>
+
+          <div class="sm:w-1/2">
+            <span
+              class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 mb-4 block"
+              >Elsewhere</span
+            >
+            <div
+              class="flex items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
+            >
+              <Socials />
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+    </section>
+  </main>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>

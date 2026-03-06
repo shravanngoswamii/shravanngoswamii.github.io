@@ -8,6 +8,7 @@ featured: true
 description: "My journey from inconsistent CP attempts to Open Source success, and why I'm returning to the algorithmic arena in my final semester."
 aliases:
   - /posts/back-to-the-arena-2026
+  - /blog/back-to-the-arena-2026
 ---
 
 ## Introduction
@@ -37,7 +38,6 @@ In the midst of all these achievements, I left competitive programming almost en
 Here are my current Codeforces stats:
 ![Image Credits: https://codeforces-readme-stats.vercel.app/](/blog/back-to-the-arena-2026/codeforces.svg)
 
-
 ## 2026: Back to the Arena
 
 Now, in 2026, I’ve decided it’s time to open that chapter again.
@@ -47,4 +47,3 @@ Why now? Maybe it’s the desire to improve my problem-solving skills before gra
 This blog will serve as a log of my renewed journey into Competitive Programming. From Open Source to Algorithms, the circle is now complete.
 
 See you on the leaderboard!
-

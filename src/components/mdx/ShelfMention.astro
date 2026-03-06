@@ -1,0 +1,213 @@
+---
+import { getCollection } from "astro:content";
+import { getCoverGradient, SHELF_TYPE, stripExt } from "@utils/shelf";
+import { withBase } from "@utils/base";
+
+export interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const allShelf = await getCollection("shelf");
+const item = allShelf.find((i) => stripExt(i.id) === id);
+
+const gradient = item ? getCoverGradient(item.data.title) : "";
+const typeInfo = item ? SHELF_TYPE[item.data.type] : null;
+const isBook = item?.data.type === "book";
+const isFilm = item
+  ? ["movie", "documentary", "miniseries"].includes(item.data.type)
+  : false;
+const isSeries = item ? ["series", "sitcom"].includes(item.data.type) : false;
+const isAnime = item?.data.type === "anime";
+---
+
+{
+  item ? (
+    <span class="shelf-mention group">
+      <a
+        href={withBase(`/shelf/${stripExt(item.id)}/`)}
+        class="shelf-mention-link"
+      >
+        <slot />
+      </a>
+      <span class="shelf-mention-popup" aria-hidden="true">
+        <span
+          class="sm-flip-container"
+          style="perspective: 800px; -webkit-perspective: 800px;"
+        >
+          <span class="sm-flip-inner">
+            {/* FRONT: poster */}
+            <span
+              class="sm-flip-front"
+              style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
+            >
+              {item.data.poster ? (
+                <img
+                  src={item.data.poster}
+                  alt=""
+                  class="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <span
+                  class="absolute inset-0"
+                  style={`background: ${gradient}`}
+                />
+              )}
+              <span
+                class="absolute top-1.5 left-1.5 w-2.5 h-2.5 text-white/40 z-10 inline-flex shelf-sm-icon"
+                set:html={typeInfo!.icon}
+              />
+              <span class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6">
+                <span class="flex items-end justify-between pb-1.5 px-1.5 gap-1">
+                  <span class="font-serif text-white/50 text-[8px] truncate italic">
+                    {item.data.creator}
+                  </span>
+                  {item.data.rating !== undefined && (
+                    <span class="font-mono font-medium text-[7px] shrink-0 text-white/50">
+                      {item.data.rating}
+                      <span class="text-white/25">/10</span>
+                    </span>
+                  )}
+                </span>
+              </span>
+            </span>
+
+            {/* BACK: gradient art */}
+            <span
+              class="sm-flip-back"
+              style={`backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); -webkit-transform: rotateY(180deg); background: ${gradient};`}
+            >
+              <span
+                class="absolute inset-0 pointer-events-none"
+                style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
+              />
+              {isBook && (
+                <>
+                  <span class="absolute left-0 inset-y-0 w-[3px] bg-black/25" />
+                  <span class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10" />
+                </>
+              )}
+              {isFilm && (
+                <span
+                  class="absolute inset-0 pointer-events-none opacity-[0.06]"
+                  style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"
+                />
+              )}
+              {isSeries && (
+                <>
+                  <span class="absolute left-0 inset-y-0 w-[2px] bg-white/10" />
+                  <span class="absolute right-0 inset-y-0 w-[2px] bg-white/10" />
+                </>
+              )}
+              {isAnime && (
+                <span
+                  class="absolute inset-0 pointer-events-none opacity-[0.05]"
+                  style="background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 6px);"
+                />
+              )}
+              <span
+                class="absolute inset-0 pointer-events-none opacity-[0.03]"
+                style="background-image: url('data:image/svg+xml,%3Csvg width=%224%22 height=%224%22 viewBox=%220 0 4 4%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M1 3h1v1H1V3zm2-2h1v1H3V1z%22 fill=%22%23ffffff%22 fill-opacity=%221%22/%3E%3C/svg%3E');"
+              />
+              <span class="absolute inset-0 flex flex-col items-center justify-center px-2 text-center z-10">
+                <span class="text-white font-serif text-[10px] sm:text-[11px] leading-snug drop-shadow-sm">
+                  {item.data.title}
+                </span>
+                {item.data.genre && (
+                  <span class="font-mono text-[6px] uppercase tracking-widest text-white/25 mt-1">
+                    {item.data.genre}
+                  </span>
+                )}
+              </span>
+              <span class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6">
+                <span class="text-center pb-1.5 px-1.5 block">
+                  <span class="font-serif text-white/55 text-[8px] italic">
+                    {item.data.creator}
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+    </span>
+  ) : (
+    <slot />
+  )
+}
+
+<style>
+  .shelf-mention {
+    position: relative;
+    display: inline;
+  }
+
+  .shelf-mention-link {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    text-decoration-color: rgb(var(--color-accent));
+    color: rgb(var(--color-accent));
+    cursor: pointer;
+    transition: text-decoration-color 0.15s;
+  }
+
+  .shelf-mention-link:hover {
+    text-decoration-style: solid;
+  }
+
+  .shelf-mention-popup {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .shelf-mention:hover .shelf-mention-popup {
+    display: flex;
+  }
+
+  .sm-flip-container {
+    display: block;
+    width: 7rem;
+    aspect-ratio: 2/3;
+    position: relative;
+  }
+
+  .sm-flip-inner {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+
+  .shelf-mention:hover .sm-flip-inner {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    transition-delay: 0.6s;
+  }
+
+  .sm-flip-front,
+  .sm-flip-back {
+    display: block;
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.2),
+      0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .shelf-sm-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+</style>

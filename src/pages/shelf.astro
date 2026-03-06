@@ -1,0 +1,225 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import ShelfCard from "@components/ShelfCard.astro";
+import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import {
+  SHELF_STATUS,
+  SHELF_TYPE,
+  stripExt,
+  type ShelfStatus,
+  type ShelfType,
+} from "@utils/shelf";
+import { withBase } from "@utils/base";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+
+const allItems = await getCollection("shelf");
+const statusOrder: ShelfStatus[] = ["in-progress", "done", "wishlist"];
+
+const statusCounts = Object.fromEntries(
+  statusOrder.map((s) => [
+    s,
+    allItems.filter((i) => i.data.status === s).length,
+  ]),
+);
+
+const typeOrder: ShelfType[] = [
+  "book",
+  "movie",
+  "anime",
+  "series",
+  "sitcom",
+  "documentary",
+  "miniseries",
+  "game",
+  "course",
+  "video",
+];
+const sections = typeOrder
+  .filter((t) => allItems.some((i) => i.data.type === t))
+  .map((t) => ({
+    key: t,
+    label: SHELF_TYPE[t].label + "s",
+    icon: SHELF_TYPE[t].icon,
+    items: allItems.filter((i) => i.data.type === t),
+  }));
+---
+
+<Layout title={`Shelf | ${SITE.title}`} ogImage="/shelf/og.png">
+  <Header activeNav="shelf" />
+
+  <div
+    class="relative overflow-hidden border-b border-skin-line/10"
+    style="background: linear-gradient(135deg, rgba(var(--color-collection-shelf), 0.08) 0%, transparent 60%)"
+  >
+    <div
+      class="absolute inset-0 opacity-[0.03] pointer-events-none"
+      style="background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(var(--color-collection-shelf), 0.5) 20px, rgba(var(--color-collection-shelf), 0.5) 21px); background-size: 100% 100%;"
+    >
+    </div>
+    <div
+      class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-6 relative z-10"
+    >
+      <div class="mb-8">
+        <p
+          class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-3"
+        >
+          Collection
+        </p>
+        <h1
+          class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight"
+        >
+          Shelf
+        </h1>
+        <p class="text-sm text-skin-base/50 mt-3 max-w-lg leading-relaxed">
+          Everything I've consumed, am consuming, or plan to — books, films,
+          series, games, courses, and more.
+        </p>
+      </div>
+
+      <div
+        class="flex flex-wrap gap-2 border-b border-skin-line/15 pb-4"
+        id="shelf-status-tabs"
+      >
+        <button
+          data-filter="all"
+          class="shelf-tab active px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all"
+        >
+          All <span class="text-skin-base/30 ml-1">{allItems.length}</span>
+        </button>
+        {
+          statusOrder.map((s) => (
+            <button
+              data-filter={`status:${s}`}
+              class="shelf-tab px-3 py-1.5 text-[11px] font-mono uppercase tracking-widest rounded-sm transition-all"
+            >
+              {SHELF_STATUS[s].label}{" "}
+              <span class="text-skin-base/30 ml-1">{statusCounts[s] || 0}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-20 pt-4"
+  >
+    {
+      sections.map((section) => (
+        <section
+          class="shelf-section mb-14 last:mb-0"
+          id={`section-${section.key}`}
+          data-section={section.key}
+        >
+          <div class="flex items-center gap-3 mb-6">
+            <span
+              class="w-5 h-5 select-none text-skin-accent/60 shelf-icon"
+              set:html={section.icon}
+            />
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-3">
+                <h2 class="font-mono text-xs uppercase tracking-widest font-medium text-skin-base/80">
+                  {section.label}
+                </h2>
+                <span class="shelf-section-count font-mono text-[10px] text-skin-base/25">
+                  {section.items.length}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-5 gap-y-8">
+            {section.items.map((item) => (
+              <ShelfCard
+                type={item.data.type}
+                title={item.data.title}
+                creator={item.data.creator}
+                genre={item.data.genre}
+                status={item.data.status}
+                rating={item.data.rating}
+                year={item.data.year}
+                description={item.data.description}
+                poster={item.data.poster}
+                href={withBase(`/shelf/${stripExt(item.id)}/`)}
+              />
+            ))}
+          </div>
+
+          {section.key !== sections[sections.length - 1].key && (
+            <div class="mt-14 border-b border-skin-line/8" />
+          )}
+        </section>
+      ))
+    }
+  </main>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>
+
+<style>
+  .shelf-tab {
+    color: rgba(var(--color-text-base), 0.5);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .shelf-tab:hover {
+    color: rgba(var(--color-text-base), 0.8);
+    background: rgba(var(--color-text-base), 0.04);
+  }
+  .shelf-tab.active {
+    color: rgb(var(--color-text-base));
+    background: rgba(var(--color-text-base), 0.08);
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const statusTabs =
+      document.querySelectorAll<HTMLButtonElement>(".shelf-tab");
+    const items = document.querySelectorAll<HTMLElement>(".shelf-card");
+    const sections = document.querySelectorAll<HTMLElement>(".shelf-section");
+
+    let activeStatus = "all";
+
+    function applyFilters() {
+      items.forEach((item) => {
+        const match =
+          activeStatus === "all" ||
+          `status:${item.dataset.status}` === activeStatus;
+        item.style.display = match ? "" : "none";
+      });
+
+      sections.forEach((section) => {
+        const cards = section.querySelectorAll<HTMLElement>(".shelf-card");
+        const anyVisible = Array.from(cards).some(
+          (c) => c.style.display !== "none",
+        );
+        section.style.display = anyVisible ? "" : "none";
+
+        const countEl = section.querySelector(".shelf-section-count");
+        if (countEl) {
+          const visibleCount = Array.from(cards).filter(
+            (c) => c.style.display !== "none",
+          ).length;
+          countEl.textContent = String(visibleCount);
+        }
+      });
+    }
+
+    statusTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        statusTabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        activeStatus = tab.dataset.filter!;
+        applyFilters();
+      });
+    });
+  });
+</script>

@@ -24,16 +24,21 @@ export default function ScrollReveal({
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   const variants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: direction === "up" ? distance : direction === "down" ? -distance : 0,
-      x: direction === "left" ? distance : direction === "right" ? -distance : 0
+      x:
+        direction === "left" ? distance : direction === "right" ? -distance : 0,
     },
     visible: { opacity: 1, y: 0, x: 0 },
   };
 
   return (
-    <div ref={ref} className={className} style={{ width, position: "relative", ...style }}>
+    <div
+      ref={ref}
+      className={className}
+      style={{ width, position: "relative", ...style }}
+    >
       <motion.div
         variants={variants}
         initial="hidden"

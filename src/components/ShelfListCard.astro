@@ -1,0 +1,186 @@
+---
+import { getCoverGradient, SHELF_TYPE } from "@utils/shelf";
+import Datetime from "./Datetime";
+import type { ShelfListingItem } from "@utils/shelfAdapter";
+
+export interface Props {
+  item: ShelfListingItem;
+  href: string;
+}
+
+const { item, href } = Astro.props;
+const { title, description, pubDatetime, modDatetime, shelfMeta } = item.data;
+const typeInfo = SHELF_TYPE[shelfMeta.type as keyof typeof SHELF_TYPE];
+const gradient = getCoverGradient(title);
+const poster = shelfMeta.poster;
+const isBook = shelfMeta.type === "book";
+const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
+---
+
+<a
+  href={href}
+  class="group block w-full relative border-t border-skin-line/20 first:border-t-0"
+>
+  <div
+    class="py-6 sm:py-8 flex flex-row items-start gap-4 sm:gap-5 relative z-10 transition-colors duration-500 ease-out group-hover:bg-skin-fill/50"
+  >
+    {/* Poster — always on the left */}
+    <div class="flex-none w-12 sm:w-14 md:w-16 ml-1 sm:ml-2">
+      <div
+        class="relative w-full aspect-[2/3]"
+        style="perspective: 800px; -webkit-perspective: 800px;"
+      >
+        <div
+          class="shelf-list-flip-inner relative w-full h-full transition-transform duration-500"
+          style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d;"
+        >
+          {/* FRONT (poster by default) */}
+          <div
+            class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
+            style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
+          >
+            <div
+              class="absolute inset-0"
+              style={`background: ${gradient}`}
+            />
+            {
+              poster && (
+                <img
+                  src={poster}
+                  alt={`${title} poster`}
+                  class="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
+              )
+            }
+            <div class="absolute top-1 left-1 z-10">
+              <span
+                class="w-2 h-2 text-white/40 shelf-icon"
+                set:html={typeInfo.icon}
+              />
+            </div>
+            <div
+              class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-4"
+            >
+              <p
+                class="text-center pb-1 px-1 font-serif text-white/50 text-[6px] italic truncate"
+              >
+                {shelfMeta.creator}
+              </p>
+            </div>
+          </div>
+
+          {/* BACK (gradient art on hover) */}
+          <div
+            class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
+            style={`background: ${gradient}; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); -webkit-transform: rotateY(180deg);`}
+          >
+            <div
+              class="absolute inset-0 pointer-events-none"
+              style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
+            >
+            </div>
+            {
+              isBook && (
+                <>
+                  <div class="absolute left-0 inset-y-0 w-[2px] bg-black/25" />
+                  <div class="absolute left-[2px] inset-y-0 w-[1px] bg-white/10" />
+                </>
+              )
+            }
+            {
+              isFilm && (
+                <div
+                  class="absolute inset-0 pointer-events-none opacity-[0.06]"
+                  style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.3) 3px, rgba(255,255,255,0.3) 4px);"
+                />
+              )
+            }
+            <div
+              class="absolute inset-0 pointer-events-none opacity-[0.03]"
+              style='background-image: url(&apos;data:image/svg+xml,%3Csvg width="4" height="4" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M1 3h1v1H1V3zm2-2h1v1H3V1z" fill="%23ffffff" fill-opacity="1"/%3E%3C/svg%3E&apos;);'
+            >
+            </div>
+            <div
+              class="absolute inset-0 flex items-center justify-center px-1 text-center z-10"
+            >
+              <h3
+                class="text-white font-serif text-[8px] leading-tight drop-shadow-sm"
+              >
+                {title}
+              </h3>
+            </div>
+            <div
+              class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-4"
+            >
+              <p
+                class="text-center pb-1 px-1 font-serif text-white/50 text-[6px] italic truncate"
+              >
+                {shelfMeta.creator}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Content — right of poster */}
+    <div
+      class="flex-1 min-w-0 pr-2 sm:pr-4 md:pr-8 transition-transform duration-500 ease-out group-hover:translate-x-1"
+    >
+      <div class="flex items-center gap-2 mb-1 sm:mb-2">
+        <span
+          class="px-1.5 py-0.5 rounded-sm text-[8px] font-mono uppercase tracking-widest"
+          style="background: rgba(var(--color-text-base), 0.06); color: rgba(var(--color-text-base), 0.4)"
+        >
+          {typeInfo.label}
+        </span>
+        {
+          shelfMeta.rating !== undefined && (
+            <span class="font-mono text-[10px] text-skin-base/30">
+              {shelfMeta.rating}/10
+            </span>
+          )
+        }
+        {
+          shelfMeta.year && (
+            <span class="font-mono text-[10px] text-skin-base/25 hidden sm:inline">
+              {shelfMeta.year}
+            </span>
+          )
+        }
+      </div>
+      <h3
+        class="text-lg sm:text-2xl md:text-3xl font-serif text-skin-base mb-1 sm:mb-2 leading-tight transition-colors duration-300"
+      >
+        {title}
+      </h3>
+      <p class="text-[11px] sm:text-xs text-skin-base/50 font-serif italic mb-1 sm:mb-2">
+        {shelfMeta.creator}
+      </p>
+      <p
+        class="text-xs sm:text-sm text-skin-base/70 font-normal leading-relaxed transition-colors duration-300 group-hover:text-skin-base/90 line-clamp-2 sm:line-clamp-none"
+      >
+        {description}
+      </p>
+    </div>
+
+    {/* Date — hidden on small mobile, shown on larger */}
+    <div
+      class="hidden sm:flex flex-col items-end w-44 shrink-0 justify-start mt-1 opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+    >
+      <div
+        class="text-xs font-mono text-skin-base/40 uppercase tracking-widest whitespace-nowrap"
+      >
+        <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
+      </div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .group:hover .shelf-list-flip-inner {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+  }
+</style>

@@ -1,0 +1,18 @@
+{
+  "shravan-goswami": {
+    "name": "Shravanpuri Goswami",
+    "nickname": "Shravan Goswami",
+    "image": "/assets/luffy.png",
+    "role": "Human Who Thinks",
+    "socials": [
+      { "name": "Github", "href": "https://github.com/shravanngoswamii" },
+      {
+        "name": "LinkedIn",
+        "href": "https://www.linkedin.com/in/shravangoswami/"
+      },
+      { "name": "Twitter", "href": "https://x.com/shravangoswamii" },
+      { "name": "Mail", "href": "mailto:contact@shravangoswami.com" }
+    ],
+    "sponsor": "https://github.com/sponsors/shravanngoswamii"
+  }
+}

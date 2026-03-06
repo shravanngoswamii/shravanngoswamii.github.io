@@ -7,6 +7,7 @@ tags: [CPP, AtCoder, AtCoder Beginner Contest]
 description: "A. Seats - Panasonic Programming Contest 2024 (AtCoder Beginner Contest 375)"
 aliases:
   - /posts/abc375-A
+  - /blog/abc375-A
 ---
 
 <p class="hidden">Problem A - abc375</p>

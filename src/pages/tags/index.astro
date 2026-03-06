@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Layout from "@layouts/Layout.astro";
@@ -8,13 +7,14 @@ import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { getAllPosts } from "@utils/collections";
 
-const posts = await getCollection("blog");
+const allPosts = await getAllPosts();
 
-let tags = getUniqueTags(posts);
+let tags = getUniqueTags(allPosts);
 ---
 
-<Layout title={`Tags | ${SITE.title}`}>
+<Layout title={`Tags | ${SITE.title}`} ogImage="/tags/og.png">
   <Header activeNav="tags" />
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
     <ul>

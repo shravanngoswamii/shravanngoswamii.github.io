@@ -1,0 +1,23 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import ShelfDetails from "@layouts/ShelfDetails.astro";
+import { stripExt } from "@utils/shelf";
+
+export interface Props {
+  entry: CollectionEntry<"shelf">;
+  items: CollectionEntry<"shelf">[];
+  index: number;
+}
+
+export async function getStaticPaths() {
+  const items = await getCollection("shelf");
+  return items.map((entry, index) => ({
+    params: { slug: stripExt(entry.id) },
+    props: { entry, items, index },
+  }));
+}
+
+const { entry, items, index } = Astro.props;
+---
+
+<ShelfDetails entry={entry} items={items} index={index} />

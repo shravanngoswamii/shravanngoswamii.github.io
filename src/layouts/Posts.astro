@@ -3,49 +3,90 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
 import Card from "@components/Card";
 import { SITE } from "@config";
-import type { Page } from "astro";
-import type { CollectionEntry } from "astro:content";
+import type { AnyPost, Topic } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
+import { COLLECTION_META, getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { withBase } from "@utils/base";
 
 export interface Props {
-  page: Page<CollectionEntry<"blog">>;
+  posts: AnyPost[];
+  topic?: Topic;
+  isAll?: boolean;
 }
 
-const { page } = Astro.props;
+const { posts, topic = "tech", isAll = false } = Astro.props;
+const meta = COLLECTION_META[topic];
+const pageTitle = isAll ? "Blog" : meta.label;
+const pageDesc = isAll
+  ? `${posts.length} ${posts.length === 1 ? "piece" : "pieces"} of writing \u2014 Tech, Cinema & Philosophy, all in one place.`
+  : `${posts.length} ${posts.length === 1 ? "post" : "posts"} \u2014 ${meta.description}`;
 const publications = await getPublications();
 
 const getRelatedPubs = (tags: string[]) => {
-  return publications.filter(pub => 
-    pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
-  ).map(pub => ({ title: pub.entryTags.title || "", url: pub.entryTags.url }));
+  return publications
+    .filter(
+      (pub) =>
+        pub.entryTags.keywords &&
+        tags.some((tag) =>
+          pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+        ),
+    )
+    .map((pub) => ({
+      title: pub.entryTags.title || "",
+      url: pub.entryTags.url,
+    }));
 };
-
-const globalIndex = (page.currentPage - 1) * page.size;
 ---
 
-<Layout title={`Blogs | ${SITE.title}`}>
+<Layout title={`${pageTitle} | ${SITE.title}`}>
   <Header activeNav="blog" />
-  <Main pageTitle="Blogs" pageDesc={`${page.total} posts — A collection of my writings on research, technology, and development.`}>
+  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
+    <div class="mb-8 flex flex-wrap items-center gap-2">
+      {
+        Object.entries(COLLECTION_META).map(([key, m]) => (
+          <a
+            href={withBase(`${m.prefix}/`)}
+            class:list={[
+              "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
+              !isAll && key === topic
+                ? "bg-skin-inverted text-skin-inverted"
+                : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+            ]}
+          >
+            {m.label}
+          </a>
+        ))
+      }
+      <a
+        href={withBase("/blog/")}
+        class:list={[
+          "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30",
+          isAll
+            ? "bg-skin-inverted text-skin-inverted"
+            : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+        ]}
+      >
+        All
+      </a>
+    </div>
     <ul>
       {
-        page.data.map(({ data, slug }, index) => (
-          <Card 
-            href={withBase(`/blog/${slug}/`)}
-            frontmatter={data}
-            index={globalIndex + index + 1}
-            relatedPublications={getRelatedPubs(data.tags)}
+        posts.map((post, index) => (
+          <Card
+            href={withBase(getPostUrl(post))}
+            frontmatter={post.data}
+            index={index + 1}
+            relatedPublications={getRelatedPubs(post.data.tags)}
+            collection={post.data.topic}
           />
         ))
       }
     </ul>
   </Main>
 
-  <Pagination {page} />
   <ClimbingBackToTop />
-  <Footer noMarginTop={page.lastPage > 1} />
+  <Footer />
 </Layout>

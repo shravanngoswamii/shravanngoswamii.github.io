@@ -46,15 +46,16 @@ const shareLinks = [
       shareLinks.map((social) => {
         const SocialIcon = socialIcons[social.name];
         return (
-        <LinkButton
-          href={`${social.href + URL}`}
-          className="link-button"
-          title={social.linkTitle}
-        >
-          <SocialIcon className="icon-tabler" />
-          <span class="sr-only">{social.linkTitle}</span>
-        </LinkButton>
-      )})
+          <LinkButton
+            href={`${social.href + URL}`}
+            className="link-button"
+            title={social.linkTitle}
+          >
+            <SocialIcon className="icon-tabler" />
+            <span class="sr-only">{social.linkTitle}</span>
+          </LinkButton>
+        );
+      })
     }
     <button
       id="copy-link-btn"
@@ -76,10 +77,10 @@ const shareLinks = [
       try {
         await navigator.clipboard.writeText(window.location.href);
         const originalHTML = copyBtn.innerHTML;
-        
+
         copyBtn.innerHTML = `<span class="text-xs font-medium">Copied!</span>`;
         copyBtn.classList.add("text-skin-accent");
-        
+
         setTimeout(() => {
           copyBtn.innerHTML = originalHTML;
           copyBtn.classList.remove("text-skin-accent");

@@ -1,20 +1,18 @@
 ---
-// src/pages/[...alias].astro
 import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
+import { getPostUrl } from "@utils/collections";
 
 export const getStaticPaths = (async () => {
-  const allBlogPosts = await getCollection("blog", ({ data }) => !data.draft);
+  const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 
-  const redirectPaths = [];
+  const redirectPaths: {
+    params: { alias: string };
+    props: { destination: string; postTitle: string };
+  }[] = [];
 
-  // --- ONLY generate redirects from manually defined aliases in frontmatter ---
-  for (const post of allBlogPosts) {
-    // Ensure aliases is an array, default to empty if undefined
+  for (const post of allPosts) {
     for (const alias of post.data.aliases || []) {
-      // Remove leading slash for `params.alias` to match Astro's route parameter
-      // Also, remove trailing slash for consistency in param matching,
-      // but ensure destination has it if your canonical URLs do.
       const normalizedAlias = alias.startsWith("/")
         ? alias.substring(1)
         : alias;
@@ -23,9 +21,9 @@ export const getStaticPaths = (async () => {
         : normalizedAlias;
 
       redirectPaths.push({
-        params: { alias: cleanNormalizedAlias }, // The alias captured by the route
+        params: { alias: cleanNormalizedAlias },
         props: {
-          destination: `/blog/${post.slug}/`, // The actual current URL of the post (with trailing slash)
+          destination: getPostUrl(post),
           postTitle: post.data.title,
         },
       });

@@ -1,17 +1,128 @@
 ---
-// src/pages/blog/[...page].astro (formerly src/pages/posts/[...page].astro)
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Card from "@components/Card";
+import ShelfListCard from "@components/ShelfListCard.astro";
 import { SITE } from "@config";
-import Posts from "@layouts/Posts.astro";
-import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
+import { getAllPosts, COLLECTION_META, getPostUrl, getPostTopic } from "@utils/collections";
 import getSortedPosts from "@utils/getSortedPosts";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
+import { getPublications } from "@utils/bibtexUtils";
+import {
+  getDoneShelfItems,
+  sortMergedItems,
+  type MergedItem,
+} from "@utils/shelfAdapter";
+import type { GetStaticPaths } from "astro";
 
-export const getStaticPaths = (async ({ paginate }) => {
-  const posts = await getCollection("blog", ({ data }) => !data.draft); // Make sure this is 'blog'
-  return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
+export const getStaticPaths = (() => {
+  return [{ params: { page: undefined } }];
 }) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
+const posts = getSortedPosts(await getAllPosts());
+const shelfItems = await getDoneShelfItems();
+const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
+const publications = await getPublications();
+
+const getRelatedPubs = (tags: string[]) => {
+  return publications
+    .filter(
+      (pub) =>
+        pub.entryTags.keywords &&
+        tags.some((tag) =>
+          pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+        ),
+    )
+    .map((pub) => ({
+      title: pub.entryTags.title || "",
+      url: pub.entryTags.url,
+    }));
+};
 ---
 
-<Posts {page} />
+<Layout title={`Blog | ${SITE.title}`} ogImage="/blog/og.png">
+  <Header activeNav="blog" />
+
+  <div
+    class="relative overflow-hidden"
+    style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.06) 0%, rgba(var(--color-collection-cinema), 0.04) 40%, rgba(var(--color-collection-philosophy), 0.05) 100%)"
+  >
+    <div
+      class="absolute inset-0 opacity-[0.015] pointer-events-none"
+      style="background-image: radial-gradient(circle at 20% 50%, rgba(var(--color-collection-tech), 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 30%, rgba(var(--color-collection-philosophy), 0.3) 0%, transparent 50%);"
+    >
+    </div>
+    <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
+      <div class="flex items-center gap-3 mb-6">
+        <span
+          class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium bg-skin-inverted text-skin-inverted"
+          >All</span
+        >
+        <span class="font-mono text-[10px] text-skin-base/30"
+          >{allItems.length} {allItems.length === 1 ? "piece" : "pieces"}</span
+        >
+      </div>
+      <h1
+        class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-4"
+      >
+        The Journal
+      </h1>
+      <p class="text-base text-skin-base/60 leading-relaxed max-w-xl">
+        Tech, Cinema & Philosophy — all in one place.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        {
+          Object.entries(COLLECTION_META).map(([, m]) => (
+            <a
+              href={withBase(`${m.prefix}/`)}
+              class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"
+            >
+              {m.label}
+            </a>
+          ))
+        }
+        <a
+          href={withBase("/blog/")}
+          class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-transparent bg-skin-inverted text-skin-inverted font-medium"
+        >
+          All
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8"
+  >
+    <ul>
+      {
+        allItems.map((item, index) => {
+          const isShelf = item.kind === "shelf";
+          const href = isShelf
+            ? withBase(item.href)
+            : withBase(getPostUrl(item));
+          const collection = isShelf
+            ? item.topic
+            : getPostTopic(item);
+          return isShelf ? (
+            <ShelfListCard item={item} href={href} />
+          ) : (
+            <Card
+              href={href}
+              frontmatter={item.data}
+              index={index + 1}
+              relatedPublications={getRelatedPubs(item.data.tags)}
+              collection={collection}
+            />
+          );
+        })
+      }
+    </ul>
+  </main>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>

@@ -1,0 +1,176 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import ShelfListCard from "@components/ShelfListCard.astro";
+import { SITE } from "@config";
+import { getCollection } from "astro:content";
+import getSortedPosts from "@utils/getSortedPosts";
+import { COLLECTION_META, getPostUrl } from "@utils/collections";
+import Datetime from "@components/Datetime";
+import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
+import { withBase } from "@utils/base";
+import {
+  getDoneShelfItems,
+  sortMergedItems,
+  type MergedItem,
+} from "@utils/shelfAdapter";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (() => {
+  return [{ params: { page: undefined } }];
+}) satisfies GetStaticPaths;
+
+const posts = getSortedPosts(
+  await getCollection("blog", ({ data }) => !data.draft && data.topic === "cinema"),
+);
+const shelfItems = await getDoneShelfItems("cinema");
+const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);
+---
+
+<Layout title={`Cinema | ${SITE.title}`} ogImage="/cinema/og.png">
+  <Header activeNav="blog" />
+
+  {/* ===== CINEMA HERO ===== */}
+  <div
+    class="relative overflow-hidden"
+    style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)"
+  >
+    <div
+      class="absolute inset-0 opacity-[0.02] pointer-events-none"
+      style="background-image: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(var(--color-collection-cinema), 0.5) 60px, rgba(var(--color-collection-cinema), 0.5) 61px); background-size: 61px 100%;"
+    >
+    </div>
+    <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 pt-36 sm:pt-32 pb-12">
+      <div class="flex items-center gap-3 mb-6">
+        <span
+          class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+          style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))"
+          >Cinema</span
+        >
+        <span class="font-mono text-[10px] text-skin-base/30"
+          >{allItems.length}
+          {allItems.length === 1 ? "review" : "reviews"}</span
+        >
+      </div>
+      <h1
+        class="font-serif text-4xl sm:text-5xl text-skin-base leading-tight mb-4"
+      >
+        On Film & Storytelling
+      </h1>
+      <p class="text-base text-skin-base/60 leading-relaxed max-w-xl font-sans">
+        {COLLECTION_META.cinema.description}
+      </p>
+      <div class="flex items-center gap-4 mt-5">
+        <a
+          href="https://letterboxd.com/shravangoswami/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+          title="Letterboxd"
+        >
+          <img
+            src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos-rgb-500px.png"
+            alt="Letterboxd"
+            class="w-5 h-5 object-contain dark:hidden"
+          />
+          <img
+            src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb-500px.png"
+            alt="Letterboxd"
+            class="w-5 h-5 object-contain hidden dark:inline"
+          />
+          <span>Letterboxd</span>
+        </a>
+        <a
+          href="https://www.imdb.com/user/ur213092538/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+          title="IMDb"
+        >
+          <img
+            src={withBase("/assets/imdb.png")}
+            alt="IMDb"
+            class="w-5 h-5 object-contain"
+          />
+          <span>IMDb</span>
+        </a>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        {
+          Object.entries(COLLECTION_META).map(([key, m]) => (
+            <a
+              href={withBase(`${m.prefix}/`)}
+              class:list={[
+                "rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border",
+                key === "cinema"
+                  ? "border-transparent font-medium"
+                  : "border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted",
+              ]}
+              style={
+                key === "cinema"
+                  ? `background: rgba(var(--color-collection-cinema), 0.15); color: rgb(var(--color-collection-cinema))`
+                  : ""
+              }
+            >
+              {m.label}
+            </a>
+          ))
+        }
+        <a
+          href={withBase("/blog/")}
+          class="rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest transition-all border border-skin-line/30 text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"
+        >
+          All
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* ===== CINEMA POSTS GRID ===== */}
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-4xl px-4 sm:px-6 pb-12 pt-8"
+  >
+    <div class="grid grid-cols-1 gap-6">
+      {
+        allItems.map((item) => {
+          const isShelf = item.kind === "shelf";
+          const href = isShelf
+            ? withBase(item.href)
+            : withBase(getPostUrl(item));
+          return isShelf ? (
+            <ShelfListCard item={item} href={href} />
+          ) : (
+            <a
+              href={href}
+              class="group block border border-skin-line/15 hover:border-skin-line/30 rounded-sm transition-all duration-300 overflow-hidden"
+              style="border-left: 3px solid rgba(var(--color-collection-cinema), 0.4)"
+            >
+              <div class="p-6 sm:p-8">
+                <h2 class="font-serif text-2xl sm:text-3xl text-skin-base mb-3 leading-tight group-hover:opacity-80 transition-opacity">
+                  {item.data.title}
+                </h2>
+                <p class="text-sm text-skin-base/60 leading-relaxed mb-4 line-clamp-2">
+                  {item.data.description}
+                </p>
+                <div class="flex items-center gap-3 text-skin-base/40">
+                  <Datetime
+                    pubDatetime={item.data.pubDatetime}
+                    modDatetime={item.data.modDatetime}
+                  />
+                  <span class="font-mono text-[10px] uppercase tracking-widest group-hover:text-skin-base/70 transition-colors">
+                    Read →
+                  </span>
+                </div>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </main>
+
+  <ClimbingBackToTop />
+  <Footer />
+</Layout>

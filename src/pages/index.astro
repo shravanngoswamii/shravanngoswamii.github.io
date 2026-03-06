@@ -1,10 +1,8 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { TbArrowDown, TbArrowRight } from "react-icons/tb";
@@ -12,176 +10,346 @@ import HeroBackground from "@components/HeroBackground";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import ScrollReveal from "@components/ScrollReveal";
 import SpotlightCard from "@components/SpotlightCard";
+import { getAllPosts, getPostUrl, getPostTopic } from "@utils/collections";
+import ShelfCard from "@components/ShelfCard.astro";
+import { getCollection } from "astro:content";
 import { withBase } from "@utils/base";
+import { stripExt } from "@utils/shelf";
 
-const posts = await getCollection("blog");
-const sortedPosts = getSortedPosts(posts);
+const allPosts = await getAllPosts();
+const sortedPosts = getSortedPosts(allPosts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const allShelf = await getCollection("shelf");
+const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
 ---
 
 <Layout>
-  <Header /> 
-  
+  <Header />
+
   <main id="main-content" class="px-4 sm:px-6">
-    
-    <section class="min-h-[85svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden">
-      
+    <section
+      class="min-h-[85svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden"
+    >
       <div class="absolute inset-0 -z-10 bg-skin-fill/50">
-         <HeroBackground client:load />
+        <HeroBackground client:load />
       </div>
 
-      <div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-skin-text-base/30"></div>
-      <div class="absolute top-0 right-0 w-8 h-8 border-t border-r border-skin-text-base/30"></div>
-      <div class="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-skin-text-base/30"></div>
-      <div class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-skin-text-base/30"></div>
-
-      <div class="absolute top-0 left-0 w-full flex justify-between items-start p-6 font-mono text-[10px] uppercase tracking-widest text-skin-base/50">
-         <div class="flex flex-col gap-1">
-           <span>Building things that work</span>
-         </div>
-         <div class="text-right flex flex-col gap-1">
-           <span>Available for collaboration</span>
-         </div>
+      <div
+        class="absolute top-0 left-0 w-8 h-8 border-t border-l border-skin-text-base/30"
+      >
+      </div>
+      <div
+        class="absolute top-0 right-0 w-8 h-8 border-t border-r border-skin-text-base/30"
+      >
+      </div>
+      <div
+        class="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-skin-text-base/30"
+      >
+      </div>
+      <div
+        class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-skin-text-base/30"
+      >
       </div>
 
-      <div class="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center">
-         
-         <div class="inline-flex items-center gap-3 px-3 py-1 border border-skin-line/30 rounded-full bg-skin-fill/80 backdrop-blur-sm mb-8">
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/70">Human who actually thinks!</span>
-         </div>
-
-         <h1 class="flex flex-col items-center justify-center font-serif text-6xl sm:text-8xl lg:text-9xl leading-[0.85] text-skin-base tracking-tighter">
-            <span class="relative">
-              SHRAVAN
-              <span class="absolute top-1/2 left-0 w-full h-[1px] bg-skin-line/0"></span>
-            </span>
-            <span class="text-skin-base/20 font-sans font-bold tracking-tight italic" style="-webkit-text-stroke: 1px rgba(var(--color-text-base), 0.3); color: transparent;">
-              GOSWAMI
-            </span>
-         </h1>
-
-         <p class="mt-8 max-w-lg text-sm sm:text-base font-normal leading-relaxed text-skin-base/90 bg-skin-fill/60 backdrop-blur-sm p-4 border border-skin-line/10 rounded-sm">
-           Research Assistant at the University of Cambridge, GSoC 2025 Contributor with The Julia Language, 
-           and pre-final year B.Tech. Computer Science & Engineering student.
-         </p>
-
-         <div class="mt-10 flex flex-col sm:flex-row items-center gap-6">
-            <LinkButton href={withBase("/projects")} className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm">
-               View Projects
-            </LinkButton>
-            <a href="https://github.com/sponsors/shravanngoswamii?o=esb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-xs uppercase tracking-widest rounded-sm">
-               ❤️ Sponsor
-            </a>
-            <div class="h-[1px] w-12 bg-skin-line/30 hidden sm:block"></div>
-            <div class="scale-90 opacity-70 hover:opacity-100 transition-opacity">
-               <Socials />
-            </div>
-         </div>
-
+      <div
+        class="absolute top-0 left-0 w-full flex justify-between items-start p-6 font-mono text-[10px] uppercase tracking-widest text-skin-base/50"
+      >
+        <div class="flex flex-col gap-1">
+          <span>Building things that work</span>
+        </div>
+        <div class="text-right flex flex-col gap-1">
+          <span>Available for collaboration</span>
+        </div>
       </div>
 
-    </section>
-
-
-
-    {featuredPosts.length > 0 && (
-      <section class="py-24 sm:py-32">
-        <ScrollReveal client:visible>
-            <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
-               <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">Featured Posts</h2>
-               <span class="font-mono text-[10px] text-skin-base/40">{featuredPosts.length} {featuredPosts.length === 1 ? 'post' : 'posts'}</span>
-            </div>
-        </ScrollReveal>
-            
-        <div class="flex flex-col">
-          {featuredPosts.map(({ data, slug }, index) => (
-             <ScrollReveal client:visible delay={index * 0.1}>
-                <Card
-                  href={withBase(`/blog/${slug}/`)}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-             </ScrollReveal>
-          ))}
+      <div
+        class="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center text-center"
+      >
+        <div
+          class="inline-flex items-center gap-3 px-3 py-1 border border-skin-line/30 rounded-full bg-skin-fill/80 backdrop-blur-sm mb-8"
+        >
+          <span
+            class="font-mono text-[10px] uppercase tracking-widest text-skin-base/70"
+            >Human who actually thinks!</span
+          >
         </div>
 
-        <ScrollReveal client:visible delay={0.3}>
-            <div class="mt-12 flex justify-end">
-               <LinkButton href={withBase("/blog")} className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5">
-                  All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-               </LinkButton>
+        <h1
+          class="flex flex-col items-center justify-center font-serif text-6xl sm:text-8xl lg:text-9xl leading-[0.85] text-skin-base tracking-tighter"
+        >
+          <span class="relative">
+            SHRAVAN
+            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-skin-line/0"
+            ></span>
+          </span>
+          <span
+            class="text-skin-base/20 font-sans font-bold tracking-tight italic"
+            style="-webkit-text-stroke: 1px rgba(var(--color-text-base), 0.3); color: transparent;"
+          >
+            GOSWAMI
+          </span>
+        </h1>
+
+        <p
+          class="mt-8 max-w-lg text-sm sm:text-base font-normal leading-relaxed text-skin-base/90 bg-skin-fill/60 backdrop-blur-sm p-4 border border-skin-line/10 rounded-sm"
+        >
+          Research Assistant at the University of Cambridge, GSoC 2025
+          Contributor with The Julia Language, and pre-final year B.Tech.
+          Computer Science & Engineering student.
+        </p>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-center gap-6">
+          <LinkButton
+            href={withBase("/projects")}
+            className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm"
+          >
+            View Projects
+          </LinkButton>
+          <a
+            href="https://github.com/sponsors/shravanngoswamii?o=esb"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-xs uppercase tracking-widest rounded-sm"
+          >
+            ❤️ Sponsor
+          </a>
+          <div class="h-[1px] w-12 bg-skin-line/30 hidden sm:block"></div>
+          <div class="scale-90 opacity-70 hover:opacity-100 transition-opacity">
+            <Socials />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {
+      featuredPosts.length > 0 && (
+        <section class="py-24 sm:py-32">
+          <ScrollReveal client:visible>
+            <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
+              <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">
+                Featured
+              </h2>
+              <span class="font-mono text-[10px] text-skin-base/40">
+                {featuredPosts.length}{" "}
+                {featuredPosts.length === 1 ? "post" : "posts"}
+              </span>
             </div>
-        </ScrollReveal>
-      </section>
-    )}
+          </ScrollReveal>
 
+          <div class="flex flex-col gap-6">
+            {featuredPosts.map((post, index) => (
+              <ScrollReveal client:visible delay={index * 0.1}>
+                <a
+                  href={withBase(getPostUrl(post))}
+                  class="group block border border-skin-line/20 hover:border-skin-line/40 rounded-sm transition-all duration-500 overflow-hidden"
+                >
+                  <div class="p-8 sm:p-10 flex flex-col sm:flex-row sm:items-start gap-6">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-3 mb-4">
+                        <span
+                          class="w-2 h-2 rounded-full"
+                          style={`background-color: rgb(var(--color-collection-${getPostTopic(post)}))`}
+                        />
+                        <span
+                          class="font-mono text-[10px] uppercase tracking-widest"
+                          style={`color: rgb(var(--color-collection-${getPostTopic(post)}))`}
+                        >
+                          {getPostTopic(post)}
+                        </span>
+                        <span class="font-mono text-[10px] text-skin-base/30">
+                          {post.data.pubDatetime.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      <h3 class="font-serif text-3xl sm:text-4xl text-skin-base leading-tight mb-4 group-hover:text-skin-accent transition-colors duration-300">
+                        {post.data.title}
+                      </h3>
+                      <p class="text-sm text-skin-base/60 leading-relaxed max-w-xl group-hover:text-skin-base/80 transition-colors">
+                        {post.data.description}
+                      </p>
+                      <div class="mt-6 flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 group-hover:text-skin-base/70 transition-colors">
+                        <span>Read</span>
+                        <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </ScrollReveal>
+            ))}
+          </div>
 
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-skin-line/20 pt-16 pb-24">
-      
+          <ScrollReveal client:visible delay={0.3}>
+            <div class="mt-12 flex justify-end">
+              <LinkButton
+                href={withBase("/blog")}
+                className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/60 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base pb-0.5"
+              >
+                All Posts{" "}
+                <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </LinkButton>
+            </div>
+          </ScrollReveal>
+        </section>
+      )
+    }
+
+    <section
+      class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-skin-line/20 pt-16 pb-24"
+    >
       <div class="lg:col-span-6 corner-brackets relative">
         <ScrollReveal client:visible delay={0.1}>
-            <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block">Recent Posts</span>
+          <span
+            class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block"
+            >Recent Posts</span
+          >
         </ScrollReveal>
-            
+
         <ul class="space-y-8">
-           {recentPosts.slice(0, 3).map(({ data, slug }, index) => ( // Added index
-             <li class="block"> {/* Removed client direct rendering of ScrollReveal inside li without block context if any issues arise, but here we just wrap item content */}
-               <ScrollReveal client:visible delay={index * 0.1}>
-                   <a href={withBase(`/blog/${slug}/`)} class="group block">
-                     <div class="flex items-center gap-3 mb-2">
-                       <span class="w-1.5 h-1.5 rounded-full bg-skin-line group-hover:bg-skin-accent transition-colors"></span>
-                       <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
-                         {data.pubDatetime.toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
-                       </span>
-                     </div>
-                     <h4 class="font-serif text-2xl text-skin-base transition-all">
-                       {data.title}
-                     </h4>
-                   </a>
-               </ScrollReveal>
-             </li>
-           ))}
+          {
+            recentPosts.slice(0, 3).map((post, index) => (
+              <li class="block">
+                <ScrollReveal client:visible delay={index * 0.1}>
+                  <a href={withBase(getPostUrl(post))} class="group block">
+                    <div class="flex items-center gap-3 mb-2">
+                      <span
+                        class="w-1.5 h-1.5 rounded-full"
+                        style={`background-color: rgb(var(--color-collection-${getPostTopic(post)}))`}
+                      />
+                      <span
+                        class="font-mono text-[10px] uppercase tracking-widest"
+                        style={`color: rgb(var(--color-collection-${getPostTopic(post)}))`}
+                      >
+                        {getPostTopic(post)}
+                      </span>
+                      <span class="font-mono text-[10px] text-skin-base/40 group-hover:text-skin-base transition-colors">
+                        {post.data.pubDatetime.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "2-digit",
+                        })}
+                      </span>
+                    </div>
+                    <h4 class="font-serif text-2xl text-skin-base transition-all">
+                      {post.data.title}
+                    </h4>
+                  </a>
+                </ScrollReveal>
+              </li>
+            ))
+          }
         </ul>
 
         <ScrollReveal client:visible delay={0.3}>
-            <div class="mt-12">
-               <a href={withBase("/blog/")} class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors">
-                 All Posts <TbArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-               </a>
-            </div>
+          <div class="mt-12">
+            <a
+              href={withBase("/blog/")}
+              class="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors"
+            >
+              All Posts <TbArrowRight
+                className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+              />
+            </a>
+          </div>
         </ScrollReveal>
       </div>
 
       <div class="lg:col-span-5 lg:col-start-8">
-         <ScrollReveal client:visible delay={0.3}>
-             <SpotlightCard client:visible className="flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10 h-full">
-                 <div>
-                    <span class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block">Get in Touch</span>
-                    <h3 class="font-serif text-3xl mb-4 text-skin-base">Open to Collaboration</h3>
-                    <p class="text-sm font-normal text-skin-base/80 leading-relaxed max-w-sm">
-                      Interested in research collaborations, open-source contributions, and high-performance computing projects.
-                    </p>
-                 </div>
+        <ScrollReveal client:visible delay={0.3}>
+          <SpotlightCard
+            client:visible
+            className="flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10 h-full"
+          >
+            <div>
+              <span
+                class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-2 block"
+                >Get in Touch</span
+              >
+              <h3 class="font-serif text-3xl mb-4 text-skin-base">
+                Open to Collaboration
+              </h3>
+              <p
+                class="text-sm font-normal text-skin-base/80 leading-relaxed max-w-sm"
+              >
+                Interested in research collaborations, open-source
+                contributions, and high-performance computing projects.
+              </p>
+            </div>
 
-                 <div class="flex flex-col gap-4 mt-16">
-                    <LinkButton href={withBase("/resume")} className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group">
-                       <span class="text-xs font-mono uppercase tracking-widest">View CV</span>
-                       <TbArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-                    </LinkButton>
-                    
-                    <div class="flex justify-center mt-2">
-                      <a href="mailto:contact@shravangoswami.com" class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40 uppercase tracking-widest">
-                        contact@shravangoswami.com
-                      </a>
-                    </div>
-                 </div>
-             </SpotlightCard>
-         </ScrollReveal>
+            <div class="flex flex-col gap-4 mt-16">
+              <LinkButton
+                href={withBase("/resume")}
+                className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group"
+              >
+                <span class="text-xs font-mono uppercase tracking-widest"
+                  >View CV</span
+                >
+                <TbArrowDown
+                  className="w-4 h-4 group-hover:translate-y-1 transition-transform"
+                />
+              </LinkButton>
+
+              <div class="flex justify-center mt-2">
+                <a
+                  href="mailto:contact@shravangoswami.com"
+                  class="text-[10px] font-mono text-skin-base/40 hover:text-skin-base transition-colors border-b border-transparent hover:border-skin-base/40 uppercase tracking-widest"
+                >
+                  contact@shravangoswami.com
+                </a>
+              </div>
+            </div>
+          </SpotlightCard>
+        </ScrollReveal>
       </div>
-
     </section>
 
+    {/* ===== SHELF ===== */}
+    <section class="border-t border-skin-line/20 pt-16 pb-24">
+      <ScrollReveal client:visible>
+        <div class="flex items-end justify-between mb-10">
+          <div>
+            <span
+              class="font-mono text-[10px] uppercase tracking-widest text-skin-base/35 block mb-1"
+              >Currently exploring</span
+            >
+            <h2 class="font-serif text-2xl sm:text-3xl text-skin-base">
+              The Shelf
+            </h2>
+          </div>
+          <a
+            href={withBase("/shelf/")}
+            class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors"
+            >View all →</a
+          >
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal client:visible delay={0.1}>
+        <div
+          class="flex gap-2.5 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-6 md:overflow-visible md:pb-0"
+        >
+          {
+            shelfDone.map((item) => (
+              <div class="shrink-0 w-[130px] snap-start md:w-auto md:shrink">
+                <ShelfCard
+                  type={item.data.type}
+                  title={item.data.title}
+                  creator={item.data.creator}
+                  genre={item.data.genre}
+                  status={item.data.status}
+                  rating={item.data.rating}
+                  poster={item.data.poster}
+                  compact
+                  href={withBase(`/shelf/${stripExt(item.id)}/`)}
+                />
+              </div>
+            ))
+          }
+        </div>
+      </ScrollReveal>
+    </section>
   </main>
   <ClimbingBackToTop />
   <Footer />

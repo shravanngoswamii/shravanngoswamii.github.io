@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/ProjectsLayout.astro
 title: "Projects"
+description: "Open-source projects, hackathon entries, and tools built by Shravan Goswami."
 projects:
   - title: "DoodleBUGS: a Browser-Based Graphical Interface for Drawing Probabilistic Graphical Models"
     description: "A graphical tool for visually constructing models for the BUGS (Bayesian Inference using Gibbs Sampling) language. Features include direct code generation from drawn DAGs, model export (PNG, SVG, JSON), and backend integration for running models and visualizing results. See project report: https://turinglang.org/news/posts/2025-09-01-GSoC-Report-DoodleBUGS/"

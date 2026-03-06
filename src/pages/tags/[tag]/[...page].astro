@@ -1,29 +1,22 @@
 ---
-import { getCollection } from "astro:content";
 import TagPosts from "@layouts/TagPosts.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
-import type { GetStaticPathsOptions } from "astro";
-import { SITE } from "@config";
+import type { GetStaticPaths } from "astro";
+import { getAllPosts } from "@utils/collections";
 
-export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const posts = await getCollection("blog");
+export const getStaticPaths = (async () => {
+  const posts = await getAllPosts();
   const tags = getUniqueTags(posts);
 
-  return tags.flatMap(({ tag, tagName }) => {
-    const tagPosts = getPostsByTag(posts, tag);
+  return tags.map(({ tag, tagName }) => ({
+    params: { tag, page: undefined },
+    props: { tagName, posts: getPostsByTag(posts, tag) },
+  }));
+}) satisfies GetStaticPaths;
 
-    return paginate(tagPosts, {
-      params: { tag },
-      props: { tagName },
-      pageSize: SITE.postPerPage,
-    });
-  });
-}
-
-const params = Astro.params;
-const { tag } = params;
-const { page, tagName } = Astro.props;
+const { tag } = Astro.params;
+const { tagName, posts } = Astro.props;
 ---
 
-<TagPosts {page} {tag} {tagName} />
+<TagPosts {posts} {tag} {tagName} />

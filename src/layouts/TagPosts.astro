@@ -4,27 +4,35 @@ import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
-import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
-import type { Page } from "astro";
-import type { CollectionEntry } from "astro:content";
+import type { AnyPost } from "../types";
 import { getPublications } from "@utils/bibtexUtils";
+import { getPostUrl } from "@utils/collections";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import { withBase } from "@utils/base";
 
 export interface Props {
-  page: Page<CollectionEntry<"blog">>;
+  posts: AnyPost[];
   tag: string;
   tagName: string;
 }
 
-const { page, tag, tagName } = Astro.props;
+const { posts, tag, tagName } = Astro.props;
 const publications = await getPublications();
 
 const getRelatedPubs = (tags: string[]) => {
-  return publications.filter(pub => 
-    pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
-  ).map(pub => ({ title: pub.entryTags.title || "", url: pub.entryTags.url }));
+  return publications
+    .filter(
+      (pub) =>
+        pub.entryTags.keywords &&
+        tags.some((tag) =>
+          pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+        ),
+    )
+    .map((pub) => ({
+      title: pub.entryTags.title || "",
+      url: pub.entryTags.url,
+    }));
 };
 ---
 
@@ -38,19 +46,19 @@ const getRelatedPubs = (tags: string[]) => {
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>
       {
-        page.data.map(({ data, slug }, index) => (
-          <Card 
-            href={withBase(`/blog/${slug}/`)}
-            frontmatter={data}
+        posts.map((post, index) => (
+          <Card
+            href={withBase(getPostUrl(post))}
+            frontmatter={post.data}
             index={index + 1}
-            relatedPublications={getRelatedPubs(data.tags)}
+            relatedPublications={getRelatedPubs(post.data.tags)}
+            collection={post.data.topic}
           />
         ))
       }
     </ul>
   </Main>
 
-  <Pagination {page} />
   <ClimbingBackToTop />
-  <Footer noMarginTop={page.lastPage > 1} />
+  <Footer />
 </Layout>

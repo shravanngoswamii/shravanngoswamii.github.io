@@ -8,6 +8,7 @@ featured: true
 description: "My GSoC 2025 journey begins with The Julia Language and Turing.jl! I’ll be building a browser-based interface for JuliaBUGS."
 aliases:
   - /posts/GSoC-2025-The-Journey-Begins
+  - /blog/GSoC-2025-The-Journey-Begins
 ---
 
 ![GSoC 2025](/blog/GSoC-2025-The-Journey-Begins/GSoC-Horizontal.svg)

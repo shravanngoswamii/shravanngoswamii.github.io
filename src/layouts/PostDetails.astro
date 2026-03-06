@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
-import type { CollectionEntry } from "astro:content";
+
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import Giscus from "@components/Giscus.astro";
@@ -15,14 +15,28 @@ import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
+import ShelfPin from "@components/mdx/ShelfPin.astro";
+import ShelfMention from "@components/mdx/ShelfMention.astro";
+import type { AnyPost } from "../types";
+
+import { COLLECTION_META, getPostTopic, getPostSlug, getAllPosts } from "@utils/collections";
+import Callout from "@components/mdx/Callout";
+import QuoteBlock from "@components/mdx/QuoteBlock";
+import Spoiler from "@components/mdx/Spoiler";
+import Timeline from "@components/mdx/Timeline";
+import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
+import Progress from "@components/mdx/Progress";
 import { withBase } from "@utils/base";
+import getSortedPosts from "@utils/getSortedPosts";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  post: AnyPost;
+  posts: AnyPost[];
 }
 
 const { post, posts } = Astro.props;
+const topic = getPostTopic(post);
+const urlPrefix = COLLECTION_META[topic].prefix;
 
 const {
   title,
@@ -33,22 +47,28 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  toc = true,
 } = post.data;
 
+const thinkers = post.data.thinkers;
+const tradition = post.data.tradition;
 const publications = await getPublications();
-const relatedPublications = publications.filter(pub => 
-  pub.entryTags.keywords && tags.some(tag => pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()))
+const relatedPublications = publications.filter(
+  (pub) =>
+    pub.entryTags.keywords &&
+    tags.some((tag) =>
+      pub.entryTags.keywords?.toLowerCase().includes(tag.toLowerCase()),
+    ),
 );
 
 const { Content, headings } = await post.render();
-
 // --- START: UPDATED OG IMAGE URL CONSTRUCTION ---
 // If ogImage is explicitly set in frontmatter, use it.
 // Otherwise, construct the path using the post.slug for the directory and 'og.png' for the filename.
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 
 const ogUrl = new URL(
-  ogImageUrl ?? `/blog/${post.slug}/og.png`, // <-- CHANGED THIS LINE: Now uses og.png
+  ogImageUrl ?? `${urlPrefix}/${getPostSlug(post)}/og.png`,
   Astro.url.origin,
 ).href;
 // --- END: UPDATED OG IMAGE URL CONSTRUCTION ---
@@ -66,85 +86,377 @@ const layoutProps = {
 
 /* ========== Prev/Next Posts ========== */
 
-const allPosts = posts.map(({ data: { title }, slug }) => ({
-  slug,
-  title,
+const allPosts = posts.map((p) => ({
+  slug: getPostSlug(p),
+  title: p.data.title,
 }));
 
-const currentPostIndex = allPosts.findIndex((a) => a.slug === post.slug);
+const currentPostIndex = allPosts.findIndex((a) => a.slug === getPostSlug(post));
 
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
+
+/* ========== Read More ========== */
+const sidebarHeadings: Record<string, string> = {
+  tech: "Down the Rabbit Hole",
+  cinema: "More on the Reel",
+  philosophy: "Further Down the Path",
+};
+const sidebarHeading = sidebarHeadings[topic] || "Wander Further";
+
+const allSitePosts = getSortedPosts(await getAllPosts());
+let readMorePosts = allSitePosts
+  .filter((p) => p.slug !== post.slug)
+  .filter(
+    (p) =>
+      p.data.tags.some((t) => tags.includes(t)) ||
+      getPostTopic(p) === topic,
+  )
+  .slice(0, 4);
+
+if (readMorePosts.length === 0) {
+  readMorePosts = allSitePosts.filter((p) => p.slug !== post.slug).slice(0, 4);
+}
+
+const readMoreMapped = readMorePosts.map((p) => ({
+  title: p.data.title,
+  slug: getPostSlug(p),
+  topic: getPostTopic(p),
+}));
 ---
 
 <Layout {...layoutProps}>
   <Header />
 
-  <div class="mx-auto w-full max-w-screen-xl px-4 pt-32 sm:pt-28">
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8">
-      
-      <!-- Left Column (Empty for centering) -->
-      <div class="hidden lg:block"></div>
+  {/* ============ COLLECTION-THEMED HERO HEADER ============ */}
+  {
+    topic === "cinema" && (
+      <div
+        class="relative border-b border-skin-line/10"
+        style="background: linear-gradient(135deg, rgba(var(--color-collection-cinema), 0.06) 0%, transparent 60%)"
+      >
+        <div
+          class="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(--color-collection-cinema), 0.5) 40px, rgba(var(--color-collection-cinema), 0.5) 41px); background-size: 41px 100%;"
+        />
+        <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center gap-3 mb-5">
+              <span
+                class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+                style="background: rgba(var(--color-collection-cinema), 0.12); color: rgb(var(--color-collection-cinema))"
+              >
+                Cinema
+              </span>
+            </div>
+            <h1
+              transition:name={slugifyStr(title)}
+              class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4"
+            >
+              {title}
+            </h1>
+            <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl mb-6 font-sans">
+              {description}
+            </p>
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 border-t border-skin-line/15">
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Published
+                </span>
+                <Datetime
+                  pubDatetime={pubDatetime}
+                  modDatetime={modDatetime}
+                  size="lg"
+                  className=""
+                />
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4">
+              <a
+                href="https://letterboxd.com/shravangoswami/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                title="Letterboxd"
+              >
+                <img
+                  src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos-rgb-500px.png"
+                  alt="Letterboxd"
+                  class="w-4 h-4 object-contain dark:hidden"
+                />
+                <img
+                  src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb-500px.png"
+                  alt="Letterboxd"
+                  class="w-4 h-4 object-contain hidden dark:inline"
+                />
+                <span>Letterboxd</span>
+              </a>
+              <a
+                href="https://www.imdb.com/user/ur213092538/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-skin-base/40 hover:text-skin-base/70 transition-colors"
+                title="IMDb"
+              >
+                <img
+                  src={withBase("/assets/imdb.png")}
+                  alt="IMDb"
+                  class="w-4 h-4 object-contain"
+                />
+                <span>IMDb</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    topic === "philosophy" && (
+      <div
+        class="relative border-b border-skin-line/10"
+        style="background: linear-gradient(180deg, rgba(var(--color-collection-philosophy), 0.05) 0%, transparent 70%)"
+      >
+        <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center gap-3 mb-5">
+              <span
+                class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+                style="background: rgba(var(--color-collection-philosophy), 0.12); color: rgb(var(--color-collection-philosophy))"
+              >
+                Philosophy
+              </span>
+              {tradition && (
+                <span class="font-serif text-sm italic text-skin-base/50">
+                  {tradition}
+                </span>
+              )}
+            </div>
+            <h1
+              transition:name={slugifyStr(title)}
+              class="font-serif text-4xl sm:text-5xl leading-tight text-skin-base mb-4"
+            >
+              {title}
+            </h1>
+            <p class="text-base text-skin-base/60 leading-relaxed max-w-2xl font-serif italic mb-6">
+              {description}
+            </p>
+            {thinkers && thinkers.length > 0 && (
+              <div class="flex flex-wrap items-center gap-2 py-4 border-t border-skin-line/15">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35">
+                  In dialogue with
+                </span>
+                {thinkers.map((t) => (
+                  <span
+                    class="px-3 py-1 rounded-full text-xs font-serif border border-skin-line/20 text-skin-base/70"
+                    style="background: rgba(var(--color-collection-philosophy), 0.06)"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mt-2">
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Published
+                </span>
+                <Datetime
+                  pubDatetime={pubDatetime}
+                  modDatetime={modDatetime}
+                  size="lg"
+                  className=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    topic === "tech" && (
+      <div
+        class="relative border-b border-skin-line/10"
+        style="background: linear-gradient(135deg, rgba(var(--color-collection-tech), 0.10) 0%, transparent 50%)"
+      >
+        <div class="mx-auto w-full max-w-screen-xl px-4 pt-36 sm:pt-32 pb-10">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center gap-3 mb-5">
+              <span
+                class="px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest font-medium"
+                style="background: rgba(var(--color-collection-tech), 0.12); color: rgb(var(--color-collection-tech))"
+              >
+                Tech
+              </span>
+            </div>
+            <h1
+              transition:name={slugifyStr(title)}
+              class="font-serif text-3xl sm:text-4xl leading-tight text-skin-base mb-4"
+            >
+              {title}
+            </h1>
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mt-2">
+              <div class="flex flex-col">
+                <span class="font-mono text-[9px] uppercase tracking-widest text-skin-base/35 mb-0.5">
+                  Published
+                </span>
+                <Datetime
+                  pubDatetime={pubDatetime}
+                  modDatetime={modDatetime}
+                  size="lg"
+                  className=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  {/* ============ MAIN CONTENT GRID ============ */}
+  <div class="mx-auto w-full max-w-screen-xl px-4">
+    <div
+      class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8"
+    >
+      <!-- Left Column -->
+      <div class="hidden lg:block">
+        <div class="relative mt-8 flex flex-col items-center" id="left-sidebar">
+          <div id="sidebar-quotes" class="w-full"></div>
+          {
+            readMoreMapped.length > 0 && (
+              <div
+                id="sidebar-readmore"
+                class="w-full max-w-[180px]"
+                style="margin-top: 40vh;"
+              >
+                <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3">
+                  {sidebarHeading}
+                </span>
+                <div class="flex flex-col gap-3">
+                  {readMoreMapped.map((p) => (
+                    <a
+                      href={withBase(
+                        `${COLLECTION_META[p.topic]?.prefix || "/blog"}/${p.slug}`,
+                      )}
+                      class="group block"
+                    >
+                      <div class="flex items-start gap-2">
+                        <span
+                          class="w-1 h-1 rounded-full mt-1.5 shrink-0"
+                          style={`background: rgb(var(--color-collection-${p.topic}))`}
+                        />
+                        <span class="text-xs text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug line-clamp-2">
+                          {p.title}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <a
+                  href={withBase(urlPrefix)}
+                  class="group flex items-center gap-1.5 mt-4 font-mono text-[9px] uppercase tracking-widest text-skin-base/25 hover:text-skin-accent transition-colors"
+                >
+                  <span>See All</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <>
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </>
+                  </svg>
+                </a>
+              </div>
+            )
+          }
+        </div>
+      </div>
 
       <!-- Center Column (Content) -->
       <div class="flex flex-col">
-        <!-- Back Button -->
-        <div class="mb-4 mt-8 flex justify-start">
-          <button
-            class="focus-outline flex hover:opacity-75 items-center"
-            onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
-          >
-            <TbChevronLeft className="inline-block h-6 w-6 scale-90" />
-            <span>Go back</span>
-          </button>
-        </div>
-
         <main id="main-content">
-          <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
-          <Datetime
-            pubDatetime={pubDatetime}
-            modDatetime={modDatetime}
-            size="lg"
-            className="my-2"
-          />
-
           <!-- TOC Mobile (Inline) -->
-          <TableOfContents headings={headings} mobile={true} />
+          {toc && <TableOfContents headings={headings} mobile={true} />}
 
           <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-            <Content components={{ Tabs, TabItem }} />
+            <Content
+              components={{
+                Tabs,
+                TabItem,
+                Callout,
+                QuoteBlock,
+                Spoiler,
+                Timeline,
+                Comparison,
+                ComparisonSide,
+                Progress,
+                ShelfPin,
+                ShelfMention,
+              }}
+            />
           </article>
 
-          {relatedPublications.length > 0 && (
-            <div class="my-8 border-t border-skin-line/30 pt-8">
-              <h3 class="text-xl font-bold text-skin-base mb-4">Associated Publications</h3>
-              <ul class="space-y-4">
-                {relatedPublications.map(pub => (
-                  <li class="flex flex-col gap-1">
-                    <div class="flex items-baseline gap-2">
-                      <span class="text-skin-accent">
-                        <TbBook className="h-4 w-4 inline-block" />
-                      </span>
-                      <div class="flex-1">
-                        {pub.entryTags.url ? (
-                          <a href={pub.entryTags.url} target="_blank" rel="noopener noreferrer" class="font-medium hover:underline decoration-dashed underline-offset-4">
-                            <span set:html={processLatex(pub.entryTags.title)} />
-                          </a>
-                        ) : (
-                          <span class="font-medium" set:html={processLatex(pub.entryTags.title)} />
-                        )}
-                        <span class="text-sm text-skin-base/60 ml-2">({pub.entryTags.year})</span>
+          {
+            relatedPublications.length > 0 && (
+              <div class="my-8 border-t border-skin-line/30 pt-8">
+                <h3 class="text-xl font-bold text-skin-base mb-4">
+                  Associated Publications
+                </h3>
+                <ul class="space-y-4">
+                  {relatedPublications.map((pub) => (
+                    <li class="flex flex-col gap-1">
+                      <div class="flex items-baseline gap-2">
+                        <span class="text-skin-accent">
+                          <TbBook className="h-4 w-4 inline-block" />
+                        </span>
+                        <div class="flex-1">
+                          {pub.entryTags.url ? (
+                            <a
+                              href={pub.entryTags.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="font-medium hover:underline decoration-dashed underline-offset-4"
+                            >
+                              <span
+                                set:html={processLatex(pub.entryTags.title)}
+                              />
+                            </a>
+                          ) : (
+                            <span
+                              class="font-medium"
+                              set:html={processLatex(pub.entryTags.title)}
+                            />
+                          )}
+                          <span class="text-sm text-skin-base/60 ml-2">
+                            ({pub.entryTags.year})
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="text-sm text-skin-base/80 ml-6 italic">
-                      {pub.entryTags.journal || pub.entryTags.booktitle || pub.entryTags.publisher || pub.entryTags.note}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                      <div class="text-sm text-skin-base/80 ml-6 italic">
+                        {pub.entryTags.journal ||
+                          pub.entryTags.booktitle ||
+                          pub.entryTags.publisher ||
+                          pub.entryTags.note}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
 
           <ul class="my-8">
             {tags.map((tag) => <Tag tag={tag} />)}
@@ -159,18 +471,73 @@ const nextPost =
           <!-- Comments Section -->
           <Giscus />
 
+          <!-- Mobile Read More (shown after comments on small screens) -->
+          {
+            readMoreMapped.length > 0 && (
+              <div class="lg:hidden mt-12 pt-8 border-t border-skin-line/15">
+                <span class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-4">
+                  {sidebarHeading}
+                </span>
+                <div class="flex flex-col gap-3">
+                  {readMoreMapped.map((p) => (
+                    <a
+                      href={withBase(
+                        `${COLLECTION_META[p.topic]?.prefix || "/blog"}/${p.slug}`,
+                      )}
+                      class="group block"
+                    >
+                      <div class="flex items-start gap-2">
+                        <span
+                          class="w-1.5 h-1.5 rounded-full mt-1 shrink-0"
+                          style={`background: rgb(var(--color-collection-${p.topic}))`}
+                        />
+                        <span class="text-sm text-skin-base/50 group-hover:text-skin-base transition-colors leading-snug">
+                          {p.title}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <a
+                  href={withBase(urlPrefix)}
+                  class="group flex items-center gap-1.5 mt-4 font-mono text-[9px] uppercase tracking-widest text-skin-base/25 hover:text-skin-accent transition-colors"
+                >
+                  <span>See All</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <>
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </>
+                  </svg>
+                </a>
+              </div>
+            )
+          }
+
           <!-- Previous/Next Post Buttons -->
           <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {
               prevPost && (
                 <a
-                  href={withBase(`/blog/${prevPost.slug}`)}
+                  href={withBase(`${urlPrefix}/${prevPost.slug}`)}
                   class="flex w-full gap-1 hover:opacity-75 items-center"
                 >
                   <TbChevronLeft className="h-6 w-6 flex-none" />
                   <div>
                     <span>Previous Post</span>
-                    <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
+                    <div class="text-sm text-skin-accent/85">
+                      {prevPost.title}
+                    </div>
                   </div>
                 </a>
               )
@@ -178,12 +545,14 @@ const nextPost =
             {
               nextPost && (
                 <a
-                  href={withBase(`/blog/${nextPost.slug}`)}
+                  href={withBase(`${urlPrefix}/${nextPost.slug}`)}
                   class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2 items-center"
                 >
                   <div>
                     <span>Next Post</span>
-                    <div class="text-sm text-skin-accent/85">{nextPost.title}</div>
+                    <div class="text-sm text-skin-accent/85">
+                      {nextPost.title}
+                    </div>
                   </div>
                   <TbChevronRight className="h-6 w-6 flex-none" />
                 </a>
@@ -195,16 +564,19 @@ const nextPost =
 
       <!-- Right Column (TOC Desktop) -->
       <aside class="hidden lg:block relative mt-40">
-        <div class="sticky top-24 transition-opacity duration-300">
-          <TableOfContents headings={headings} />
-        </div>
+        {
+          toc && (
+            <div class="sticky top-24 transition-opacity duration-300">
+              <TableOfContents headings={headings} />
+            </div>
+          )
+        }
       </aside>
-
     </div>
   </div>
-  
+
   <ClimbingBackToTop />
-  
+
   <Footer />
 </Layout>
 
@@ -215,35 +587,50 @@ const nextPost =
   .post-title {
     @apply text-2xl font-semibold sm:text-3xl text-skin-base;
   }
-  
+
+  @media (min-width: 1024px) {
+    :global(figure.not-prose[data-position="left"]),
+    :global(div.not-prose[data-position="left"]) {
+      height: 0 !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+  }
+
   /* Ensure code blocks have proper theme-aware styling */
   :global(pre) {
     @apply rounded-lg border border-skin-line/20 overflow-x-auto;
-    line-height: 1.5 !important; 
+    line-height: 1.5 !important;
     font-size: 0.875rem !important; /* Base font size for container */
     padding: 1rem !important;
   }
-  
+
   :global(pre code) {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace !important;
     font-size: 0.875rem !important; /* 14px */
     line-height: 1.5 !important; /* 21px */
-    display: block; 
+    display: block;
   }
-  
+
   /* Shiki dual theme support */
   :global(.astro-code),
   :global(.astro-code span) {
     color: var(--shiki-light);
     background-color: transparent !important;
   }
-  
+
   :global(html[data-theme="latte"] .astro-code),
   :global(html[data-theme="latte"] .astro-code span) {
     color: var(--shiki-light);
     background-color: transparent !important;
   }
-  
+
   :global(html[data-theme="dark"] .astro-code),
   :global(html[data-theme="dark"] .astro-code span),
   :global(html[data-theme="frappe"] .astro-code),
@@ -259,18 +646,21 @@ const nextPost =
   /* Glassy, Glowy, Premium Code Block Style */
   :global(pre) {
     @apply rounded-xl border border-skin-line/40 overflow-x-auto; /* Removed p-5 */
-    background-color: rgba(var(--color-card), 0.6) !important; /* Semi-transparent base */
+    background-color: rgba(
+      var(--color-card),
+      0.6
+    ) !important; /* Semi-transparent base */
     backdrop-filter: blur(12px); /* Blur effect */
-    box-shadow: 
-      0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
       0 2px 4px -1px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Subtle inner highlight */
     transition: all 0.3s ease;
   }
 
   :global(pre:hover) {
-    box-shadow: 
-      0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
     border-color: rgba(var(--color-border), 0.6);
@@ -281,7 +671,7 @@ const nextPost =
     @apply absolute right-2 top-2 z-20 p-1.5 opacity-0 transition-all scale-95 cursor-pointer;
     /* Removed background/border logic to match request "don't like bg and border" */
     /* Only icon visible */
-    color: rgba(var(--color-text-base), 0.4); 
+    color: rgba(var(--color-text-base), 0.4);
   }
 
   :global(.code-wrapper:hover .copy-code) {
@@ -290,25 +680,27 @@ const nextPost =
 
   :global(.copy-code:hover) {
     /* Slight glow/color on hover, but no box */
-    color: rgba(var(--color-accent), 1); 
+    color: rgba(var(--color-accent), 1);
     filter: drop-shadow(0 0 4px rgba(var(--color-accent), 0.3));
   }
-  
+
   /* Line Numbers Implementation - Minimal & Subtle */
   :global(.line-numbers) {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 2rem; 
+    width: 2rem;
     padding-top: 1rem; /* Match pre padding top exactly */
     padding-bottom: 1rem;
     text-align: right;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace !important;
     font-size: 0.875rem !important; /* 14px - Match code */
     line-height: 1.5 !important; /* 21px - Match code */
-    color: rgba(var(--color-text-base), 0.25); 
-    background-color: transparent; 
+    color: rgba(var(--color-text-base), 0.25);
+    background-color: transparent;
     user-select: none;
     pointer-events: none;
     overflow: hidden;
@@ -317,18 +709,17 @@ const nextPost =
   :global(pre) {
     /* padding handled in definition above */
     /* Remove padding entirely from code block container */
-    padding-left: 2rem !important; 
+    padding-left: 2rem !important;
     padding-right: 1rem !important;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
   }
-  
+
   :global(.line-numbers span) {
     display: block;
     padding-right: 0.75rem; /* Slight padding to separate from code */
     height: 1.3125rem; /* 14px * 1.5 = 21px (1.3125rem). Explicit height helps alignment */
   }
-
 </style>
 
 <script is:inline data-astro-rerun>
@@ -376,9 +767,9 @@ const nextPost =
   /** Attaches links to headings in the document,
    * allowing sharing of sections easily */
   function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6"),
-    );
+    const article = document.getElementById("article");
+    if (!article) return;
+    const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
     for (const heading of headings) {
       heading.classList.add("group");
       const link = document.createElement("a");
@@ -421,16 +812,19 @@ const nextPost =
       const code = codeBlock.querySelector("code");
       if (code) {
         // We need to count lines of the TEXT content, but handle potential empty last line from Prism/Shiki
-        const textContent = code.innerText.replace(/\n$/, '');
-        const lineCount = textContent.split('\n').length;
-        
-        if (lineCount > 1) { 
-             const lineNumbers = document.createElement("div");
-             lineNumbers.className = "line-numbers";
-             lineNumbers.ariaHidden = "true";
-             // Generate spans
-             lineNumbers.innerHTML = Array.from({length: lineCount}, (_, i) => `<span>${i + 1}</span>`).join('');
-             wrapper.appendChild(lineNumbers);
+        const textContent = code.innerText.replace(/\n$/, "");
+        const lineCount = textContent.split("\n").length;
+
+        if (lineCount > 1) {
+          const lineNumbers = document.createElement("div");
+          lineNumbers.className = "line-numbers";
+          lineNumbers.ariaHidden = "true";
+          // Generate spans
+          lineNumbers.innerHTML = Array.from(
+            { length: lineCount },
+            (_, i) => `<span>${i + 1}</span>`,
+          ).join("");
+          wrapper.appendChild(lineNumbers);
         }
       }
 
@@ -449,7 +843,7 @@ const nextPost =
 
       // visual feedback
       button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-accent"><path d="M20 6 9 17l-5-5"/></svg>`;
-      
+
       setTimeout(() => {
         button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
       }, 700);
@@ -472,4 +866,85 @@ const nextPost =
     });
   }
   hideTOCHeading();
+
+  function mirrorSidebarQuotes() {
+    const article = document.getElementById("article");
+    const sidebar = document.getElementById("left-sidebar");
+    const container = document.getElementById("sidebar-quotes");
+    if (!article || !sidebar || !container) return;
+
+    container.innerHTML = "";
+
+    const leftItems = Array.from(
+      article.querySelectorAll('[data-position="left"]'),
+    );
+    if (leftItems.length === 0) return;
+
+    const sidebarTop = sidebar.getBoundingClientRect().top + window.scrollY;
+
+    leftItems.forEach((el) => {
+      const elPageY = el.getBoundingClientRect().top + window.scrollY;
+      const topPos = elPageY - sidebarTop;
+
+      const mirror = document.createElement("div");
+      mirror.style.cssText = `position:absolute;top:${topPos}px;left:0;right:0;display:flex;justify-content:center;`;
+
+      const clone = el.cloneNode(true);
+      clone.removeAttribute("data-position"); // So it doesn't get hidden by CSS
+
+      // Fix ID conflicts for things like Spoiler labels and checkboxes
+      const ids = clone.querySelectorAll("[id]");
+      ids.forEach((node) => {
+        const oldId = node.id;
+        const newId = oldId + "-sidebar";
+        node.id = newId;
+        const labels = clone.querySelectorAll(`label[for="${oldId}"]`);
+        labels.forEach((l) => l.setAttribute("for", newId));
+      });
+
+      // Adjust styles slightly for the narrower sidebar context
+      clone.style.width = "100%";
+      clone.style.maxWidth = "260px";
+      clone.classList.remove("my-8", "my-6", "my-4");
+      clone.classList.add("my-0");
+
+      // Optional tweaks depending on component
+      if (clone.tagName === "FIGURE") {
+        const blockquote = clone.querySelector("blockquote");
+        if (blockquote) {
+          blockquote.classList.replace("px-6", "px-4");
+        }
+      }
+
+      mirror.appendChild(clone);
+      container.appendChild(mirror);
+    });
+  }
+  mirrorSidebarQuotes();
+  window.addEventListener("load", mirrorSidebarQuotes);
+
+  function positionReadMore() {
+    const article = document.getElementById("article");
+    const readMore = document.getElementById("sidebar-readmore");
+    const container = document.getElementById("sidebar-quotes");
+    if (!article || !readMore) return;
+
+    const articleHeight = article.offsetHeight;
+    const targetTop = articleHeight * 0.45;
+
+    const mirrors = container ? Array.from(container.children) : [];
+    let finalTop = targetTop;
+
+    mirrors.forEach((m) => {
+      const mTop = parseFloat(m.style.top) || 0;
+      const mBottom = mTop + m.offsetHeight;
+      if (finalTop >= mTop - 30 && finalTop <= mBottom + 30) {
+        finalTop = mBottom + 40;
+      }
+    });
+
+    readMore.style.marginTop = finalTop + "px";
+  }
+  positionReadMore();
+  window.addEventListener("load", positionReadMore);
 </script>
