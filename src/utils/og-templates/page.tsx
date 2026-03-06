@@ -57,6 +57,7 @@ export default async (title: string, description?: string) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignItems: "center",
           padding: "64px",
           width: "100%",
           height: "100%",
@@ -68,12 +69,15 @@ export default async (title: string, description?: string) => {
             flexDirection: "column",
             flex: "1",
             justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center" as const,
           }}
         >
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: "8px",
               marginBottom: "20px",
             }}
@@ -97,6 +101,14 @@ export default async (title: string, description?: string) => {
             >
               {SITE.title}
             </span>
+            <div
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#f59e0b",
+              }}
+            />
           </div>
 
           <p
@@ -129,8 +141,8 @@ export default async (title: string, description?: string) => {
         <div
           style={{
             display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <span

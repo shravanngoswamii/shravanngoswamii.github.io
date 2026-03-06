@@ -57,6 +57,7 @@ export default async () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignItems: "center",
           padding: "64px",
           width: "100%",
           height: "100%",
@@ -67,6 +68,8 @@ export default async () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center" as const,
             flex: "1",
           }}
         >
@@ -74,6 +77,7 @@ export default async () => {
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: "12px",
               marginBottom: "24px",
             }}
@@ -116,7 +120,7 @@ export default async () => {
               color: "rgba(255,255,255,0.5)",
               marginTop: "16px",
               lineHeight: 1.5,
-              maxWidth: "600px",
+              maxWidth: "700px",
             }}
           >
             {SITE.desc}
@@ -126,20 +130,11 @@ export default async () => {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
           }}
         >
-          <span
-            style={{
-              fontSize: 16,
-              color: "rgba(255,255,255,0.3)",
-              fontWeight: "bold",
-              letterSpacing: "0.08em",
-            }}
-          >
-            {new URL(SITE.website).hostname}
-          </span>
           <div style={{ display: "flex", gap: "6px" }}>
             <div
               style={{
@@ -163,6 +158,42 @@ export default async () => {
                 height: "6px",
                 borderRadius: "50%",
                 background: "#8b5cf6",
+              }}
+            />
+          </div>
+          <span
+            style={{
+              fontSize: 16,
+              color: "rgba(255,255,255,0.3)",
+              fontWeight: "bold",
+              letterSpacing: "0.08em",
+            }}
+          >
+            {new URL(SITE.website).hostname}
+          </span>
+          <div style={{ display: "flex", gap: "6px" }}>
+            <div
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#8b5cf6",
+              }}
+            />
+            <div
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#f59e0b",
+              }}
+            />
+            <div
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#6366f1",
               }}
             />
           </div>

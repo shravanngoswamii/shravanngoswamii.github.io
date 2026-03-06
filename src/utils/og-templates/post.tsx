@@ -58,6 +58,7 @@ export default async (post: AnyPost) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignItems: "center",
           padding: "64px",
           width: "100%",
           height: "100%",
@@ -69,12 +70,15 @@ export default async (post: AnyPost) => {
             flexDirection: "column",
             flex: "1",
             justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center" as const,
           }}
         >
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: "8px",
               marginBottom: "20px",
             }}
@@ -98,6 +102,14 @@ export default async (post: AnyPost) => {
             >
               Blog Post
             </span>
+            <div
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#6366f1",
+              }}
+            />
           </div>
 
           <p
@@ -118,29 +130,36 @@ export default async (post: AnyPost) => {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span
-              style={{
-                fontSize: 16,
-                color: "rgba(255,255,255,0.5)",
-              }}
-            >
-              by
-            </span>
-            <span
-              style={{
-                fontSize: 16,
-                color: "rgba(255,255,255,0.7)",
-                fontWeight: "bold",
-              }}
-            >
-              {post.data.author}
-            </span>
-          </div>
+          <span
+            style={{
+              fontSize: 16,
+              color: "rgba(255,255,255,0.5)",
+            }}
+          >
+            by
+          </span>
+          <span
+            style={{
+              fontSize: 16,
+              color: "rgba(255,255,255,0.7)",
+              fontWeight: "bold",
+            }}
+          >
+            {post.data.author}
+          </span>
+          <span
+            style={{
+              fontSize: 16,
+              color: "rgba(255,255,255,0.2)",
+            }}
+          >
+            ·
+          </span>
           <span
             style={{
               fontSize: 16,
