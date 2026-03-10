@@ -15,7 +15,7 @@ import "@pagefind/default-ui/css/ui.css";
       id="search-panel"
       class="w-full max-w-2xl max-h-[80vh] bg-skin-fill border border-skin-line/20 rounded-xl shadow-2xl flex flex-col overflow-hidden"
     >
-      <div class="flex items-center justify-between px-6 pt-5 pb-3">
+      <div class="flex items-center justify-between px-6 pt-5 pb-1">
         <span
           class="text-xs font-mono uppercase tracking-widest text-skin-base/50"
           >Search</span
@@ -27,7 +27,7 @@ import "@pagefind/default-ui/css/ui.css";
           Esc
         </button>
       </div>
-      <div class="px-6 pb-6 overflow-y-auto flex-1 min-h-0">
+      <div class="px-6 pb-6 pt-2 overflow-y-auto flex-1 min-h-0">
         {
           import.meta.env.DEV ? (
             <div class="text-center py-8 text-skin-base/60">
@@ -199,5 +199,10 @@ import "@pagefind/default-ui/css/ui.css";
     --pagefind-ui-background: theme("colors.bgColor");
     --pagefind-ui-border: theme("colors.zinc.400");
     --pagefind-ui-border-width: 1px;
+  }
+  
+  #cactus__search .pagefind-ui__search-input:focus {
+    outline: none;
+    border-color: theme("colors.accent-2");
   }
 </style>
