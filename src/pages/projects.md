@@ -3,6 +3,18 @@ layout: ../layouts/ProjectsLayout.astro
 title: "Projects"
 description: "Open-source projects, hackathon entries, and tools built by Shravan Goswami."
 projects:
+  - title: "PULSE -- Smart City Emergency Traffic Management"
+    description: "Real-time green corridor system for emergency vehicles using live GPS, traffic-aware routing, and signal control. Includes 2 mobile apps (PULSE, PULSE-CC) and 3 web apps (Admin Website, PULSE-AID-WEB, FASTAPI dashboard), with five shortest-path methods: Dijkstra, A*, Bellman-Ford, Floyd-Warshall, and Directed SSSP (arXiv:2504.17033)."
+    techStack: ["FastAPI", "Flutter", "GPS", "Traffic Signal Control", "Dijkstra", "A*", "Bellman-Ford", "Floyd-Warshall"]
+    githubLink: "https://github.com/shravanngoswamii/PULSE"
+    imageSrc: "/assets/projects/pulse.jpg"
+
+  - title: "SecureVault (Android Application)"
+    description: "Android app for secure photo, video, and notes storage with disguise modes (Clock, Calculator, MoodSpace, Notes)."
+    techStack: ["Flutter", "AES-256", "Android"]
+    liveLink: "https://play.google.com/store/apps/details?id=com.shravangoswami.securevault"
+    imageSrc: "/assets/projects/securevault.png"
+
   - title: "DoodleBUGS: a Browser-Based Graphical Interface for Drawing Probabilistic Graphical Models"
     description: "A graphical tool for visually constructing models for the BUGS (Bayesian Inference using Gibbs Sampling) language. Features include direct code generation from drawn DAGs, model export (PNG, SVG, JSON), and backend integration for running models and visualizing results. See project report: https://turinglang.org/news/posts/2025-09-01-GSoC-Report-DoodleBUGS/"
     techStack: ["Vue.js", "Vite", "TypeScript", "Julia"]
@@ -22,6 +34,13 @@ projects:
     githubLink: "https://github.com/TuringLang/actions"
     imageSrcLight: "https://raw.githubusercontent.com/TuringLang/turinglang.github.io/refs/heads/main/assets/logo/turing-text-logo.svg"
     imageSrcDark: "https://raw.githubusercontent.com/TuringLang/turinglang.github.io/refs/heads/main/assets/logo/turing-logo-dark.svg"
+
+  - title: "HTML Link Action"
+    description: "A GitHub composite action to post-process static HTML sites for link modification and validation. Built in pure Node.js with no pip installs and no npm dependencies."
+    techStack: [GitHub Actions, Node.js, HTML]
+    githubLink: "https://github.com/shravanngoswamii/html-link-action/"
+    liveLink: "https://github.com/marketplace/actions/html-link-processor"
+    imageSrc: "https://opengraph.githubassets.com/fa9b5dbc384becec86d940989660321b39ee89d11ad8ee00ac89474a4d10a14f/shravanngoswamii/html-link-action"
 
   - title: "MLG Cambridge's Research & Publications System"
     description: Designed and developed the official research & publication system for the Machine Learning Group at Cambridge University.
