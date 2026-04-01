@@ -11,6 +11,17 @@
           }
         } catch (e) {}
       })();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          document.documentElement.classList.add("theme-transition");
+        }, 100);
+      });
+      document.addEventListener("astro:after-swap", () => {
+        if (!document.documentElement.classList.contains("theme-transition")) {
+          document.documentElement.classList.add("theme-transition");
+        }
+      });
     </script><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(...args) {
