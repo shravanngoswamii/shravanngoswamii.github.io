@@ -214,6 +214,19 @@ const structuredData = isArticle
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
     />
+
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          document.documentElement.classList.add("theme-transition");
+        }, 100);
+      });
+      document.addEventListener("astro:after-swap", () => {
+        if (!document.documentElement.classList.contains("theme-transition")) {
+          document.documentElement.classList.add("theme-transition");
+        }
+      });
+    </script>
   </head>
 
   <body class="selection:bg-skin-accent selection:text-white">
