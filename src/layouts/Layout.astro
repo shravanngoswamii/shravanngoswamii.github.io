@@ -66,6 +66,20 @@ const structuredData = isArticle
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
+    <script is:inline>
+      (function() {
+        try {
+          const theme = localStorage.getItem("theme");
+          if (theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+          } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.setAttribute("data-theme", "dark");
+          } else {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- Google tag (gtag.js) -->
     <script
       is:inline

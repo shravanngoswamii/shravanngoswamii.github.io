@@ -63,16 +63,19 @@
     });
   });
 
-  document.addEventListener("astro:after-swap", () => {
-    setTimeout(loadGiscus, 0);
-  });
+
 
   document.addEventListener("astro:page-load", () => {
-    loadGiscus();
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
+    setTimeout(() => {
+      loadGiscus();
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+    }, 0);
+  });
+  document.addEventListener("astro:after-swap", () => {
+    setTimeout(loadGiscus, 0);
   });
 </script>
 
