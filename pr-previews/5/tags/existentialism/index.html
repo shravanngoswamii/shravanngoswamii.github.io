@@ -1,4 +1,17 @@
-<!DOCTYPE html><html lang="en" class="false"> <head><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
+<!DOCTYPE html><html lang="en" class="false"> <head><script>
+      (function() {
+        try {
+          const theme = localStorage.getItem("theme");
+          if (theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+          } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.setAttribute("data-theme", "dark");
+          } else {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {}
+      })();
+    </script><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(...args) {
         window.dataLayer.push(args);
