@@ -22,6 +22,12 @@
 
       reflectPreference(themeValue);
 
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.documentElement.classList.add("theme-transition");
+        }, 0);
+      });
+
       document.addEventListener("astro:before-swap", (ev) => {
         const theme = localStorage.getItem("theme") || themeValue;
         ev.newDocument.documentElement.setAttribute("data-theme", theme);
