@@ -66,31 +66,53 @@ const structuredData = isArticle
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
-    <script is:inline>
-      (function() {
-        try {
-          const theme = localStorage.getItem("theme");
-          if (theme) {
-            document.documentElement.setAttribute("data-theme", theme);
-          } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            document.documentElement.setAttribute("data-theme", "dark");
-          } else {
-            document.documentElement.setAttribute("data-theme", "light");
-          }
-        } catch (e) {}
-      })();
 
-      document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-          document.documentElement.classList.add("theme-transition");
-        }, 100);
+    <script is:inline>
+      const primaryColorScheme = "";
+      const currentTheme = localStorage.getItem("theme");
+
+      function getPreferTheme() {
+        if (currentTheme) return currentTheme;
+        if (primaryColorScheme) return primaryColorScheme;
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+
+      let themeValue = getPreferTheme();
+
+      function reflectPreference(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        const body = document.body;
+        if (body) {
+          const computedStyles = window.getComputedStyle(body);
+          const bgColor = computedStyles.backgroundColor;
+          document.querySelector("meta[name='theme-color']")?.setAttribute("content", bgColor);
+        }
+      }
+
+      reflectPreference(themeValue);
+
+      document.addEventListener("astro:before-swap", (ev) => {
+        const theme = localStorage.getItem("theme") || themeValue;
+        ev.newDocument.documentElement.setAttribute("data-theme", theme);
       });
+
       document.addEventListener("astro:after-swap", () => {
+        const theme = localStorage.getItem("theme") || themeValue;
+        themeValue = theme;
+        reflectPreference(theme);
         if (!document.documentElement.classList.contains("theme-transition")) {
           document.documentElement.classList.add("theme-transition");
         }
       });
+
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {
+        if (!localStorage.getItem("theme")) {
+          themeValue = isDark ? "dark" : "light";
+          reflectPreference(themeValue);
+        }
+      });
     </script>
+
     <!-- Google tag (gtag.js) -->
     <script
       is:inline
@@ -185,73 +207,14 @@ const structuredData = isArticle
 
     <ClientRouter />
 
-    <script is:inline>
-      const primaryColorScheme = "";
 
-      const currentTheme = localStorage.getItem("theme");
 
-      function getPreferTheme() {
-        if (currentTheme) return currentTheme;
-        if (primaryColorScheme) return primaryColorScheme;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      }
-
-      let themeValue = getPreferTheme();
-
-      function reflectPreference(theme) {
-        document.firstElementChild.setAttribute("data-theme", theme);
-
-        const body = document.body;
-        if (body) {
-          const computedStyles = window.getComputedStyle(body);
-          const bgColor = computedStyles.backgroundColor;
-          document
-            .querySelector("meta[name='theme-color']")
-            ?.setAttribute("content", bgColor);
-        }
-      }
-
-      reflectPreference(themeValue);
-
-      document.addEventListener("astro:before-swap", (ev) => {
-        const theme = localStorage.getItem("theme") || themeValue;
-        ev.newDocument.firstElementChild.setAttribute("data-theme", theme);
-      });
-
-      document.addEventListener("astro:after-swap", () => {
-        const theme = localStorage.getItem("theme") || themeValue;
-        themeValue = theme;
-        reflectPreference(theme);
-      });
-
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", ({ matches: isDark }) => {
-          if (!localStorage.getItem("theme")) {
-            themeValue = isDark ? "dark" : "light";
-            reflectPreference(themeValue);
-          }
-        });
-    </script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
     />
 
-    <script is:inline>
-      document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-          document.documentElement.classList.add("theme-transition");
-        }, 100);
-      });
-      document.addEventListener("astro:after-swap", () => {
-        if (!document.documentElement.classList.contains("theme-transition")) {
-          document.documentElement.classList.add("theme-transition");
-        }
-      });
-    </script>
+
   </head>
 
   <body class="selection:bg-skin-accent selection:text-white">
