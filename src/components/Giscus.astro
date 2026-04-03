@@ -10,7 +10,7 @@ const { mapping = "url" } = Astro.props;
   <div class="giscus" data-mapping={mapping}></div>
 </div>
 
-<script define:vars={{ mapping }}>
+<script>
 
   function loadGiscus() {
     const container = document.querySelector(".giscus");
@@ -31,7 +31,7 @@ const { mapping = "url" } = Astro.props;
     script.setAttribute("data-repo-id", "R_kgDOQ90dlg");
     script.setAttribute("data-category", "Announcements");
     script.setAttribute("data-category-id", "DIC_kwDOQ90dls4C1NXa");
-    script.setAttribute("data-mapping", container.dataset.mapping || "url");
+    script.setAttribute("data-mapping", "url");
     script.setAttribute("data-strict", "0");
     script.setAttribute("data-reactions-enabled", "1");
     script.setAttribute("data-emit-metadata", "0");
@@ -46,7 +46,7 @@ const { mapping = "url" } = Astro.props;
   }
 
   function updateGiscusTheme() {
-    const iframe = document.querySelector("iframe.giscus-frame");
+    const iframe = document.querySelector("iframe.giscus-frame") as HTMLIFrameElement;
     if (!iframe) return;
 
     const theme = document.documentElement.getAttribute("data-theme") || "dark";
@@ -71,10 +71,12 @@ const { mapping = "url" } = Astro.props;
 
 
 
-  loadGiscus();
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
+  document.addEventListener("astro:page-load", () => {
+    loadGiscus();
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
   });
 
 </script>

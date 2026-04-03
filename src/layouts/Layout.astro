@@ -81,6 +81,7 @@ const structuredData = isArticle
 
       function reflectPreference(theme) {
         document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.style.colorScheme = theme;
         const body = document.body;
         if (body) {
           const computedStyles = window.getComputedStyle(body);
@@ -91,10 +92,12 @@ const structuredData = isArticle
 
       reflectPreference(themeValue);
 
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          document.documentElement.classList.add("theme-transition");
-        }, 0);
+      document.addEventListener("astro:page-load", () => {
+        if (!document.documentElement.classList.contains("theme-transition")) {
+          setTimeout(() => {
+            document.documentElement.classList.add("theme-transition");
+          }, 0);
+        }
       });
 
       document.addEventListener("astro:before-swap", (ev) => {
