@@ -22,7 +22,10 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const posts = getSortedPosts(
-  await getCollection("blog", ({ data }) => !data.draft && data.topic === "cinema"),
+  await getCollection(
+    "blog",
+    ({ data }) => !data.draft && data.topic === "cinema",
+  ),
 );
 const shelfItems = await getDoneShelfItems("cinema");
 const allItems = sortMergedItems([...posts, ...shelfItems] as MergedItem[]);

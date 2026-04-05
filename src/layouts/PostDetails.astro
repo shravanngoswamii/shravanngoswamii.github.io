@@ -20,7 +20,12 @@ import ShelfMention from "@components/mdx/ShelfMention.astro";
 import { render } from "astro:content";
 import type { AnyPost } from "../types";
 
-import { COLLECTION_META, getPostTopic, getPostSlug, getAllPosts } from "@utils/collections";
+import {
+  COLLECTION_META,
+  getPostTopic,
+  getPostSlug,
+  getAllPosts,
+} from "@utils/collections";
 import Callout from "@components/mdx/Callout";
 import QuoteBlock from "@components/mdx/QuoteBlock";
 import Spoiler from "@components/mdx/Spoiler";
@@ -92,7 +97,9 @@ const allPosts = posts.map((p) => ({
   title: p.data.title,
 }));
 
-const currentPostIndex = allPosts.findIndex((a) => a.slug === getPostSlug(post));
+const currentPostIndex = allPosts.findIndex(
+  (a) => a.slug === getPostSlug(post),
+);
 
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
@@ -111,8 +118,7 @@ let readMorePosts = allSitePosts
   .filter((p) => getPostSlug(p) !== getPostSlug(post))
   .filter(
     (p) =>
-      p.data.tags.some((t) => tags.includes(t)) ||
-      getPostTopic(p) === topic,
+      p.data.tags.some((t) => tags.includes(t)) || getPostTopic(p) === topic,
   )
   .slice(0, 4);
 
@@ -328,7 +334,10 @@ const readMoreMapped = readMorePosts.map((p) => ({
     >
       <!-- Left Column -->
       <aside class="hidden lg:flex lg:justify-center">
-        <div class="relative mt-8 flex w-[280px] flex-col items-center" id="left-sidebar">
+        <div
+          class="relative mt-8 flex w-[280px] flex-col items-center"
+          id="left-sidebar"
+        >
           <div id="sidebar-quotes" class="w-full"></div>
           {
             readMoreMapped.length > 0 && (
@@ -962,4 +971,3 @@ const readMoreMapped = readMorePosts.map((p) => ({
   positionReadMore();
   window.addEventListener("load", positionReadMore);
 </script>
-

@@ -6,7 +6,9 @@ import { getPostSlug } from "@utils/collections";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog").then((p) =>
-    p.filter(({ data }) => !data.draft && !data.ogImage && data.topic === "philosophy"),
+    p.filter(
+      ({ data }) => !data.draft && !data.ogImage && data.topic === "philosophy",
+    ),
   );
 
   return posts.map((post) => ({

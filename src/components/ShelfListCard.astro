@@ -39,10 +39,8 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
             class="absolute inset-0 rounded-sm overflow-hidden shadow-md"
             style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"
           >
-            <div
-              class="absolute inset-0"
-              style={`background: ${gradient}`}
-            />
+            <div class="absolute inset-0" style={`background: ${gradient}`}>
+            </div>
             {
               poster && (
                 <img
@@ -155,7 +153,9 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
       >
         {title}
       </h3>
-      <p class="text-[11px] sm:text-xs text-skin-base/50 font-serif italic mb-1 sm:mb-2">
+      <p
+        class="text-[11px] sm:text-xs text-skin-base/50 font-serif italic mb-1 sm:mb-2"
+      >
         {shelfMeta.creator}
       </p>
       <p

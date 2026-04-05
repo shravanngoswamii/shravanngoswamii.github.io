@@ -33,7 +33,6 @@ import Timeline from "@components/mdx/Timeline";
 import Comparison, { ComparisonSide } from "@components/mdx/Comparison";
 import Progress from "@components/mdx/Progress";
 
-
 export interface Props {
   entry: CollectionEntry<"shelf">;
   items: CollectionEntry<"shelf">[];
@@ -134,7 +133,8 @@ const ogUrl = new URL(
                     <div
                       class="absolute inset-0 pointer-events-none"
                       style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"
-                    />
+                    >
+                    </div>
                   </div>
                   {
                     data.poster && (
@@ -434,7 +434,10 @@ const ogUrl = new URL(
       class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(auto,48rem)_minmax(0,1fr)] gap-8"
     >
       <aside class="hidden lg:flex lg:justify-center">
-        <div class="relative mt-8 flex w-[280px] flex-col items-center" id="left-sidebar">
+        <div
+          class="relative mt-8 flex w-[280px] flex-col items-center"
+          id="left-sidebar"
+        >
           <div id="sidebar-quotes" class="w-full"></div>
           {
             readMorePosts.length > 0 && (
@@ -911,4 +914,3 @@ const ogUrl = new URL(
   positionReadMore();
   window.addEventListener("load", positionReadMore);
 </script>
-

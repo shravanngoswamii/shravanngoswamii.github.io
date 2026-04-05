@@ -21,10 +21,7 @@ const { noMarginTop = false } = Astro.props;
         class="text-[10px] font-mono uppercase tracking-[0.3em] text-skin-base/40"
         >Stay in the loop</span
       >
-      <form
-        class="flex w-full gap-2"
-        id="footer-subscribe"
-      >
+      <form class="flex w-full gap-2" id="footer-subscribe">
         <input
           type="email"
           name="email"
@@ -75,7 +72,9 @@ const { noMarginTop = false } = Astro.props;
 
 <script>
   function initSubscribeForm() {
-    const form = document.getElementById("footer-subscribe") as HTMLFormElement | null;
+    const form = document.getElementById(
+      "footer-subscribe",
+    ) as HTMLFormElement | null;
     if (!form || form.dataset.bound) return;
     form.dataset.bound = "1";
     form.addEventListener("submit", (e) => {
@@ -85,7 +84,7 @@ const { noMarginTop = false } = Astro.props;
       window.open(
         `https://shravangoswami.substack.com/subscribe?freeSignupEmail=${encodeURIComponent(email)}`,
         "_blank",
-        "noopener"
+        "noopener",
       );
     });
   }

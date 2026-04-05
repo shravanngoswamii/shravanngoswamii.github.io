@@ -5,22 +5,32 @@ import Footer from "@components/Footer.astro";
 import { SITE } from "@config";
 ---
 
-<Layout title={`Subscribe — ${SITE.title}`} description="Subscribe to get notified when new posts are published.">
+<Layout
+  title={`Subscribe — ${SITE.title}`}
+  description="Subscribe to get notified when new posts are published."
+>
   <Header />
   <main id="main-content" class="flex flex-1 flex-col items-center px-4">
     <section class="w-full max-w-md py-20 sm:py-28">
       <div class="flex flex-col items-center gap-6 text-center">
-        <h1 class="font-serif text-4xl sm:text-5xl italic text-skin-base tracking-tight">
+        <h1
+          class="font-serif text-4xl sm:text-5xl italic text-skin-base tracking-tight"
+        >
           Stay in the loop
         </h1>
-        <p class="text-sm text-skin-base/60 font-light max-w-sm leading-relaxed">
-          I write about tech, cinema, philosophy, and the things that make us think.
-          Subscribe to get a short email whenever something new goes live.
+        <p
+          class="text-sm text-skin-base/60 font-light max-w-sm leading-relaxed"
+        >
+          I write about tech, cinema, philosophy, and the things that make us
+          think. Subscribe to get a short email whenever something new goes
+          live.
         </p>
 
         <div class="w-16 h-[1px] bg-skin-line/20 my-2"></div>
 
-        <div class="w-full rounded-lg border border-skin-line/20 p-6 sm:p-8 bg-skin-card/30">
+        <div
+          class="w-full rounded-lg border border-skin-line/20 p-6 sm:p-8 bg-skin-card/30"
+        >
           <form id="subscribe-form" class="flex flex-col gap-4">
             <input
               type="email"
@@ -32,11 +42,14 @@ import { SITE } from "@config";
             <button
               type="submit"
               class="w-full py-3 rounded text-xs font-mono uppercase tracking-widest text-skin-accent bg-skin-accent/10 hover:bg-skin-accent/20 backdrop-blur-sm transition-all"
-            >Subscribe</button>
+              >Subscribe</button
+            >
           </form>
         </div>
 
-        <p class="text-[10px] font-mono uppercase tracking-widest text-skin-base/30 mt-4">
+        <p
+          class="text-[10px] font-mono uppercase tracking-widest text-skin-base/30 mt-4"
+        >
           Free &middot; No spam &middot; Unsubscribe anytime
         </p>
       </div>
@@ -47,7 +60,9 @@ import { SITE } from "@config";
 
 <script>
   function initPageSubscribe() {
-    const form = document.getElementById("subscribe-form") as HTMLFormElement | null;
+    const form = document.getElementById(
+      "subscribe-form",
+    ) as HTMLFormElement | null;
     if (!form || form.dataset.bound) return;
     form.dataset.bound = "1";
     form.addEventListener("submit", (e) => {
@@ -57,7 +72,7 @@ import { SITE } from "@config";
       window.open(
         `https://shravangoswami.substack.com/subscribe?freeSignupEmail=${encodeURIComponent(email)}`,
         "_blank",
-        "noopener"
+        "noopener",
       );
     });
   }

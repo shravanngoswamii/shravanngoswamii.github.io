@@ -5,7 +5,17 @@ description: "Open-source projects, hackathon entries, and tools built by Shrava
 projects:
   - title: "PULSE -- Smart City Emergency Traffic Management"
     description: "Real-time green corridor system for emergency vehicles using live GPS, traffic-aware routing, and signal control. Includes 2 mobile apps (PULSE, PULSE-CC) and 3 web apps (Admin Website, PULSE-AID-WEB, FASTAPI dashboard), with five shortest-path methods: Dijkstra, A*, Bellman-Ford, Floyd-Warshall, and Directed SSSP (arXiv:2504.17033)."
-    techStack: ["FastAPI", "Flutter", "GPS", "Traffic Signal Control", "Dijkstra", "A*", "Bellman-Ford", "Floyd-Warshall"]
+    techStack:
+      [
+        "FastAPI",
+        "Flutter",
+        "GPS",
+        "Traffic Signal Control",
+        "Dijkstra",
+        "A*",
+        "Bellman-Ford",
+        "Floyd-Warshall",
+      ]
     githubLink: "https://github.com/shravanngoswamii/PULSE"
     imageSrc: "/assets/projects/pulse.jpg"
 

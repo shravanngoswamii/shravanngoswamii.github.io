@@ -29,9 +29,9 @@ The code takes a list of points and calculates the total distance between them. 
 using namespace std;
 
 signed main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+ios_base::sync_with_stdio(false);
+cin.tie(NULL);
+cout.tie(NULL);
 
     int t=1;
     // cin >> t;
@@ -55,8 +55,10 @@ signed main() {
         cout << fixed << setprecision(20) << ans << endl;
     }
     return 0;
+
 }
-```
+
+````
   </TabItem>
   <TabItem label="Python">
 ```python
@@ -67,12 +69,12 @@ def solve():
     points = []
     for _ in range(n):
         points.append(list(map(int, input().split())))
-    
+
     # Add origin at start and end
-    # Note: The C++ solution logic effectively adds origin at both ends 
+    # Note: The C++ solution logic effectively adds origin at both ends
     # (indirectly via reverse logic), here is the direct equivalent:
     path = [[0, 0]] + points + [[0, 0]]
-    
+
     ans = 0.0
     for i in range(len(path) - 1):
         x1, y1 = path[i]
@@ -80,11 +82,12 @@ def solve():
         dx = x1 - x2
         dy = y1 - y2
         ans += math.sqrt(dx*dx + dy*dy)
-        
+
     print(f"{ans:.20f}")
 
 if __name__ == "__main__":
     solve()
-```
+````
+
   </TabItem>
 </Tabs>

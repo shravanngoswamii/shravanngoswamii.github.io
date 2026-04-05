@@ -7,7 +7,12 @@ import LinkButton from "@components/LinkButton.astro";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import ShelfCard from "@components/ShelfCard.astro";
 import { withBase } from "@utils/base";
-import { getAllPosts, COLLECTION_META, getPostUrl, getPostTopic } from "@utils/collections";
+import {
+  getAllPosts,
+  COLLECTION_META,
+  getPostUrl,
+  getPostTopic,
+} from "@utils/collections";
 import getSortedPosts from "@utils/getSortedPosts";
 import { stripExt } from "@utils/shelf";
 import { getCollection } from "astro:content";
@@ -29,7 +34,9 @@ const shelfItems = shelfRaw
 >
   <Header activeNav="resume" />
 
-  <div class="mx-auto w-full max-w-screen-xl px-4 pt-28 sm:pt-24 pb-12 lg:max-w-none lg:px-0">
+  <div
+    class="mx-auto w-full max-w-screen-xl px-4 pt-28 sm:pt-24 pb-12 lg:max-w-none lg:px-0"
+  >
     <div
       class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_40rem_minmax(0,1fr)] lg:gap-0"
     >

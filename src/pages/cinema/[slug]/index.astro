@@ -6,7 +6,10 @@ import type { AnyPost } from "@types";
 import { getPostSlug } from "@utils/collections";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft && data.topic === "cinema");
+  const posts = await getCollection(
+    "blog",
+    ({ data }) => !data.draft && data.topic === "cinema",
+  );
   return posts.map((post) => ({
     params: { slug: getPostSlug(post) },
     props: { post },
@@ -14,7 +17,10 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const allTopicPosts = await getCollection("blog", ({ data }) => data.topic === "cinema");
+const allTopicPosts = await getCollection(
+  "blog",
+  ({ data }) => data.topic === "cinema",
+);
 const sortedPosts = getSortedPosts(allTopicPosts as AnyPost[]);
 ---
 

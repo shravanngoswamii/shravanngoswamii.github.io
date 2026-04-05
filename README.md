@@ -6,7 +6,7 @@ Well I made it with Gemini, Claude and Copilot -- feel free to copy mine but bet
 
 ## Introduction
 
-The whole point of this repo? So you *don’t* have to read an introduction here.  
+The whole point of this repo? So you _don’t_ have to read an introduction here.  
 Check out [shravangoswami.com](https://shravangoswami.com).
 
 This repo contains the source code for my personal website, where I post all sorts of random stuff from my life.
