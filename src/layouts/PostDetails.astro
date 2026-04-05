@@ -17,6 +17,7 @@ import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import ShelfPin from "@components/mdx/ShelfPin.astro";
 import ShelfMention from "@components/mdx/ShelfMention.astro";
+import { render } from "astro:content";
 import type { AnyPost } from "../types";
 
 import { COLLECTION_META, getPostTopic, getPostSlug, getAllPosts } from "@utils/collections";
@@ -61,10 +62,10 @@ const relatedPublications = publications.filter(
     ),
 );
 
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 // --- START: UPDATED OG IMAGE URL CONSTRUCTION ---
 // If ogImage is explicitly set in frontmatter, use it.
-// Otherwise, construct the path using the post.slug for the directory and 'og.png' for the filename.
+// Otherwise, construct the path using the post identifier-derived slug for the directory and 'og.png' for the filename.
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 
 const ogUrl = new URL(
@@ -107,7 +108,7 @@ const sidebarHeading = sidebarHeadings[topic] || "Wander Further";
 
 const allSitePosts = getSortedPosts(await getAllPosts());
 let readMorePosts = allSitePosts
-  .filter((p) => p.slug !== post.slug)
+  .filter((p) => getPostSlug(p) !== getPostSlug(post))
   .filter(
     (p) =>
       p.data.tags.some((t) => tags.includes(t)) ||
@@ -116,7 +117,9 @@ let readMorePosts = allSitePosts
   .slice(0, 4);
 
 if (readMorePosts.length === 0) {
-  readMorePosts = allSitePosts.filter((p) => p.slug !== post.slug).slice(0, 4);
+  readMorePosts = allSitePosts
+    .filter((p) => getPostSlug(p) !== getPostSlug(post))
+    .slice(0, 4);
 }
 
 const readMoreMapped = readMorePosts.map((p) => ({
@@ -948,3 +951,4 @@ const readMoreMapped = readMorePosts.map((p) => ({
   positionReadMore();
   window.addEventListener("load", positionReadMore);
 </script>
+

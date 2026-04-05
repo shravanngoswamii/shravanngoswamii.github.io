@@ -1,5 +1,4 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 // import remarkToc from "remark-toc";
@@ -19,14 +18,7 @@ import {
 export default defineConfig({
   site: SITE.website,
   base: process.env.BASE_PATH || "/",
-  integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    react(),
-    sitemap(),
-    mdx(),
-  ],
+  integrations: [react(), sitemap(), mdx()],
   markdown: {
     remarkPlugins: [
       remarkMath,

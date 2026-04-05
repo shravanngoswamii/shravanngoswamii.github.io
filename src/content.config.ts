@@ -1,11 +1,12 @@
 import { SITE } from "@config";
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
-export const TOPICS = ["tech", "cinema", "philosophy"] as const;
-export type Topic = (typeof TOPICS)[number];
+const TOPICS = ["tech", "cinema", "philosophy"] as const;
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
   schema: ({ image }) =>
     z.object({
       author: z.string().default(SITE.author),
@@ -15,16 +16,7 @@ const blog = defineCollection({
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
       tags: z.array(z.string()).default(["others"]),
-      ogImage: image()
-        .refine(
-          (img: { width: number; height: number }) =>
-            img.width >= 1200 && img.height >= 630,
-          {
-            message: "OpenGraph image must be at least 1200 X 630 pixels!",
-          },
-        )
-        .or(z.string())
-        .optional(),
+      ogImage: z.union([image(), z.string()]).optional(),
       description: z.string(),
       canonicalURL: z.string().optional(),
       aliases: z.array(z.string()).optional().default([]),
@@ -38,7 +30,7 @@ const blog = defineCollection({
 });
 
 const shelf = defineCollection({
-  type: "content",
+  loader: glob({ base: "./src/content/shelf", pattern: "**/*.md" }),
   schema: () =>
     z.object({
       title: z.string(),

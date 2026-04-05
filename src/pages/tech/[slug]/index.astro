@@ -2,12 +2,13 @@
 import { getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import getSortedPosts from "@utils/getSortedPosts";
+import { getPostSlug } from "@utils/collections";
 import type { AnyPost } from "@types";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft && data.topic === "tech");
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: getPostSlug(post as AnyPost) },
     props: { post },
   }));
 }

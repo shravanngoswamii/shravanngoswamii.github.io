@@ -26,9 +26,10 @@ export const COLLECTION_META: Record<
 export function getPostSlug(post: AnyPost): string {
   const topic = post.data.topic ?? "tech";
   const topicPrefix = `${topic}/`;
-  return post.slug.startsWith(topicPrefix)
-    ? post.slug.slice(topicPrefix.length)
-    : post.slug;
+  const postId = post.id.replace(/\.[^/.]+$/, "");
+  return postId.startsWith(topicPrefix)
+    ? postId.slice(topicPrefix.length)
+    : postId;
 }
 
 export function getPostUrl(post: AnyPost): string {
