@@ -10,7 +10,7 @@ const { mapping = "url" } = Astro.props;
   <div class="giscus"></div>
 </div>
 
-<script is:inline define:vars={{ mapping }}>
+<script is:inline define:vars={{ mapping }} data-astro-rerun>
   function loadGiscus() {
     const container = document.querySelector(".giscus");
     if (!container) return;
@@ -56,26 +56,40 @@ const { mapping = "url" } = Astro.props;
     );
   }
 
-  // Setup observer for theme changes
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (
-        mutation.type === "attributes" &&
-        mutation.attributeName === "data-theme"
-      ) {
-        updateGiscusTheme();
-      }
-    });
-  });
+  function ensureThemeObserver() {
+    if (window.__giscusThemeObserverAttached) return;
 
-  // Only run this binding once when page loads
-  document.addEventListener("astro:page-load", () => {
-    loadGiscus();
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-theme"
+        ) {
+          updateGiscusTheme();
+        }
+      });
+    });
+
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
-  });
+
+    window.__giscusThemeObserverAttached = true;
+  }
+
+  function initGiscus() {
+    loadGiscus();
+    ensureThemeObserver();
+  }
+
+  if (!window.__giscusListenersAttached) {
+    document.addEventListener("astro:page-load", initGiscus);
+    document.addEventListener("astro:after-swap", initGiscus);
+    window.__giscusListenersAttached = true;
+  }
+
+  initGiscus();
 </script>
 
 <style>
