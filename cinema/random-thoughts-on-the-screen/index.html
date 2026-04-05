@@ -1,8 +1,25 @@
 <!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><script>
       (function () {
+        if (window.__firstPaintGuardInitialized) return;
+        window.__firstPaintGuardInitialized = true;
+
         const docEl = document.documentElement;
-        const nav = performance.getEntriesByType("navigation")[0];
-        const isReload = nav && nav.type === "reload";
+        const navEntry = performance.getEntriesByType("navigation")[0];
+        const isReload = navEntry?.type === "reload";
+
+        const savedTheme = localStorage.getItem("theme");
+        const darkThemes = ["dark", "frappe", "macchiato", "mocha"];
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const isDarkTheme = savedTheme
+          ? darkThemes.includes(savedTheme)
+          : prefersDark;
+
+        // Paint an immediate theme-matched background to avoid light/dark flash.
+        docEl.style.backgroundColor = isDarkTheme
+          ? "rgb(10, 10, 10)"
+          : "rgb(248, 248, 246)";
 
         if (isReload) {
           docEl.classList.add("preload");
@@ -12,18 +29,23 @@
           docEl.style.scrollBehavior = "auto";
         }
 
+        const releasePreload = () => {
+          docEl.classList.remove("preload");
+          docEl.style.backgroundColor = "";
+          if (docEl.classList.contains("scroll-smooth")) {
+            docEl.style.scrollBehavior = "";
+          }
+        };
+
         window.addEventListener(
           "pageshow",
-          () => {
-            requestAnimationFrame(() => {
-              docEl.classList.remove("preload");
-              if (docEl.classList.contains("scroll-smooth")) {
-                docEl.style.scrollBehavior = "";
-              }
-            });
-          },
+          () => requestAnimationFrame(releasePreload),
           { once: true },
         );
+
+        // Important for Astro view transitions where pageshow doesn't fire.
+        document.addEventListener("astro:after-swap", releasePreload);
+        document.addEventListener("astro:page-load", releasePreload);
       })();
     </script><style>
       html.preload body {
@@ -547,11 +569,6 @@ Table of Contents
     }
   }
   attachCopyButtons();
-
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
-  );
 
   /** Hide "Table of Contents" heading if it exists */
   function hideTOCHeading() {
