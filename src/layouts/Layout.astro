@@ -289,104 +289,10 @@ const structuredData = isArticle
     >
     <slot />
 
-    <script is:inline>
-      (function () {
-        if (window.__giscusGlobalInitAttached) return;
-        window.__giscusGlobalInitAttached = true;
+    <script>
+      import { initGiscusGlobal } from "@utils/giscusClient";
 
-        function getCurrentTheme() {
-          const fromAttr = document.documentElement.getAttribute("data-theme");
-          if (fromAttr) return fromAttr;
-
-          const fromStorage = localStorage.getItem("theme");
-          if (fromStorage && fromStorage !== "auto") return fromStorage;
-
-          return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-        }
-
-        function mountGiscus() {
-          const containers = document.querySelectorAll(".giscus[data-giscus-mapping]");
-          if (containers.length === 0) return;
-
-          containers.forEach((container) => {
-            if (
-              container instanceof HTMLElement &&
-              container.dataset.giscusMounted === "1"
-            ) {
-              return;
-            }
-
-            if (!(container instanceof HTMLElement)) return;
-
-            container.dataset.giscusMounted = "1";
-            container.innerHTML = "";
-
-            const mapping = container.dataset.giscusMapping || "url";
-
-            const script = document.createElement("script");
-            script.src = "https://giscus.app/client.js";
-            script.setAttribute("data-repo", "shravanngoswamii/comments");
-            script.setAttribute("data-repo-id", "R_kgDOQ90dlg");
-            script.setAttribute("data-category", "Announcements");
-            script.setAttribute("data-category-id", "DIC_kwDOQ90dls4C1NXa");
-            script.setAttribute("data-mapping", mapping);
-            script.setAttribute("data-strict", "0");
-            script.setAttribute("data-reactions-enabled", "1");
-            script.setAttribute("data-emit-metadata", "0");
-            script.setAttribute("data-input-position", "top");
-            script.setAttribute("data-theme", getCurrentTheme());
-            script.setAttribute("data-lang", "en");
-            script.setAttribute("data-loading", "lazy");
-            script.crossOrigin = "anonymous";
-            script.async = true;
-
-            container.appendChild(script);
-          });
-        }
-
-        function updateGiscusTheme() {
-          const iframe = document.querySelector("iframe.giscus-frame");
-          if (!(iframe instanceof HTMLIFrameElement)) return;
-
-          iframe.contentWindow?.postMessage(
-            { giscus: { setConfig: { theme: getCurrentTheme() } } },
-            "https://giscus.app",
-          );
-        }
-
-        if (!window.__giscusThemeObserverAttached) {
-          const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-              if (
-                mutation.type === "attributes" &&
-                mutation.attributeName === "data-theme"
-              ) {
-                updateGiscusTheme();
-              }
-            }
-          });
-
-          observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ["data-theme"],
-          });
-
-          window.__giscusThemeObserverAttached = true;
-        }
-
-        function initGiscus() {
-          mountGiscus();
-          // Give giscus iframe a moment to mount before pushing theme sync.
-          setTimeout(updateGiscusTheme, 100);
-        }
-
-        document.addEventListener("astro:page-load", initGiscus);
-        document.addEventListener("astro:after-swap", initGiscus);
-
-        initGiscus();
-      })();
+      initGiscusGlobal();
     </script>
 
     <script is:inline>
