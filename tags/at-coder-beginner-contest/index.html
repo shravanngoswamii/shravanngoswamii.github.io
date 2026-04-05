@@ -1,4 +1,35 @@
-<!DOCTYPE html><html lang="en" class="false"> <head><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
+<!DOCTYPE html><html lang="en" class="false"> <head><script>
+      (function () {
+        const docEl = document.documentElement;
+        const nav = performance.getEntriesByType("navigation")[0];
+        const isReload = nav && nav.type === "reload";
+
+        if (isReload) {
+          docEl.classList.add("preload");
+        }
+
+        if (docEl.classList.contains("scroll-smooth")) {
+          docEl.style.scrollBehavior = "auto";
+        }
+
+        window.addEventListener(
+          "pageshow",
+          () => {
+            requestAnimationFrame(() => {
+              docEl.classList.remove("preload");
+              if (docEl.classList.contains("scroll-smooth")) {
+                docEl.style.scrollBehavior = "";
+              }
+            });
+          },
+          { once: true },
+        );
+      })();
+    </script><style>
+      html.preload body {
+        opacity: 0;
+      }
+    </style><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(...args) {
         window.dataLayer.push(args);
