@@ -961,7 +961,7 @@ const readMoreMapped = readMorePosts.map((p) => ({
     mirrors.forEach((m) => {
       const mTop = parseFloat(m.style.top) || 0;
       const mBottom = mTop + m.offsetHeight;
-      if (finalTop >= mTop - 30 && finalTop <= mBottom + 30) {
+      if (finalTop >= mTop - 30 && !(finalTop > mBottom + 30)) {
         finalTop = mBottom + 40;
       }
     });

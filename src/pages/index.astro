@@ -80,7 +80,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
         >
           <span class="relative">
             SHRAVAN
-            <span class="absolute top-1/2 left-0 w-full h-[1px] bg-skin-line/0"
+            <span class="absolute top-1/2 left-0 w-full h-px bg-skin-line/0"
             ></span>
           </span>
           <span
@@ -115,7 +115,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
             <span class="text-red-500" aria-hidden="true">&#10084;</span>
             <span>Sponsor</span>
           </a>
-          <div class="h-[1px] w-12 bg-skin-line/30 hidden sm:block"></div>
+          <div class="h-px w-12 bg-skin-line/30 hidden sm:block"></div>
           <div class="scale-90 opacity-70 hover:opacity-100 transition-opacity">
             <Socials />
           </div>
@@ -333,7 +333,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
         >
           {
             shelfDone.map((item) => (
-              <div class="shrink-0 w-[130px] snap-start md:w-auto md:shrink">
+              <div class="shrink-0 w-32.5 snap-start md:w-auto md:shrink">
                 <ShelfCard
                   type={item.data.type}
                   title={item.data.title}

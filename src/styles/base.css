@@ -99,7 +99,7 @@
   }
 
   body {
-    @apply relative flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base;
+    @apply relative flex min-h-svh flex-col bg-skin-fill font-sans text-skin-base;
   }
 
   body::selection {
@@ -231,7 +231,7 @@
   }
 
   .prose :where(strong, b) {
-    @apply !font-bold !text-skin-base;
+    @apply font-bold! text-skin-base!;
     color: rgb(var(--color-text-base)) !important;
   }
 

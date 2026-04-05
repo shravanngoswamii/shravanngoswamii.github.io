@@ -27,13 +27,13 @@ export default function QuoteBlock({
       >
         &ldquo;
       </span>
-      <blockquote className="relative z-10 w-full mb-4 !border-l-0 !pl-0">
+      <blockquote className="relative z-10 w-full mb-4 border-l-0! pl-0!">
         <div className="font-serif text-lg sm:text-xl italic text-skin-base/80 leading-relaxed inline-block">
           {children}
         </div>
       </blockquote>
       <figcaption className="relative z-10 flex flex-col items-center gap-1.5 mt-2">
-        <span className="w-8 h-[1px] bg-skin-line/40 mb-1"></span>
+        <span className="w-8 h-px bg-skin-line/40 mb-1"></span>
         <span className="font-mono text-[11px] uppercase tracking-widest text-skin-base/60">
           {author}
         </span>
