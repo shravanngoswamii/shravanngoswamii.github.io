@@ -31,6 +31,7 @@
 
         const releasePreload = () => {
           docEl.classList.remove("preload");
+          docEl.style.backgroundColor = "";
           if (docEl.classList.contains("scroll-smooth")) {
             docEl.style.scrollBehavior = "";
           }
@@ -79,7 +80,6 @@
         if (body) {
           const computedStyles = window.getComputedStyle(body);
           const bgColor = computedStyles.backgroundColor;
-          document.documentElement.style.backgroundColor = bgColor;
           document
             .querySelector("meta[name='theme-color']")
             ?.setAttribute("content", bgColor);
