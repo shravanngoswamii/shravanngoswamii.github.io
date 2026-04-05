@@ -1,6 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+﻿@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="frappe"], [data-theme="macchiato"], [data-theme="mocha"], [data-theme="dark"] *, [data-theme="frappe"] *, [data-theme="macchiato"] *, [data-theme="mocha"] *));
+
+@theme {
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
+  --font-sans: "Geist", "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+
+  --color-textColor: rgb(var(--color-text-base));
+
+  --color-skin-base: rgb(var(--color-text-base));
+  --color-skin-accent: rgb(var(--color-accent));
+  --color-skin-inverted: rgb(var(--color-fill));
+  --color-skin-fill: rgb(var(--color-fill));
+  --color-skin-card: rgb(var(--color-card));
+  --color-skin-card-muted: rgb(var(--color-card-muted));
+  --color-skin-line: rgb(var(--color-border));
+}
 
 @layer base {
   :root,
@@ -82,7 +99,11 @@
   }
 
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base selection:bg-skin-inverted selection:text-skin-inverted relative;
+    @apply relative flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base;
+  }
+
+  body::selection {
+    @apply bg-skin-base text-skin-inverted;
   }
 
   html.theme-transition,
@@ -139,27 +160,92 @@
 
   section,
   footer {
-    @apply mx-auto max-w-6xl px-4 sm:px-6;
+    @apply mx-auto max-w-6xl px-4;
+  }
+
+  @media (min-width: 640px) {
+    section,
+    footer {
+      @apply px-6;
+    }
   }
 
   a {
-    @apply outline-none transition-all duration-200 focus-visible:ring-1 focus-visible:ring-textColor rounded-sm;
+    @apply rounded-sm outline-none transition-all duration-200;
+  }
+
+  a:focus-visible {
+    @apply ring-1 ring-textColor;
   }
 
   svg {
     @apply inline-block h-5 w-5 fill-none text-skin-base transition-all duration-200;
   }
 
+  .prose :where(h1, h2, h3, h4, h5, h6) {
+    @apply font-serif font-normal tracking-tight;
+    color: rgb(var(--color-text-base)) !important;
+  }
+
   .prose {
-    @apply prose-headings:!font-serif prose-headings:!font-normal prose-headings:tracking-tight prose-headings:!text-skin-base 
-    prose-p:!text-skin-base/90 prose-p:!font-sans prose-p:text-sm prose-p:leading-7 prose-p:font-normal prose-p:text-justify
-    prose-a:!text-skin-base prose-a:!no-underline prose-a:border-b prose-a:border-textColor/40 hover:prose-a:border-textColor hover:prose-a:text-skin-base prose-a:transition-all 
-    prose-blockquote:!border-l-2 prose-blockquote:!border-textColor prose-blockquote:!font-serif prose-blockquote:!italic prose-blockquote:text-skin-base/70
-    prose-strong:!text-skin-base prose-strong:font-medium
-    prose-li:!text-skin-base/90 prose-li:!font-sans prose-li:text-sm prose-li:leading-7 prose-li:font-normal prose-li:text-justify
-    prose-ul:!text-skin-base/90 prose-ol:!text-skin-base/90
-    prose-a:break-all sm:prose-a:break-normal
-    prose-code:font-mono prose-code:text-xs prose-code:bg-skin-card-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-code:text-skin-base;
+    --tw-prose-body: rgb(var(--color-text-base));
+    --tw-prose-headings: rgb(var(--color-text-base));
+    --tw-prose-lead: rgb(var(--color-text-base));
+    --tw-prose-links: rgb(var(--color-text-base));
+    --tw-prose-bold: rgb(var(--color-text-base));
+    --tw-prose-captions: rgb(var(--color-text-base));
+    --tw-prose-quotes: rgb(var(--color-text-base));
+    --tw-prose-bullets: rgb(var(--color-text-base));
+    --tw-prose-counters: rgb(var(--color-text-base));
+    --tw-prose-invert-body: rgb(var(--color-text-base));
+    --tw-prose-invert-headings: rgb(var(--color-text-base));
+    --tw-prose-invert-lead: rgb(var(--color-text-base));
+    --tw-prose-invert-links: rgb(var(--color-text-base));
+    --tw-prose-invert-bold: rgb(var(--color-text-base));
+    --tw-prose-invert-captions: rgb(var(--color-text-base));
+    --tw-prose-invert-quotes: rgb(var(--color-text-base));
+    --tw-prose-invert-bullets: rgb(var(--color-text-base));
+    --tw-prose-invert-counters: rgb(var(--color-text-base));
+  }
+
+  .prose p {
+    @apply text-justify font-sans text-sm leading-7 font-normal text-skin-base/90;
+  }
+
+  .prose a {
+    @apply break-all border-b border-textColor/40 text-skin-base no-underline transition-all;
+  }
+
+  .prose a:hover {
+    @apply border-textColor text-skin-base;
+  }
+
+  @media (min-width: 640px) {
+    .prose a {
+      @apply break-normal;
+    }
+  }
+
+  .prose blockquote {
+    @apply border-l-2 border-textColor font-serif italic text-skin-base/70;
+  }
+
+  .prose :where(strong, b) {
+    @apply !font-bold !text-skin-base;
+    color: rgb(var(--color-text-base)) !important;
+  }
+
+  .prose li {
+    @apply text-justify font-sans text-sm leading-7 font-normal text-skin-base/90;
+  }
+
+  .prose ul,
+  .prose ol {
+    @apply text-skin-base/90;
+  }
+
+  .prose code {
+    @apply rounded-sm bg-skin-card-muted px-1.5 py-0.5 font-mono text-xs text-skin-base;
   }
 
   ::-webkit-scrollbar {
@@ -170,7 +256,11 @@
   }
   ::-webkit-scrollbar-thumb {
     background-color: rgba(var(--color-text-base), 0.1);
-    @apply hover:bg-textColor/40 transition-colors;
+    @apply transition-colors;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-textColor/40;
   }
 }
 
@@ -179,7 +269,11 @@
     @apply hidden;
   }
   .focus-outline {
-    @apply outline-none focus-visible:ring-1 focus-visible:ring-textColor;
+    @apply outline-none;
+  }
+
+  .focus-outline:focus-visible {
+    @apply ring-1 ring-textColor;
   }
 
   /* BLUEPRINT CORNER MARKERS */
@@ -244,3 +338,4 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+

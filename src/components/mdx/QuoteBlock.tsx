@@ -27,7 +27,7 @@ export default function QuoteBlock({
       >
         &ldquo;
       </span>
-      <blockquote className="relative z-10 w-full mb-4">
+      <blockquote className="relative z-10 w-full mb-4 !border-l-0 !pl-0">
         <div className="font-serif text-lg sm:text-xl italic text-skin-base/80 leading-relaxed inline-block">
           {children}
         </div>

@@ -65,6 +65,7 @@ const toc = headings.filter(
 }
 
 <style>
+  @reference "../styles/base.css";
   /* Desktop Styles */
   .toc-container {
     display: none; /* Hidden by default */
@@ -91,7 +92,11 @@ const toc = headings.filter(
   }
 
   .toc-item a {
-    @apply text-skin-base/70 hover:text-skin-accent transition-colors block py-1 border-l-2 border-transparent -ml-[1.05rem] pl-4;
+    @apply block border-l-2 border-transparent py-1 pl-4 text-skin-base/70 transition-colors -ml-[1.05rem];
+  }
+
+  .toc-item a:hover {
+    @apply text-skin-accent;
   }
 
   .toc-item.active a {
@@ -104,7 +109,13 @@ const toc = headings.filter(
 
   /* Mobile Inline Styles */
   .toc-mobile-details {
-    @apply bg-skin-card/50 border border-skin-line/20 rounded-lg mb-8 lg:hidden;
+    @apply mb-8 rounded-lg border border-skin-line/20 bg-skin-card/50;
+  }
+
+  @media (min-width: 1024px) {
+    .toc-mobile-details {
+      @apply hidden;
+    }
   }
 
   .toc-mobile-summary {
@@ -132,7 +143,11 @@ const toc = headings.filter(
   }
 
   .toc-item-mobile a {
-    @apply block py-1.5 text-skin-base/80 hover:text-skin-accent transition-colors;
+    @apply block py-1.5 text-skin-base/80 transition-colors;
+  }
+
+  .toc-item-mobile a:hover {
+    @apply text-skin-accent;
   }
 
   .toc-item-mobile.active a {

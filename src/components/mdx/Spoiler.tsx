@@ -20,12 +20,12 @@ export default function Spoiler({
       data-component="spoiler"
     >
       <input type="checkbox" id={id} className="peer sr-only" />
-      <div className="p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-0 peer-checked:select-auto transition-all duration-500">
+      <div className="p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-none peer-checked:select-auto transition-all duration-500">
         {children}
       </div>
       <label
         htmlFor={id}
-        className="absolute inset-0 flex items-center justify-center bg-skin-fill/60 backdrop-blur-sm cursor-pointer peer-checked:opacity-0 peer-checked:pointer-events-none transition-all duration-500"
+        className="absolute inset-0 flex items-center justify-center bg-skin-fill/60 cursor-pointer peer-checked:opacity-0 peer-checked:pointer-events-none peer-checked:bg-transparent peer-checked:backdrop-blur-none transition-all duration-500"
       >
         <span className="flex items-center gap-2 px-5 py-2.5 border border-skin-line/40 rounded-sm bg-skin-fill hover:bg-skin-card-muted transition-colors font-mono text-[11px] uppercase tracking-widest text-skin-base/70 hover:text-skin-base">
           <svg

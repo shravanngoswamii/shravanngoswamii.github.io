@@ -29,13 +29,13 @@ const shelfItems = shelfRaw
 >
   <Header activeNav="resume" />
 
-  <div class="mx-auto w-full max-w-screen-xl px-4 pt-28 sm:pt-24 pb-12">
+  <div class="mx-auto w-full max-w-screen-xl px-4 pt-28 sm:pt-24 pb-12 lg:max-w-none lg:px-0">
     <div
-      class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,40rem)_1fr] gap-6"
+      class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_40rem_minmax(0,1fr)] lg:gap-0"
     >
       {/* Left Column — Shelf Cards (desktop only) */}
-      <aside class="hidden lg:block">
-        <div class="sticky top-24 mt-32 w-[240px] mx-auto">
+      <aside class="hidden lg:flex lg:justify-center">
+        <div class="sticky top-24 mt-32 w-[240px]">
           <span
             class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3"
             >Cool Things I See</span
@@ -80,8 +80,8 @@ const shelfItems = shelfRaw
       </main>
 
       {/* Right Column — Recent Blogs (desktop only) */}
-      <aside class="hidden lg:block">
-        <div class="sticky top-24 mt-32 w-[240px] mx-auto">
+      <aside class="hidden lg:flex lg:justify-center">
+        <div class="sticky top-24 mt-32 w-[240px]">
           <span
             class="block font-mono text-[9px] uppercase tracking-widest text-skin-base/30 mb-3"
             >Recent Thoughts</span

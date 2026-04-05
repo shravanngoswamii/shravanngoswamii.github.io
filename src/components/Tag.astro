@@ -29,10 +29,24 @@ const { tag, size = "sm" } = Astro.props;
 </li>
 
 <style>
+  @reference "../styles/base.css";
   a {
-    @apply relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1;
+    @apply relative underline decoration-dashed;
   }
   a svg {
-    @apply -mr-1 h-6 w-6 scale-95 text-skin-base opacity-80 group-hover:text-skin-accent;
+    @apply -mr-1 h-6 w-6 scale-95 text-skin-base opacity-80;
+  }
+
+  a:hover {
+    @apply -top-0.5 text-skin-accent;
+  }
+
+  a:focus-visible {
+    @apply p-1;
+  }
+
+  .group:hover a svg,
+  .group:focus-within a svg {
+    @apply text-skin-accent;
   }
 </style>

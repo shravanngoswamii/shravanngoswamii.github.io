@@ -429,12 +429,12 @@ const ogUrl = new URL(
     </div>
   </div>
 
-  <div class="mx-auto w-full max-w-screen-xl px-4">
+  <div class="mx-auto w-full max-w-screen-xl px-4 lg:max-w-none lg:px-0">
     <div
-      class="grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,48rem)_1fr] gap-8"
+      class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(auto,48rem)_minmax(0,1fr)] gap-8"
     >
-      <div class="hidden lg:block">
-        <div class="relative mt-8 flex flex-col items-center" id="left-sidebar">
+      <aside class="hidden lg:flex lg:justify-center">
+        <div class="relative mt-8 flex w-[280px] flex-col items-center" id="left-sidebar">
           <div id="sidebar-quotes" class="w-full"></div>
           {
             readMorePosts.length > 0 && (
@@ -492,7 +492,7 @@ const ogUrl = new URL(
             )
           }
         </div>
-      </div>
+      </aside>
 
       <div class="flex flex-col">
         <main id="main-content">
@@ -594,11 +594,16 @@ const ogUrl = new URL(
 </Layout>
 
 <style>
+  @reference "../styles/base.css";
   main {
-    @apply w-full max-w-3xl pb-12 mx-auto lg:mx-0;
+    @apply mx-auto w-full max-w-3xl pb-12;
   }
 
   @media (min-width: 1024px) {
+    main {
+      @apply mx-0;
+    }
+
     :global(figure.not-prose[data-position="left"]),
     :global(div.not-prose[data-position="left"]) {
       height: 0 !important;

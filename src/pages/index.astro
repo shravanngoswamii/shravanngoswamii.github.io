@@ -1,4 +1,4 @@
----
+﻿---
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -29,7 +29,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
 
   <main id="main-content" class="px-4 sm:px-6">
     <section
-      class="min-h-[85svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden"
+      class="min-h-[90svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden"
     >
       <div class="absolute inset-0 -z-10 bg-skin-fill/50">
         <HeroBackground client:load />
@@ -76,7 +76,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
         </div>
 
         <h1
-          class="flex flex-col items-center justify-center font-serif text-6xl sm:text-8xl lg:text-9xl leading-[0.85] text-skin-base tracking-tighter"
+          class="flex flex-col items-center justify-center gap-2 sm:gap-3 lg:gap-4 font-serif text-6xl sm:text-8xl lg:text-9xl leading-[0.9] text-skin-base tracking-tighter"
         >
           <span class="relative">
             SHRAVAN
@@ -102,7 +102,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
         <div class="mt-10 flex flex-col sm:flex-row items-center gap-6">
           <LinkButton
             href={withBase("/projects")}
-            className="px-8 py-3 bg-skin-inverted text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm"
+            className="px-8 py-3 bg-skin-base text-skin-inverted hover:bg-skin-accent hover:text-skin-inverted transition-colors font-mono text-xs uppercase tracking-widest rounded-sm"
           >
             View Projects
           </LinkButton>
@@ -112,7 +112,8 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
             rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-6 py-3 border border-skin-line/40 hover:border-skin-base/60 text-skin-base/70 hover:text-skin-base transition-all font-mono text-xs uppercase tracking-widest rounded-sm"
           >
-            ❤️ Sponsor
+            <span class="text-red-500" aria-hidden="true">&#10084;</span>
+            <span>Sponsor</span>
           </a>
           <div class="h-[1px] w-12 bg-skin-line/30 hidden sm:block"></div>
           <div class="scale-90 opacity-70 hover:opacity-100 transition-opacity">
@@ -279,17 +280,17 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
             </div>
 
             <div class="flex flex-col gap-4 mt-16">
-              <LinkButton
+              <a
                 href={withBase("/resume")}
-                className="flex items-center justify-between w-full px-5 py-4 border border-skin-line/40 hover:bg-skin-inverted hover:text-skin-inverted hover:border-skin-inverted transition-all duration-300 group"
+                class="group flex w-full items-center gap-6 px-5 py-4 border border-skin-line/40 hover:bg-skin-base hover:text-skin-inverted hover:border-skin-base transition-all duration-300"
               >
                 <span class="text-xs font-mono uppercase tracking-widest"
                   >View CV</span
                 >
                 <TbArrowDown
-                  className="w-4 h-4 group-hover:translate-y-1 transition-transform"
+                  className="ml-auto h-4 w-4 group-hover:translate-y-1 transition-transform"
                 />
-              </LinkButton>
+              </a>
 
               <div class="flex justify-center mt-2">
                 <a
@@ -321,7 +322,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
           <a
             href={withBase("/shelf/")}
             class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 hover:text-skin-base transition-colors"
-            >View all →</a
+            >View all &rarr;</a
           >
         </div>
       </ScrollReveal>
@@ -354,3 +355,4 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
   <ClimbingBackToTop />
   <Footer />
 </Layout>
+

@@ -142,7 +142,7 @@ import "@pagefind/default-ui/css/ui.css";
     overflow: hidden;
   }
   #cactus__search .pagefind-ui__search-clear:focus {
-    outline: 1px solid theme("colors.accent-2");
+    outline: 1px solid rgb(var(--color-accent));
   }
   #cactus__search .pagefind-ui__search-clear::before {
     content: "";
@@ -150,7 +150,7 @@ import "@pagefind/default-ui/css/ui.css";
       center / 60% no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12'%3E%3C/path%3E%3C/svg%3E")
       center / 60% no-repeat;
-    background-color: theme("colors.accent");
+    background-color: rgb(var(--color-accent));
     display: block;
     width: 100%;
     height: 100%;
@@ -167,8 +167,8 @@ import "@pagefind/default-ui/css/ui.css";
     background-image: linear-gradient(
       transparent,
       transparent 5px,
-      theme("colors.textColor") 5px,
-      theme("colors.textColor")
+      rgb(var(--color-text-base)) 5px,
+      rgb(var(--color-text-base))
     );
   }
 
@@ -177,13 +177,13 @@ import "@pagefind/default-ui/css/ui.css";
     background-image: linear-gradient(
       transparent,
       transparent 4px,
-      theme("colors.link") 4px,
-      theme("colors.link")
+      rgb(var(--color-accent)) 4px,
+      rgb(var(--color-accent))
     );
   }
 
   #cactus__search mark {
-    color: theme("colors.quote");
+    color: rgb(var(--color-accent));
     background-color: transparent;
     font-weight: 600;
   }
@@ -194,15 +194,15 @@ import "@pagefind/default-ui/css/ui.css";
 
 <style>
   #cactus__search {
-    --pagefind-ui-primary: theme("colors.accent");
-    --pagefind-ui-text: theme("colors.textColor");
-    --pagefind-ui-background: theme("colors.bgColor");
-    --pagefind-ui-border: theme("colors.zinc.400");
+    --pagefind-ui-primary: rgb(var(--color-accent));
+    --pagefind-ui-text: rgb(var(--color-text-base));
+    --pagefind-ui-background: rgb(var(--color-fill));
+    --pagefind-ui-border: rgba(var(--color-border), 0.8);
     --pagefind-ui-border-width: 1px;
   }
   
   #cactus__search .pagefind-ui__search-input:focus {
     outline: none;
-    border-color: theme("colors.accent-2");
+    border-color: rgb(var(--color-accent));
   }
 </style>

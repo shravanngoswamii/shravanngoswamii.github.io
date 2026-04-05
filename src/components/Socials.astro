@@ -29,10 +29,21 @@ const { centered = false } = Astro.props;
 </div>
 
 <style>
+  @reference "../styles/base.css";
   .social-icons {
     @apply flex-wrap justify-center gap-1;
   }
   .link-button {
-    @apply p-2 hover:rotate-6 sm:p-1;
+    @apply p-2;
+  }
+
+  @media (min-width: 640px) {
+    .link-button {
+      @apply p-1;
+    }
+  }
+
+  .link-button:hover {
+    @apply rotate-6;
   }
 </style>

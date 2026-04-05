@@ -45,8 +45,15 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
 </nav>
 
 <style>
+  @reference "../styles/base.css";
   .breadcrumb {
-    @apply mx-auto mb-1 mt-32 sm:mt-28 w-full max-w-4xl px-4 sm:px-6;
+    @apply mx-auto mb-1 mt-32 w-full max-w-4xl px-4;
+  }
+
+  @media (min-width: 640px) {
+    .breadcrumb {
+      @apply mt-28 px-6;
+    }
   }
   .breadcrumb ul li {
     @apply inline;
@@ -58,6 +65,10 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
     @apply opacity-70;
   }
   .breadcrumb ul li:not(:last-child) a {
-    @apply hover:opacity-100;
+    @apply opacity-70;
+  }
+
+  .breadcrumb ul li:not(:last-child) a:hover {
+    @apply opacity-100;
   }
 </style>

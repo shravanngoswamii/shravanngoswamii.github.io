@@ -1,4 +1,4 @@
----
+﻿---
 import { SITE } from "@config";
 import Search from "./Search.astro";
 import { TbMoon, TbSun, TbMenu2, TbX } from "react-icons/tb";
@@ -39,7 +39,7 @@ const { activeNav } = Astro.props;
       <!-- LOGO -->
       <a
         href={withBase("/")}
-        class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-inverted hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10"
+        class="flex items-center justify-center w-10 h-10 rounded-full bg-skin-card text-skin-base font-serif font-bold text-lg hover:bg-skin-base hover:text-skin-inverted transition-colors duration-300 shadow-sm border border-skin-line/10"
       >
         SG
       </a>
@@ -54,35 +54,35 @@ const { activeNav } = Astro.props;
           <li>
             <a
               href={withBase("/blog/")}
-              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
+              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "blog" ? "bg-skin-base text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
               >Journal</a
             >
           </li>
           <li>
             <a
               href={withBase("/shelf/")}
-              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "shelf" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
+              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "shelf" ? "bg-skin-base text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
               >Shelf</a
             >
           </li>
           <li>
             <a
               href={withBase("/projects/")}
-              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
+              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "projects" ? "bg-skin-base text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
               >Work</a
             >
           </li>
           <li>
             <a
               href={withBase("/publications/")}
-              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
+              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "publications" ? "bg-skin-base text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
               >Research</a
             >
           </li>
           <li>
             <a
               href={withBase("/resume/")}
-              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-inverted text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
+              class={`px-4 py-2 rounded-full transition-all duration-300 ${activeNav === "resume" ? "bg-skin-base text-skin-inverted shadow-md" : "text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted"}`}
               >CV</a
             >
           </li>
@@ -95,7 +95,7 @@ const { activeNav } = Astro.props;
       <div class="flex items-center gap-1">
         <button
           id="search-btn-d"
-          class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all"
+          class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all"
           aria-label="Search"
         >
           <svg
@@ -114,7 +114,7 @@ const { activeNav } = Astro.props;
           SITE.lightAndDarkMode && (
             <button
               id="theme-btn-d"
-              class="flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all"
+              class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full text-skin-base/60 hover:text-skin-base hover:bg-skin-card-muted transition-all"
               aria-label="Toggle theme"
             >
               <>
@@ -150,7 +150,7 @@ const { activeNav } = Astro.props;
           SITE.lightAndDarkMode && (
             <button
               id="theme-btn-m"
-              class="w-10 h-10 flex items-center justify-center text-skin-base/70 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-card"
+              class="cursor-pointer w-10 h-10 flex items-center justify-center text-skin-base/70 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-card"
               aria-label="Toggle theme"
             >
               <TbMoon id="moon-svg-m" className="w-5 h-5" />
@@ -187,7 +187,7 @@ const { activeNav } = Astro.props;
               >
               <button
                 id="search-btn-m"
-                class="w-8 h-8 flex items-center justify-center text-skin-base/50 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-fill/50"
+                class="cursor-pointer w-8 h-8 flex items-center justify-center text-skin-base/50 hover:text-skin-base transition-colors rounded-lg hover:bg-skin-fill/50"
                 aria-label="Search"
               >
                 <svg
@@ -279,18 +279,7 @@ const { activeNav } = Astro.props;
       html.setAttribute("data-theme", nextTheme);
       localStorage.setItem("theme", nextTheme);
 
-      // Force WebKit/Safari to repaint ALL elements.
-      // Safari caches composited layers and skips repainting off-screen
-      // elements when CSS custom properties change. Cycling display:none
-      // on body forces a full render-tree teardown and rebuild.
-      // This runs synchronously so the browser never renders "none".
       if (document.body) {
-        const sx = window.scrollX, sy = window.scrollY;
-        document.body.style.display = "none";
-        void document.body.offsetHeight;
-        document.body.style.display = "";
-        window.scrollTo(sx, sy);
-
         const bgColor = window.getComputedStyle(document.body).backgroundColor;
         document
           .querySelector("meta[name='theme-color']")
@@ -454,3 +443,4 @@ const { activeNav } = Astro.props;
   setupMobileDropdown();
   document.addEventListener("astro:after-swap", setupMobileDropdown);
 </script>
+

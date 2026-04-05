@@ -1,4 +1,4 @@
----
+﻿---
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -12,7 +12,7 @@ import { TbArrowRight } from "react-icons/tb";
 
 <Layout
   title={`About | ${SITE.title}`}
-  description="Learn more about Shravan Goswami — software developer, open-source contributor, and the person behind this blog."
+  description="Learn more about Shravan Goswami &mdash; software developer, open-source contributor, and the person behind this blog."
   ogImage="/about/og.png"
 >
   <Header />
@@ -89,7 +89,7 @@ import { TbArrowRight } from "react-icons/tb";
             >
               <a
                 href={withBase("/resume")}
-                class="inline-flex items-center gap-2 px-4 py-2 bg-skin-inverted text-skin-inverted hover:bg-skin-accent transition-colors font-mono text-[10px] uppercase tracking-widest rounded-sm"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-skin-base text-skin-inverted hover:bg-skin-accent transition-colors font-mono text-[10px] uppercase tracking-widest rounded-sm"
               >
                 Resume
               </a>
@@ -188,7 +188,7 @@ import { TbArrowRight } from "react-icons/tb";
               >
             </div>
             <p class="text-sm text-skin-base/50 leading-relaxed">
-              Ideas that refuse to sit still — meaning, ethics, consciousness,
+              Ideas that refuse to sit still &mdash; meaning, ethics, consciousness,
               and the human condition.
             </p>
             <span
@@ -261,3 +261,4 @@ import { TbArrowRight } from "react-icons/tb";
   <ClimbingBackToTop />
   <Footer />
 </Layout>
+
