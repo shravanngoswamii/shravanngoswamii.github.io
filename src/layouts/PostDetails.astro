@@ -874,11 +874,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
   }
   attachCopyButtons();
 
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
-  );
-
   /** Hide "Table of Contents" heading if it exists */
   function hideTOCHeading() {
     const headings = document.querySelectorAll("h2");

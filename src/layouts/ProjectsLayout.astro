@@ -5,7 +5,6 @@ import Header from "@components/Header.astro";
 import Layout from "./Layout.astro";
 import { TbBrandGithub, TbExternalLink } from "react-icons/tb";
 import ClimbingBackToTop from "@components/ClimbingBackToTop.astro";
-import ScrollReveal from "@components/ScrollReveal";
 import { withBase } from "@utils/base";
 
 export interface Project {
@@ -40,7 +39,7 @@ const { frontmatter } = Astro.props;
   <main id="main-content" class="px-4 sm:px-6">
     {/* ===== HEADER ===== */}
     <section class="max-w-4xl mx-auto pt-24 sm:pt-20 pb-10">
-      <ScrollReveal client:load>
+      <div>
         <span
           class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-4 block"
           >Things I've Built</span
@@ -54,15 +53,15 @@ const { frontmatter } = Astro.props;
           Open-source tools, research software, and side projects — from
           probabilistic programming to hackathon prototypes.
         </p>
-      </ScrollReveal>
+      </div>
     </section>
 
     {/* ===== PROJECT LIST ===== */}
     <section class="max-w-4xl mx-auto pb-12">
       <div class="flex flex-col gap-5">
         {
-          frontmatter.projects.map((project, i) => (
-            <ScrollReveal client:load delay={0.04 * i}>
+          frontmatter.projects.map((project) => (
+            <div>
               <article class="group flex flex-col sm:flex-row border border-skin-line/15 rounded-sm hover:border-skin-line/35 transition-all duration-300">
                 <div class="sm:w-48 md:w-56 shrink-0 p-5 sm:p-6 flex items-center justify-center bg-skin-fill/20 border-b sm:border-b-0 sm:border-r border-skin-line/10">
                   {project.imageSrcLight && project.imageSrcDark ? (
@@ -140,7 +139,7 @@ const { frontmatter } = Astro.props;
                   </div>
                 </div>
               </article>
-            </ScrollReveal>
+            </div>
           ))
         }
       </div>

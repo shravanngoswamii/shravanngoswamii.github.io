@@ -812,10 +812,6 @@ const ogUrl = new URL(
   }
   attachCopyButtons();
 
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
-  );
-
   function hideTOCHeading() {
     const headings = document.querySelectorAll("h2");
     headings.forEach((heading) => {
