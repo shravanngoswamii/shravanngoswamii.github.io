@@ -1,66 +1,11 @@
-<!DOCTYPE html><html lang="en" class="false"> <head><script>
-      (function () {
-        const docEl = document.documentElement;
-        const navEntry = performance.getEntriesByType("navigation")[0];
-        const isReload = navEntry?.type === "reload";
-
-        const savedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        const isDarkTheme = savedTheme ? savedTheme === "dark" : prefersDark;
-
-        const activeTheme = isDarkTheme ? "dark" : "light";
-        const fill = isDarkTheme ? "10, 10, 10" : "248, 248, 246";
-
-        docEl.setAttribute("data-theme", activeTheme);
-
-        // Paint and keep a theme-matched fallback background to avoid white flashes.
-        docEl.style.backgroundColor = `rgb(${fill})`;
-
-        if (isReload) {
-          docEl.classList.add("preload");
-        }
-
-        if (docEl.classList.contains("scroll-smooth")) {
-          docEl.style.scrollBehavior = "auto";
-        }
-
-        const releasePreload = () => {
-          docEl.classList.remove("preload");
-          if (docEl.classList.contains("scroll-smooth")) {
-            docEl.style.scrollBehavior = "";
-          }
-        };
-
-        window.addEventListener(
-          "pageshow",
-          () => requestAnimationFrame(releasePreload),
-          { once: true },
-        );
-
-        // Important for Astro view transitions where pageshow doesn't fire.
-        document.addEventListener("astro:after-swap", releasePreload);
-        document.addEventListener("astro:page-load", releasePreload);
-      })();
-    </script><style>
-      html,
-      body {
-        background-color: rgb(248, 248, 246);
-      }
-
-      html[data-theme="dark"],
-      html[data-theme="dark"] body {
-        background-color: rgb(10, 10, 10);
-      }
-    </style><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
+<!DOCTYPE html><html lang="en" class="false"> <head><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(...args) {
         window.dataLayer.push(args);
       }
       gtag("js", new Date());
       gtag("config", "G-ZXC7NG6S55");
-    </script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://shravangoswami.com/publications/"><meta name="generator" content="Astro v6.1.3"><!-- General Meta Tags --><title>Publications | Shravan Goswami</title><meta name="title" content="Publications | Shravan Goswami"><meta name="description" content="Research publications and academic work by Shravan Goswami."><meta name="author" content="Shravan Goswami"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Shravan Goswami" href="/rss.xml"><meta property="og:title" content="Publications | Shravan Goswami"><meta property="og:description" content="Research publications and academic work by Shravan Goswami."><meta property="og:url" content="https://shravangoswami.com/publications/"><meta property="og:image" content="https://shravangoswami.com/publications/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:type" content="website"><meta property="og:site_name" content="Shravan Goswami"><meta property="og:locale" content="en"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://shravangoswami.com/publications/"><meta name="twitter:title" content="Publications | Shravan Goswami"><meta name="twitter:description" content="Research publications and academic work by Shravan Goswami."><meta name="twitter:image" content="https://shravangoswami.com/publications/og.png"><meta name="twitter:site" content="@shravangoswamii"><meta name="twitter:creator" content="@shravangoswamii"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shravan Goswami","url":"https://shravangoswami.com/","description":"Software developer and open-source contributor writing about tech, cinema, philosophy, and the things that make us think.","author":[{"@type":"Person","name":"Shravan Goswami","url":"https://shravangoswami.com/"}]}</script><!-- LUXURY FONTS: Playfair Display (Serif), Inter (Sans), JetBrains Mono (Code) --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+    </script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://shravangoswami.com/publications/"><meta name="generator" content="Astro v6.1.3"><!-- General Meta Tags --><title>Publications | Shravan Goswami</title><meta name="title" content="Publications | Shravan Goswami"><meta name="description" content="Research publications and academic work by Shravan Goswami."><meta name="author" content="Shravan Goswami"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Shravan Goswami" href="/rss.xml"><meta property="og:title" content="Publications | Shravan Goswami"><meta property="og:description" content="Research publications and academic work by Shravan Goswami."><meta property="og:url" content="https://shravangoswami.com/publications/"><meta property="og:image" content="https://shravangoswami.com/publications/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:type" content="website"><meta property="og:site_name" content="Shravan Goswami"><meta property="og:locale" content="en"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://shravangoswami.com/publications/"><meta name="twitter:title" content="Publications | Shravan Goswami"><meta name="twitter:description" content="Research publications and academic work by Shravan Goswami."><meta name="twitter:image" content="https://shravangoswami.com/publications/og.png"><meta name="twitter:site" content="@shravangoswamii"><meta name="twitter:creator" content="@shravangoswamii"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shravan Goswami","url":"https://shravangoswami.com/","description":"Software developer and open-source contributor writing about tech, cinema, philosophy, and the things that make us think.","author":[{"@type":"Person","name":"Shravan Goswami","url":"https://shravangoswami.com/"}]}</script><!-- LUXURY FONTS: Playfair Display (Serif), Inter (Sans), JetBrains Mono (Code) --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script data-cfasync="false">
       const primaryColorScheme = "";
 
       const currentTheme = localStorage.getItem("theme");
@@ -76,14 +21,12 @@
       let themeValue = getPreferTheme();
 
       function reflectPreference(theme) {
-        const docEl = document.firstElementChild;
-        docEl.setAttribute("data-theme", theme);
+        document.firstElementChild.setAttribute("data-theme", theme);
 
         const body = document.body;
         if (body) {
           const computedStyles = window.getComputedStyle(body);
           const bgColor = computedStyles.backgroundColor;
-          docEl.style.backgroundColor = bgColor;
           document
             .querySelector("meta[name='theme-color']")
             ?.setAttribute("content", bgColor);
@@ -209,7 +152,7 @@ My Companion Blog Post
     );
   })();
 </script> <footer class="w-full mt-auto"> <div class="w-full h-[1px] bg-skin-line/30 mb-12"></div> <div class="flex flex-col items-center py-12 gap-8"> <!-- Newsletter Subscribe --> <div class="flex flex-col items-center gap-3 text-center max-w-xs w-full"> <span class="text-[10px] font-mono uppercase tracking-[0.3em] text-skin-base/40">Stay in the loop</span> <form class="flex w-full gap-2" id="footer-subscribe"> <input type="email" name="email" placeholder="your@email.com" required class="flex-1 min-w-0 px-3 py-1.5 rounded-sm text-xs font-mono bg-skin-fill border border-skin-line/40 text-skin-base placeholder:text-skin-base/30 focus:outline-none focus:border-skin-accent transition-colors"> <button type="submit" class="px-3 py-1.5 rounded-sm text-[10px] font-mono uppercase tracking-wider text-skin-accent bg-skin-accent/10 hover:bg-skin-accent/20 backdrop-blur-sm transition-all whitespace-nowrap">Subscribe</button> </form> </div> <div class="w-16 h-[1px] bg-skin-line/10"></div> <!-- Signature Block --> <div class="flex flex-col items-center gap-2 text-center"> <span class="text-xs font-mono uppercase tracking-[0.3em] text-skin-base/40">Yours Truly,</span> <span class="font-serif text-3xl italic text-skin-base tracking-tight">Shravan Goswami</span> <div class="w-16 h-[1px] bg-skin-line/20 mt-2"></div> </div> <!-- Social Links --> <div class="opacity-60 hover:opacity-100 transition-opacity scale-90"> <div class="social-icons flex astro-upu6fzxr"> <a href="https://github.com/shravanngoswamii" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title=" Shravan Goswami on Github"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg> <span class="sr-only astro-upu6fzxr"> Shravan Goswami on Github</span> </a><a href="https://www.linkedin.com/in/shravangoswami/" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami on LinkedIn"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 11v5"></path><path d="M8 8v.01"></path><path d="M12 16v-5"></path><path d="M16 16v-3a2 2 0 1 0 -4 0"></path><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami on LinkedIn</span> </a><a href="mailto:contact@shravangoswami.com" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Send an email to Shravan Goswami"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path><path d="M3 7l9 6l9 -6"></path></svg> <span class="sr-only astro-upu6fzxr">Send an email to Shravan Goswami</span> </a><a href="https://x.com/shravangoswamii" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami on Twitter"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c0 -.249 1.51 -2.772 1.818 -4.013z"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami on Twitter</span> </a><a href="/resume" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami's Resume"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path><path d="M9 17h6"></path><path d="M9 13h6"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami&#39;s Resume</span> </a><a href="/projects" class="group inline-block hover:text-skin-accent link-button astro-upu6fzxr" title="Shravan Goswami's Projects"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler astro-upu6fzxr" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 17l9 5l9 -5v-3l-9 5l-9 -5v-3l9 5l9 -5v-3l-9 5l-9 -5l9 -5l5.418 3.01"></path></svg> <span class="sr-only astro-upu6fzxr">Shravan Goswami&#39;s Projects</span> </a> </div> </div> <!-- Footer Meta --> <div class="flex flex-col items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-skin-base/30"> <a href="/humans.txt" class="hover:text-skin-base transition-colors">
-&copy; 2026 </a> </div> </div> </footer> <script type="module">function n(){const e=document.getElementById("footer-subscribe");!e||e.dataset.bound||(e.dataset.bound="1",e.addEventListener("submit",o=>{o.preventDefault();const t=new FormData(e).get("email");t&&window.open(`https://shravangoswami.substack.com/subscribe?freeSignupEmail=${encodeURIComponent(t)}`,"_blank","noopener")}))}n();document.addEventListener("astro:after-swap",n);</script>  <script type="module">function r(){const e=document.documentElement.getAttribute("data-theme");if(e)return e;const s=localStorage.getItem("theme");return s&&s!=="auto"?s:window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}function u(){const e=document.querySelectorAll(".giscus[data-giscus-mapping]");e.length!==0&&e.forEach(s=>{if(!(s instanceof HTMLElement)||s.dataset.giscusMounted==="1")return;s.dataset.giscusMounted="1",s.innerHTML="";const a=s.dataset.giscusMapping||"url",t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","shravanngoswamii/comments"),t.setAttribute("data-repo-id","R_kgDOQ90dlg"),t.setAttribute("data-category","Announcements"),t.setAttribute("data-category-id","DIC_kwDOQ90dls4C1NXa"),t.setAttribute("data-mapping",a),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme",r()),t.setAttribute("data-lang","en"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,s.appendChild(t)})}function n(){const e=document.querySelector("iframe.giscus-frame");e instanceof HTMLIFrameElement&&e.contentWindow?.postMessage({giscus:{setConfig:{theme:r()}}},"https://giscus.app")}function i(){u(),setTimeout(n,100)}function o(){const e=window;e.__giscusGlobalInitAttached||(e.__giscusGlobalInitAttached=!0,e.__giscusThemeObserverAttached||(new MutationObserver(a=>{for(const t of a)t.type==="attributes"&&t.attributeName==="data-theme"&&n()}).observe(document.documentElement,{attributes:!0,attributeFilter:["data-theme"]}),e.__giscusThemeObserverAttached=!0),document.addEventListener("astro:page-load",i),document.addEventListener("astro:after-swap",i),i())}o();</script> <script>
+&copy; 2026 </a> </div> </div> </footer> <script type="module">function n(){const e=document.getElementById("footer-subscribe");!e||e.dataset.bound||(e.dataset.bound="1",e.addEventListener("submit",o=>{o.preventDefault();const t=new FormData(e).get("email");t&&window.open(`https://shravangoswami.substack.com/subscribe?freeSignupEmail=${encodeURIComponent(t)}`,"_blank","noopener")}))}n();document.addEventListener("astro:after-swap",n);</script>  <script>
       (function () {
         let bar = document.getElementById("nav-progress");
         let raf;
