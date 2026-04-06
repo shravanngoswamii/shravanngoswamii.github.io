@@ -66,6 +66,59 @@ const structuredData = isArticle
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
+    <script is:inline>
+      (function () {
+        const docEl = document.documentElement;
+
+        // On reload, disable smooth scrolling so the browser restores
+        // scroll position instantly instead of visibly animating from top.
+        if (docEl.classList.contains("scroll-smooth")) {
+          docEl.style.scrollBehavior = "auto";
+        }
+
+        // Hide page until scroll position is restored to avoid
+        // flashing the hero/top of the page on mid-page reloads.
+        const nav = performance.getEntriesByType("navigation")[0];
+        if (nav && nav.type === "reload") {
+          docEl.classList.add("preload");
+        }
+
+        function release() {
+          docEl.classList.remove("preload");
+          if (docEl.classList.contains("scroll-smooth")) {
+            docEl.style.scrollBehavior = "";
+          }
+        }
+
+        window.addEventListener(
+          "pageshow",
+          function () { requestAnimationFrame(release); },
+          { once: true },
+        );
+        document.addEventListener("astro:after-swap", release);
+        document.addEventListener("astro:page-load", release);
+      })();
+    </script>
+
+    <style is:inline>
+      html.preload { opacity: 0; }
+
+      /* Critical header styles — prevents FOUC before component CSS loads */
+      #main-header, #mobile-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 40;
+      }
+      #mobile-header {
+        z-index: 50;
+        background-color: rgb(var(--color-fill) / 0.6);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+      }
+    </style>
+
     <!-- Google tag (gtag.js) -->
     <script
       is:inline
