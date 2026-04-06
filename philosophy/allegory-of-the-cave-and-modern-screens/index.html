@@ -1,25 +1,22 @@
 <!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><script>
       (function () {
-        if (window.__firstPaintGuardInitialized) return;
-        window.__firstPaintGuardInitialized = true;
-
         const docEl = document.documentElement;
         const navEntry = performance.getEntriesByType("navigation")[0];
         const isReload = navEntry?.type === "reload";
 
         const savedTheme = localStorage.getItem("theme");
-        const darkThemes = ["dark", "frappe", "macchiato", "mocha"];
         const prefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)",
         ).matches;
-        const isDarkTheme = savedTheme
-          ? darkThemes.includes(savedTheme)
-          : prefersDark;
+        const isDarkTheme = savedTheme ? savedTheme === "dark" : prefersDark;
 
-        // Paint an immediate theme-matched background to avoid light/dark flash.
-        docEl.style.backgroundColor = isDarkTheme
-          ? "rgb(10, 10, 10)"
-          : "rgb(248, 248, 246)";
+        const activeTheme = isDarkTheme ? "dark" : "light";
+        const fill = isDarkTheme ? "10, 10, 10" : "248, 248, 246";
+
+        docEl.setAttribute("data-theme", activeTheme);
+
+        // Paint and keep a theme-matched fallback background to avoid white flashes.
+        docEl.style.backgroundColor = `rgb(${fill})`;
 
         if (isReload) {
           docEl.classList.add("preload");
@@ -31,7 +28,6 @@
 
         const releasePreload = () => {
           docEl.classList.remove("preload");
-          docEl.style.backgroundColor = "";
           if (docEl.classList.contains("scroll-smooth")) {
             docEl.style.scrollBehavior = "";
           }
@@ -48,8 +44,14 @@
         document.addEventListener("astro:page-load", releasePreload);
       })();
     </script><style>
-      html.preload body {
-        opacity: 0;
+      html,
+      body {
+        background-color: rgb(248, 248, 246);
+      }
+
+      html[data-theme="dark"],
+      html[data-theme="dark"] body {
+        background-color: rgb(10, 10, 10);
       }
     </style><!-- Google tag (gtag.js) --><script src="https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -74,12 +76,14 @@
       let themeValue = getPreferTheme();
 
       function reflectPreference(theme) {
-        document.firstElementChild.setAttribute("data-theme", theme);
+        const docEl = document.firstElementChild;
+        docEl.setAttribute("data-theme", theme);
 
         const body = document.body;
         if (body) {
           const computedStyles = window.getComputedStyle(body);
           const bgColor = computedStyles.backgroundColor;
+          docEl.style.backgroundColor = bgColor;
           document
             .querySelector("meta[name='theme-color']")
             ?.setAttribute("content", bgColor);
@@ -107,14 +111,14 @@
             reflectPreference(themeValue);
           }
         });
-    </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><link rel="stylesheet" href="/_astro/Footer.CT1BK6-g.css">
+    </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><link rel="stylesheet" href="/_astro/Footer.BE6hmA8V.css">
 <style>@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-scale-x:1;--tw-scale-y:1;--tw-scale-z:1}}}a:where(.astro-blwjyjpt){text-decoration-line:underline;text-decoration-style:dashed;position:relative}a:where(.astro-blwjyjpt) svg:where(.astro-blwjyjpt){margin-right:calc(var(--spacing,.25rem) * -1);height:calc(var(--spacing,.25rem) * 6);width:calc(var(--spacing,.25rem) * 6);--tw-scale-x:95%;--tw-scale-y:95%;--tw-scale-z:95%;scale:var(--tw-scale-x) var(--tw-scale-y);color:var(--color-skin-base,rgb(var(--color-text-base)));opacity:.8}a:where(.astro-blwjyjpt):hover{top:calc(var(--spacing,.25rem) * -.5);color:var(--color-skin-accent,rgb(var(--color-accent)))}a:where(.astro-blwjyjpt):focus-visible{padding:calc(var(--spacing,.25rem) * 1)}.group:where(.astro-blwjyjpt):hover a:where(.astro-blwjyjpt) svg:where(.astro-blwjyjpt),.group:where(.astro-blwjyjpt):focus-within a:where(.astro-blwjyjpt) svg:where(.astro-blwjyjpt){color:var(--color-skin-accent,rgb(var(--color-accent)))}@property --tw-scale-x{syntax:"*";inherits:false;initial-value:1}@property --tw-scale-y{syntax:"*";inherits:false;initial-value:1}@property --tw-scale-z{syntax:"*";inherits:false;initial-value:1}
 </style>
 <link rel="stylesheet" href="/_astro/Progress.CWC3Hjq7.css">
 <style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 :root{--climber-color: rgba(var(--color-text-base), .6);--rope-color: rgba(var(--color-text-base), .1)}.climber-btn:where(.astro-jv462wpo){transition:opacity .4s cubic-bezier(.4,0,.2,1),visibility .4s,transform .2s;visibility:hidden;opacity:0;background:transparent;border:none;padding:0;cursor:pointer}.climber-btn:where(.astro-jv462wpo).visible{visibility:visible;opacity:1}.climber-svg:where(.astro-jv462wpo){width:40px;height:60px}@media(min-width:640px){.climber-svg:where(.astro-jv462wpo){width:60px;height:90px}}.rope-bg:where(.astro-jv462wpo){stroke:var(--rope-color);stroke-width:1.5}.rope-thread:where(.astro-jv462wpo){stroke:var(--climber-color);stroke-width:2.5;stroke-dasharray:10 10}.is-climbing:where(.astro-jv462wpo) .rope-thread:where(.astro-jv462wpo){animation:rope-feed-up .4s linear infinite}.is-descending:where(.astro-jv462wpo) .rope-thread:where(.astro-jv462wpo){animation:rope-feed-down .4s linear infinite}@keyframes rope-feed-up{0%{stroke-dashoffset:0}to{stroke-dashoffset:-20}}@keyframes rope-feed-down{0%{stroke-dashoffset:-20}to{stroke-dashoffset:0}}.pose:where(.astro-jv462wpo){opacity:0;stroke:var(--climber-color);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.hand:where(.astro-jv462wpo){fill:var(--climber-color);stroke:none}.head:where(.astro-jv462wpo){fill:var(--climber-color);stroke:none}.is-climbing:where(.astro-jv462wpo) .pose-1:where(.astro-jv462wpo){animation:frame-seq .8s steps(1) infinite;animation-delay:0s}.is-climbing:where(.astro-jv462wpo) .pose-2:where(.astro-jv462wpo){animation:frame-seq .8s steps(1) infinite;animation-delay:.2s}.is-climbing:where(.astro-jv462wpo) .pose-3:where(.astro-jv462wpo){animation:frame-seq .8s steps(1) infinite;animation-delay:.4s}.is-climbing:where(.astro-jv462wpo) .pose-4:where(.astro-jv462wpo){animation:frame-seq .8s steps(1) infinite;animation-delay:.6s}.is-descending:where(.astro-jv462wpo) .pose-descend:where(.astro-jv462wpo){opacity:1}@keyframes frame-seq{0%,24.9%{opacity:1}25%,to{opacity:0}}.climber-btn:where(.astro-jv462wpo):not(.is-climbing):not(.is-descending) .pose-idle:where(.astro-jv462wpo){opacity:1}.is-climbing:where(.astro-jv462wpo) .man-group:where(.astro-jv462wpo){animation:climb-physics .4s ease-in-out infinite alternate;transform-origin:center top}.is-descending:where(.astro-jv462wpo) .man-group:where(.astro-jv462wpo){animation:descend-physics .4s ease-in-out infinite alternate;transform-origin:center top}@keyframes climb-physics{0%{transform:translateY(0) translate(-2px) rotate(-2deg)}to{transform:translateY(-10px) translate(2px) rotate(2deg)}}@keyframes descend-physics{0%{transform:translateY(0) scaleY(1)}to{transform:translateY(5px) scaleY(.98)}}
 </style>
-<link rel="stylesheet" href="/_astro/PostDetails.CgNh7h83.css"><style>[data-astro-transition-scope="astro-iexq6gvq-1"] { view-transition-name: the-allegory-of-the-cave-and-our-modern-screens; }@layer astro { ::view-transition-old(the-allegory-of-the-cave-and-our-modern-screens) { 
+<link rel="stylesheet" href="/_astro/PostDetails.HDUIVumu.css"><style>[data-astro-transition-scope="astro-iexq6gvq-1"] { view-transition-name: the-allegory-of-the-cave-and-our-modern-screens; }@layer astro { ::view-transition-old(the-allegory-of-the-cave-and-our-modern-screens) { 
 	animation-duration: 180ms;
 	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
 	animation-fill-mode: both;
@@ -403,12 +407,12 @@ epistemological framework that makes truth-seeking possible at all.</p></div></d
 <p>If Heidegger is right, then algorithmic curation is not merely an epistemic problem (we believe false things) but an ontological one (the very structure of our world-disclosure is compromised).</p>
 <h2 id="byung-chul-han-and-the-transparency-society">Byung-Chul Han and the Transparency Society</h2>
 <p>The Korean-German philosopher Byung-Chul Han pushes this further. In <em>The Transparency Society</em>, he argues that the demand for total transparency — for everything to be visible, shareable, quantifiable — paradoxically destroys meaning.</p>
-<div class="not-prose my-6 relative rounded-sm border border-skin-line/20 overflow-hidden" data-position="left" data-component="spoiler"><input type="checkbox" id="spoiler-xi96zu2" class="peer sr-only"/><div class="p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-none peer-checked:select-auto transition-all duration-500"><p>Han claims that the age of transparency produces not enlightenment but
+<div class="not-prose my-6 relative rounded-sm border border-skin-line/20 overflow-hidden" data-position="left" data-component="spoiler"><input type="checkbox" id="spoiler-7nvbq1b" class="peer sr-only"/><div class="p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-none peer-checked:select-auto transition-all duration-500"><p>Han claims that the age of transparency produces not enlightenment but
 pornography — i.e., the exposure of everything to view, stripped of all
 mystery, all depth, all hermeneutic resistance. Shadows, he implies, are not
 always the enemy. Sometimes meaning requires concealment, ambiguity,
 withholding. The cave, in a certain light, was at least a space for
-<em>interpretation</em>.</p></div><label for="spoiler-xi96zu2" class="absolute inset-0 flex items-center justify-center bg-skin-fill/60 cursor-pointer peer-checked:opacity-0 peer-checked:pointer-events-none peer-checked:bg-transparent peer-checked:backdrop-blur-none transition-all duration-500"><span class="flex items-center gap-2 px-5 py-2.5 border border-skin-line/40 rounded-sm bg-skin-fill hover:bg-skin-card-muted transition-colors font-mono text-[11px] uppercase tracking-widest text-skin-base/70 hover:text-skin-base"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>Han&#x27;s controversial thesis</span></label></div>
+<em>interpretation</em>.</p></div><label for="spoiler-7nvbq1b" class="absolute inset-0 flex items-center justify-center bg-skin-fill/60 cursor-pointer peer-checked:opacity-0 peer-checked:pointer-events-none peer-checked:bg-transparent peer-checked:backdrop-blur-none transition-all duration-500"><span class="flex items-center gap-2 px-5 py-2.5 border border-skin-line/40 rounded-sm bg-skin-fill hover:bg-skin-card-muted transition-colors font-mono text-[11px] uppercase tracking-widest text-skin-base/70 hover:text-skin-base"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>Han&#x27;s controversial thesis</span></label></div>
 <p>This is a genuinely unsettling idea. If the shadows in the cave at least provoked interpretation and wonder, then perhaps the flat, over-lit world of algorithmic transparency is worse — not because it shows less, but because it leaves nothing to think about.</p>
 <h2 id="platos-allegory-meets-platos-dialogue">Plato’s Allegory Meets Plato’s Dialogue</h2>
 <p>It is worth connecting this to the broader Platonic project. In the <span class="shelf-mention group astro-wheckbwr"><a href="/shelf/euthyphro/" class="shelf-mention-link astro-wheckbwr">Euthyphro</a><span class="shelf-mention-popup astro-wheckbwr" aria-hidden="true"><span class="sm-flip-container astro-wheckbwr" style="perspective: 800px; -webkit-perspective: 800px;"><span class="sm-flip-inner astro-wheckbwr"><span class="sm-flip-front astro-wheckbwr" style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); -webkit-transform: rotateY(0deg);"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Euthyphro_Stephanus_1578_p_2.jpg/960px-Euthyphro_Stephanus_1578_p_2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover astro-wheckbwr" loading="lazy"><span class="absolute top-1.5 left-1.5 w-2.5 h-2.5 text-white/40 z-10 inline-flex shelf-sm-icon astro-wheckbwr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span><span class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6 astro-wheckbwr"><span class="flex items-end justify-between pb-1.5 px-1.5 gap-1 astro-wheckbwr"><span class="font-serif text-white/50 text-[8px] truncate italic astro-wheckbwr">Plato</span><span class="font-mono font-medium text-[7px] shrink-0 text-white/50 astro-wheckbwr">9<span class="text-white/25 astro-wheckbwr">/10</span></span></span></span></span><span class="sm-flip-back astro-wheckbwr" style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); -webkit-transform: rotateY(180deg); background: linear-gradient(171deg, #0c4a6e 0%, #0284c7 100%);"><span class="absolute inset-0 pointer-events-none astro-wheckbwr" style="background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.12) 0%, transparent 50%);"></span><span class="absolute left-0 inset-y-0 w-[3px] bg-black/25 astro-wheckbwr"></span><span class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10 astro-wheckbwr"></span><span class="absolute inset-0 pointer-events-none opacity-[0.03] astro-wheckbwr" style="background-image: url('data:image/svg+xml,%3Csvg width=%224%22 height=%224%22 viewBox=%220 0 4 4%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M1 3h1v1H1V3zm2-2h1v1H3V1z%22 fill=%22%23ffffff%22 fill-opacity=%221%22/%3E%3C/svg%3E');"></span><span class="absolute inset-0 flex flex-col items-center justify-center px-2 text-center z-10 astro-wheckbwr"><span class="text-white font-serif text-[10px] sm:text-[11px] leading-snug drop-shadow-sm astro-wheckbwr">Euthyphro</span><span class="font-mono text-[6px] uppercase tracking-widest text-white/25 mt-1 astro-wheckbwr">Philosophy</span></span><span class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-6 astro-wheckbwr"><span class="text-center pb-1.5 px-1.5 block astro-wheckbwr"><span class="font-serif text-white/55 text-[8px] italic astro-wheckbwr">Plato</span></span></span></span></span></span></span></span>, Socrates demonstrates that even confident people — even those about to prosecute their own father — cannot give a coherent account of the concepts they rely on. Euthyphro “knows” what piety is until Socrates starts asking questions.</p>
@@ -538,46 +542,53 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
         });
       })();
     </script> </body> </html>  <script data-astro-rerun>
+  window.__postDetailsAbort?.abort?.();
+  const postDetailsAbort = new AbortController();
+  window.__postDetailsAbort = postDetailsAbort;
+  const { signal } = postDetailsAbort;
+
+  let scrollProgressBound = false;
+
   /** Create a progress indicator
    * at the top */
   function createProgressBar() {
-    // Create the main container div
+    document.querySelector(".progress-container")?.remove();
+
     const progressContainer = document.createElement("div");
     progressContainer.className =
       "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
 
-    // Create the progress bar div
     const progressBar = document.createElement("div");
     progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
     progressBar.id = "myBar";
 
-    // Append the progress bar to the progress container
     progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
     document.body.appendChild(progressContainer);
   }
-  createProgressBar();
 
   /** Update the progress bar
    * when user scrolls */
   function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
+    if (scrollProgressBound) return;
+    scrollProgressBound = true;
+
+    document.addEventListener(
+      "scroll",
+      () => {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
         const myBar = document.getElementById("myBar");
         if (myBar) {
           myBar.style.width = scrolled + "%";
         }
-      }
-    });
+      },
+      { passive: true, signal },
+    );
   }
-  updateScrollProgress();
 
   /** Attaches links to headings in the document,
    * allowing sharing of sections easily */
@@ -587,6 +598,8 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
     const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
     for (const heading of headings) {
       heading.classList.add("group");
+      if (heading.querySelector(".heading-link")) continue;
+
       const link = document.createElement("a");
       link.className =
         "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
@@ -599,7 +612,6 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
       heading.appendChild(link);
     }
   }
-  addHeadingLinks();
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
@@ -607,7 +619,6 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
-      // Create wrapper if not exists
       let wrapper = codeBlock.parentElement;
       if (!wrapper || !wrapper.classList.contains("code-wrapper")) {
         wrapper = document.createElement("div");
@@ -616,25 +627,24 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
         wrapper.appendChild(codeBlock);
       }
 
-      // Create Copy Button
-      const copyButton = document.createElement("button");
-      copyButton.className = "copy-code";
-      copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
-      copyButton.setAttribute("aria-label", "Copy code");
-      wrapper.appendChild(copyButton);
+      let copyButton = wrapper.querySelector(".copy-code");
+      if (!copyButton) {
+        copyButton = document.createElement("button");
+        copyButton.className = "copy-code";
+        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
+        copyButton.setAttribute("aria-label", "Copy code");
+        wrapper.appendChild(copyButton);
+      }
 
-      // Add Line Numbers
       const code = codeBlock.querySelector("code");
       if (code) {
-        // We need to count lines of the TEXT content, but handle potential empty last line from Prism/Shiki
         const textContent = code.innerText.replace(/\n$/, "");
         const lineCount = textContent.split("\n").length;
 
-        if (lineCount > 1) {
+        if (lineCount > 1 && !wrapper.querySelector(".line-numbers")) {
           const lineNumbers = document.createElement("div");
           lineNumbers.className = "line-numbers";
           lineNumbers.ariaHidden = "true";
-          // Generate spans
           lineNumbers.innerHTML = Array.from(
             { length: lineCount },
             (_, i) => `<span>${i + 1}</span>`,
@@ -645,9 +655,12 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
 
       codeBlock.setAttribute("tabindex", "0");
 
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
-      });
+      if (!copyButton.dataset.bound) {
+        copyButton.dataset.bound = "1";
+        copyButton.addEventListener("click", async () => {
+          await copyCode(codeBlock, copyButton);
+        });
+      }
     }
 
     async function copyCode(block, button) {
@@ -656,7 +669,6 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
 
       await navigator.clipboard.writeText(text ?? "");
 
-      // visual feedback
       button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-accent"><path d="M20 6 9 17l-5-5"/></svg>`;
 
       setTimeout(() => {
@@ -664,20 +676,20 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
       }, 700);
     }
   }
-  attachCopyButtons();
 
   /** Hide "Table of Contents" heading if it exists */
   function hideTOCHeading() {
     const headings = document.querySelectorAll("h2");
     headings.forEach((heading) => {
-      if (heading.textContent.trim() === "Table of contents") {
+      if ((heading.textContent || "").trim() === "Table of contents") {
         heading.style.display = "none";
       }
     });
   }
-  hideTOCHeading();
 
   function mirrorSidebarQuotes() {
+    document.documentElement.classList.remove("has-sidebar-mirrors");
+
     const article = document.getElementById("article");
     const sidebar = document.getElementById("left-sidebar");
     const container = document.getElementById("sidebar-quotes");
@@ -700,9 +712,8 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
       mirror.style.cssText = `position:absolute;top:${topPos}px;left:0;right:0;display:flex;justify-content:center;`;
 
       const clone = el.cloneNode(true);
-      clone.removeAttribute("data-position"); // So it doesn't get hidden by CSS
+      clone.removeAttribute("data-position");
 
-      // Fix ID conflicts for things like Spoiler labels and checkboxes
       const ids = clone.querySelectorAll("[id]");
       ids.forEach((node) => {
         const oldId = node.id;
@@ -712,13 +723,11 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
         labels.forEach((l) => l.setAttribute("for", newId));
       });
 
-      // Adjust styles slightly for the narrower sidebar context
       clone.style.width = "100%";
       clone.style.maxWidth = "260px";
       clone.classList.remove("my-8", "my-6", "my-4");
       clone.classList.add("my-0");
 
-      // Optional tweaks depending on component
       if (clone.tagName === "FIGURE") {
         const blockquote = clone.querySelector("blockquote");
         if (blockquote) {
@@ -729,9 +738,9 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
       mirror.appendChild(clone);
       container.appendChild(mirror);
     });
+
+    document.documentElement.classList.add("has-sidebar-mirrors");
   }
-  mirrorSidebarQuotes();
-  window.addEventListener("load", mirrorSidebarQuotes);
 
   function positionReadMore() {
     const article = document.getElementById("article");
@@ -755,6 +764,21 @@ not more illuminating.</p> </div> </div> </div> <script type="module">function b
 
     readMore.style.marginTop = finalTop + "px";
   }
-  positionReadMore();
-  window.addEventListener("load", positionReadMore);
+
+  function runPostEnhancements() {
+    createProgressBar();
+    updateScrollProgress();
+    addHeadingLinks();
+    attachCopyButtons();
+    hideTOCHeading();
+    mirrorSidebarQuotes();
+    positionReadMore();
+  }
+
+  runPostEnhancements();
+
+  window.addEventListener("load", runPostEnhancements, { signal });
+  document.addEventListener("astro:page-load", runPostEnhancements, {
+    signal,
+  });
 </script>
