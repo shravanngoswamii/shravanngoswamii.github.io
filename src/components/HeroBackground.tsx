@@ -12,14 +12,42 @@ const HeroBackground = () => {
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    let rafId = 0;
+    let isDarkTheme =
+      document.documentElement.getAttribute("data-theme") === "dark";
 
     // --- CONFIGURATION ---
     const isMobile = width < 768;
-    const PARTICLE_COUNT = isMobile ? 300 : 1200; // Dense mist
-    const MOUSE_RADIUS = 200;
-    const DRAG = 0.95; // Fluid viscosity (0.9=thick, 0.99=thin)
-    const GRAVITY_X = 0.2; // Constant wind flow
-    const GRAVITY_Y = 0.05; // Slight drop
+    const PARTICLE_COUNT = isMobile ? 450 : 1600; // Denser mist
+    const MOUSE_RADIUS = isMobile ? 120 : 170;
+    const BURST_FORCE = isMobile ? 5.0 : 6.2;
+    const VELOCITY_INFLUENCE = isMobile ? 0.12 : 0.18;
+    const DRAG = 0.955; // Fluid viscosity (0.9=thick, 0.99=thin)
+    const GRAVITY_X = 0.24; // Constant wind flow
+    const GRAVITY_Y = 0.06; // Slight drop
+
+    const getPalette = () =>
+      isDarkTheme
+        ? {
+            stroke: [160, 170, 180],
+            fill: [140, 150, 160],
+            trailFade: 0.15,
+            blend: "screen",
+          }
+        : {
+            stroke: [105, 115, 125],
+            fill: [90, 100, 112],
+            trailFade: 0.12,
+            blend: "multiply",
+          };
+
+    const applyThemeVisuals = () => {
+      isDarkTheme = document.documentElement.getAttribute("data-theme") === "dark";
+      const palette = getPalette();
+      canvas.style.mixBlendMode = palette.blend;
+    };
+
+    applyThemeVisuals();
 
     let particles: AerosolParticle[] = [];
     const mouse = {
@@ -43,8 +71,8 @@ const HeroBackground = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 2;
-        this.vy = (Math.random() - 0.5) * 2;
+        this.vx = (Math.random() - 0.5) * 2.4;
+        this.vy = (Math.random() - 0.5) * 2.4;
         this.size = Math.random() * 2; // Varying mist sizes
         this.maxLife = Math.random() * 100 + 50;
         this.life = Math.random() * this.maxLife;
@@ -57,16 +85,23 @@ const HeroBackground = () => {
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < MOUSE_RADIUS) {
-          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+          const normalized = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+          const coreBoost = dist < MOUSE_RADIUS * 0.35 ? 1.5 : 1;
+          const force = Math.pow(normalized, 2) * coreBoost;
           const angle = Math.atan2(dy, dx);
-          const burst = 4; // Spray power
 
           // Push away + Add Mouse Velocity (Drag effect)
-          this.vx -= Math.cos(angle) * burst * force * 0.5;
-          this.vy -= Math.sin(angle) * burst * force * 0.5;
+          this.vx -= Math.cos(angle) * BURST_FORCE * force * 0.55;
+          this.vy -= Math.sin(angle) * BURST_FORCE * force * 0.55;
 
-          this.vx += mouse.vx * 0.1 * force;
-          this.vy += mouse.vy * 0.1 * force;
+          this.vx += mouse.vx * VELOCITY_INFLUENCE * force;
+          this.vy += mouse.vy * VELOCITY_INFLUENCE * force;
+
+          // Keep a small "no-touch" bubble around cursor center.
+          if (dist < 18) {
+            this.vx -= Math.cos(angle) * 1.8;
+            this.vy -= Math.sin(angle) * 1.8;
+          }
         }
 
         // 2. PHYSICS
@@ -92,22 +127,21 @@ const HeroBackground = () => {
       }
 
       draw(context: CanvasRenderingContext2D) {
+        const palette = getPalette();
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         const alpha = Math.min(speed / 5, 0.6); // Faster = more visible (Compression)
 
         context.beginPath();
 
-        // "Mechanical" rendering:
-        // Draw lines for fast particles, dots for slow ones
         if (speed > 3) {
           context.moveTo(this.x, this.y);
           context.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
           context.lineWidth = this.size * 0.5;
-          context.strokeStyle = `rgba(160, 170, 180, ${alpha})`;
+          context.strokeStyle = `rgba(${palette.stroke[0]}, ${palette.stroke[1]}, ${palette.stroke[2]}, ${alpha})`;
           context.stroke();
         } else {
           context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          context.fillStyle = `rgba(140, 150, 160, ${alpha * 0.8})`;
+          context.fillStyle = `rgba(${palette.fill[0]}, ${palette.fill[1]}, ${palette.fill[2]}, ${alpha * 0.8})`;
           context.fill();
         }
       }
@@ -121,11 +155,13 @@ const HeroBackground = () => {
     };
 
     const animate = () => {
+      const palette = getPalette();
+
       // Create trails using semi-transparent clear
       ctx.fillStyle = "rgba(var(--color-fill), 0.2)"; // Assumes dark/light background
       // Use composite operation to ensure trails fade correctly on any background color
       ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = `rgba(0, 0, 0, 0.15)`; // Trail Fade Rate
+      ctx.fillStyle = `rgba(0, 0, 0, ${palette.trailFade})`; // Trail Fade Rate
       ctx.fillRect(0, 0, width, height);
 
       ctx.globalCompositeOperation = "source-over"; // Reset
@@ -135,7 +171,7 @@ const HeroBackground = () => {
         p.draw(ctx);
       });
 
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
 
     init();
@@ -149,18 +185,24 @@ const HeroBackground = () => {
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      // Calculate velocity
-      mouse.vx = e.clientX - rect.left - mouse.prevX;
-      mouse.vy = e.clientY - rect.top - mouse.prevY;
+      mouse.vx = Math.max(-30, Math.min(30, e.clientX - rect.left - mouse.prevX));
+      mouse.vy = Math.max(-30, Math.min(30, e.clientY - rect.top - mouse.prevY));
       mouse.prevX = mouse.x = e.clientX - rect.left;
       mouse.prevY = mouse.y = e.clientY - rect.top;
     };
 
-    // Passive listeners for performance
+    const themeObserver = new MutationObserver(applyThemeVisuals);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
     window.addEventListener("resize", handleResize, { passive: true });
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafId);
+      themeObserver.disconnect();
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
     };

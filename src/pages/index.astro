@@ -31,7 +31,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
     <section
       class="min-h-[90svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden"
     >
-      <div class="absolute inset-0 -z-10 bg-skin-fill/50">
+      <div class="absolute inset-0 z-0 pointer-events-none bg-skin-fill/50">
         <HeroBackground client:load />
       </div>
 
