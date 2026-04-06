@@ -66,65 +66,6 @@ const structuredData = isArticle
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
-    <script is:inline>
-      (function () {
-        const docEl = document.documentElement;
-        const navEntry = performance.getEntriesByType("navigation")[0];
-        const isReload = navEntry?.type === "reload";
-
-        const savedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        const isDarkTheme = savedTheme ? savedTheme === "dark" : prefersDark;
-
-        const activeTheme = isDarkTheme ? "dark" : "light";
-        const fill = isDarkTheme ? "10, 10, 10" : "248, 248, 246";
-
-        docEl.setAttribute("data-theme", activeTheme);
-
-        // Paint and keep a theme-matched fallback background to avoid white flashes.
-        docEl.style.backgroundColor = `rgb(${fill})`;
-
-        if (isReload) {
-          docEl.classList.add("preload");
-        }
-
-        if (docEl.classList.contains("scroll-smooth")) {
-          docEl.style.scrollBehavior = "auto";
-        }
-
-        const releasePreload = () => {
-          docEl.classList.remove("preload");
-          if (docEl.classList.contains("scroll-smooth")) {
-            docEl.style.scrollBehavior = "";
-          }
-        };
-
-        window.addEventListener(
-          "pageshow",
-          () => requestAnimationFrame(releasePreload),
-          { once: true },
-        );
-
-        // Important for Astro view transitions where pageshow doesn't fire.
-        document.addEventListener("astro:after-swap", releasePreload);
-        document.addEventListener("astro:page-load", releasePreload);
-      })();
-    </script>
-
-    <style is:inline>
-      html,
-      body {
-        background-color: rgb(248, 248, 246);
-      }
-
-      html[data-theme="dark"],
-      html[data-theme="dark"] body {
-        background-color: rgb(10, 10, 10);
-      }
-    </style>
-
     <!-- Google tag (gtag.js) -->
     <script
       is:inline
@@ -219,7 +160,7 @@ const structuredData = isArticle
 
     <ClientRouter />
 
-    <script is:inline>
+    <script is:inline data-cfasync="false">
       const primaryColorScheme = "";
 
       const currentTheme = localStorage.getItem("theme");
@@ -235,14 +176,12 @@ const structuredData = isArticle
       let themeValue = getPreferTheme();
 
       function reflectPreference(theme) {
-        const docEl = document.firstElementChild;
-        docEl.setAttribute("data-theme", theme);
+        document.firstElementChild.setAttribute("data-theme", theme);
 
         const body = document.body;
         if (body) {
           const computedStyles = window.getComputedStyle(body);
           const bgColor = computedStyles.backgroundColor;
-          docEl.style.backgroundColor = bgColor;
           document
             .querySelector("meta[name='theme-color']")
             ?.setAttribute("content", bgColor);
@@ -292,12 +231,6 @@ const structuredData = isArticle
         style="display:none;visibility:hidden"></iframe></noscript
     >
     <slot />
-
-    <script>
-      import { initGiscusGlobal } from "@utils/giscusClient";
-
-      initGiscusGlobal();
-    </script>
 
     <script is:inline>
       (function () {

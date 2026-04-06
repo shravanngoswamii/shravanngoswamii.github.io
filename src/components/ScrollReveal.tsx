@@ -25,7 +25,7 @@ export default function ScrollReveal({
 
   const variants = {
     hidden: {
-      opacity: 1,
+      opacity: 0,
       y: direction === "up" ? distance : direction === "down" ? -distance : 0,
       x:
         direction === "left" ? distance : direction === "right" ? -distance : 0,
