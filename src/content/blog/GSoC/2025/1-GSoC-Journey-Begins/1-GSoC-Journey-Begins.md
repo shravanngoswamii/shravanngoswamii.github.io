@@ -16,7 +16,7 @@ aliases:
 ## From Rejections to Realization: My GSoC 2025 Journey with Julia and TuringLang
 
 In 2023, I submitted **three proposals** in Google Summer of Code.
-None of them got selected for [The Julia Language](./Shravan-Goswami-Julia-GSoC-Proposal.pdf), [Purr Data](./Shravan-Goswami-Purr-Data-GSoC-Proposal.pdf) and [The Tor Project](./Shravan-Goswami-Tor-GSoC-Proposal.pdf)
+None of them got selected for [The Julia Language](/blog/GSoC-2025-The-Journey-Begins/Shravan-Goswami-Julia-GSoC-Proposal.pdf), [Purr Data](/blog/GSoC-2025-The-Journey-Begins/Shravan-Goswami-Purr-Data-GSoC-Proposal.pdf) and [The Tor Project](/blog/GSoC-2025-The-Journey-Begins/Shravan-Goswami-Tor-GSoC-Proposal.pdf)
 
 At the time, it stung. I had invested weeks into those applications, reading documentation, designing ideas, revising again and again. But the rejections weren’t the end of the story — they became part of the path.
 
