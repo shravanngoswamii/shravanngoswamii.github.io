@@ -122,20 +122,25 @@ const structuredData = isArticle
       }
     </style>
 
-    <!-- Google tag (gtag.js) — loaded async to avoid render-blocking -->
+    <!-- Google tag (gtag.js) — deferred until idle to avoid blocking render -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(...args) {
-        window.dataLayer.push(args);
-      }
+      function gtag(...args) { window.dataLayer.push(args); }
       gtag("js", new Date());
       gtag("config", "G-ZXC7NG6S55");
 
       (function () {
-        const s = document.createElement("script");
-        s.src = "https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55";
-        s.async = true;
-        document.head.appendChild(s);
+        function loadGA() {
+          const s = document.createElement("script");
+          s.src = "https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55";
+          s.async = true;
+          document.head.appendChild(s);
+        }
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(loadGA);
+        } else {
+          setTimeout(loadGA, 3500);
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -198,28 +203,9 @@ const structuredData = isArticle
       is:inline
     />
 
-    <!-- LUXURY FONTS: Playfair Display (Serif), Inter (Sans), JetBrains Mono (Code) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap"
-    />
-    <script is:inline>
-      (function () {
-        const l = document.createElement("link");
-        l.rel = "stylesheet";
-        l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap";
-        document.head.appendChild(l);
-      })();
-    </script>
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
+    <!-- Self-hosted fonts — preload critical font files -->
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <meta name="theme-color" content="" />
 
