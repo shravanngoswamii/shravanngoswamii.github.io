@@ -405,6 +405,10 @@ Published
   const postDetailsAbort = new AbortController();
   window.__postDetailsAbort = postDetailsAbort;
   const { signal } = postDetailsAbort;
+  let syncRafId = 0;
+  let delayedSyncTimer = 0;
+  let resizeObserver;
+  let mutationObserver;
 
   let scrollProgressBound = false;
 
@@ -559,7 +563,7 @@ Published
     const leftItems = Array.from(
       article.querySelectorAll('[data-position="left"]'),
     );
-    if (leftItems.length === 0) return;
+    if (leftItems.length === 0) return false;
 
     const sidebarTop = sidebar.getBoundingClientRect().top + window.scrollY;
 
@@ -599,6 +603,7 @@ Published
     });
 
     document.documentElement.classList.add("has-sidebar-mirrors");
+    return true;
   }
 
   function positionReadMore() {
@@ -634,10 +639,91 @@ Published
     positionReadMore();
   }
 
-  runPostEnhancements();
+  function schedulePostEnhancements() {
+    if (signal.aborted) return;
+    if (syncRafId) {
+      cancelAnimationFrame(syncRafId);
+    }
 
-  window.addEventListener("load", runPostEnhancements, { signal });
-  document.addEventListener("astro:page-load", runPostEnhancements, {
+    syncRafId = requestAnimationFrame(() => {
+      syncRafId = 0;
+      if (signal.aborted) return;
+      runPostEnhancements();
+    });
+  }
+
+  function setupPostObservers() {
+    const article = document.getElementById("article");
+    const sidebar = document.getElementById("left-sidebar");
+
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver?.disconnect();
+      resizeObserver = new ResizeObserver(() => {
+        schedulePostEnhancements();
+      });
+
+      if (article) resizeObserver.observe(article);
+      if (sidebar) resizeObserver.observe(sidebar);
+    }
+
+    if (article && typeof MutationObserver !== "undefined") {
+      mutationObserver?.disconnect();
+      mutationObserver = new MutationObserver(() => {
+        schedulePostEnhancements();
+      });
+
+      mutationObserver.observe(article, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["data-position", "class", "style"],
+      });
+    }
+  }
+
+  signal.addEventListener(
+    "abort",
+    () => {
+      if (syncRafId) cancelAnimationFrame(syncRafId);
+      if (delayedSyncTimer) clearTimeout(delayedSyncTimer);
+      resizeObserver?.disconnect();
+      mutationObserver?.disconnect();
+    },
+    { once: true },
+  );
+
+  runPostEnhancements();
+  setupPostObservers();
+  schedulePostEnhancements();
+
+  window.addEventListener("load", schedulePostEnhancements, { signal });
+  window.addEventListener(
+    "resize",
+    () => {
+      mirrorSidebarQuotes();
+      positionReadMore();
+    },
+    { passive: true, signal },
+  );
+
+  document.addEventListener("astro:after-swap", schedulePostEnhancements, {
     signal,
+  });
+  document.addEventListener(
+    "astro:page-load",
+    () => {
+      setupPostObservers();
+      schedulePostEnhancements();
+      delayedSyncTimer = window.setTimeout(() => {
+        if (signal.aborted) return;
+        schedulePostEnhancements();
+      }, 120);
+    },
+    { signal },
+  );
+
+  document.fonts?.ready?.then(() => {
+    if (signal.aborted) return;
+    schedulePostEnhancements();
   });
 </script>
