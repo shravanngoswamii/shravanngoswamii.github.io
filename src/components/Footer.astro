@@ -11,64 +11,201 @@ export interface Props {
 const { noMarginTop = false } = Astro.props;
 ---
 
-<footer class={`w-full ${noMarginTop ? "" : "mt-auto"}`}>
-  <div class="w-full h-px bg-skin-line/30 mb-12"></div>
+<footer class:list={["footer-root", !noMarginTop && "footer-root--auto"]}>
+  <div class="footer-divider"></div>
 
-  <div class="flex flex-col items-center py-12 gap-8">
-    <!-- Newsletter Subscribe -->
-    <div class="flex flex-col items-center gap-3 text-center max-w-xs w-full">
-      <span
-        class="text-[10px] font-mono uppercase tracking-[0.3em] text-skin-base/60"
-        >Stay in the loop</span
-      >
-      <form class="flex w-full gap-2" id="footer-subscribe">
+  <div class="footer-inner">
+    <div class="footer-newsletter">
+      <span class="footer-newsletter-title">Stay in the loop</span>
+      <form class="footer-form" id="footer-subscribe">
         <input
           type="email"
           name="email"
           placeholder="your@email.com"
           required
-          class="flex-1 min-w-0 px-3 py-1.5 rounded-sm text-xs font-mono bg-skin-fill border border-skin-line/40 text-skin-base placeholder:text-skin-base/60 focus:outline-none focus:border-skin-accent transition-colors"
+          class="footer-input"
         />
-        <button
-          type="submit"
-          class="px-3 py-1.5 rounded-sm text-[10px] font-mono uppercase tracking-wider text-skin-accent bg-skin-accent/10 hover:bg-skin-accent/20 backdrop-blur-sm transition-all whitespace-nowrap"
-          >Subscribe</button
-        >
+        <button type="submit" class="footer-button">Subscribe</button>
       </form>
     </div>
 
-    <div class="w-16 h-px bg-skin-line/10"></div>
+    <div class="footer-mini-divider"></div>
 
-    <!-- Signature Block -->
-    <div class="flex flex-col items-center gap-2 text-center">
-      <span
-        class="text-xs font-mono uppercase tracking-[0.3em] text-skin-base/60"
-        >Yours Truly,</span
-      >
-      <span class="font-serif text-3xl italic text-skin-base tracking-tight"
-        >Shravan Goswami</span
-      >
-      <div class="w-16 h-px bg-skin-line/20 mt-2"></div>
+    <div class="footer-signature">
+      <span class="footer-signature-title">Yours Truly,</span>
+      <span class="footer-signature-name">Shravan Goswami</span>
+      <div class="footer-signature-divider"></div>
     </div>
 
-    <!-- Social Links -->
-    <div class="opacity-60 hover:opacity-100 transition-opacity scale-90">
+    <div class="footer-socials">
       <Socials centered />
     </div>
 
-    <!-- Footer Meta -->
-    <div
-      class="flex flex-col items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-skin-base/60"
-    >
-      <a
-        href={withBase("/humans.txt")}
-        class="hover:text-skin-base transition-colors"
-      >
-        &copy; {currentYear}
-      </a>
+    <div class="footer-meta">
+      <a href={withBase("/humans.txt")} class="footer-meta-link">&copy; {currentYear}</a>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-root {
+    width: 100%;
+  }
+
+  .footer-root--auto {
+    margin-top: auto;
+  }
+
+  .footer-divider {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 3rem;
+    background: rgba(var(--color-line), 0.3);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0;
+  }
+
+  .footer-newsletter {
+    width: 100%;
+    max-width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .footer-newsletter-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgba(var(--color-text-base), 0.6);
+  }
+
+  .footer-form {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .footer-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.375rem 0.75rem;
+    border-radius: 2px;
+    border: 1px solid rgba(var(--color-line), 0.4);
+    background: rgba(var(--color-fill), 1);
+    color: rgba(var(--color-text-base), 1);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    transition: border-color 180ms ease;
+  }
+
+  .footer-input::placeholder {
+    color: rgba(var(--color-text-base), 0.6);
+  }
+
+  .footer-input:focus {
+    outline: none;
+    border-color: rgba(var(--color-accent), 1);
+  }
+
+  .footer-button {
+    padding: 0.375rem 0.75rem;
+    border: 0;
+    border-radius: 2px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(var(--color-accent), 1);
+    background: rgba(var(--color-accent), 0.1);
+    cursor: pointer;
+    transition: background-color 180ms ease;
+  }
+
+  .footer-button:hover {
+    background: rgba(var(--color-accent), 0.2);
+  }
+
+  .footer-mini-divider,
+  .footer-signature-divider {
+    width: 4rem;
+    height: 1px;
+    background: rgba(var(--color-line), 0.2);
+  }
+
+  .footer-mini-divider {
+    background: rgba(var(--color-line), 0.1);
+  }
+
+  .footer-signature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .footer-signature-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgba(var(--color-text-base), 0.6);
+  }
+
+  .footer-signature-name {
+    font-family: var(--font-serif);
+    font-size: 1.875rem;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    color: rgba(var(--color-text-base), 1);
+  }
+
+  .footer-signature-divider {
+    margin-top: 0.5rem;
+  }
+
+  .footer-socials {
+    transform: scale(0.9);
+    opacity: 0.6;
+    transition: opacity 180ms ease;
+  }
+
+  .footer-socials:hover {
+    opacity: 1;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(var(--color-text-base), 0.6);
+  }
+
+  .footer-meta-link {
+    color: inherit;
+    transition: color 180ms ease;
+  }
+
+  .footer-meta-link:hover {
+    color: rgba(var(--color-text-base), 1);
+  }
+</style>
 
 <script>
   function initSubscribeForm() {

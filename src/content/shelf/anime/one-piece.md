@@ -8,7 +8,7 @@ status: "in-progress"
 rating: 10
 year: 1999
 description: "An epic journey of dreams, freedom, and the most beautiful world-building in fiction."
-poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
+poster: "/assets/shelf/one-piece.jpg"
 pubDatetime: 2026-03-06
 tags: ["anime", "masterpiece"]
 ---
