@@ -32,7 +32,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
       class="min-h-[90svh] flex flex-col justify-center relative border-x border-skin-line/10 mt-20 sm:mt-8 mb-8 overflow-hidden"
     >
       <div class="absolute inset-0 z-0 pointer-events-none bg-skin-fill/50">
-        <HeroBackground client:load />
+        <HeroBackground client:idle />
       </div>
 
       <div
@@ -126,7 +126,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
     {
       featuredPosts.length > 0 && (
         <section class="py-24 sm:py-32">
-          <ScrollReveal client:load>
+          <ScrollReveal client:visible>
             <div class="flex items-end justify-between mb-12 border-b border-skin-line/20 pb-4">
               <h2 class="font-mono text-xs uppercase tracking-widest text-skin-base">
                 Featured
@@ -140,7 +140,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
 
           <div class="flex flex-col gap-6">
             {featuredPosts.map((post, index) => (
-              <ScrollReveal client:load delay={index * 0.1}>
+              <ScrollReveal client:visible delay={index * 0.1}>
                 <a
                   href={withBase(getPostUrl(post))}
                   class="group block border border-skin-line/20 hover:border-skin-line/40 rounded-sm transition-all duration-500 overflow-hidden"
@@ -183,7 +183,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
             ))}
           </div>
 
-          <ScrollReveal client:load delay={0.3}>
+          <ScrollReveal client:visible delay={0.3}>
             <div class="mt-12 flex justify-end">
               <LinkButton
                 href={withBase("/blog")}
@@ -202,7 +202,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
       class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-skin-line/20 pt-16 pb-24"
     >
       <div class="lg:col-span-6 corner-brackets relative">
-        <ScrollReveal client:load delay={0.1}>
+        <ScrollReveal client:visible delay={0.1}>
           <span
             class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-8 block"
             >Recent Posts</span
@@ -213,7 +213,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
           {
             recentPosts.slice(0, 3).map((post, index) => (
               <li class="block">
-                <ScrollReveal client:load delay={index * 0.1}>
+                <ScrollReveal client:visible delay={index * 0.1}>
                   <a href={withBase(getPostUrl(post))} class="group block">
                     <div class="flex items-center gap-3 mb-2">
                       <span
@@ -243,7 +243,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
           }
         </ul>
 
-        <ScrollReveal client:load delay={0.3}>
+        <ScrollReveal client:visible delay={0.3}>
           <div class="mt-12">
             <a
               href={withBase("/blog/")}
@@ -258,9 +258,9 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
       </div>
 
       <div class="lg:col-span-5 lg:col-start-8">
-        <ScrollReveal client:load delay={0.3}>
+        <ScrollReveal client:visible delay={0.3}>
           <SpotlightCard
-            client:load
+            client:visible
             className="flex flex-col justify-between bg-skin-card-muted/20 p-8 rounded-sm border border-skin-line/10 h-full"
           >
             <div>
@@ -308,7 +308,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
 
     {/* ===== SHELF ===== */}
     <section class="border-t border-skin-line/20 pt-16 pb-24">
-      <ScrollReveal client:load>
+      <ScrollReveal client:visible>
         <div class="flex items-end justify-between mb-10">
           <div>
             <span
@@ -327,7 +327,7 @@ const shelfDone = allShelf.filter((i) => i.data.status === "done").slice(0, 6);
         </div>
       </ScrollReveal>
 
-      <ScrollReveal client:load delay={0.1}>
+      <ScrollReveal client:visible delay={0.1}>
         <div
           class="flex gap-2.5 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-6 md:overflow-visible md:pb-0"
         >

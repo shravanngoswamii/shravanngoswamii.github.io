@@ -18,7 +18,7 @@ const HeroBackground = () => {
 
     // --- CONFIGURATION ---
     const isMobile = width < 768;
-    const PARTICLE_COUNT = isMobile ? 450 : 1600; // Denser mist
+    const PARTICLE_COUNT = isMobile ? 300 : 1000;
     const MOUSE_RADIUS = isMobile ? 120 : 170;
     const BURST_FORCE = isMobile ? 5.0 : 6.2;
     const VELOCITY_INFLUENCE = isMobile ? 0.12 : 0.18;
@@ -41,9 +41,11 @@ const HeroBackground = () => {
             blend: "multiply",
           };
 
+    let palette = getPalette();
+
     const applyThemeVisuals = () => {
       isDarkTheme = document.documentElement.getAttribute("data-theme") === "dark";
-      const palette = getPalette();
+      palette = getPalette();
       canvas.style.mixBlendMode = palette.blend;
     };
 
@@ -126,8 +128,7 @@ const HeroBackground = () => {
         if (this.y < -10) this.y = height + 10;
       }
 
-      draw(context: CanvasRenderingContext2D) {
-        const palette = getPalette();
+      draw(context: CanvasRenderingContext2D, pal: ReturnType<typeof getPalette>) {
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         const alpha = Math.min(speed / 5, 0.6); // Faster = more visible (Compression)
 
@@ -137,11 +138,11 @@ const HeroBackground = () => {
           context.moveTo(this.x, this.y);
           context.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
           context.lineWidth = this.size * 0.5;
-          context.strokeStyle = `rgba(${palette.stroke[0]}, ${palette.stroke[1]}, ${palette.stroke[2]}, ${alpha})`;
+          context.strokeStyle = `rgba(${pal.stroke[0]}, ${pal.stroke[1]}, ${pal.stroke[2]}, ${alpha})`;
           context.stroke();
         } else {
           context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          context.fillStyle = `rgba(${palette.fill[0]}, ${palette.fill[1]}, ${palette.fill[2]}, ${alpha * 0.8})`;
+          context.fillStyle = `rgba(${pal.fill[0]}, ${pal.fill[1]}, ${pal.fill[2]}, ${alpha * 0.8})`;
           context.fill();
         }
       }
@@ -155,21 +156,17 @@ const HeroBackground = () => {
     };
 
     const animate = () => {
-      const palette = getPalette();
-
       // Create trails using semi-transparent clear
-      ctx.fillStyle = "rgba(var(--color-fill), 0.2)"; // Assumes dark/light background
-      // Use composite operation to ensure trails fade correctly on any background color
       ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = `rgba(0, 0, 0, ${palette.trailFade})`; // Trail Fade Rate
+      ctx.fillStyle = `rgba(0, 0, 0, ${palette.trailFade})`;
       ctx.fillRect(0, 0, width, height);
 
-      ctx.globalCompositeOperation = "source-over"; // Reset
+      ctx.globalCompositeOperation = "source-over";
 
-      particles.forEach((p) => {
-        p.update();
-        p.draw(ctx);
-      });
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw(ctx, palette);
+      }
 
       rafId = requestAnimationFrame(animate);
     };

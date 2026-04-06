@@ -40,7 +40,7 @@ const { frontmatter } = Astro.props;
   <main id="main-content" class="px-4 sm:px-6">
     {/* ===== HEADER ===== */}
     <section class="max-w-4xl mx-auto pt-24 sm:pt-20 pb-10">
-      <ScrollReveal client:load>
+      <ScrollReveal client:visible>
         <span
           class="font-mono text-[10px] uppercase tracking-widest text-skin-base/40 mb-4 block"
           >Things I've Built</span
@@ -62,7 +62,7 @@ const { frontmatter } = Astro.props;
       <div class="flex flex-col gap-5">
         {
           frontmatter.projects.map((project, i) => (
-            <ScrollReveal client:load delay={0.04 * i}>
+            <ScrollReveal client:visible delay={0.04 * i}>
               <article class="group flex flex-col sm:flex-row border border-skin-line/15 rounded-sm hover:border-skin-line/35 transition-all duration-300">
                 <div class="sm:w-48 md:w-56 shrink-0 p-5 sm:p-6 flex items-center justify-center bg-skin-fill/20 border-b sm:border-b-0 sm:border-r border-skin-line/10">
                   {project.imageSrcLight && project.imageSrcDark ? (
