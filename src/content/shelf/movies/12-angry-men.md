@@ -7,7 +7,7 @@ categories: ["cinema"]
 status: "done"
 year: 1957
 description: "Twelve jurors deliberate a murder case in a single room — a masterclass in dialogue, moral courage, and the fragility of justice."
-poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/12_Angry_Men_%281957_film_poster%29.jpg/500px-12_Angry_Men_%281957_film_poster%29.jpg"
+poster: "/assets/shelf/12-angry-men.jpg"
 pubDatetime: 2026-03-06
 tags: ["courtroom", "drama", "classic", "justice"]
 ---

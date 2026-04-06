@@ -8,7 +8,7 @@ status: "done"
 rating: 9
 year: -399
 description: "A Socratic dialogue exploring understanding of piety and morality, challenging the foundation of divine command theory."
-poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Euthyphro_Stephanus_1578_p_2.jpg/960px-Euthyphro_Stephanus_1578_p_2.jpg"
+poster: "/assets/shelf/euthyphro.jpg"
 pubDatetime: 2026-02-28
 tags: ["philosophy", "socrates", "plato", "ethics"]
 ---
