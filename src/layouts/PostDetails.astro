@@ -733,7 +733,7 @@ const readMoreMapped = readMorePosts.map((p) => ({
   }
 </style>
 
-<script is:inline data-astro-rerun>
+<script is:inline data-cfasync="false" data-astro-rerun>
   window.__postDetailsAbort?.abort?.();
   const postDetailsAbort = new AbortController();
   window.__postDetailsAbort = postDetailsAbort;
