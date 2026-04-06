@@ -9,6 +9,7 @@ import ShareLinks from "@components/ShareLinks.astro";
 import Giscus from "@components/Giscus.astro";
 import {
   getCoverGradient,
+  optimizePosterUrl,
   SHELF_STATUS,
   SHELF_TYPE,
   stripExt,
@@ -43,6 +44,7 @@ const { entry, items, index } = Astro.props;
 const { data } = entry;
 const { Content, headings } = await render(entry);
 const gradient = getCoverGradient(data.title);
+const optimizedPoster = optimizePosterUrl(data.poster, 420);
 const statusInfo = SHELF_STATUS[data.status];
 const typeInfo = SHELF_TYPE[data.type];
 const hasContent = entry.body && entry.body.trim().length > 0;
@@ -137,11 +139,13 @@ const ogUrl = new URL(
                     </div>
                   </div>
                   {
-                    data.poster && (
+                    optimizedPoster && (
                       <img
-                        src={data.poster}
+                        src={optimizedPoster}
                         alt={`${data.title} poster`}
                         class="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )
                   }

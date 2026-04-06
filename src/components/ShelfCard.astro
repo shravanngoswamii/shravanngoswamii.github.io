@@ -1,6 +1,7 @@
 ---
 import {
   getCoverGradient,
+  optimizePosterUrl,
   SHELF_STATUS,
   SHELF_TYPE,
   type ShelfType,
@@ -36,6 +37,7 @@ const {
 } = Astro.props;
 
 const gradient = getCoverGradient(title);
+const optimizedPoster = optimizePosterUrl(poster, compact ? 260 : 360);
 const statusInfo = SHELF_STATUS[status as keyof typeof SHELF_STATUS];
 const typeInfo = SHELF_TYPE[type];
 const Tag = href ? "a" : "div";
@@ -56,7 +58,7 @@ const isVideo = type === "video";
   {...href ? { href } : {}}
 >
   <div
-    class="shelf-flip-container relative w-full aspect-[2/3]"
+    class="shelf-flip-container relative w-full aspect-2/3"
     style="perspective: 800px; -webkit-perspective: 800px;"
   >
     {/* Type label — appears on hover above the card */}
@@ -87,12 +89,13 @@ const isVideo = type === "video";
       >
         <div class="absolute inset-0" style={`background: ${gradient}`}></div>
         {
-          poster && (
+          optimizedPoster && (
             <img
-              src={poster}
+              src={optimizedPoster}
               alt={`${title} poster`}
               class="absolute inset-0 w-full h-full object-cover"
               loading="lazy"
+              decoding="async"
             />
           )
         }
@@ -126,7 +129,7 @@ const isVideo = type === "video";
         </div>
 
         <div
-          class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8"
+          class="absolute bottom-0 inset-x-0 z-10 bg-linear-to-t from-black/60 via-black/20 to-transparent pt-8"
         >
           {
             compact ? (
@@ -185,8 +188,8 @@ const isVideo = type === "video";
         {
           isBook && (
             <>
-              <div class="absolute left-0 inset-y-0 w-[3px] bg-black/25" />
-              <div class="absolute left-[3px] inset-y-0 w-[1px] bg-white/10" />
+              <div class="absolute left-0 inset-y-0 w-0.75 bg-black/25" />
+              <div class="absolute left-0.75 inset-y-0 w-px bg-white/10" />
             </>
           )
         }
@@ -203,8 +206,8 @@ const isVideo = type === "video";
         {
           isSeries && (
             <>
-              <div class="absolute left-0 inset-y-0 w-[2px] bg-white/10" />
-              <div class="absolute right-0 inset-y-0 w-[2px] bg-white/10" />
+              <div class="absolute left-0 inset-y-0 w-0.5 bg-white/10" />
+              <div class="absolute right-0 inset-y-0 w-0.5 bg-white/10" />
               <div
                 class="absolute inset-0 pointer-events-none opacity-[0.04]"
                 style="background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 9px);"
@@ -277,7 +280,7 @@ const isVideo = type === "video";
         </div>
 
         <div
-          class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8"
+          class="absolute bottom-0 inset-x-0 z-10 bg-linear-to-t from-black/60 via-black/20 to-transparent pt-8"
         >
           <div class="text-center pb-2 px-2">
             <p

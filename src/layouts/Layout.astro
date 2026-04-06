@@ -5,6 +5,7 @@ import { ClientRouter } from "astro:transitions";
 import { withBase } from "@utils/base";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const isProduction = import.meta.env.PROD;
 
 export interface Props {
   title?: string;
@@ -122,27 +123,42 @@ const structuredData = isArticle
       }
     </style>
 
-    <!-- Google tag (gtag.js) — deferred until idle to avoid blocking render -->
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(...args) { window.dataLayer.push(args); }
-      gtag("js", new Date());
-      gtag("config", "G-ZXC7NG6S55");
+    {
+      isProduction && (
+        <script is:inline>
+          (function () {
+            function initGA() {
+              window.dataLayer = window.dataLayer || [];
+              window.gtag = function (...args) { window.dataLayer.push(args); };
+              window.gtag("js", new Date());
+              window.gtag("config", "G-ZXC7NG6S55");
+            }
 
-      (function () {
-        function loadGA() {
-          const s = document.createElement("script");
-          s.src = "https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55";
-          s.async = true;
-          document.head.appendChild(s);
-        }
-        if ("requestIdleCallback" in window) {
-          requestIdleCallback(loadGA);
-        } else {
-          setTimeout(loadGA, 3500);
-        }
-      })();
-    </script>
+            function loadGA() {
+              const s = document.createElement("script");
+              s.src = "https://www.googletagmanager.com/gtag/js?id=G-ZXC7NG6S55";
+              s.async = true;
+              s.onload = initGA;
+              document.head.appendChild(s);
+            }
+
+            const schedule = () => {
+              if ("requestIdleCallback" in window) {
+                requestIdleCallback(loadGA, { timeout: 5000 });
+              } else {
+                setTimeout(loadGA, 3500);
+              }
+            };
+
+            if (document.readyState === "complete") {
+              schedule();
+            } else {
+              window.addEventListener("load", schedule, { once: true });
+            }
+          })();
+        </script>
+      )
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonicalURL} />
@@ -285,13 +301,17 @@ const structuredData = isArticle
       style="width: 0%; background: rgba(var(--color-accent), 1); transition: none; opacity: 0;"
     >
     </div>
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-MMG7M2PS"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"></iframe></noscript
-    >
+    {
+      isProduction && (
+        <noscript
+          ><iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MMG7M2PS"
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"></iframe></noscript
+        >
+      )
+    }
     <slot />
 
     <script is:inline>

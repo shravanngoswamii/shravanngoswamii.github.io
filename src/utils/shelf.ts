@@ -105,3 +105,35 @@ export function getCoverGradient(title: string): string {
   const angle = 135 + (Math.abs(hash >> 8) % 45);
   return `linear-gradient(${angle}deg, ${from} 0%, ${to} 100%)`;
 }
+
+export function optimizePosterUrl(
+  posterUrl?: string,
+  targetWidth = 260,
+): string | undefined {
+  if (!posterUrl) return posterUrl;
+
+  try {
+    const url = new URL(posterUrl);
+    if (url.hostname !== "upload.wikimedia.org") return posterUrl;
+
+    const safeWidth = Math.max(120, Math.round(targetWidth));
+
+    // Existing thumbnail URL: replace size segment only.
+    if (url.pathname.includes("/thumb/")) {
+      url.pathname = url.pathname.replace(/\/\d+px-/, `/${safeWidth}px-`);
+      return url.toString();
+    }
+
+    // Full-size Wikimedia file URL: convert to thumbnail endpoint.
+    const match = url.pathname.match(
+      /^\/wikipedia\/(commons|en)\/([^/]+)\/([^/]+)\/([^/]+)$/,
+    );
+    if (!match) return posterUrl;
+
+    const [, project, a, b, fileName] = match;
+    url.pathname = `/wikipedia/${project}/thumb/${a}/${b}/${fileName}/${safeWidth}px-${fileName}`;
+    return url.toString();
+  } catch {
+    return posterUrl;
+  }
+}

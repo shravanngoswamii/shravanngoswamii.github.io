@@ -1,5 +1,5 @@
 ---
-import { getCoverGradient, SHELF_TYPE } from "@utils/shelf";
+import { getCoverGradient, optimizePosterUrl, SHELF_TYPE } from "@utils/shelf";
 import Datetime from "./Datetime";
 import type { ShelfListingItem } from "@utils/shelfAdapter";
 
@@ -13,6 +13,7 @@ const { title, description, pubDatetime, modDatetime, shelfMeta } = item.data;
 const typeInfo = SHELF_TYPE[shelfMeta.type as keyof typeof SHELF_TYPE];
 const gradient = getCoverGradient(title);
 const poster = shelfMeta.poster;
+const optimizedPoster = optimizePosterUrl(poster, 220);
 const isBook = shelfMeta.type === "book";
 const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
 ---
@@ -27,7 +28,7 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
     {/* Poster — always on the left */}
     <div class="flex-none w-12 sm:w-14 md:w-16 ml-1 sm:ml-2">
       <div
-        class="relative w-full aspect-[2/3]"
+        class="relative w-full aspect-2/3"
         style="perspective: 800px; -webkit-perspective: 800px;"
       >
         <div
@@ -42,12 +43,13 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
             <div class="absolute inset-0" style={`background: ${gradient}`}>
             </div>
             {
-              poster && (
+              optimizedPoster && (
                 <img
-                  src={poster}
+                  src={optimizedPoster}
                   alt={`${title} poster`}
                   class="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
+                  decoding="async"
                 />
               )
             }
@@ -58,7 +60,7 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
               />
             </div>
             <div
-              class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-4"
+              class="absolute bottom-0 inset-x-0 z-10 bg-linear-to-t from-black/60 via-black/20 to-transparent pt-4"
             >
               <p
                 class="text-center pb-1 px-1 font-serif text-white/50 text-[6px] italic truncate"
@@ -81,8 +83,8 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
             {
               isBook && (
                 <>
-                  <div class="absolute left-0 inset-y-0 w-[2px] bg-black/25" />
-                  <div class="absolute left-[2px] inset-y-0 w-[1px] bg-white/10" />
+                  <div class="absolute left-0 inset-y-0 w-0.5 bg-black/25" />
+                  <div class="absolute left-0.5 inset-y-0 w-px bg-white/10" />
                 </>
               )
             }
@@ -109,7 +111,7 @@ const isFilm = ["movie", "documentary", "miniseries"].includes(shelfMeta.type);
               </h3>
             </div>
             <div
-              class="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-4"
+              class="absolute bottom-0 inset-x-0 z-10 bg-linear-to-t from-black/60 via-black/20 to-transparent pt-4"
             >
               <p
                 class="text-center pb-1 px-1 font-serif text-white/50 text-[6px] italic truncate"
