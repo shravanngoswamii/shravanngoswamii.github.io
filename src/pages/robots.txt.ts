@@ -30,7 +30,8 @@ const robots = `
 # BEGIN Managed Content
 
 User-agent: *
-Content-Signal: search=yes,ai-input=yes,ai-train=yes
+# Content-Signal (non-standard, informational only):
+# search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 User-agent: Amazonbot
