@@ -68,26 +68,23 @@ const structuredData = isArticle
   <head>
     <script is:inline>
       (function () {
-        if (window.__firstPaintGuardInitialized) return;
-        window.__firstPaintGuardInitialized = true;
-
         const docEl = document.documentElement;
         const navEntry = performance.getEntriesByType("navigation")[0];
         const isReload = navEntry?.type === "reload";
 
         const savedTheme = localStorage.getItem("theme");
-        const darkThemes = ["dark", "frappe", "macchiato", "mocha"];
         const prefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)",
         ).matches;
-        const isDarkTheme = savedTheme
-          ? darkThemes.includes(savedTheme)
-          : prefersDark;
+        const isDarkTheme = savedTheme ? savedTheme === "dark" : prefersDark;
 
-        // Paint an immediate theme-matched background to avoid light/dark flash.
-        docEl.style.backgroundColor = isDarkTheme
-          ? "rgb(10, 10, 10)"
-          : "rgb(248, 248, 246)";
+        const activeTheme = isDarkTheme ? "dark" : "light";
+        const fill = isDarkTheme ? "10, 10, 10" : "248, 248, 246";
+
+        docEl.setAttribute("data-theme", activeTheme);
+
+        // Paint and keep a theme-matched fallback background to avoid white flashes.
+        docEl.style.backgroundColor = `rgb(${fill})`;
 
         if (isReload) {
           docEl.classList.add("preload");
@@ -99,7 +96,6 @@ const structuredData = isArticle
 
         const releasePreload = () => {
           docEl.classList.remove("preload");
-          docEl.style.backgroundColor = "";
           if (docEl.classList.contains("scroll-smooth")) {
             docEl.style.scrollBehavior = "";
           }
@@ -118,8 +114,14 @@ const structuredData = isArticle
     </script>
 
     <style is:inline>
-      html.preload body {
-        opacity: 0;
+      html,
+      body {
+        background-color: rgb(248, 248, 246);
+      }
+
+      html[data-theme="dark"],
+      html[data-theme="dark"] body {
+        background-color: rgb(10, 10, 10);
       }
     </style>
 
@@ -233,12 +235,14 @@ const structuredData = isArticle
       let themeValue = getPreferTheme();
 
       function reflectPreference(theme) {
-        document.firstElementChild.setAttribute("data-theme", theme);
+        const docEl = document.firstElementChild;
+        docEl.setAttribute("data-theme", theme);
 
         const body = document.body;
         if (body) {
           const computedStyles = window.getComputedStyle(body);
           const bgColor = computedStyles.backgroundColor;
+          docEl.style.backgroundColor = bgColor;
           document
             .querySelector("meta[name='theme-color']")
             ?.setAttribute("content", bgColor);

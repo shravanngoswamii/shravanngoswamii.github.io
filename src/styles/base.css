@@ -1,7 +1,7 @@
 ﻿@import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="frappe"], [data-theme="macchiato"], [data-theme="mocha"], [data-theme="dark"] *, [data-theme="frappe"] *, [data-theme="macchiato"] *, [data-theme="mocha"] *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
   --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
@@ -45,40 +45,6 @@
     --color-collection-cinema: 251, 191, 36;
     --color-collection-philosophy: 167, 139, 250;
     --color-collection-shelf: 52, 211, 153; /* Emerald 400 */
-  }
-
-  /* Legacy theme support... */
-  html[data-theme="latte"] {
-    --color-fill: 239, 241, 245;
-    --color-text-base: 76, 79, 105;
-    --color-accent: 136, 57, 239;
-    --color-card: 255, 255, 255;
-    --color-card-muted: 230, 233, 239;
-    --color-border: 204, 208, 218;
-  }
-  html[data-theme="frappe"] {
-    --color-fill: 48, 52, 70;
-    --color-text-base: 198, 208, 245;
-    --color-accent: 202, 158, 230;
-    --color-card: 65, 69, 89;
-    --color-card-muted: 41, 44, 60;
-    --color-border: 81, 87, 109;
-  }
-  html[data-theme="macchiato"] {
-    --color-fill: 36, 39, 58;
-    --color-text-base: 202, 211, 245;
-    --color-accent: 198, 160, 246;
-    --color-card: 54, 58, 79;
-    --color-card-muted: 30, 32, 48;
-    --color-border: 73, 77, 100;
-  }
-  html[data-theme="mocha"] {
-    --color-fill: 30, 30, 46;
-    --color-text-base: 205, 214, 244;
-    --color-accent: 203, 166, 247;
-    --color-card: 49, 50, 68;
-    --color-card-muted: 24, 24, 37;
-    --color-border: 69, 71, 90;
   }
 
   #sun-svg,

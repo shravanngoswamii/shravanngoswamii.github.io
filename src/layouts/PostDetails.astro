@@ -612,8 +612,8 @@ const readMoreMapped = readMorePosts.map((p) => ({
       @apply mx-0;
     }
 
-    :global(figure.not-prose[data-position="left"]),
-    :global(div.not-prose[data-position="left"]) {
+    :global(html.has-sidebar-mirrors figure.not-prose[data-position="left"]),
+    :global(html.has-sidebar-mirrors div.not-prose[data-position="left"]) {
       height: 0 !important;
       overflow: hidden !important;
       margin: 0 !important;
@@ -648,20 +648,8 @@ const readMoreMapped = readMorePosts.map((p) => ({
     background-color: transparent !important;
   }
 
-  :global(html[data-theme="latte"] .astro-code),
-  :global(html[data-theme="latte"] .astro-code span) {
-    color: var(--shiki-light);
-    background-color: transparent !important;
-  }
-
   :global(html[data-theme="dark"] .astro-code),
-  :global(html[data-theme="dark"] .astro-code span),
-  :global(html[data-theme="frappe"] .astro-code),
-  :global(html[data-theme="frappe"] .astro-code span),
-  :global(html[data-theme="macchiato"] .astro-code),
-  :global(html[data-theme="macchiato"] .astro-code span),
-  :global(html[data-theme="mocha"] .astro-code),
-  :global(html[data-theme="mocha"] .astro-code span) {
+  :global(html[data-theme="dark"] .astro-code span) {
     color: var(--shiki-dark);
     background-color: transparent !important;
   }
@@ -746,46 +734,53 @@ const readMoreMapped = readMorePosts.map((p) => ({
 </style>
 
 <script is:inline data-astro-rerun>
+  window.__postDetailsAbort?.abort?.();
+  const postDetailsAbort = new AbortController();
+  window.__postDetailsAbort = postDetailsAbort;
+  const { signal } = postDetailsAbort;
+
+  let scrollProgressBound = false;
+
   /** Create a progress indicator
    * at the top */
   function createProgressBar() {
-    // Create the main container div
+    document.querySelector(".progress-container")?.remove();
+
     const progressContainer = document.createElement("div");
     progressContainer.className =
       "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
 
-    // Create the progress bar div
     const progressBar = document.createElement("div");
     progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
     progressBar.id = "myBar";
 
-    // Append the progress bar to the progress container
     progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
     document.body.appendChild(progressContainer);
   }
-  createProgressBar();
 
   /** Update the progress bar
    * when user scrolls */
   function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
+    if (scrollProgressBound) return;
+    scrollProgressBound = true;
+
+    document.addEventListener(
+      "scroll",
+      () => {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
         const myBar = document.getElementById("myBar");
         if (myBar) {
           myBar.style.width = scrolled + "%";
         }
-      }
-    });
+      },
+      { passive: true, signal },
+    );
   }
-  updateScrollProgress();
 
   /** Attaches links to headings in the document,
    * allowing sharing of sections easily */
@@ -795,6 +790,8 @@ const readMoreMapped = readMorePosts.map((p) => ({
     const headings = Array.from(article.querySelectorAll("h2, h3, h4, h5, h6"));
     for (const heading of headings) {
       heading.classList.add("group");
+      if (heading.querySelector(".heading-link")) continue;
+
       const link = document.createElement("a");
       link.className =
         "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
@@ -807,7 +804,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
       heading.appendChild(link);
     }
   }
-  addHeadingLinks();
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
@@ -815,7 +811,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
-      // Create wrapper if not exists
       let wrapper = codeBlock.parentElement;
       if (!wrapper || !wrapper.classList.contains("code-wrapper")) {
         wrapper = document.createElement("div");
@@ -824,25 +819,24 @@ const readMoreMapped = readMorePosts.map((p) => ({
         wrapper.appendChild(codeBlock);
       }
 
-      // Create Copy Button
-      const copyButton = document.createElement("button");
-      copyButton.className = "copy-code";
-      copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
-      copyButton.setAttribute("aria-label", "Copy code");
-      wrapper.appendChild(copyButton);
+      let copyButton = wrapper.querySelector(".copy-code");
+      if (!copyButton) {
+        copyButton = document.createElement("button");
+        copyButton.className = "copy-code";
+        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-base/60 hover:text-skin-accent transition-colors"><path d="M8 10a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
+        copyButton.setAttribute("aria-label", "Copy code");
+        wrapper.appendChild(copyButton);
+      }
 
-      // Add Line Numbers
       const code = codeBlock.querySelector("code");
       if (code) {
-        // We need to count lines of the TEXT content, but handle potential empty last line from Prism/Shiki
         const textContent = code.innerText.replace(/\n$/, "");
         const lineCount = textContent.split("\n").length;
 
-        if (lineCount > 1) {
+        if (lineCount > 1 && !wrapper.querySelector(".line-numbers")) {
           const lineNumbers = document.createElement("div");
           lineNumbers.className = "line-numbers";
           lineNumbers.ariaHidden = "true";
-          // Generate spans
           lineNumbers.innerHTML = Array.from(
             { length: lineCount },
             (_, i) => `<span>${i + 1}</span>`,
@@ -853,9 +847,12 @@ const readMoreMapped = readMorePosts.map((p) => ({
 
       codeBlock.setAttribute("tabindex", "0");
 
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
-      });
+      if (!copyButton.dataset.bound) {
+        copyButton.dataset.bound = "1";
+        copyButton.addEventListener("click", async () => {
+          await copyCode(codeBlock, copyButton);
+        });
+      }
     }
 
     async function copyCode(block, button) {
@@ -864,7 +861,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
 
       await navigator.clipboard.writeText(text ?? "");
 
-      // visual feedback
       button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-skin-accent"><path d="M20 6 9 17l-5-5"/></svg>`;
 
       setTimeout(() => {
@@ -872,20 +868,20 @@ const readMoreMapped = readMorePosts.map((p) => ({
       }, 700);
     }
   }
-  attachCopyButtons();
 
   /** Hide "Table of Contents" heading if it exists */
   function hideTOCHeading() {
     const headings = document.querySelectorAll("h2");
     headings.forEach((heading) => {
-      if (heading.textContent.trim() === "Table of contents") {
+      if ((heading.textContent || "").trim() === "Table of contents") {
         heading.style.display = "none";
       }
     });
   }
-  hideTOCHeading();
 
   function mirrorSidebarQuotes() {
+    document.documentElement.classList.remove("has-sidebar-mirrors");
+
     const article = document.getElementById("article");
     const sidebar = document.getElementById("left-sidebar");
     const container = document.getElementById("sidebar-quotes");
@@ -908,9 +904,8 @@ const readMoreMapped = readMorePosts.map((p) => ({
       mirror.style.cssText = `position:absolute;top:${topPos}px;left:0;right:0;display:flex;justify-content:center;`;
 
       const clone = el.cloneNode(true);
-      clone.removeAttribute("data-position"); // So it doesn't get hidden by CSS
+      clone.removeAttribute("data-position");
 
-      // Fix ID conflicts for things like Spoiler labels and checkboxes
       const ids = clone.querySelectorAll("[id]");
       ids.forEach((node) => {
         const oldId = node.id;
@@ -920,13 +915,11 @@ const readMoreMapped = readMorePosts.map((p) => ({
         labels.forEach((l) => l.setAttribute("for", newId));
       });
 
-      // Adjust styles slightly for the narrower sidebar context
       clone.style.width = "100%";
       clone.style.maxWidth = "260px";
       clone.classList.remove("my-8", "my-6", "my-4");
       clone.classList.add("my-0");
 
-      // Optional tweaks depending on component
       if (clone.tagName === "FIGURE") {
         const blockquote = clone.querySelector("blockquote");
         if (blockquote) {
@@ -937,9 +930,9 @@ const readMoreMapped = readMorePosts.map((p) => ({
       mirror.appendChild(clone);
       container.appendChild(mirror);
     });
+
+    document.documentElement.classList.add("has-sidebar-mirrors");
   }
-  mirrorSidebarQuotes();
-  window.addEventListener("load", mirrorSidebarQuotes);
 
   function positionReadMore() {
     const article = document.getElementById("article");
@@ -963,6 +956,21 @@ const readMoreMapped = readMorePosts.map((p) => ({
 
     readMore.style.marginTop = finalTop + "px";
   }
-  positionReadMore();
-  window.addEventListener("load", positionReadMore);
+
+  function runPostEnhancements() {
+    createProgressBar();
+    updateScrollProgress();
+    addHeadingLinks();
+    attachCopyButtons();
+    hideTOCHeading();
+    mirrorSidebarQuotes();
+    positionReadMore();
+  }
+
+  runPostEnhancements();
+
+  window.addEventListener("load", runPostEnhancements, { signal });
+  document.addEventListener("astro:page-load", runPostEnhancements, {
+    signal,
+  });
 </script>

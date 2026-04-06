@@ -150,25 +150,17 @@ const { frontmatter } = Astro.props;
 </Layout>
 
 <style>
-  :global(html[data-theme="light"]) .theme-image-dark,
-  :global(html[data-theme="latte"]) .theme-image-dark {
+  :global(html[data-theme="light"]) .theme-image-dark {
     display: none !important;
   }
-  :global(html[data-theme="light"]) .theme-image-light,
-  :global(html[data-theme="latte"]) .theme-image-light {
+  :global(html[data-theme="light"]) .theme-image-light {
     display: block !important;
   }
 
-  :global(html[data-theme="dark"]) .theme-image-light,
-  :global(html[data-theme="frappe"]) .theme-image-light,
-  :global(html[data-theme="macchiato"]) .theme-image-light,
-  :global(html[data-theme="mocha"]) .theme-image-light {
+  :global(html[data-theme="dark"]) .theme-image-light {
     display: none !important;
   }
-  :global(html[data-theme="dark"]) .theme-image-dark,
-  :global(html[data-theme="frappe"]) .theme-image-dark,
-  :global(html[data-theme="macchiato"]) .theme-image-dark,
-  :global(html[data-theme="mocha"]) .theme-image-dark {
+  :global(html[data-theme="dark"]) .theme-image-dark {
     display: block !important;
   }
 </style>
