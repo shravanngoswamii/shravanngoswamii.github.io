@@ -127,7 +127,7 @@
             reflectPreference(themeValue);
           }
         });
-    </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><link rel="stylesheet" href="/_astro/Footer.wpkaLCC0.css">
+    </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><link rel="stylesheet" href="/_astro/Footer.C1K8AS29.css">
 <style>@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-scale-x:1;--tw-scale-y:1;--tw-scale-z:1}}}a:where(.astro-blwjyjpt){text-decoration-line:underline;text-decoration-style:dashed;position:relative}a:where(.astro-blwjyjpt) svg:where(.astro-blwjyjpt){margin-right:calc(var(--spacing,.25rem) * -1);height:calc(var(--spacing,.25rem) * 6);width:calc(var(--spacing,.25rem) * 6);--tw-scale-x:95%;--tw-scale-y:95%;--tw-scale-z:95%;scale:var(--tw-scale-x) var(--tw-scale-y);color:var(--color-skin-base,rgb(var(--color-text-base)));opacity:.8}a:where(.astro-blwjyjpt):hover{top:calc(var(--spacing,.25rem) * -.5);color:var(--color-skin-accent,rgb(var(--color-accent)))}a:where(.astro-blwjyjpt):focus-visible{padding:calc(var(--spacing,.25rem) * 1)}.group:where(.astro-blwjyjpt):hover a:where(.astro-blwjyjpt) svg:where(.astro-blwjyjpt),.group:where(.astro-blwjyjpt):focus-within a:where(.astro-blwjyjpt) svg:where(.astro-blwjyjpt){color:var(--color-skin-accent,rgb(var(--color-accent)))}@property --tw-scale-x{syntax:"*";inherits:false;initial-value:1}@property --tw-scale-y{syntax:"*";inherits:false;initial-value:1}@property --tw-scale-z{syntax:"*";inherits:false;initial-value:1}
 </style>
 <link rel="stylesheet" href="/_astro/Progress.CWC3Hjq7.css">
@@ -550,6 +550,7 @@ Table of Contents
         });
       })();
     </script> </body> </html>  <script data-astro-rerun>
+  (() => {
   window.__postDetailsAbort?.abort?.();
   const postDetailsAbort = new AbortController();
   window.__postDetailsAbort = postDetailsAbort;
@@ -707,6 +708,11 @@ Table of Contents
     const container = document.getElementById("sidebar-quotes");
     if (!article || !sidebar || !container) return;
 
+    const previousSpoilerStates = Array.from(
+      container.querySelectorAll('[data-component="spoiler"] input[type="checkbox"]'),
+    ).map((input) => input.checked);
+    let spoilerStateCursor = 0;
+
     container.innerHTML = "";
 
     const leftItems = Array.from(
@@ -725,6 +731,22 @@ Table of Contents
 
       const clone = el.cloneNode(true);
       clone.removeAttribute("data-position");
+
+      const cloneSpoilerCount =
+        (clone.matches?.('[data-component="spoiler"]') ? 1 : 0) +
+        clone.querySelectorAll('[data-component="spoiler"]').length;
+      if (cloneSpoilerCount > 0) {
+        const cloneSpoilerInputs = clone.querySelectorAll(
+          '[data-component="spoiler"] input[type="checkbox"]',
+        );
+        cloneSpoilerInputs.forEach((input, inputIndex) => {
+          const prevState = previousSpoilerStates[spoilerStateCursor + inputIndex];
+          if (typeof prevState === "boolean") {
+            input.checked = prevState;
+          }
+        });
+        spoilerStateCursor += cloneSpoilerInputs.length;
+      }
 
       const ids = clone.querySelectorAll("[id]");
       ids.forEach((node) => {
@@ -803,7 +825,6 @@ Table of Contents
 
   function setupPostObservers() {
     const article = document.getElementById("article");
-    const sidebar = document.getElementById("left-sidebar");
 
     if (typeof ResizeObserver !== "undefined") {
       resizeObserver?.disconnect();
@@ -812,7 +833,6 @@ Table of Contents
       });
 
       if (article) resizeObserver.observe(article);
-      if (sidebar) resizeObserver.observe(sidebar);
     }
 
     if (article && typeof MutationObserver !== "undefined") {
@@ -824,8 +844,6 @@ Table of Contents
       mutationObserver.observe(article, {
         childList: true,
         subtree: true,
-        attributes: true,
-        attributeFilter: ["data-position", "class", "style"],
       });
     }
   }
@@ -875,4 +893,5 @@ Table of Contents
     if (signal.aborted) return;
     schedulePostEnhancements();
   });
+  })();
 </script>
