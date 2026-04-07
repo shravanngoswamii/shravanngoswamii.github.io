@@ -721,6 +721,7 @@ const ogUrl = new URL(
 </style>
 
 <script is:inline data-astro-rerun>
+  (() => {
   function createProgressBar() {
     const progressContainer = document.createElement("div");
     progressContainer.className =
@@ -830,6 +831,11 @@ const ogUrl = new URL(
     const container = document.getElementById("sidebar-quotes");
     if (!article || !sidebar || !container) return;
 
+    const previousSpoilerStates = Array.from(
+      container.querySelectorAll('[data-component="spoiler"] input[type="checkbox"]'),
+    ).map((input) => input.checked);
+    let spoilerStateCursor = 0;
+
     container.innerHTML = "";
 
     const leftItems = Array.from(
@@ -849,6 +855,21 @@ const ogUrl = new URL(
       const clone = el.cloneNode(true);
       if (clone instanceof HTMLElement) {
         clone.removeAttribute("data-position");
+        const cloneSpoilerCount =
+          (clone.matches?.('[data-component="spoiler"]') ? 1 : 0) +
+          clone.querySelectorAll('[data-component="spoiler"]').length;
+        if (cloneSpoilerCount > 0) {
+          const cloneSpoilerInputs = clone.querySelectorAll(
+            '[data-component="spoiler"] input[type="checkbox"]',
+          );
+          cloneSpoilerInputs.forEach((input, inputIndex) => {
+            const prevState = previousSpoilerStates[spoilerStateCursor + inputIndex];
+            if (typeof prevState === "boolean") {
+              input.checked = prevState;
+            }
+          });
+          spoilerStateCursor += cloneSpoilerInputs.length;
+        }
         const ids = clone.querySelectorAll("[id]");
         ids.forEach((node) => {
           const oldId = node.id;
@@ -907,4 +928,5 @@ const ogUrl = new URL(
   }
   positionReadMore();
   window.addEventListener("load", positionReadMore);
+  })();
 </script>

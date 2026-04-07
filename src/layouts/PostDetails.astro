@@ -734,6 +734,7 @@ const readMoreMapped = readMorePosts.map((p) => ({
 </style>
 
 <script is:inline data-astro-rerun>
+  (() => {
   window.__postDetailsAbort?.abort?.();
   const postDetailsAbort = new AbortController();
   window.__postDetailsAbort = postDetailsAbort;
@@ -891,6 +892,11 @@ const readMoreMapped = readMorePosts.map((p) => ({
     const container = document.getElementById("sidebar-quotes");
     if (!article || !sidebar || !container) return;
 
+    const previousSpoilerStates = Array.from(
+      container.querySelectorAll('[data-component="spoiler"] input[type="checkbox"]'),
+    ).map((input) => input.checked);
+    let spoilerStateCursor = 0;
+
     container.innerHTML = "";
 
     const leftItems = Array.from(
@@ -909,6 +915,22 @@ const readMoreMapped = readMorePosts.map((p) => ({
 
       const clone = el.cloneNode(true);
       clone.removeAttribute("data-position");
+
+      const cloneSpoilerCount =
+        (clone.matches?.('[data-component="spoiler"]') ? 1 : 0) +
+        clone.querySelectorAll('[data-component="spoiler"]').length;
+      if (cloneSpoilerCount > 0) {
+        const cloneSpoilerInputs = clone.querySelectorAll(
+          '[data-component="spoiler"] input[type="checkbox"]',
+        );
+        cloneSpoilerInputs.forEach((input, inputIndex) => {
+          const prevState = previousSpoilerStates[spoilerStateCursor + inputIndex];
+          if (typeof prevState === "boolean") {
+            input.checked = prevState;
+          }
+        });
+        spoilerStateCursor += cloneSpoilerInputs.length;
+      }
 
       const ids = clone.querySelectorAll("[id]");
       ids.forEach((node) => {
@@ -987,7 +1009,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
 
   function setupPostObservers() {
     const article = document.getElementById("article");
-    const sidebar = document.getElementById("left-sidebar");
 
     if (typeof ResizeObserver !== "undefined") {
       resizeObserver?.disconnect();
@@ -996,7 +1017,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
       });
 
       if (article) resizeObserver.observe(article);
-      if (sidebar) resizeObserver.observe(sidebar);
     }
 
     if (article && typeof MutationObserver !== "undefined") {
@@ -1008,8 +1028,6 @@ const readMoreMapped = readMorePosts.map((p) => ({
       mutationObserver.observe(article, {
         childList: true,
         subtree: true,
-        attributes: true,
-        attributeFilter: ["data-position", "class", "style"],
       });
     }
   }
@@ -1059,4 +1077,5 @@ const readMoreMapped = readMorePosts.map((p) => ({
     if (signal.aborted) return;
     schedulePostEnhancements();
   });
+  })();
 </script>
