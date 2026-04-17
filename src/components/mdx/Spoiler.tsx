@@ -11,6 +11,10 @@ export default function Spoiler({
   position = "inline",
   children,
 }: Props) {
+  const contentClassName =
+    "p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-none peer-checked:select-auto transition-all duration-500" +
+    (position === "left" ? " text-justify" : "");
+
   return (
     <div
       className="not-prose my-6 relative rounded-sm border border-skin-line/20 overflow-hidden"
@@ -22,7 +26,7 @@ export default function Spoiler({
         aria-label={label}
         className="peer absolute inset-0 z-10 m-0 h-full w-full cursor-pointer appearance-none opacity-0 peer-checked:pointer-events-none"
       />
-      <div className="p-5 text-sm text-skin-base/80 leading-relaxed blur-md select-none peer-checked:blur-none peer-checked:select-auto transition-all duration-500">
+      <div className={contentClassName}>
         {children}
       </div>
       <div className="absolute inset-0 flex items-center justify-center bg-skin-fill/60 pointer-events-none peer-checked:opacity-0 peer-checked:bg-transparent peer-checked:backdrop-blur-none transition-all duration-500">

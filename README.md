@@ -1,8 +1,8 @@
 <h1 align="center">My Corner of the Internet</h1>
 
-Why did you come here? to copy my code?
+Why did you come here? to see the code?
 
-Well I made it with Gemini, Claude and Copilot -- feel free to copy mine but better design your own portfolio, not difficult to make these days and it's fun to make.
+Well, feel free to use it but better design your own portfolio, not difficult to make these days and it's fun to make.
 
 ## Introduction
 
