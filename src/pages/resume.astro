@@ -18,6 +18,7 @@ import { stripExt } from "@utils/shelf";
 import { getCollection } from "astro:content";
 
 const resumePDF = withBase("/resume.pdf");
+const embeddedResumePDF = `${resumePDF}#pagemode=none&zoom=page-fit&toolbar=0&navpanes=0`;
 
 const recentPosts = getSortedPosts(await getAllPosts()).slice(0, 5);
 const shelfRaw = await getCollection("shelf");
@@ -76,14 +77,41 @@ const shelfItems = shelfRaw
         >
           Download the PDF
         </LinkButton>
-        <iframe
-          src={resumePDF}
-          class="border-none rounded-lg w-full"
-          style="display: block; height: 100vh; margin: 0 auto;"
-          title="My Resume"
-        >
-          This browser does not support PDFs.
-        </iframe>
+        <div class="w-full md:hidden">
+          <div class="rounded-2xl border border-skin-line/40 bg-skin-fill/40 p-5 text-left backdrop-blur-sm">
+            <p class="text-sm leading-7 text-skin-base/70">
+              Embedded PDFs are unreliable on mobile browsers, so the resume opens
+              as a regular PDF instead.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <a
+                href={resumePDF}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center rounded-full border border-skin-accent/30 px-4 py-2 text-sm font-medium text-skin-accent transition-colors hover:border-skin-accent hover:text-skin-base"
+              >
+                Open the PDF
+              </a>
+              <a
+                href={resumePDF}
+                download
+                class="inline-flex items-center rounded-full border border-skin-line/60 px-4 py-2 text-sm font-medium text-skin-base/80 transition-colors hover:border-skin-base/40 hover:text-skin-base"
+              >
+                Download it
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="hidden w-full overflow-hidden rounded-lg md:block">
+          <iframe
+            src={embeddedResumePDF}
+            class="block h-screen w-[calc(100%+18px)] border-none"
+            style="margin-right: -18px;"
+            title="My Resume"
+          >
+            This browser does not support PDFs. Please download the PDF to view it.
+          </iframe>
+        </div>
       </main>
 
       {/* Right Column — Recent Blogs (desktop only) */}
