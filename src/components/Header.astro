@@ -285,6 +285,10 @@ const { activeNav } = Astro.props;
           .querySelector("meta[name='theme-color']")
           ?.setAttribute("content", bgColor);
       }
+
+      (
+        window as Window & { __forceThemeRepaint?: () => void }
+      ).__forceThemeRepaint?.();
     };
 
     document

@@ -251,8 +251,62 @@ const structuredData = isArticle
 
       let themeValue = getPreferTheme();
 
+      function forceThemeRepaint() {
+        const targets = [
+          document.body,
+          document.getElementById("main-header"),
+          document.getElementById("mobile-header"),
+        ].filter(Boolean);
+
+        const previousState = targets.map(el => ({
+          el,
+          transform: el.style.transform,
+          transition: el.style.transition,
+          willChange: el.style.willChange,
+        }));
+
+        for (const state of previousState) {
+          state.el.style.transition = "none";
+          state.el.style.willChange = "transform";
+          const baseTransform =
+            state.transform && state.transform !== "none"
+              ? state.transform
+              : "";
+          state.el.style.transform = baseTransform
+            ? `${baseTransform} translateZ(0)`
+            : "translateZ(0)";
+        }
+
+        void document.documentElement.offsetHeight;
+
+        requestAnimationFrame(() => {
+          for (const state of previousState) {
+            if (state.transform) {
+              state.el.style.transform = state.transform;
+            } else {
+              state.el.style.removeProperty("transform");
+            }
+
+            if (state.transition) {
+              state.el.style.transition = state.transition;
+            } else {
+              state.el.style.removeProperty("transition");
+            }
+
+            if (state.willChange) {
+              state.el.style.willChange = state.willChange;
+            } else {
+              state.el.style.removeProperty("will-change");
+            }
+          }
+        });
+      }
+
+      window.__forceThemeRepaint = forceThemeRepaint;
+
       function reflectPreference(theme) {
         document.firstElementChild.setAttribute("data-theme", theme);
+        document.documentElement.style.colorScheme = theme;
 
         const body = document.body;
         if (body) {
@@ -262,6 +316,8 @@ const structuredData = isArticle
             .querySelector("meta[name='theme-color']")
             ?.setAttribute("content", bgColor);
         }
+
+        forceThemeRepaint();
       }
 
       reflectPreference(themeValue);
